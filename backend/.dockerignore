@@ -9,6 +9,9 @@ logs/
 dump.rdb
 cloudflare.log
 database/*.db
-audio_workspace/music/*/*.mp3
+audio_workspace/pendings/
+audio_workspace/telegram/
+audio_workspace/youtube/
 audio_workspace/inputs/
 audio_workspace/outputs/
+audio_workspace/temp/
