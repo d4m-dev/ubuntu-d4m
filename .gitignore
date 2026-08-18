@@ -11,13 +11,11 @@ backend/venv/
 .env
 .pytest_cache/
 backend/logs/
-backend/db-admin/
-backend/exam.env
+backend/.env
 
 # ===== Media nhạc (không commit file demo lớn) =====
-backend/audio_workspace/music/*/*.mp3
-backend/audio_workspace/music/*/*.mp4
-backend/audio_workspace/music/*/*.wav
+audio_workspace/telegram/*
+audio_workspace/youtube/*
 backend/audio_workspace/inputs/*
 backend/audio_workspace/outputs/*
 backend/audio_workspace/pending/*
