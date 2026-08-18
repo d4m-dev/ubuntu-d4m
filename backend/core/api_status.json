@@ -1,0 +1,17 @@
+{
+    "internet_tunnel": {
+        "active": true,
+        "description": "Đường hầm Cloudflare bảo mật",
+        "public_url": "https://d4mdev.click"
+    },
+    "chatbox_ai": {
+        "active": true,
+        "description": "Module Chatbot AI & Phân tích Log",
+        "public_url": ""
+    },
+    "social_db": {
+        "active": true,
+        "description": "Kết nối Database MariaDB Social Hub",
+        "public_url": ""
+    }
+}

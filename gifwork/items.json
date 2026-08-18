@@ -1,0 +1,666 @@
+{
+  "8291": {
+    "title": "Huyễn thế yêu hồ",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/huyen-the-yeu-ho.png"
+  },
+  "8293": {
+    "title": "Mặc vũ thần quân",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/mac-vu-than-quan.webp"
+  },
+  "8295": {
+    "title": "Thủy long thánh mẫu",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/thuy-long-thanh-mau.webp"
+  },
+  "8299": {
+    "title": "Cửu thiên lôi sát",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/cuu-thien-loi-sat.webp"
+  },
+  "8301": {
+    "title": "Khởi nguyên thánh nữ",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/khoi-nguyen-thanh-nu.webp"
+  },
+  "8303": {
+    "title": "Lăng tiêu thần nữ",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/lang-tieu-than-nu.webp"
+  },
+  "8305": {
+    "title": "Bích ba tiên tử",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/bich-ba-tien-tu.png"
+  },
+  "8307": {
+    "title": "Tổ long tần thủy hoàng",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/to-long-tan-thuy-hoang.png"
+  },
+  "8309": {
+    "title": "Bích dao Tiên Tử",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/bich-dao.png"
+  },
+  "8311": {
+    "title": "Huyền cơ kiếm chủ",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/huyen-co-kiem-chu.png"
+  },
+  "8313": {
+    "title": "Xích viêm thần tướng",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/xich-viem-than-tuong.png"
+  },
+  "8316": {
+    "title": "Nữ Oa Nương Nương",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/nu-oa.png"
+  },
+  "8318": {
+    "title": "Vương lâm",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/vuong-lam.webp"
+  },
+  "8320": {
+    "title": "Bích hải cửu đầu xà",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/bich-hai-cuu-dau-xa.webp"
+  },
+  "8322": {
+    "title": "Huyền quang diệu pháp tăng",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/huyen-quang-dieu-phap-tang.png"
+  },
+  "8324": {
+    "title": "Phù đồ thánh giả",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/phu-do-thanh-gia.webp"
+  },
+  "8326": {
+    "title": "Bích hải thánh nữ",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/bich-hai-thanh-nu.webp"
+  },
+  "8328": {
+    "title": "Đan phương triều dương",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/dan-phuong-trieu-duong.webp"
+  },
+  "8330": {
+    "title": "Bàn cổ đại thần",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/ban-co.webp"
+  },
+  "8332": {
+    "title": "Hàn giang ảnh nguyệt",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/han-giang-anh-nguyet.png"
+  },
+  "8334": {
+    "title": "Mặc liên yêu cơ",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/mac-lien-yeu-co.png"
+  },
+  "8336": {
+    "title": "Nghịch thiên huyền long",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/nghich-thien-huyen-long.webp"
+  },
+  "8338": {
+    "title": "Liễu thần",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/lieu-than.png"
+  },
+  "8341": {
+    "title": "Ly hỏa vương",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/ly-hoa-vuong.png"
+  },
+  "8343": {
+    "title": "Tân niên vệ thần",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/tan-nien-ve-than.webp"
+  },
+  "8345": {
+    "title": "Nhị lang thần dương tiễn",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/nhi-lang-than-duong-tien.png"
+  },
+  "8347": {
+    "title": "Tử diện tiên sinh",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/tu-dien-tien-sinh.png"
+  },
+  "8365": {
+    "title": "Niệm Hỏa Kỳ Lân (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/niem-hoa-ky-lan.gif"
+  },
+  "8371": {
+    "title": "Huyền Vũ (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/huyen-vu.gif"
+  },
+  "8376": {
+    "title": "Hồng Liên Tiên Tử (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/hong-lien-tien-tu.gif"
+  },
+  "8378": {
+    "title": "Liệt Diễm Cung (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/liet-diem-cung.gif"
+  },
+  "8380": {
+    "title": "Kim Giới Cung (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/kim-gioi-cung.gif"
+  },
+  "8382": {
+    "title": "Tử Giới Cung (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/tu-gioi-cung.gif"
+  },
+  "8386": {
+    "title": "Linh Huyền Trượng (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/linh-huyen-truong.gif"
+  },
+  "8394": {
+    "title": "Lục Cổ Viên Minh (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/luc-co-vien-minh.gif"
+  },
+  "8396": {
+    "title": "Khống Linh Đuốc (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/khong-linh-duoc.gif"
+  },
+  "8410": {
+    "title": "Sát Lục Nguyên Kiếm (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/sat-luc-nguyen-kiem.gif"
+  },
+  "8430": {
+    "title": "Lam Minh Cổ Ấn (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/lam-minh-an.gif"
+  },
+  "8432": {
+    "title": "Hoàng Nghê Ấn (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/hoang-nghe-an.gif"
+  },
+  "8435": {
+    "title": "Tiểu Bạch Cửu (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/tieu-bach-cuu.gif"
+  },
+  "8437": {
+    "title": "Lam Tiểu Bạch Cửu (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/lam-tieu-bach-cuu.gif"
+  },
+  "8439": {
+    "title": "Tiểu Cửu Cửu (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/tieu-cuu-cuu.gif"
+  },
+  "8453": {
+    "title": "Bạch Thiên Sứ (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/bach-thien-su.gif"
+  },
+  "8465": {
+    "title": "Phong lôi sí (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/phong-loi-si.webp"
+  },
+  "8467": {
+    "title": "Thánh dạ quang dực (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/thanh-da-quang-duc.webp"
+  },
+  "8469": {
+    "title": "Hồng hoang hỏa dực (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/hong-hoang-hoa-duc.webp"
+  },
+  "8471": {
+    "title": "Thần vũ lực quang (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/than-vu-luc-quang.webp"
+  },
+  "8473": {
+    "title": "Quang minh nữ thần điệp (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/quang-minh-nu-than-diep.webp"
+  },
+  "8475": {
+    "title": "Huyền giai – Phi hành đấu khí (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/huyen-giai-dau-ky-phi-hanh.webp"
+  },
+  "8477": {
+    "title": "Phượng Hoàng chi dực (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/phuong-hoang-chi-duc.webp"
+  },
+  "8498": {
+    "title": "Thiên Ma Phệ Tâm Đao (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/thien-ma-phe-tam-dao.webp"
+  },
+  "8500": {
+    "title": "Băng Hỏa Linh Vũ (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/bang-hoa-linh-vu.png"
+  },
+  "8502": {
+    "title": "Phượng Long Hỏa Vũ (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/phuong-long-hoa-vu.webp"
+  },
+  "8504": {
+    "title": "Vạn pháp Tiên Kiếm (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/van-phap-tien-kiem-1.webp"
+  },
+  "8506": {
+    "title": "Trảm Long Kiếm (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/tram-long-kiem.webp"
+  },
+  "8510": {
+    "title": "Vân quang mộc dực  (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/van-quang-mong-duc.webp"
+  },
+  "8512": {
+    "title": "Tịch Diệt Ma Viêm Dực (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/tich-diet-ma-viem-duc.webp"
+  },
+  "8514": {
+    "title": "Thiên Vũ Linh Dực (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/thien-vu-linh-duc.webp"
+  },
+  "8518": {
+    "title": "Huyễn Ngư Tiên Dực (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/huyen-ngu-tien-duc.webp"
+  },
+  "8520": {
+    "title": "Ngọc Quang Tiên Vũ (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/ngoc-quang-tien-vu.webp"
+  },
+  "8522": {
+    "title": "Huyễn Dực Phượng Hoàng (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/huyen-duc-phuong-hoang.webp"
+  },
+  "8524": {
+    "title": "Khô Mộc Phùng Xuân Dực (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/kho-moc-phung-xuan.webp"
+  },
+  "8526": {
+    "title": "Tinh Tử Chi Dực (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/tinh-tu-chi-duc.webp"
+  },
+  "8528": {
+    "title": "Bát Phương Lôi Vân Dực (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/bat-phuong-loi-van-duc.webp"
+  },
+  "8534": {
+    "title": "Nhị Lang Thần Dương Tiễn (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/nhi-lang-than-duong-tien-1.webp"
+  },
+  "8536": {
+    "title": "Vương Lâm (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/vuong-lam-1.webp"
+  },
+  "8540": {
+    "title": "Tần Vũ (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/tan-vu-nang-capp.webp"
+  },
+  "8542": {
+    "title": "Lôi Thần (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/loi-than-thon-phe-tinh-khong.webp"
+  },
+  "8546": {
+    "title": "Băng Phách Cổ Long (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/bang-phach-co-long.webp"
+  },
+  "8552": {
+    "title": "Thần tài (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/than-tai.webp"
+  },
+  "8554": {
+    "title": "Nữ Đế Võ Tắc Thiên (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/nu-de-vo-tac-thien.webp"
+  },
+  "8556": {
+    "title": "Kiếm Tiên Lý Bạch (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/kiem-tien-ly-bach-1.webp"
+  },
+  "8558": {
+    "title": "Đường Tank (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/duong-tank.webp"
+  },
+  "8560": {
+    "title": "Ngộ Không – Đấu Chiến Thắng Phật (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/ngo-khong-dau-chien-thang-phat.webp"
+  },
+  "8562": {
+    "title": "Hưu Không Luân Kính (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/hu-khong-luan-kinh.webp"
+  },
+  "8564": {
+    "title": "Thái Cổ Thanh Long (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/thai-co-thanh-long.webp"
+  },
+  "8566": {
+    "title": "Đông Hải Long Vương Ngao Quảng (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/dong-hai-long-vuong-ngao-quang-1.webp"
+  },
+  "8568": {
+    "title": "Khổng Tước Minh Vương Dực (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/khong-tuoc-minh-vuong-duc.webp"
+  },
+  "8570": {
+    "title": "Thất Tinh Kiếm Trận (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/that-tinh-kiem-tran.webp"
+  },
+  "8572": {
+    "title": "Tư Đồ Nam (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/tu-do-nam.webp"
+  },
+  "8574": {
+    "title": "Khương Lập – Tinh Thần Biến (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/khuong-lap.webp"
+  },
+  "8578": {
+    "title": "Khốn Ma Liên (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/khon-ma-lien.gif"
+  },
+  "8580": {
+    "title": "Diệp Tố My (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/diep-to-my.gif"
+  },
+  "8582": {
+    "title": "Kim Nguyên Tử (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/kim-nguyen-tu.gif"
+  },
+  "8588": {
+    "title": "Băng Tinh Phượng Hoàng (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/bang-tinh-phuong-hoang.gif"
+  },
+  "8592": {
+    "title": "Hỏa Linh Yêu Cơ (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/hoa-linh-yeu-co.webp"
+  },
+  "8594": {
+    "title": "Huyền Thiên Long Ấn (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/huyen-thien-long-an.webp"
+  },
+  "8596": {
+    "title": "Thái Dương Phần Quyết (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/thai-duong-phan-quyet.webp"
+  },
+  "8598": {
+    "title": "Tôn tẫn (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/ton-tan-limited.webp"
+  },
+  "8600": {
+    "title": "Niên Thú (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/nien-thu-limited.webp"
+  },
+  "8602": {
+    "title": "Kiếm Tiên (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/kiem-tien.webp"
+  },
+  "8604": {
+    "title": "Bạch Lang Kiếm Đế (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/bach-lang-kiem-de.webp"
+  },
+  "8606": {
+    "title": "Chí Tôn Kiếm Thần (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/chi-ton-kiem-than.webp"
+  },
+  "8608": {
+    "title": "Tam Cực Thiên Kiếm (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/tam-cuc-thien-kiem.webp"
+  },
+  "8610": {
+    "title": "Cực Lạc Băng Tâm (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/cuc-lac-bang-tam.webp"
+  },
+  "8612": {
+    "title": "Phần Thiên Kiếm (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/phan-thien-kiem.webp"
+  },
+  "8614": {
+    "title": "Thiên Lôi Kiếm (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/thien-loi-kiem.webp"
+  },
+  "8616": {
+    "title": "Tịch Diệt Thần Kiếm (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/tich-diet-tu-kiem.webp"
+  },
+  "8618": {
+    "title": "Xích Dương Diệt Thần Kiếm (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/xich-duong-than-kiem.webp"
+  },
+  "8620": {
+    "title": "Khương Lập (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/khuong-lap-1.webp"
+  },
+  "8622": {
+    "title": "Ngoan Nhân Đại Đế (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/ngoan-nhan-dai-de.webp"
+  },
+  "8624": {
+    "title": "Thiết Phiến Công Chúa Bà La Sát (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/thiet-phien-cong-chua.webp"
+  },
+  "8626": {
+    "title": "Huyền Trọng Xích (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/huyen-trong-xich-nc.webp"
+  },
+  "8628": {
+    "title": "Địa Tàng Thập Luân Dực (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/dia-tang-thap-luan-duc.webp"
+  },
+  "8630": {
+    "title": "Huyền Thiên Thần Tháp (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/huyen-thien-bao-thap.webp"
+  },
+  "8632": {
+    "title": "Thánh Diệm Tiên Hồ (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/thanh-diem-linh-ho.webp"
+  },
+  "8634": {
+    "title": "Thánh Dạ Tinh Cơ Kỵ (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/thanh-da-tinh-co-ky.webp"
+  },
+  "8637": {
+    "title": "Hàn Long Thần Kiếm (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/han-long-than-kiem.webp"
+  },
+  "8639": {
+    "title": "Thất Thải Thôn Thiên Mãng (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/that-thai-thon-thien-mang.webp"
+  },
+  "8641": {
+    "title": "Hải Uyên Thần Kình (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/hai-uyen-than-kinh.webp"
+  },
+  "8643": {
+    "title": "Viêm Ngục Chi Đồng (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/viem-nguc-chi-dong.webp"
+  },
+  "8645": {
+    "title": "Ngộ Không Đấu Chiến Thắng Phật (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/ngo-khong-dau-chien-thang-phat-1.webp"
+  },
+  "8647": {
+    "title": "Tề Thiên Đại Thánh Ngộ Không (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/ngo-khong-dau-chien-thang-phat-nang-cap.webp"
+  },
+  "8649": {
+    "title": "Chư Bát Giới (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/tieu-bat-gioi.webp"
+  },
+  "8651": {
+    "title": "Nữ Đế Võ Tắc Thiên (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/nu-de-vo-tac-thien-1.webp"
+  },
+  "8653": {
+    "title": "Ngưu Ma Vương (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/nguu-ma-vuong.webp"
+  },
+  "8655": {
+    "title": "Cúc Nguyệt Thượng Thần (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/cuc-nguyet-thuong-than.webp"
+  },
+  "8657": {
+    "title": "Sát Tâm (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/sat-tam-limited.webp"
+  },
+  "8659": {
+    "title": "Xà Tiên Tiểu Thanh (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/xa-tien-tieu-thanh-limited.webp"
+  },
+  "8661": {
+    "title": "Tây Lương Nữ Vương (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/tay-luong-nu-vuong.webp"
+  },
+  "8663": {
+    "title": "Long Nữ (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/long-nu.webp"
+  },
+  "8665": {
+    "title": "Công Thành Chiến Nỏ (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/cong-thanh-chien-no.webp"
+  },
+  "8667": {
+    "title": "Quang Hoa Song Linh Dực (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/quang-hoa-song-linh-duc.webp"
+  },
+  "8669": {
+    "title": "Nhị Lang Thần Dương Tiễn (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/nhi-lang-than-duong-tien-2.webp"
+  },
+  "8671": {
+    "title": "Hắc Hoàng Đại Đế (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/hac-hoang-dai-nhan.webp"
+  },
+  "8673": {
+    "title": "Thiên Lý Sơn Hà Đồ (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/thien-ly-giang-son-do-limited.webp"
+  },
+  "8675": {
+    "title": "Độc Hoàng Chiến Sí (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/doc-hoang-chien-duc.webp"
+  },
+  "8677": {
+    "title": "Bát Quái Trận Đồ (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/bat-tran-do.webp"
+  },
+  "8679": {
+    "title": "Thôn Phệ Tổ Phù (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/to-phu.webp"
+  },
+  "8681": {
+    "title": "Phúc Vận Linh Phù (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/phuc-van-linh-phu.webp"
+  },
+  "8683": {
+    "title": "Diêm Vương (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/diem-vuong.webp"
+  },
+  "8685": {
+    "title": "Tử Vân Lôi Dực (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/phdk-tu-van-duc-fx.png"
+  },
+  "8687": {
+    "title": "Đại Uy Hồn Cầm (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/dai-uy-hon-cam-limited.webp"
+  },
+  "8693": {
+    "title": "Vân Trung Tử (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/van-trung-tu-limited.webp"
+  },
+  "8695": {
+    "title": "Thanh Huyễn U Linh (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/thanh-huyen-u-linh-limited.webp"
+  },
+  "8697": {
+    "title": "Tử Vân Trấn Ma Trận (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/tu-van-tran-ma-tran.webp"
+  },
+  "8699": {
+    "title": "Hỗn Nguyên Nhất Khí Dực (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/hon-nguyen-nhat-khi-duc-limited.webp"
+  },
+  "8701": {
+    "title": "Song Phi Dực (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/song-phi-duc-limited.webp"
+  },
+  "8703": {
+    "title": "Thanh Liên Tiên Dực (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/thanh-lien-tien-duc.webp"
+  },
+  "8705": {
+    "title": "Huyễn Ngư Tiên Dực (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/huyen-ngu-tien-duc-1.webp"
+  },
+  "8707": {
+    "title": "Kim Diễm Bảo Dực (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/kim-diem-bao-duc.webp"
+  },
+  "8709": {
+    "title": "Lục Minh Độc Dực (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/luc-minh-chi-duc.webp"
+  },
+  "8711": {
+    "title": "Phong Ma Thần Tán (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/phong-ma-than-tan.webp"
+  },
+  "8713": {
+    "title": "Thiên Xu Luân Bàn (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/thien-xu-luan-ban.webp"
+  },
+  "8715": {
+    "title": "Liệt Phong Thú (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/liet-phong-thu.webp"
+  },
+  "8717": {
+    "title": "Thiên Nghịch Châu (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/thien-nghich-chau-v1.webp"
+  },
+  "8719": {
+    "title": "Phong Thần NaTra (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/phong-than-natra.webp"
+  },
+  "8721": {
+    "title": "Chiến Hỏa Thần Quân (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/chien-hoa-than-quan.webp"
+  },
+  "8723": {
+    "title": "U Minh Hồn Ngư (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/u-minh-hon-ngu.webp"
+  },
+  "8725": {
+    "title": "Vạn Vật Mẫu Khí Đỉnh (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/dinh-mau-khi-van-vat-000.webp"
+  },
+  "8727": {
+    "title": "Minh Vương Quyết (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/minh-vuong-quyet.webp"
+  },
+  "8729": {
+    "title": "Tử Vực Ma Phương (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/tu-vuc-ma-phuong.webp"
+  },
+  "8731": {
+    "title": "Đại Nhật Phần Thiên Trận (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/dai-nhat-phan-thien-tran.webp"
+  },
+  "8733": {
+    "title": "Hỗn Nguyên Côn (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/hon-nguyen-con.webp"
+  },
+  "8735": {
+    "title": "Bát Nhã Luân Hồi Chuyển (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/bat-nha-luan-hoi-chuyen.webp"
+  },
+  "8737": {
+    "title": "Diệt Sinh Huyết Luân (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/diet-sinh-huyet-luan.webp"
+  },
+  "8739": {
+    "title": "Siêu Giàu DuBai (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/sieu-giau-du-bai.webp"
+  },
+  "8741": {
+    "title": "Nghịch Ương Tiên Đế (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/nghich-uong-tien-de.webp"
+  },
+  "8743": {
+    "title": "Thủy Hỏa Hỗn Nguyên Liên (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/thuy-hoa-hon-nguyen-lien.webp"
+  },
+  "8745": {
+    "title": "Nguyệt Yên Vũ Dực (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/nguyet-yen-vu-duc.webp"
+  },
+  "8749": {
+    "title": "Bạch Lang Kiếm Hậu (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/bach-lang-kiem-hau.webp"
+  },
+  "8751": {
+    "title": "U Minh Linh Xa (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/u-minh-linh-xa.webp"
+  },
+  "8755": {
+    "title": "Thần Tàng Cổ Kinh (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/than-tang-co-kinh.webp"
+  },
+  "8792": {
+    "title": "Phượng Long Hỏa Vũ (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/phuong-long-hoa-vu-1.webp"
+  },
+  "8800": {
+    "title": "Tiểu Tháp (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/tieu-thap.webp"
+  },
+  "8802": {
+    "title": "Khấp Huyết Kiếm (Limited)",
+    "image": "https://yanhh3d.ee/wp-content/uploads/2026/05/huyet-kiem.webp"
+  }
+}

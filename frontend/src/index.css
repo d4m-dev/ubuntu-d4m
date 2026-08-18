@@ -1,0 +1,362 @@
+@import "tailwindcss";
+
+@layer base {
+  :root { 
+    --bg-dark: #030712; 
+    --primary: #3b82f6; 
+    --secondary: #8b5cf6; 
+  }
+  
+  body { 
+    background-color: var(--bg-dark); 
+    color: #f8fafc; 
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
+    overflow-x: hidden; 
+  }
+  
+  h1, h2, h3, h4, .font-heading { 
+    font-family: 'Outfit', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; 
+  }
+  
+  .font-mono { 
+    font-family: 'Fira Code', Menlo, Monaco, Consolas, monospace; 
+  }
+}
+
+/* =================================================================== */
+/* 🚀 D4M CYBERPUNK EFFECTS & GPU HARDWARE ACCELERATION                */
+/* =================================================================== */
+.cyber-grid {
+  position: fixed; inset: 0; z-index: -10;
+  background-size: 60px 60px;
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  mask-image: radial-gradient(circle at center, black 40%, transparent 80%);
+  -webkit-mask-image: radial-gradient(circle at top center, black 30%, transparent 100%);
+  pointer-events: none;
+}
+
+.orb { 
+  position: fixed; border-radius: 50%; filter: blur(120px); z-index: -5; pointer-events: none; 
+  will-change: transform;
+  animation: float-orb 20s infinite alternate ease-in-out; 
+}
+.orb-1 { width: 50vw; height: 50vh; background: rgba(59, 130, 246, 0.15); top: -10vh; left: -10vw; }
+.orb-2 { width: 40vw; height: 40vh; background: rgba(236, 72, 153, 0.1); bottom: -10vh; right: -10vw; animation-delay: -5s; }
+.orb-3 { width: 30vw; height: 30vh; background: rgba(139, 92, 246, 0.1); top: 40vh; left: 40vw; animation-delay: -10s; }
+
+@keyframes float-orb { 
+  0% { transform: translate3d(0, 0, 0) scale(1); } 
+  100% { transform: translate3d(5%, 10%, 0) scale(1.15); } 
+}
+
+@keyframes toast-slide { 
+  0% { transform: translate3d(120%, 0, 0); opacity: 0; } 
+  100% { transform: translate3d(0, 0, 0); opacity: 1; } 
+}
+
+.glass-card { 
+  background: rgba(255, 255, 255, 0.02); 
+  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.05); 
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), background 0.4s ease, border-color 0.4s ease; 
+  will-change: transform;
+}
+.glass-card:hover { 
+  transform: translate3d(0, -8px, 0); 
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(99, 102, 241, 0.4); 
+  box-shadow: 0 20px 40px -10px rgba(79, 70, 229, 0.2), inset 0 1px 0 rgba(255,255,255,0.1); 
+}
+
+/* NÚT BẤM GLOW MASTER NEON */
+.btn-glow-master { position: relative; display: inline-flex; overflow: hidden; will-change: transform; }
+.btn-glow-master::before { content: ''; position: absolute; inset: -2px; background: linear-gradient(90deg, #3b82f6, #8b5cf6, #ec4899, #3b82f6); background-size: 300%; border-radius: inherit; z-index: -1; animation: glow-spin 4s linear infinite; }
+.btn-glow-master::after { content: ''; position: absolute; inset: 2px; background: #030712; border-radius: inherit; z-index: -1; transition: background 0.3s; }
+.btn-glow-master:hover::after { background: rgba(0,0,0,0.5); }
+@keyframes glow-spin { 0% { background-position: 0%; } 100% { background-position: 300%; } }
+
+/* CHỮ QUÉM SÁNG (SHINE TEXT) */
+.shine-text { background: linear-gradient(to right, #fff 20%, #8b5cf6 40%, #8b5cf6 60%, #fff 80%); background-size: 200% auto; color: transparent !important; -webkit-background-clip: text; background-clip: text; animation: shine 4s linear infinite; }
+@keyframes shine { to { background-position: 200% center; } }
+
+/* HỘP TERMINAL */
+.terminal-window {
+  background: rgba(10, 10, 15, 0.8); border: 1px solid rgba(255, 255, 255, 0.1); border-top: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.8), 0 0 40px rgba(139, 92, 246, 0.3); backdrop-filter: blur(20px);
+  transform: perspective(1000px) rotateY(-15deg) rotateX(5deg) scale(0.95); transition: transform 0.5s ease;
+  will-change: transform;
+}
+.terminal-window:hover { transform: perspective(1000px) rotateY(-5deg) rotateX(2deg) scale(1); }
+.cursor { display: inline-block; width: 8px; height: 18px; background-color: #3b82f6; animation: blink 1s step-end infinite; vertical-align: middle; margin-left: 4px; }
+@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+/* DẢI BĂNG CÔNG NGHỆ CHẠY VÔ TẬN */
+.marquee-wrapper { overflow: hidden; white-space: nowrap; mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent); -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent); padding: 20px 0; }
+.marquee-content { display: inline-block; animation: scroll-left 30s linear infinite; will-change: transform; }
+.marquee-item { display: inline-flex; align-items: center; gap: 8px; padding: 10px 24px; margin: 0 10px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); border-radius: 999px; font-weight: 600; transition: all 0.3s; }
+.marquee-item:hover { background: rgba(255,255,255,0.1); border-color: rgba(139,92,246,0.5); box-shadow: 0 0 15px rgba(139,92,246,0.3); }
+@keyframes scroll-left { 0% { transform: translate3d(0,0,0); } 100% { transform: translate3d(-50%,0,0); } }
+/* =================================================================== */
+/* 🎨 D4M DESIGN SYSTEM — THỐNG NHẤT TOÀN ỨNG DỤNG                     */
+/* Áp dụng chung cho mọi trang (tools, social, docs, auth, hub)        */
+/* =================================================================== */
+
+/* ---- Biến theme thống nhất ---- */
+:root {
+  --d4m-bg: #030712;
+  --d4m-bg-soft: #0b0f19;
+  --d4m-surface: rgba(255,255,255,0.03);
+  --d4m-surface-hover: rgba(255,255,255,0.07);
+  --d4m-border: rgba(255,255,255,0.08);
+  --d4m-border-accent: rgba(99,102,241,0.4);
+  --d4m-text: #f8fafc;
+  --d4m-text-dim: #94a3b8;
+  --d4m-text-faint: #64748b;
+  --d4m-primary: #3b82f6;
+  --d4m-secondary: #8b5cf6;
+  --d4m-accent: #ec4899;
+  --d4m-radius: 1rem;
+}
+
+/* ---- PageShell: nền + container thống nhất ---- */
+.d4m-page {
+  min-height: 100vh;
+  background-color: var(--d4m-bg);
+  color: var(--d4m-text);
+  position: relative;
+  font-family: 'Inter', system-ui, sans-serif;
+  overflow-x: hidden;
+}
+.d4m-page > .d4m-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem 4rem;
+  position: relative;
+  z-index: 10;
+}
+
+/* ---- Header tiêu đề trang thống nhất ---- */
+.d4m-page-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+.d4m-page-header .d4m-back {
+  width: 42px; height: 42px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 50%;
+  background: var(--d4m-surface);
+  border: 1px solid var(--d4m-border);
+  color: var(--d4m-text-dim);
+  transition: all .25s;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+.d4m-page-header .d4m-back:hover {
+  background: var(--d4m-surface-hover);
+  color: #fff;
+  border-color: var(--d4m-border-accent);
+}
+.d4m-page-title {
+  font-family: 'Outfit', 'Inter', sans-serif;
+  font-weight: 800;
+  font-size: clamp(1.6rem, 4vw, 2.25rem);
+  letter-spacing: -0.02em;
+  margin: 0;
+  background: linear-gradient(to right, #fff, #a5b4fc);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.d4m-page-subtitle {
+  color: var(--d4m-text-dim);
+  font-size: .95rem;
+  margin-top: .3rem;
+}
+
+/* ---- Card glass thống nhất ---- */
+.d4m-card {
+  background: var(--d4m-surface);
+  border: 1px solid var(--d4m-border);
+  border-radius: var(--d4m-radius);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  padding: 1.5rem;
+  transition: transform .3s cubic-bezier(.16,1,.3,1), border-color .3s, background .3s;
+}
+.d4m-card:hover {
+  border-color: var(--d4m-border-accent);
+  background: var(--d4m-surface-hover);
+}
+
+/* ---- Button thống nhất ---- */
+.d4m-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .5rem;
+  padding: .7rem 1.4rem;
+  border-radius: .75rem;
+  font-weight: 600;
+  font-size: .9rem;
+  border: 1px solid var(--d4m-border);
+  background: var(--d4m-surface);
+  color: var(--d4m-text);
+  cursor: pointer;
+  transition: all .25s;
+  white-space: nowrap;
+}
+.d4m-btn:hover { background: var(--d4m-surface-hover); border-color: var(--d4m-border-accent); transform: translateY(-1px); }
+.d4m-btn-primary {
+  background: linear-gradient(135deg, var(--d4m-primary), var(--d4m-secondary));
+  border: none;
+  color: #fff;
+  box-shadow: 0 4px 20px -4px rgba(99,102,241,.5);
+}
+.d4m-btn-primary:hover { filter: brightness(1.1); transform: translateY(-1px); }
+.d4m-btn:disabled { opacity: .6; cursor: not-allowed; transform: none !important; }
+
+/* ---- Input thống nhất ---- */
+.d4m-input, .d4m-textarea, .d4m-select {
+  width: 100%;
+  padding: .7rem 1rem;
+  border-radius: .75rem;
+  background: rgba(0,0,0,.4);
+  border: 1px solid var(--d4m-border);
+  color: var(--d4m-text);
+  font-size: .9rem;
+  outline: none;
+  transition: border-color .25s, box-shadow .25s;
+}
+.d4m-input:focus, .d4m-textarea:focus, .d4m-select:focus {
+  border-color: var(--d4m-primary);
+  box-shadow: 0 0 0 3px rgba(59,130,246,.2);
+}
+.d4m-input::placeholder, .d4m-textarea::placeholder { color: var(--d4m-text-faint); }
+
+/* ---- Label thống nhất ---- */
+.d4m-label {
+  display: block;
+  font-size: .8rem;
+  font-weight: 600;
+  color: var(--d4m-text-dim);
+  margin-bottom: .4rem;
+  text-transform: uppercase;
+  letter-spacing: .03em;
+}
+
+/* ---- Badge / chip thống nhất ---- */
+.d4m-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  padding: .3rem .8rem;
+  border-radius: 999px;
+  font-size: .75rem;
+  font-weight: 600;
+  background: rgba(59,130,246,.12);
+  border: 1px solid rgba(59,130,246,.3);
+  color: #93c5fd;
+}
+
+/* ---- Section title ---- */
+.d4m-section-title {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 700;
+  font-size: 1.15rem;
+  margin: 2rem 0 1rem;
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  color: var(--d4m-text);
+}
+.d4m-section-title::before {
+  content: '';
+  width: 4px; height: 1.1em;
+  border-radius: 2px;
+  background: linear-gradient(180deg, var(--d4m-primary), var(--d4m-secondary));
+}
+
+/* ---- Grid thống nhất ---- */
+.d4m-grid {
+  display: grid;
+  gap: 1.25rem;
+}
+.d4m-grid-2 { grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); }
+.d4m-grid-3 { grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); }
+.d4m-grid-4 { grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr)); }
+
+/* ---- Stat card ---- */
+.d4m-stat {
+  background: var(--d4m-surface);
+  border: 1px solid var(--d4m-border);
+  border-radius: var(--d4m-radius);
+  padding: 1.25rem;
+  transition: border-color .3s;
+}
+.d4m-stat:hover { border-color: var(--d4m-border-accent); }
+.d4m-stat .value {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 800;
+  font-size: 1.75rem;
+  background: linear-gradient(135deg, var(--d4m-primary), var(--d4m-secondary));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.d4m-stat .label { color: var(--d4m-text-dim); font-size: .8rem; margin-top: .2rem; }
+
+/* ---- Table thống nhất ---- */
+.d4m-table { width: 100%; border-collapse: collapse; font-size: .9rem; }
+.d4m-table th {
+  text-align: left;
+  padding: .75rem 1rem;
+  color: var(--d4m-text-dim);
+  font-size: .75rem;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  border-bottom: 1px solid var(--d4m-border);
+}
+.d4m-table td { padding: .75rem 1rem; border-bottom: 1px solid rgba(255,255,255,.04); }
+.d4m-table tr:hover td { background: rgba(255,255,255,.02); }
+
+/* ---- Empty / loading ---- */
+.d4m-empty {
+  text-align: center;
+  padding: 4rem 1rem;
+  color: var(--d4m-text-faint);
+  font-size: .95rem;
+}
+.d4m-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .75rem;
+  padding: 4rem;
+  color: var(--d4m-text-dim);
+}
+.d4m-spinner {
+  width: 2rem; height: 2rem;
+  border: 3px solid rgba(255,255,255,.1);
+  border-top-color: var(--d4m-primary);
+  border-radius: 50%;
+  animation: d4m-spin .8s linear infinite;
+}
+@keyframes d4m-spin { to { transform: rotate(360deg); } }
+
+/* ---- Error banner ---- */
+.d4m-error {
+  background: rgba(239,68,68,.1);
+  border: 1px solid rgba(239,68,68,.3);
+  color: #fca5a5;
+  padding: .75rem 1rem;
+  border-radius: .75rem;
+  font-size: .85rem;
+  margin-bottom: 1rem;
+}
+
+/* ---- Form field spacing ---- */
+.d4m-field { margin-bottom: 1.25rem; }

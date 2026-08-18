@@ -1,0 +1,39 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA512
+
+# ===================================================================
+# D4M ECOSYSTEM - RESPONSIBLE DISCLOSURE POLICY (RFC 9116)
+# ===================================================================
+
+# 1. Liên hệ báo cáo lỗ hổng (Bắt buộc):
+Contact: mailto:andubai5555@gmail.com
+Contact: mailto:d4mdev@d4mdev.click
+Contact: https://d4mdev.click/documentation.html
+
+# 2. Khóa mã hóa PGP (Để nhà nghiên cứu mã hóa báo cáo trước khi gửi):
+Encryption: https://d4mdev.click/.well-known/pgp-key.txt
+Encryption: https://d4mdev.click/pgp-key.txt
+
+# 3. Ngày hết hạn của chính sách này:
+Expires: 2028-12-31T23:59:59.000Z
+
+# 4. Ngôn ngữ giao tiếp ưu tiên:
+Preferred-Languages: vi, en
+
+# 5. Địa chỉ chính thức của file này (Canonical URL):
+Canonical: https://d4mdev.click/.well-known/security.txt
+Canonical: https://d4mdev.click/security.txt
+
+# 6. Chính sách & Quy trình tiếp nhận:
+Policy: https://d4mdev.click/documentation.html#security
+
+# 7. Lời cảm ơn / Tuyển dụng:
+Acknowledgments: https://d4mdev.click/hub.html
+Hiring: https://d4mdev.click/
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYKAB0WIQSMjYjyDetlXtzPiQcB2l8CTJh7yQUCamOwgQAKCRAB2l8CTJh7
+yQFlAQDXNboytwo1Scx8c4qmD6jrwaXQvxISifecQQkPZHz6XQEAn9GGWkPVKB7J
+mzGwCFmkKndlW7lVsOGsQfqp7lFLKQU=
+=N08R
+-----END PGP SIGNATURE-----

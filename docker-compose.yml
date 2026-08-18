@@ -1,0 +1,115 @@
+# ============================================================
+# 🐳 D4M ECOSYSTEM — Docker Compose (chạy 1 lệnh)
+# ============================================================
+# Khởi động toàn bộ hệ sinh thái chỉ với:
+#     docker compose up -d
+#
+# Gồm:
+#   - db       : MariaDB (database social_hub)
+#   - backend  : FastAPI (port 16868)
+#   - frontend : Nginx phục vụ React build (port 5173)
+# ============================================================
+
+services:
+  # ==========================================================
+  # 🗄️ DATABASE — MariaDB
+  # ==========================================================
+  db:
+    image: mariadb:11
+    container_name: d4m-db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASS:-admin123}
+      MYSQL_DATABASE: ${DB_NAME:-social_hub}
+      MYSQL_USER: ${DB_USER:-d4m}
+      MYSQL_PASSWORD: ${DB_PASS:-admin123}
+    volumes:
+      - db_data:/var/lib/mysql
+      # Tự động nạp toàn bộ schema + seed (hệ sinh thái + music + xã hội) khi khởi tạo lần đầu
+      - ./database/schema_full.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    ports:
+      - "3306:3306"
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    networks:
+      - d4m-net
+
+  # ==========================================================
+  # ⚡ REDIS — Rate Limiting & JWT Blacklist
+  # ==========================================================
+  redis:
+    image: redis:7-alpine
+    container_name: d4m-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    networks:
+      - d4m-net
+
+  # ==========================================================
+  # 🔧 BACKEND — FastAPI (D4M Ecosystem)
+  # ==========================================================
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: d4m-backend
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    environment:
+      HOST: 0.0.0.0
+      PORT: 16868
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_USER: ${DB_USER:-d4m}
+      DB_PASS: ${DB_PASS:-admin123}
+      DB_NAME: ${DB_NAME:-social_hub}
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      SECRET_KEY: ${SECRET_KEY:-hay-doi-thanh-chuoi-jwt-bi-mat}
+      ADMIN_USERNAME: ${ADMIN_USERNAME:-admin}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:-admin123}
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
+      TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN:-}
+      ENVIRONMENT: ${ENVIRONMENT:-development}
+    volumes:
+      - music_data:/app/audio_workspace/music   # file nhạc (bind mount tùy chọn)
+      - ./backend/.env:/app/.env:ro
+    ports:
+      - "16868:16868"
+    networks:
+      - d4m-net
+
+  # ==========================================================
+  # 🎨 FRONTEND — Nginx phục vụ React build
+  # ==========================================================
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: d4m-frontend
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - "5173:80"
+    networks:
+      - d4m-net
+
+# ============================================================
+# 📦 VOLUMES & NETWORK
+# ============================================================
+volumes:
+  db_data:
+  music_data:
+
+networks:
+  d4m-net:
+    driver: bridge

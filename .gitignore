@@ -1,0 +1,41 @@
+# ===== Node / Frontend =====
+node_modules/
+frontend/node_modules/
+frontend/dist/
+*.log
+
+# ===== Python / Backend =====
+__pycache__/
+*.py[cod]
+backend/venv/
+.env
+.pytest_cache/
+backend/logs/
+backend/db-admin/
+backend/exam.env
+
+# ===== Media nhạc (không commit file demo lớn) =====
+backend/audio_workspace/music/*/*.mp3
+backend/audio_workspace/music/*/*.mp4
+backend/audio_workspace/music/*/*.wav
+backend/audio_workspace/inputs/*
+backend/audio_workspace/outputs/*
+backend/audio_workspace/pending/*
+backend/audio_workspace/temp_demucs_*
+
+# ===== DB & runtime =====
+backend/dump.rdb
+backend/backups/
+backend/cloudflare.log
+backend/auth/*.json
+backend/database/*.db
+
+# ===== OS =====
+.DS_Store
+
+# ===== Hosted projects (không commit) =====
+frontend/hosted_projects/*
+!frontend/hosted_projects/.gitkeep
+
+# Ảnh upload social (user-generated media)
+backend/images_workspace/*

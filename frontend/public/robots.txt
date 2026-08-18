@@ -1,0 +1,59 @@
+# =========================================================
+# ROBOTS.TXT - D4M ECOSYSTEM ENTERPRISE SECURITY & SEO
+# Domain: https://d4mdev.click
+# =========================================================
+
+# ---------------------------------------------------------
+# 🛡️ LỚP 1: CHẶN CÁC BOT AI & CÀO DỮ LIỆU ĐỘC HẠI
+# (Bảo vệ tài nguyên Server & bản quyền dữ liệu D4M)
+# ---------------------------------------------------------
+User-agent: Amazonbot
+User-agent: Applebot-Extended
+User-agent: Bytespider
+User-agent: CCBot
+User-agent: ClaudeBot
+User-agent: CloudflareBrowserRenderingCrawler
+User-agent: Google-Extended
+User-agent: GPTBot
+User-agent: meta-externalagent
+Disallow: /
+
+# ---------------------------------------------------------
+# 🌐 LỚP 2: QUY TẮC CHO CÔNG CỤ TÌM KIẾM (Google, Bing...)
+# ---------------------------------------------------------
+User-agent: *
+
+# 1. Các khu vực công khai cho phép Index SEO
+Allow: /$
+Allow: /hub.html
+Allow: /documentation.html
+Allow: /social/
+Allow: /tools/
+Allow: /assets/
+Allow: /sitemap.xml
+
+# 2. Khóa tuyệt đối khu vực Quản trị & Nội bộ
+Disallow: /admin/
+Disallow: /admin-*.html
+Disallow: /admin-users.html
+Disallow: /api/
+Disallow: /auth/
+Disallow: /audio-test.html
+Disallow: /run_*.py
+Disallow: /update_map.sh
+
+# 3. Khóa chống rò rỉ dữ liệu nhạy cảm (Security Shield)
+Disallow: /logs/
+Disallow: /backups/
+Disallow: /database/
+Disallow: /*.sql$
+Disallow: /*.env$
+Disallow: /*.json$
+Disallow: /*.log$
+Disallow: /dump.rdb
+Disallow: /project_size_report.txt
+
+# ---------------------------------------------------------
+# 🗺️ LỚP 3: KHAI BÁO BẢN ĐỒ TRANG WEB CHUẨN SEO
+# ---------------------------------------------------------
+Sitemap: https://d4mdev.click/sitemap.xml

@@ -1,0 +1,180 @@
+root@localhost:~/d4m-frontend$ tree -I "node_modules|dist|.git|.swc" -a
+.
+├── .env
+├── eslint.config.js
+├── .gitignore
+├── index.html
+├── logs
+├── package.json
+├── package-lock.json
+├── pgp-key.txt
+├── README.md
+├── security.txt
+├── public
+│   ├── avatar_frames.json
+│   ├── robots.txt
+│   ├── sitemap.xml
+│   └── avatar_frames
+│       ├── (40 file khung avatar: GIF/WebP/PNG từ github d4m-dev/gif)
+├── src
+│   ├── App.css
+│   ├── App.jsx
+│   ├── assets
+│   │   └── favicon
+│   │       ├── apple-touch-icon.png
+│   │       ├── favicon-96x96.png
+│   │       ├── favicon.ico
+│   │       ├── favicon.svg
+│   │       ├── site.webmanifest
+│   │       ├── web-app-manifest-192x192.png
+│   │       └── web-app-manifest-512x512.png
+│   ├── components
+│   │   ├── common
+│   │   │   ├── ConfigWarning.jsx
+│   │   │   ├── Footer.jsx
+│   │   │   ├── NotificationBell.jsx
+│   │   │   ├── PageShell.jsx
+│   │   │   ├── Reveal.jsx
+│   │   │   ├── SEO.jsx
+│   │   │   └── Toast.jsx
+│   │   ├── donate
+│   │   │   └── DonateModal.jsx
+│   │   ├── home
+│   │   │   ├── CtaSection.jsx
+│   │   │   ├── FeaturesSection.jsx
+│   │   │   ├── HeroSection.jsx
+│   │   │   ├── HomeNavbar.jsx
+│   │   │   ├── SecuritySection.jsx
+│   │   │   ├── TechMarquee.jsx
+│   │   │   ├── TechPartners.jsx
+│   │   │   └── TerminalWindow.jsx
+│   │   ├── hub
+│   │   │   ├── CoreProjects.jsx
+│   │   │   ├── HubNavbar.jsx
+│   │   │   └── UserProjects.jsx
+│   │   └── music
+│   │       ├── BottomPlayer.jsx
+│   │       ├── contexts
+│   │       │   ├── AuthContext.jsx
+│   │       │   └── PlayerContext.jsx
+│   │       ├── EqualizerButton.jsx
+│   │       ├── Layout.jsx
+│   │       ├── MobileNav.jsx
+│   │       ├── NowPlayingModal.jsx
+│   │       ├── PlaylistCard.jsx
+│   │       ├── QueuePanel.jsx
+│   │       ├── ShareModal.jsx
+│   │       ├── Sidebar.jsx
+│   │       ├── SleepTimerButton.jsx
+│   │       ├── SongRow.jsx
+│   │       └── ui
+│   │           ├── accordion.jsx
+│   │           ├── alert-dialog.jsx
+│   │           ├── alert.jsx
+│   │           ├── aspect-ratio.jsx
+│   │           ├── avatar.jsx
+│   │           ├── badge.jsx
+│   │           ├── breadcrumb.jsx
+│   │           ├── button.jsx
+│   │           ├── calendar.jsx
+│   │           ├── card.jsx
+│   │           ├── carousel.jsx
+│   │           ├── checkbox.jsx
+│   │           ├── collapsible.jsx
+│   │           ├── command.jsx
+│   │           ├── context-menu.jsx
+│   │           ├── dialog.jsx
+│   │           ├── drawer.jsx
+│   │           ├── dropdown-menu.jsx
+│   │           ├── form.jsx
+│   │           ├── hover-card.jsx
+│   │           ├── input.jsx
+│   │           ├── input-otp.jsx
+│   │           ├── label.jsx
+│   │           ├── menubar.jsx
+│   │           ├── navigation-menu.jsx
+│   │           ├── pagination.jsx
+│   │           ├── popover.jsx
+│   │           ├── progress.jsx
+│   │           ├── radio-group.jsx
+│   │           ├── resizable.jsx
+│   │           ├── scroll-area.jsx
+│   │           ├── select.jsx
+│   │           ├── separator.jsx
+│   │           ├── sheet.jsx
+│   │           ├── skeleton.jsx
+│   │           ├── slider.jsx
+│   │           ├── sonner.jsx
+│   │           ├── switch.jsx
+│   │           ├── table.jsx
+│   │           ├── tabs.jsx
+│   │           ├── textarea.jsx
+│   │           ├── toaster.jsx
+│   │           ├── toast.jsx
+│   │           ├── toggle-group.jsx
+│   │           ├── toggle.jsx
+│   │           └── tooltip.jsx
+│   ├── api
+│   │   └── client.js
+│   ├── config
+│   │   ├── api.js
+│   │   └── urls.js
+│   ├── index.css
+│   ├── lib
+│   │   ├── format.js
+│   │   ├── toast.js
+│   │   └── utils.js
+│   ├── main.jsx
+│   ├── pages
+│   │   ├── admin
+│   │   │   ├── ProfilePage.jsx
+│   │   │   └── UploadSongPage.jsx
+│   │   ├── AuthPage.jsx
+│   │   ├── HomePage.jsx
+│   │   ├── HubPage.jsx
+│   │   ├── music
+│   │   │   ├── D4MusicPlayer.jsx
+│   │   │   └── pages
+│   │   │       ├── Admin.jsx
+│   │   │       ├── ArtistPage.jsx
+│   │   │       ├── History.jsx
+│   │   │       ├── Home.jsx
+│   │   │       ├── Library.jsx
+│   │   │       ├── LikedSongs.jsx
+│   │   │       ├── Login.jsx
+│   │   │       ├── LyricsEditor.jsx
+│   │   │       ├── PlaylistDetail.jsx
+│   │   │       ├── Recap.jsx
+│   │   │       ├── Register.jsx
+│   │   │       └── Search.jsx
+│   │   ├── social
+│   │   │   ├── NumerologyPage.jsx
+│   │   │   ├── ActivityPanel.jsx
+│   │   │   ├── AvatarFrame.jsx
+│   │   │   ├── BottomNav.jsx
+│   │   │   ├── CommentsPanel.jsx
+│   │   │   ├── cssUtils.js
+│   │   │   ├── CustomizationPanel.jsx
+│   │   │   ├── DmInbox.jsx
+│   │   │   ├── socialStyles.jsx
+│   │   │   ├── StickerPicker.jsx
+│   │   │   ├── SocialHubPage.jsx
+│   │   │   ├── VenusPage.jsx
+│   │   │   └── icons.jsx
+│   │   └── tools
+│   │       ├── AutoCodePage.jsx
+│   │       ├── GgDriveCommanderPage.jsx
+│   │       ├── JarvisChatPage.jsx
+│   │       ├── VocalRemovePage.jsx
+│   │       └── YtDownloaderPage.jsx
+│   └── services
+│       └── api.js
+├── tailwind.config.js
+├── tree.txt
+├── vercel.json
+├── vite.config.js
+└── .well-known
+    ├── pgp-key.txt
+    └── security.txt
+
+22 directories, 128 files

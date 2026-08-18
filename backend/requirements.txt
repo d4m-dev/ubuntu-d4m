@@ -1,0 +1,61 @@
+# ==========================================
+# 🚀 CORE WEB FRAMEWORK (Nền tảng lõi)
+# ==========================================
+fastapi==0.111.0
+uvicorn[standard]==0.30.1
+pydantic-settings==2.1.0
+python-dotenv==1.0.1
+python-multipart==0.0.9
+
+# ==========================================
+# 📡 SYSTEM, NETWORK & DASHBOARD (Hệ thống)
+# ==========================================
+psutil==5.9.8
+websockets==12.0
+httpx>=0.27.0
+
+# ==========================================
+# 🔐 AUTH & DATABASE (Bảo mật & Dữ liệu)
+# ==========================================
+mysql-connector-python>=8.3.0
+PyJWT>=2.8.0
+passlib[bcrypt]>=1.7.4
+bcrypt>=4.0
+pymysql>=1.1
+cryptography>=42.0
+
+# ==========================================
+# 🎵 MUSIC HUB & MEDIA (Phân tích & Tải nhạc)
+# ==========================================
+yt-dlp>=2024.4.9
+mutagen>=1.47.0
+
+# ==========================================
+# 🧰 D4M ECOSYSTEM — Dependencies cần thiết cho toàn bộ hệ sinh thái
+# ==========================================
+pytz>=2023.3
+apscheduler>=3.10
+redis>=5.0
+user-agents>=2.2
+schedule>=1.2
+python-dateutil>=2.8
+pyyaml>=6.0
+requests>=2.31
+Pillow>=10.0
+email-validator>=2.0
+google-genai>=0.2
+google-api-python-client>=2.100
+google-auth-oauthlib>=1.2
+celery>=5.3
+pydantic[email]>=2.7
+
+# ==========================================
+# 🤖 HEAVY AI MODULES (Các module AI bóc tách nặng)
+# Sếp bỏ dấu # ở đầu dòng để cài đặt khi cần nhé!
+# Lưu ý: Cài các module này có thể tốn 1-3GB dung lượng
+# ==========================================
+# demucs>=4.0.0                  # Tách beat và vocal
+# openai-whisper>=20231117       # Nghe và dịch lời bài hát
+# torch torchvision torchaudio   # Lõi AI cho Demucs và Whisper
+# ffmpeg-python                  # Thao tác cắt ghép video/audio
+pytest>=8.0
