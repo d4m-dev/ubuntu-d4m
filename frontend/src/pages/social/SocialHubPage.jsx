@@ -1,6 +1,7 @@
 // src/pages/social/SocialHubPage.jsx
 // Mạng xã hội D4M — giao diện theo phong cách Threads
 import React, { useState, useEffect, useRef } from "react";
+import { createPortal } from "react-dom";
 import { useNavigate } from "react-router-dom";
 import { ENDPOINTS, API_BASE_URL } from "../../config/api";
 import { EXTERNAL } from "../../config/urls";
@@ -474,9 +475,9 @@ export default function SocialHubPage() {
         </main>
 
         {/* ========== COMPOSER MODAL ========== */}
-        {showComposer && (
-          <div className="fixed inset-0 z-[110] bg-black/80 backdrop-blur-sm flex items-center justify-center p-4" onClick={(e) => { if (e.target === e.currentTarget) setShowComposer(false); }}>
-            <div className="w-full max-w-lg bg-[#111] rounded-2xl border border-white/10 p-5 animate-fade-in">
+        {showComposer && createPortal(
+          <div className="fixed inset-0 z-[110] bg-black/80 backdrop-blur-sm flex overflow-y-auto p-4" onClick={(e) => { if (e.target === e.currentTarget) setShowComposer(false); }}>
+            <div className="w-full max-w-lg m-auto max-h-[90dvh] overflow-y-auto bg-[#111] rounded-2xl border border-white/10 p-5 animate-fade-in">
               <div className="flex items-center justify-between mb-4">
                 <h2 className="font-bold text-lg">Tạo bài viết</h2>
                 <button onClick={() => setShowComposer(false)} className="text-gray-500 hover:text-white" style={{ width: 24, height: 24 }}><IconPlus /></button>
@@ -603,7 +604,8 @@ export default function SocialHubPage() {
                 </div>
               </div>
             </div>
-          </div>
+          </div>,
+          document.body
         )}
 
         {/* ========== BOTTOM NAV (Threads style) — luôn hiển thị trên mọi phần chức năng ========== */}

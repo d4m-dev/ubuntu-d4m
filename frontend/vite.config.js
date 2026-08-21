@@ -10,7 +10,7 @@ import zlib from 'zlib'
 // vite-plugin-compression (brotli bị skip, chỉ ra .gz).
 function compressionPlugin() {
   const threshold = 1024 * 5; // chỉ nén file > 5KB
-  let outDir = path.resolve(__dirname, 'dist');
+  let outDir = path.resolve(import.meta.dirname, 'dist');
   return {
     name: 'd4m-compression',
     apply: 'build',
@@ -53,7 +53,7 @@ export default defineConfig({
   ],
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "./src"),
+      "@": path.resolve(import.meta.dirname, "./src"),
     },
   },
   build: {

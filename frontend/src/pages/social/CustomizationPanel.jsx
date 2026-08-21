@@ -2,6 +2,7 @@
 // 🎨 Bảng cá nhân hóa: 🖼️ Khung viền (429) + 🐉 Linh thú + 💎 Linh bảo + ✨ Phong cách
 // Thiết kế cho dữ liệu LỚN: tìm kiếm + lọc độ hiếm + phân trang ("Xem thêm").
 import { useEffect, useMemo, useState } from "react";
+import { createPortal } from "react-dom";
 import { SOCIAL, API_BASE_URL } from "../../config/urls";
 import { getToken } from "../../services/api";
 import { showToast } from "../../lib/toast";
@@ -277,9 +278,10 @@ export default function CustomizationPanel({ currentUser, onBack, onSaved, onSpi
     );
   };
 
-  return (
-    <div className="fixed inset-0 z-[70] bg-black/80 backdrop-blur-sm flex items-center justify-center p-4" onClick={onBack}>
-      <div className="w-full max-w-md bg-[#111] border border-white/10 rounded-2xl overflow-hidden flex flex-col max-h-[90vh]" onClick={(e) => e.stopPropagation()}>
+  // 🌀 Portal ra body — thoát ancestor backdrop-filter/transform, căn giữa an toàn
+  return createPortal(
+    <div className="fixed inset-0 z-[70] bg-black/80 backdrop-blur-sm flex overflow-y-auto p-4" onClick={onBack}>
+      <div className="w-full max-w-md m-auto bg-[#111] border border-white/10 rounded-2xl overflow-hidden flex flex-col max-h-[90dvh]" onClick={(e) => e.stopPropagation()}>
         <div className="flex items-center gap-3 px-4 py-3 border-b border-white/10">
           <button onClick={onBack} aria-label="Quay lại" className="p-1.5 -ml-2 rounded-full hover:bg-white/10 text-gray-300"><IconBack /></button>
           <h2 className="font-bold text-lg flex-1">Hồ sơ & Phong cách</h2>
@@ -420,7 +422,8 @@ export default function CustomizationPanel({ currentUser, onBack, onSaved, onSpi
           )}
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }
 

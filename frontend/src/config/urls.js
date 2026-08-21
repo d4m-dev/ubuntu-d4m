@@ -261,6 +261,7 @@ export const DONATE = {
   QR: `${API_BASE_URL}/api/donate/qr`,
   SEPAy_WEBHOOK: `${API_BASE_URL}/api/donate/sepay-webhook`,
   WS: (userId) => `${WS_BASE_URL}/api/ws/donate/${userId}`,
+  STATUS: (qrId) => `${API_BASE_URL}/api/donate/status/${qrId}`,
 };
 
 // ============================================================
