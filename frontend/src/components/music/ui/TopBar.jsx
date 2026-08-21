@@ -11,7 +11,7 @@ export default function TopBar({ defaultQuery = "" }) {
 
   const submit = (e) => {
     e.preventDefault();
-    navigate(q.trim() ? `/search?q=${encodeURIComponent(q.trim())}` : "/search");
+    navigate(q.trim() ? `/music/search?q=${encodeURIComponent(q.trim())}` : "/music/search");
   };
 
   return (
@@ -36,7 +36,7 @@ export default function TopBar({ defaultQuery = "" }) {
           {isAdmin && <span className="badge-admin">ADMIN</span>}
         </Link>
       ) : (
-        <Link to="/login" className="user-chip">
+        <Link to="/music/login" className="user-chip">
           <span>Đăng nhập</span>
         </Link>
       )}

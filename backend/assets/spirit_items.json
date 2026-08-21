@@ -1,0 +1,1655 @@
+{
+ "status": "success",
+ "data": [
+  {
+   "id": "nghich-thien-huyen-long",
+   "kind": "pet",
+   "name": "Nghich Thien Huyen Long",
+   "description": "",
+   "image": "/linhbao/nghich-thien-huyen-long.webp",
+   "rarity": "legendary",
+   "price_xu": 500000,
+   "zorder": 4
+  },
+  {
+   "id": "bang-tinh-phuong-hoang",
+   "kind": "pet",
+   "name": "Bang Tinh Phuong Hoang",
+   "description": "",
+   "image": "/linhbao/bang-tinh-phuong-hoang.gif",
+   "rarity": "epic",
+   "price_xu": 200000,
+   "zorder": 3
+  },
+  {
+   "id": "huyen-duc-phuong-hoang",
+   "kind": "pet",
+   "name": "Huyen Duc Phuong Hoang",
+   "description": "",
+   "image": "/linhbao/huyen-duc-phuong-hoang.webp",
+   "rarity": "epic",
+   "price_xu": 200000,
+   "zorder": 3
+  },
+  {
+   "id": "nguu-ma-vuong",
+   "kind": "pet",
+   "name": "Nguu Ma Vuong",
+   "description": "",
+   "image": "/linhbao/nguu-ma-vuong.webp",
+   "rarity": "epic",
+   "price_xu": 200000,
+   "zorder": 3
+  },
+  {
+   "id": "phuong-hoang-chi-duc",
+   "kind": "pet",
+   "name": "Phuong Hoang Chi Duc",
+   "description": "",
+   "image": "/linhbao/phuong-hoang-chi-duc.webp",
+   "rarity": "epic",
+   "price_xu": 200000,
+   "zorder": 3
+  },
+  {
+   "id": "phuong-long-hoa-vu",
+   "kind": "pet",
+   "name": "Phuong Long Hoa Vu",
+   "description": "",
+   "image": "/linhbao/phuong-long-hoa-vu.webp",
+   "rarity": "epic",
+   "price_xu": 200000,
+   "zorder": 3
+  },
+  {
+   "id": "phuong-long-hoa-vu-1",
+   "kind": "pet",
+   "name": "Phuong Long Hoa Vu 1",
+   "description": "",
+   "image": "/linhbao/phuong-long-hoa-vu-1.webp",
+   "rarity": "epic",
+   "price_xu": 200000,
+   "zorder": 3
+  },
+  {
+   "id": "thai-co-thanh-long",
+   "kind": "pet",
+   "name": "Thai Co Thanh Long",
+   "description": "",
+   "image": "/linhbao/thai-co-thanh-long.webp",
+   "rarity": "epic",
+   "price_xu": 200000,
+   "zorder": 3
+  },
+  {
+   "id": "thanh-diem-linh-ho",
+   "kind": "pet",
+   "name": "Thanh Diem Linh Ho",
+   "description": "",
+   "image": "/linhbao/thanh-diem-linh-ho.webp",
+   "rarity": "epic",
+   "price_xu": 200000,
+   "zorder": 3
+  },
+  {
+   "id": "tu-vuc-ma-phuong",
+   "kind": "pet",
+   "name": "Tu Vuc Ma Phuong",
+   "description": "",
+   "image": "/linhbao/tu-vuc-ma-phuong.webp",
+   "rarity": "epic",
+   "price_xu": 200000,
+   "zorder": 3
+  },
+  {
+   "id": "bach-lang-kiem-hau",
+   "kind": "pet",
+   "name": "Bach Lang Kiem Hau",
+   "description": "",
+   "image": "/linhbao/bach-lang-kiem-hau.webp",
+   "rarity": "rare",
+   "price_xu": 60000,
+   "zorder": 2
+  },
+  {
+   "id": "that-thai-thon-thien-mang",
+   "kind": "pet",
+   "name": "That Thai Thon Thien Mang",
+   "description": "",
+   "image": "/linhbao/that-thai-thon-thien-mang.webp",
+   "rarity": "rare",
+   "price_xu": 60000,
+   "zorder": 2
+  },
+  {
+   "id": "bich-hai-cuu-dau-xa",
+   "kind": "pet",
+   "name": "Bich Hai Cuu Dau Xa",
+   "description": "",
+   "image": "/linhbao/bich-hai-cuu-dau-xa.webp",
+   "rarity": "common",
+   "price_xu": 20000,
+   "zorder": 1
+  },
+  {
+   "id": "huyen-vu",
+   "kind": "pet",
+   "name": "Huyen Vu",
+   "description": "",
+   "image": "/linhbao/huyen-vu.gif",
+   "rarity": "common",
+   "price_xu": 20000,
+   "zorder": 1
+  },
+  {
+   "id": "lam-tieu-bach-cuu",
+   "kind": "pet",
+   "name": "Lam Tieu Bach Cuu",
+   "description": "",
+   "image": "/linhbao/lam-tieu-bach-cuu.gif",
+   "rarity": "common",
+   "price_xu": 20000,
+   "zorder": 1
+  },
+  {
+   "id": "niem-hoa-ky-lan",
+   "kind": "pet",
+   "name": "Niem Hoa Ky Lan",
+   "description": "",
+   "image": "/linhbao/niem-hoa-ky-lan.gif",
+   "rarity": "common",
+   "price_xu": 20000,
+   "zorder": 1
+  },
+  {
+   "id": "tieu-bach-cuu",
+   "kind": "pet",
+   "name": "Tieu Bach Cuu",
+   "description": "",
+   "image": "/linhbao/tieu-bach-cuu.gif",
+   "rarity": "common",
+   "price_xu": 20000,
+   "zorder": 1
+  },
+  {
+   "id": "tieu-cuu-cuu",
+   "kind": "pet",
+   "name": "Tieu Cuu Cuu",
+   "description": "",
+   "image": "/linhbao/tieu-cuu-cuu.gif",
+   "rarity": "common",
+   "price_xu": 20000,
+   "zorder": 1
+  },
+  {
+   "id": "u-minh-linh-xa",
+   "kind": "pet",
+   "name": "U Minh Linh Xa",
+   "description": "",
+   "image": "/linhbao/u-minh-linh-xa.webp",
+   "rarity": "common",
+   "price_xu": 20000,
+   "zorder": 1
+  },
+  {
+   "id": "bat-nha-luan-hoi-chuyen",
+   "kind": "treasure",
+   "name": "Bat Nha Luan Hoi Chuyen",
+   "description": "",
+   "image": "/linhbao/bat-nha-luan-hoi-chuyen.webp",
+   "rarity": "legendary",
+   "price_xu": 500000,
+   "zorder": 4
+  },
+  {
+   "id": "cuu-thien-loi-sat",
+   "kind": "treasure",
+   "name": "Cuu Thien Loi Sat",
+   "description": "",
+   "image": "/linhbao/cuu-thien-loi-sat.webp",
+   "rarity": "legendary",
+   "price_xu": 500000,
+   "zorder": 4
+  },
+  {
+   "id": "dai-uy-hon-cam-limited",
+   "kind": "treasure",
+   "name": "Dai Uy Hon Cam Limited",
+   "description": "",
+   "image": "/linhbao/dai-uy-hon-cam-limited.webp",
+   "rarity": "legendary",
+   "price_xu": 500000,
+   "zorder": 4
+  },
+  {
+   "id": "dia-tang-thap-luan-duc",
+   "kind": "treasure",
+   "name": "Dia Tang Thap Luan Duc",
+   "description": "",
+   "image": "/linhbao/dia-tang-thap-luan-duc.webp",
+   "rarity": "legendary",
+   "price_xu": 500000,
+   "zorder": 4
+  },
+  {
+   "id": "hon-nguyen-nhat-khi-duc-limited",
+   "kind": "treasure",
+   "name": "Hon Nguyen Nhat Khi Duc Limited",
+   "description": "",
+   "image": "/linhbao/hon-nguyen-nhat-khi-duc-limited.webp",
+   "rarity": "legendary",
+   "price_xu": 500000,
+   "zorder": 4
+  },
+  {
+   "id": "hong-hoang-hoa-duc",
+   "kind": "treasure",
+   "name": "Hong Hoang Hoa Duc",
+   "description": "",
+   "image": "/linhbao/hong-hoang-hoa-duc.webp",
+   "rarity": "legendary",
+   "price_xu": 500000,
+   "zorder": 4
+  },
+  {
+   "id": "huyen-thien-long-an",
+   "kind": "treasure",
+   "name": "Huyen Thien Long An",
+   "description": "",
+   "image": "/linhbao/huyen-thien-long-an.webp",
+   "rarity": "legendary",
+   "price_xu": 500000,
+   "zorder": 4
+  },
+  {
+   "id": "ngo-khong-dau-chien-thang-phat",
+   "kind": "treasure",
+   "name": "Ngo Khong Dau Chien Thang Phat",
+   "description": "",
+   "image": "/linhbao/ngo-khong-dau-chien-thang-phat.webp",
+   "rarity": "legendary",
+   "price_xu": 500000,
+   "zorder": 4
+  },
+  {
+   "id": "ngo-khong-dau-chien-thang-phat-1",
+   "kind": "treasure",
+   "name": "Ngo Khong Dau Chien Thang Phat 1",
+   "description": "",
+   "image": "/linhbao/ngo-khong-dau-chien-thang-phat-1.webp",
+   "rarity": "legendary",
+   "price_xu": 500000,
+   "zorder": 4
+  },
+  {
+   "id": "ngo-khong-dau-chien-thang-phat-nang-cap",
+   "kind": "treasure",
+   "name": "Ngo Khong Dau Chien Thang Phat Nang Cap",
+   "description": "",
+   "image": "/linhbao/ngo-khong-dau-chien-thang-phat-nang-cap.webp",
+   "rarity": "legendary",
+   "price_xu": 500000,
+   "zorder": 4
+  },
+  {
+   "id": "nien-thu-limited",
+   "kind": "treasure",
+   "name": "Nien Thu Limited",
+   "description": "",
+   "image": "/linhbao/nien-thu-limited.webp",
+   "rarity": "legendary",
+   "price_xu": 500000,
+   "zorder": 4
+  },
+  {
+   "id": "sat-tam-limited",
+   "kind": "treasure",
+   "name": "Sat Tam Limited",
+   "description": "",
+   "image": "/linhbao/sat-tam-limited.webp",
+   "rarity": "legendary",
+   "price_xu": 500000,
+   "zorder": 4
+  },
+  {
+   "id": "song-phi-duc-limited",
+   "kind": "treasure",
+   "name": "Song Phi Duc Limited",
+   "description": "",
+   "image": "/linhbao/song-phi-duc-limited.webp",
+   "rarity": "legendary",
+   "price_xu": 500000,
+   "zorder": 4
+  },
+  {
+   "id": "thanh-huyen-u-linh-limited",
+   "kind": "treasure",
+   "name": "Thanh Huyen U Linh Limited",
+   "description": "",
+   "image": "/linhbao/thanh-huyen-u-linh-limited.webp",
+   "rarity": "legendary",
+   "price_xu": 500000,
+   "zorder": 4
+  },
+  {
+   "id": "thien-ly-giang-son-do-limited",
+   "kind": "treasure",
+   "name": "Thien Ly Giang Son Do Limited",
+   "description": "",
+   "image": "/linhbao/thien-ly-giang-son-do-limited.webp",
+   "rarity": "legendary",
+   "price_xu": 500000,
+   "zorder": 4
+  },
+  {
+   "id": "ton-tan-limited",
+   "kind": "treasure",
+   "name": "Ton Tan Limited",
+   "description": "",
+   "image": "/linhbao/ton-tan-limited.webp",
+   "rarity": "legendary",
+   "price_xu": 500000,
+   "zorder": 4
+  },
+  {
+   "id": "van-trung-tu-limited",
+   "kind": "treasure",
+   "name": "Van Trung Tu Limited",
+   "description": "",
+   "image": "/linhbao/van-trung-tu-limited.webp",
+   "rarity": "legendary",
+   "price_xu": 500000,
+   "zorder": 4
+  },
+  {
+   "id": "xa-tien-tieu-thanh-limited",
+   "kind": "treasure",
+   "name": "Xa Tien Tieu Thanh Limited",
+   "description": "",
+   "image": "/linhbao/xa-tien-tieu-thanh-limited.webp",
+   "rarity": "legendary",
+   "price_xu": 500000,
+   "zorder": 4
+  },
+  {
+   "id": "bach-lang-kiem-de",
+   "kind": "treasure",
+   "name": "Bach Lang Kiem De",
+   "description": "",
+   "image": "/linhbao/bach-lang-kiem-de.webp",
+   "rarity": "epic",
+   "price_xu": 200000,
+   "zorder": 3
+  },
+  {
+   "id": "bang-phach-co-long",
+   "kind": "treasure",
+   "name": "Bang Phach Co Long",
+   "description": "",
+   "image": "/linhbao/bang-phach-co-long.webp",
+   "rarity": "epic",
+   "price_xu": 200000,
+   "zorder": 3
+  },
+  {
+   "id": "bat-phuong-loi-van-duc",
+   "kind": "treasure",
+   "name": "Bat Phuong Loi Van Duc",
+   "description": "",
+   "image": "/linhbao/bat-phuong-loi-van-duc.webp",
+   "rarity": "epic",
+   "price_xu": 200000,
+   "zorder": 3
+  },
+  {
+   "id": "bich-ba-tien-tu",
+   "kind": "treasure",
+   "name": "Bich Ba Tien Tu",
+   "description": "",
+   "image": "/linhbao/bich-ba-tien-tu.png",
+   "rarity": "epic",
+   "price_xu": 200000,
+   "zorder": 3
+  },
+  {
+   "id": "bich-hai-thanh-nu",
+   "kind": "treasure",
+   "name": "Bich Hai Thanh Nu",
+   "description": "",
+   "image": "/linhbao/bich-hai-thanh-nu.webp",
+   "rarity": "epic",
+   "price_xu": 200000,
+   "zorder": 3
+  },
+  {
+   "id": "chi-ton-kiem-than",
+   "kind": "treasure",
+   "name": "Chi Ton Kiem Than",
+   "description": "",
+   "image": "/linhbao/chi-ton-kiem-than.webp",
+   "rarity": "epic",
+   "price_xu": 200000,
+   "zorder": 3
+  },
+  {
+   "id": "chien-hoa-than-quan",
+   "kind": "treasure",
+   "name": "Chien Hoa Than Quan",
+   "description": "",
+   "image": "/linhbao/chien-hoa-than-quan.webp",
+   "rarity": "epic",
+   "price_xu": 200000,
+   "zorder": 3
+  },
+  {
+   "id": "cong-thanh-chien-no",
+   "kind": "treasure",
+   "name": "Cong Thanh Chien No",
+   "description": "",
+   "image": "/linhbao/cong-thanh-chien-no.webp",
+   "rarity": "epic",
+   "price_xu": 200000,
+   "zorder": 3
+  },
+  {
+   "id": "cuc-nguyet-thuong-than",
+   "kind": "treasure",
+   "name": "Cuc Nguyet Thuong Than",
+   "description": "",
+   "image": "/linhbao/cuc-nguyet-thuong-than.webp",
+   "rarity": "epic",
+   "price_xu": 200000,
+   "zorder": 3
+  },
+  {
+   "id": "dan-phuong-trieu-duong",
+   "kind": "treasure",
+   "name": "Dan Phuong Trieu Duong",
+   "description": "",
+   "image": "/linhbao/dan-phuong-trieu-duong.webp",
+   "rarity": "epic",
+   "price_xu": 200000,
+   "zorder": 3
+  },
+  {
+   "id": "diem-vuong",
+   "kind": "treasure",
+   "name": "Diem Vuong",
+   "description": "",
+   "image": "/linhbao/diem-vuong.webp",
+   "rarity": "epic",
+   "price_xu": 200000,
+   "zorder": 3
+  },
+  {
+   "id": "doc-hoang-chien-duc",
+   "kind": "treasure",
+   "name": "Doc Hoang Chien Duc",
+   "description": "",
+   "image": "/linhbao/doc-hoang-chien-duc.webp",
+   "rarity": "epic",
+   "price_xu": 200000,
+   "zorder": 3
+  },
+  {
+   "id": "dong-hai-long-vuong-ngao-quang-1",
+   "kind": "treasure",
+   "name": "Dong Hai Long Vuong Ngao Quang 1",
+   "description": "",
+   "image": "/linhbao/dong-hai-long-vuong-ngao-quang-1.webp",
+   "rarity": "epic",
+   "price_xu": 200000,
+   "zorder": 3
+  },
+  {
+   "id": "hac-hoang-dai-nhan",
+   "kind": "treasure",
+   "name": "Hac Hoang Dai Nhan",
+   "description": "",
+   "image": "/linhbao/hac-hoang-dai-nhan.webp",
+   "rarity": "epic",
+   "price_xu": 200000,
+   "zorder": 3
+  },
+  {
+   "id": "hai-uyen-than-kinh",
+   "kind": "treasure",
+   "name": "Hai Uyen Than Kinh",
+   "description": "",
+   "image": "/linhbao/hai-uyen-than-kinh.webp",
+   "rarity": "epic",
+   "price_xu": 200000,
+   "zorder": 3
+  },
+  {
+   "id": "han-long-than-kiem",
+   "kind": "treasure",
+   "name": "Han Long Than Kiem",
+   "description": "",
+   "image": "/linhbao/han-long-than-kiem.webp",
+   "rarity": "epic",
+   "price_xu": 200000,
+   "zorder": 3
+  },
+  {
+   "id": "hoang-nghe-an",
+   "kind": "treasure",
+   "name": "Hoang Nghe An",
+   "description": "",
+   "image": "/linhbao/hoang-nghe-an.gif",
+   "rarity": "epic",
+   "price_xu": 200000,
+   "zorder": 3
+  },
+  {
+   "id": "hong-lien-tien-tu",
+   "kind": "treasure",
+   "name": "Hong Lien Tien Tu",
+   "description": "",
+   "image": "/linhbao/hong-lien-tien-tu.gif",
+   "rarity": "epic",
+   "price_xu": 200000,
+   "zorder": 3
+  },
+  {
+   "id": "huyen-ngu-tien-duc",
+   "kind": "treasure",
+   "name": "Huyen Ngu Tien Duc",
+   "description": "",
+   "image": "/linhbao/huyen-ngu-tien-duc.webp",
+   "rarity": "epic",
+   "price_xu": 200000,
+   "zorder": 3
+  },
+  {
+   "id": "huyen-ngu-tien-duc-1",
+   "kind": "treasure",
+   "name": "Huyen Ngu Tien Duc 1",
+   "description": "",
+   "image": "/linhbao/huyen-ngu-tien-duc-1.webp",
+   "rarity": "epic",
+   "price_xu": 200000,
+   "zorder": 3
+  },
+  {
+   "id": "khoi-nguyen-thanh-nu",
+   "kind": "treasure",
+   "name": "Khoi Nguyen Thanh Nu",
+   "description": "",
+   "image": "/linhbao/khoi-nguyen-thanh-nu.webp",
+   "rarity": "epic",
+   "price_xu": 200000,
+   "zorder": 3
+  },
+  {
+   "id": "khong-tuoc-minh-vuong-duc",
+   "kind": "treasure",
+   "name": "Khong Tuoc Minh Vuong Duc",
+   "description": "",
+   "image": "/linhbao/khong-tuoc-minh-vuong-duc.webp",
+   "rarity": "epic",
+   "price_xu": 200000,
+   "zorder": 3
+  },
+  {
+   "id": "kiem-tien",
+   "kind": "treasure",
+   "name": "Kiem Tien",
+   "description": "",
+   "image": "/linhbao/kiem-tien.webp",
+   "rarity": "epic",
+   "price_xu": 200000,
+   "zorder": 3
+  },
+  {
+   "id": "kiem-tien-ly-bach-1",
+   "kind": "treasure",
+   "name": "Kiem Tien Ly Bach 1",
+   "description": "",
+   "image": "/linhbao/kiem-tien-ly-bach-1.webp",
+   "rarity": "epic",
+   "price_xu": 200000,
+   "zorder": 3
+  },
+  {
+   "id": "kim-diem-bao-duc",
+   "kind": "treasure",
+   "name": "Kim Diem Bao Duc",
+   "description": "",
+   "image": "/linhbao/kim-diem-bao-duc.webp",
+   "rarity": "epic",
+   "price_xu": 200000,
+   "zorder": 3
+  },
+  {
+   "id": "lang-tieu-than-nu",
+   "kind": "treasure",
+   "name": "Lang Tieu Than Nu",
+   "description": "",
+   "image": "/linhbao/lang-tieu-than-nu.webp",
+   "rarity": "epic",
+   "price_xu": 200000,
+   "zorder": 3
+  },
+  {
+   "id": "lieu-than",
+   "kind": "treasure",
+   "name": "Lieu Than",
+   "description": "",
+   "image": "/linhbao/lieu-than.png",
+   "rarity": "epic",
+   "price_xu": 200000,
+   "zorder": 3
+  },
+  {
+   "id": "loi-than-thon-phe-tinh-khong",
+   "kind": "treasure",
+   "name": "Loi Than Thon Phe Tinh Khong",
+   "description": "",
+   "image": "/linhbao/loi-than-thon-phe-tinh-khong.webp",
+   "rarity": "epic",
+   "price_xu": 200000,
+   "zorder": 3
+  },
+  {
+   "id": "long-nu",
+   "kind": "treasure",
+   "name": "Long Nu",
+   "description": "",
+   "image": "/linhbao/long-nu.webp",
+   "rarity": "epic",
+   "price_xu": 200000,
+   "zorder": 3
+  },
+  {
+   "id": "luc-minh-chi-duc",
+   "kind": "treasure",
+   "name": "Luc Minh Chi Duc",
+   "description": "",
+   "image": "/linhbao/luc-minh-chi-duc.webp",
+   "rarity": "epic",
+   "price_xu": 200000,
+   "zorder": 3
+  },
+  {
+   "id": "ly-hoa-vuong",
+   "kind": "treasure",
+   "name": "Ly Hoa Vuong",
+   "description": "",
+   "image": "/linhbao/ly-hoa-vuong.png",
+   "rarity": "epic",
+   "price_xu": 200000,
+   "zorder": 3
+  },
+  {
+   "id": "mac-vu-than-quan",
+   "kind": "treasure",
+   "name": "Mac Vu Than Quan",
+   "description": "",
+   "image": "/linhbao/mac-vu-than-quan.webp",
+   "rarity": "epic",
+   "price_xu": 200000,
+   "zorder": 3
+  },
+  {
+   "id": "minh-vuong-quyet",
+   "kind": "treasure",
+   "name": "Minh Vuong Quyet",
+   "description": "",
+   "image": "/linhbao/minh-vuong-quyet.webp",
+   "rarity": "epic",
+   "price_xu": 200000,
+   "zorder": 3
+  },
+  {
+   "id": "nghich-uong-tien-de",
+   "kind": "treasure",
+   "name": "Nghich Uong Tien De",
+   "description": "",
+   "image": "/linhbao/nghich-uong-tien-de.webp",
+   "rarity": "epic",
+   "price_xu": 200000,
+   "zorder": 3
+  },
+  {
+   "id": "ngoan-nhan-dai-de",
+   "kind": "treasure",
+   "name": "Ngoan Nhan Dai De",
+   "description": "",
+   "image": "/linhbao/ngoan-nhan-dai-de.webp",
+   "rarity": "epic",
+   "price_xu": 200000,
+   "zorder": 3
+  },
+  {
+   "id": "ngoc-quang-tien-vu",
+   "kind": "treasure",
+   "name": "Ngoc Quang Tien Vu",
+   "description": "",
+   "image": "/linhbao/ngoc-quang-tien-vu.webp",
+   "rarity": "epic",
+   "price_xu": 200000,
+   "zorder": 3
+  },
+  {
+   "id": "nguyet-yen-vu-duc",
+   "kind": "treasure",
+   "name": "Nguyet Yen Vu Duc",
+   "description": "",
+   "image": "/linhbao/nguyet-yen-vu-duc.webp",
+   "rarity": "epic",
+   "price_xu": 200000,
+   "zorder": 3
+  },
+  {
+   "id": "nhi-lang-than-duong-tien",
+   "kind": "treasure",
+   "name": "Nhi Lang Than Duong Tien",
+   "description": "",
+   "image": "/linhbao/nhi-lang-than-duong-tien.png",
+   "rarity": "epic",
+   "price_xu": 200000,
+   "zorder": 3
+  },
+  {
+   "id": "nhi-lang-than-duong-tien-1",
+   "kind": "treasure",
+   "name": "Nhi Lang Than Duong Tien 1",
+   "description": "",
+   "image": "/linhbao/nhi-lang-than-duong-tien-1.webp",
+   "rarity": "epic",
+   "price_xu": 200000,
+   "zorder": 3
+  },
+  {
+   "id": "nhi-lang-than-duong-tien-2",
+   "kind": "treasure",
+   "name": "Nhi Lang Than Duong Tien 2",
+   "description": "",
+   "image": "/linhbao/nhi-lang-than-duong-tien-2.webp",
+   "rarity": "epic",
+   "price_xu": 200000,
+   "zorder": 3
+  },
+  {
+   "id": "nu-de-vo-tac-thien",
+   "kind": "treasure",
+   "name": "Nu De Vo Tac Thien",
+   "description": "",
+   "image": "/linhbao/nu-de-vo-tac-thien.webp",
+   "rarity": "epic",
+   "price_xu": 200000,
+   "zorder": 3
+  },
+  {
+   "id": "nu-de-vo-tac-thien-1",
+   "kind": "treasure",
+   "name": "Nu De Vo Tac Thien 1",
+   "description": "",
+   "image": "/linhbao/nu-de-vo-tac-thien-1.webp",
+   "rarity": "epic",
+   "price_xu": 200000,
+   "zorder": 3
+  },
+  {
+   "id": "phdk-tu-van-duc-fx",
+   "kind": "treasure",
+   "name": "Phdk Tu Van Duc Fx",
+   "description": "",
+   "image": "/linhbao/phdk-tu-van-duc-fx.png",
+   "rarity": "epic",
+   "price_xu": 200000,
+   "zorder": 3
+  },
+  {
+   "id": "phong-ma-than-tan",
+   "kind": "treasure",
+   "name": "Phong Ma Than Tan",
+   "description": "",
+   "image": "/linhbao/phong-ma-than-tan.webp",
+   "rarity": "epic",
+   "price_xu": 200000,
+   "zorder": 3
+  },
+  {
+   "id": "phong-than-natra",
+   "kind": "treasure",
+   "name": "Phong Than Natra",
+   "description": "",
+   "image": "/linhbao/phong-than-natra.webp",
+   "rarity": "epic",
+   "price_xu": 200000,
+   "zorder": 3
+  },
+  {
+   "id": "phu-do-thanh-gia",
+   "kind": "treasure",
+   "name": "Phu Do Thanh Gia",
+   "description": "",
+   "image": "/linhbao/phu-do-thanh-gia.webp",
+   "rarity": "epic",
+   "price_xu": 200000,
+   "zorder": 3
+  },
+  {
+   "id": "quang-hoa-song-linh-duc",
+   "kind": "treasure",
+   "name": "Quang Hoa Song Linh Duc",
+   "description": "",
+   "image": "/linhbao/quang-hoa-song-linh-duc.webp",
+   "rarity": "epic",
+   "price_xu": 200000,
+   "zorder": 3
+  },
+  {
+   "id": "quang-minh-nu-than-diep",
+   "kind": "treasure",
+   "name": "Quang Minh Nu Than Diep",
+   "description": "",
+   "image": "/linhbao/quang-minh-nu-than-diep.webp",
+   "rarity": "epic",
+   "price_xu": 200000,
+   "zorder": 3
+  },
+  {
+   "id": "tan-nien-ve-than",
+   "kind": "treasure",
+   "name": "Tan Nien Ve Than",
+   "description": "",
+   "image": "/linhbao/tan-nien-ve-than.webp",
+   "rarity": "epic",
+   "price_xu": 200000,
+   "zorder": 3
+  },
+  {
+   "id": "tan-vu-nang-capp",
+   "kind": "treasure",
+   "name": "Tan Vu Nang Capp",
+   "description": "",
+   "image": "/linhbao/tan-vu-nang-capp.webp",
+   "rarity": "epic",
+   "price_xu": 200000,
+   "zorder": 3
+  },
+  {
+   "id": "tay-luong-nu-vuong",
+   "kind": "treasure",
+   "name": "Tay Luong Nu Vuong",
+   "description": "",
+   "image": "/linhbao/tay-luong-nu-vuong.webp",
+   "rarity": "epic",
+   "price_xu": 200000,
+   "zorder": 3
+  },
+  {
+   "id": "than-tai",
+   "kind": "treasure",
+   "name": "Than Tai",
+   "description": "",
+   "image": "/linhbao/than-tai.webp",
+   "rarity": "epic",
+   "price_xu": 200000,
+   "zorder": 3
+  },
+  {
+   "id": "than-tang-co-kinh",
+   "kind": "treasure",
+   "name": "Than Tang Co Kinh",
+   "description": "",
+   "image": "/linhbao/than-tang-co-kinh.webp",
+   "rarity": "epic",
+   "price_xu": 200000,
+   "zorder": 3
+  },
+  {
+   "id": "than-vu-luc-quang",
+   "kind": "treasure",
+   "name": "Than Vu Luc Quang",
+   "description": "",
+   "image": "/linhbao/than-vu-luc-quang.webp",
+   "rarity": "epic",
+   "price_xu": 200000,
+   "zorder": 3
+  },
+  {
+   "id": "thanh-da-quang-duc",
+   "kind": "treasure",
+   "name": "Thanh Da Quang Duc",
+   "description": "",
+   "image": "/linhbao/thanh-da-quang-duc.webp",
+   "rarity": "epic",
+   "price_xu": 200000,
+   "zorder": 3
+  },
+  {
+   "id": "thanh-da-tinh-co-ky",
+   "kind": "treasure",
+   "name": "Thanh Da Tinh Co Ky",
+   "description": "",
+   "image": "/linhbao/thanh-da-tinh-co-ky.webp",
+   "rarity": "epic",
+   "price_xu": 200000,
+   "zorder": 3
+  },
+  {
+   "id": "thanh-lien-tien-duc",
+   "kind": "treasure",
+   "name": "Thanh Lien Tien Duc",
+   "description": "",
+   "image": "/linhbao/thanh-lien-tien-duc.webp",
+   "rarity": "epic",
+   "price_xu": 200000,
+   "zorder": 3
+  },
+  {
+   "id": "thien-vu-linh-duc",
+   "kind": "treasure",
+   "name": "Thien Vu Linh Duc",
+   "description": "",
+   "image": "/linhbao/thien-vu-linh-duc.webp",
+   "rarity": "epic",
+   "price_xu": 200000,
+   "zorder": 3
+  },
+  {
+   "id": "thuy-long-thanh-mau",
+   "kind": "treasure",
+   "name": "Thuy Long Thanh Mau",
+   "description": "",
+   "image": "/linhbao/thuy-long-thanh-mau.webp",
+   "rarity": "epic",
+   "price_xu": 200000,
+   "zorder": 3
+  },
+  {
+   "id": "tich-diet-ma-viem-duc",
+   "kind": "treasure",
+   "name": "Tich Diet Ma Viem Duc",
+   "description": "",
+   "image": "/linhbao/tich-diet-ma-viem-duc.webp",
+   "rarity": "epic",
+   "price_xu": 200000,
+   "zorder": 3
+  },
+  {
+   "id": "tinh-tu-chi-duc",
+   "kind": "treasure",
+   "name": "Tinh Tu Chi Duc",
+   "description": "",
+   "image": "/linhbao/tinh-tu-chi-duc.webp",
+   "rarity": "epic",
+   "price_xu": 200000,
+   "zorder": 3
+  },
+  {
+   "id": "to-long-tan-thuy-hoang",
+   "kind": "treasure",
+   "name": "To Long Tan Thuy Hoang",
+   "description": "",
+   "image": "/linhbao/to-long-tan-thuy-hoang.png",
+   "rarity": "epic",
+   "price_xu": 200000,
+   "zorder": 3
+  },
+  {
+   "id": "tram-long-kiem",
+   "kind": "treasure",
+   "name": "Tram Long Kiem",
+   "description": "",
+   "image": "/linhbao/tram-long-kiem.webp",
+   "rarity": "epic",
+   "price_xu": 200000,
+   "zorder": 3
+  },
+  {
+   "id": "tu-dien-tien-sinh",
+   "kind": "treasure",
+   "name": "Tu Dien Tien Sinh",
+   "description": "",
+   "image": "/linhbao/tu-dien-tien-sinh.png",
+   "rarity": "epic",
+   "price_xu": 200000,
+   "zorder": 3
+  },
+  {
+   "id": "van-phap-tien-kiem-1",
+   "kind": "treasure",
+   "name": "Van Phap Tien Kiem 1",
+   "description": "",
+   "image": "/linhbao/van-phap-tien-kiem-1.webp",
+   "rarity": "epic",
+   "price_xu": 200000,
+   "zorder": 3
+  },
+  {
+   "id": "van-quang-mong-duc",
+   "kind": "treasure",
+   "name": "Van Quang Mong Duc",
+   "description": "",
+   "image": "/linhbao/van-quang-mong-duc.webp",
+   "rarity": "epic",
+   "price_xu": 200000,
+   "zorder": 3
+  },
+  {
+   "id": "vuong-lam",
+   "kind": "treasure",
+   "name": "Vuong Lam",
+   "description": "",
+   "image": "/linhbao/vuong-lam.webp",
+   "rarity": "epic",
+   "price_xu": 200000,
+   "zorder": 3
+  },
+  {
+   "id": "vuong-lam-1",
+   "kind": "treasure",
+   "name": "Vuong Lam 1",
+   "description": "",
+   "image": "/linhbao/vuong-lam-1.webp",
+   "rarity": "epic",
+   "price_xu": 200000,
+   "zorder": 3
+  },
+  {
+   "id": "xich-duong-than-kiem",
+   "kind": "treasure",
+   "name": "Xich Duong Than Kiem",
+   "description": "",
+   "image": "/linhbao/xich-duong-than-kiem.webp",
+   "rarity": "epic",
+   "price_xu": 200000,
+   "zorder": 3
+  },
+  {
+   "id": "xich-viem-than-tuong",
+   "kind": "treasure",
+   "name": "Xich Viem Than Tuong",
+   "description": "",
+   "image": "/linhbao/xich-viem-than-tuong.png",
+   "rarity": "epic",
+   "price_xu": 200000,
+   "zorder": 3
+  },
+  {
+   "id": "ban-co",
+   "kind": "treasure",
+   "name": "Ban Co",
+   "description": "",
+   "image": "/linhbao/ban-co.webp",
+   "rarity": "rare",
+   "price_xu": 60000,
+   "zorder": 2
+  },
+  {
+   "id": "bat-tran-do",
+   "kind": "treasure",
+   "name": "Bat Tran Do",
+   "description": "",
+   "image": "/linhbao/bat-tran-do.webp",
+   "rarity": "rare",
+   "price_xu": 60000,
+   "zorder": 2
+  },
+  {
+   "id": "dai-nhat-phan-thien-tran",
+   "kind": "treasure",
+   "name": "Dai Nhat Phan Thien Tran",
+   "description": "",
+   "image": "/linhbao/dai-nhat-phan-thien-tran.webp",
+   "rarity": "rare",
+   "price_xu": 60000,
+   "zorder": 2
+  },
+  {
+   "id": "diet-sinh-huyet-luan",
+   "kind": "treasure",
+   "name": "Diet Sinh Huyet Luan",
+   "description": "",
+   "image": "/linhbao/diet-sinh-huyet-luan.webp",
+   "rarity": "rare",
+   "price_xu": 60000,
+   "zorder": 2
+  },
+  {
+   "id": "hoa-linh-yeu-co",
+   "kind": "treasure",
+   "name": "Hoa Linh Yeu Co",
+   "description": "",
+   "image": "/linhbao/hoa-linh-yeu-co.webp",
+   "rarity": "rare",
+   "price_xu": 60000,
+   "zorder": 2
+  },
+  {
+   "id": "hon-nguyen-con",
+   "kind": "treasure",
+   "name": "Hon Nguyen Con",
+   "description": "",
+   "image": "/linhbao/hon-nguyen-con.webp",
+   "rarity": "rare",
+   "price_xu": 60000,
+   "zorder": 2
+  },
+  {
+   "id": "hu-khong-luan-kinh",
+   "kind": "treasure",
+   "name": "Hu Khong Luan Kinh",
+   "description": "",
+   "image": "/linhbao/hu-khong-luan-kinh.webp",
+   "rarity": "rare",
+   "price_xu": 60000,
+   "zorder": 2
+  },
+  {
+   "id": "huyen-co-kiem-chu",
+   "kind": "treasure",
+   "name": "Huyen Co Kiem Chu",
+   "description": "",
+   "image": "/linhbao/huyen-co-kiem-chu.png",
+   "rarity": "rare",
+   "price_xu": 60000,
+   "zorder": 2
+  },
+  {
+   "id": "huyen-thien-bao-thap",
+   "kind": "treasure",
+   "name": "Huyen Thien Bao Thap",
+   "description": "",
+   "image": "/linhbao/huyen-thien-bao-thap.webp",
+   "rarity": "rare",
+   "price_xu": 60000,
+   "zorder": 2
+  },
+  {
+   "id": "huyet-kiem",
+   "kind": "treasure",
+   "name": "Huyet Kiem",
+   "description": "",
+   "image": "/linhbao/huyet-kiem.webp",
+   "rarity": "rare",
+   "price_xu": 60000,
+   "zorder": 2
+  },
+  {
+   "id": "kho-moc-phung-xuan",
+   "kind": "treasure",
+   "name": "Kho Moc Phung Xuan",
+   "description": "",
+   "image": "/linhbao/kho-moc-phung-xuan.webp",
+   "rarity": "rare",
+   "price_xu": 60000,
+   "zorder": 2
+  },
+  {
+   "id": "kim-gioi-cung",
+   "kind": "treasure",
+   "name": "Kim Gioi Cung",
+   "description": "",
+   "image": "/linhbao/kim-gioi-cung.gif",
+   "rarity": "rare",
+   "price_xu": 60000,
+   "zorder": 2
+  },
+  {
+   "id": "liet-diem-cung",
+   "kind": "treasure",
+   "name": "Liet Diem Cung",
+   "description": "",
+   "image": "/linhbao/liet-diem-cung.gif",
+   "rarity": "rare",
+   "price_xu": 60000,
+   "zorder": 2
+  },
+  {
+   "id": "luc-co-vien-minh",
+   "kind": "treasure",
+   "name": "Luc Co Vien Minh",
+   "description": "",
+   "image": "/linhbao/luc-co-vien-minh.gif",
+   "rarity": "rare",
+   "price_xu": 60000,
+   "zorder": 2
+  },
+  {
+   "id": "mac-lien-yeu-co",
+   "kind": "treasure",
+   "name": "Mac Lien Yeu Co",
+   "description": "",
+   "image": "/linhbao/mac-lien-yeu-co.png",
+   "rarity": "rare",
+   "price_xu": 60000,
+   "zorder": 2
+  },
+  {
+   "id": "phan-thien-kiem",
+   "kind": "treasure",
+   "name": "Phan Thien Kiem",
+   "description": "",
+   "image": "/linhbao/phan-thien-kiem.webp",
+   "rarity": "rare",
+   "price_xu": 60000,
+   "zorder": 2
+  },
+  {
+   "id": "phuc-van-linh-phu",
+   "kind": "treasure",
+   "name": "Phuc Van Linh Phu",
+   "description": "",
+   "image": "/linhbao/phuc-van-linh-phu.webp",
+   "rarity": "rare",
+   "price_xu": 60000,
+   "zorder": 2
+  },
+  {
+   "id": "sat-luc-nguyen-kiem",
+   "kind": "treasure",
+   "name": "Sat Luc Nguyen Kiem",
+   "description": "",
+   "image": "/linhbao/sat-luc-nguyen-kiem.gif",
+   "rarity": "rare",
+   "price_xu": 60000,
+   "zorder": 2
+  },
+  {
+   "id": "tam-cuc-thien-kiem",
+   "kind": "treasure",
+   "name": "Tam Cuc Thien Kiem",
+   "description": "",
+   "image": "/linhbao/tam-cuc-thien-kiem.webp",
+   "rarity": "rare",
+   "price_xu": 60000,
+   "zorder": 2
+  },
+  {
+   "id": "that-tinh-kiem-tran",
+   "kind": "treasure",
+   "name": "That Tinh Kiem Tran",
+   "description": "",
+   "image": "/linhbao/that-tinh-kiem-tran.webp",
+   "rarity": "rare",
+   "price_xu": 60000,
+   "zorder": 2
+  },
+  {
+   "id": "thien-loi-kiem",
+   "kind": "treasure",
+   "name": "Thien Loi Kiem",
+   "description": "",
+   "image": "/linhbao/thien-loi-kiem.webp",
+   "rarity": "rare",
+   "price_xu": 60000,
+   "zorder": 2
+  },
+  {
+   "id": "thien-nghich-chau-v1",
+   "kind": "treasure",
+   "name": "Thien Nghich Chau V1",
+   "description": "",
+   "image": "/linhbao/thien-nghich-chau-v1.webp",
+   "rarity": "rare",
+   "price_xu": 60000,
+   "zorder": 2
+  },
+  {
+   "id": "thien-xu-luan-ban",
+   "kind": "treasure",
+   "name": "Thien Xu Luan Ban",
+   "description": "",
+   "image": "/linhbao/thien-xu-luan-ban.webp",
+   "rarity": "rare",
+   "price_xu": 60000,
+   "zorder": 2
+  },
+  {
+   "id": "thiet-phien-cong-chua",
+   "kind": "treasure",
+   "name": "Thiet Phien Cong Chua",
+   "description": "",
+   "image": "/linhbao/thiet-phien-cong-chua.webp",
+   "rarity": "rare",
+   "price_xu": 60000,
+   "zorder": 2
+  },
+  {
+   "id": "tich-diet-tu-kiem",
+   "kind": "treasure",
+   "name": "Tich Diet Tu Kiem",
+   "description": "",
+   "image": "/linhbao/tich-diet-tu-kiem.webp",
+   "rarity": "rare",
+   "price_xu": 60000,
+   "zorder": 2
+  },
+  {
+   "id": "tieu-thap",
+   "kind": "treasure",
+   "name": "Tieu Thap",
+   "description": "",
+   "image": "/linhbao/tieu-thap.webp",
+   "rarity": "rare",
+   "price_xu": 60000,
+   "zorder": 2
+  },
+  {
+   "id": "to-phu",
+   "kind": "treasure",
+   "name": "To Phu",
+   "description": "",
+   "image": "/linhbao/to-phu.webp",
+   "rarity": "rare",
+   "price_xu": 60000,
+   "zorder": 2
+  },
+  {
+   "id": "tu-gioi-cung",
+   "kind": "treasure",
+   "name": "Tu Gioi Cung",
+   "description": "",
+   "image": "/linhbao/tu-gioi-cung.gif",
+   "rarity": "rare",
+   "price_xu": 60000,
+   "zorder": 2
+  },
+  {
+   "id": "tu-van-tran-ma-tran",
+   "kind": "treasure",
+   "name": "Tu Van Tran Ma Tran",
+   "description": "",
+   "image": "/linhbao/tu-van-tran-ma-tran.webp",
+   "rarity": "rare",
+   "price_xu": 60000,
+   "zorder": 2
+  },
+  {
+   "id": "bach-thien-su",
+   "kind": "treasure",
+   "name": "Bach Thien Su",
+   "description": "",
+   "image": "/linhbao/bach-thien-su.gif",
+   "rarity": "common",
+   "price_xu": 20000,
+   "zorder": 1
+  },
+  {
+   "id": "bang-hoa-linh-vu",
+   "kind": "treasure",
+   "name": "Bang Hoa Linh Vu",
+   "description": "",
+   "image": "/linhbao/bang-hoa-linh-vu.png",
+   "rarity": "common",
+   "price_xu": 20000,
+   "zorder": 1
+  },
+  {
+   "id": "bich-dao",
+   "kind": "treasure",
+   "name": "Bich Dao",
+   "description": "",
+   "image": "/linhbao/bich-dao.png",
+   "rarity": "common",
+   "price_xu": 20000,
+   "zorder": 1
+  },
+  {
+   "id": "cuc-lac-bang-tam",
+   "kind": "treasure",
+   "name": "Cuc Lac Bang Tam",
+   "description": "",
+   "image": "/linhbao/cuc-lac-bang-tam.webp",
+   "rarity": "common",
+   "price_xu": 20000,
+   "zorder": 1
+  },
+  {
+   "id": "diep-to-my",
+   "kind": "treasure",
+   "name": "Diep To My",
+   "description": "",
+   "image": "/linhbao/diep-to-my.gif",
+   "rarity": "common",
+   "price_xu": 20000,
+   "zorder": 1
+  },
+  {
+   "id": "dinh-mau-khi-van-vat-000",
+   "kind": "treasure",
+   "name": "Dinh Mau Khi Van Vat 000",
+   "description": "",
+   "image": "/linhbao/dinh-mau-khi-van-vat-000.webp",
+   "rarity": "common",
+   "price_xu": 20000,
+   "zorder": 1
+  },
+  {
+   "id": "duong-tank",
+   "kind": "treasure",
+   "name": "Duong Tank",
+   "description": "",
+   "image": "/linhbao/duong-tank.webp",
+   "rarity": "common",
+   "price_xu": 20000,
+   "zorder": 1
+  },
+  {
+   "id": "han-giang-anh-nguyet",
+   "kind": "treasure",
+   "name": "Han Giang Anh Nguyet",
+   "description": "",
+   "image": "/linhbao/han-giang-anh-nguyet.png",
+   "rarity": "common",
+   "price_xu": 20000,
+   "zorder": 1
+  },
+  {
+   "id": "huyen-giai-dau-ky-phi-hanh",
+   "kind": "treasure",
+   "name": "Huyen Giai Dau Ky Phi Hanh",
+   "description": "",
+   "image": "/linhbao/huyen-giai-dau-ky-phi-hanh.webp",
+   "rarity": "common",
+   "price_xu": 20000,
+   "zorder": 1
+  },
+  {
+   "id": "huyen-quang-dieu-phap-tang",
+   "kind": "treasure",
+   "name": "Huyen Quang Dieu Phap Tang",
+   "description": "",
+   "image": "/linhbao/huyen-quang-dieu-phap-tang.png",
+   "rarity": "common",
+   "price_xu": 20000,
+   "zorder": 1
+  },
+  {
+   "id": "huyen-the-yeu-ho",
+   "kind": "treasure",
+   "name": "Huyen The Yeu Ho",
+   "description": "",
+   "image": "/linhbao/huyen-the-yeu-ho.png",
+   "rarity": "common",
+   "price_xu": 20000,
+   "zorder": 1
+  },
+  {
+   "id": "huyen-trong-xich-nc",
+   "kind": "treasure",
+   "name": "Huyen Trong Xich Nc",
+   "description": "",
+   "image": "/linhbao/huyen-trong-xich-nc.webp",
+   "rarity": "common",
+   "price_xu": 20000,
+   "zorder": 1
+  },
+  {
+   "id": "khon-ma-lien",
+   "kind": "treasure",
+   "name": "Khon Ma Lien",
+   "description": "",
+   "image": "/linhbao/khon-ma-lien.gif",
+   "rarity": "common",
+   "price_xu": 20000,
+   "zorder": 1
+  },
+  {
+   "id": "khong-linh-duoc",
+   "kind": "treasure",
+   "name": "Khong Linh Duoc",
+   "description": "",
+   "image": "/linhbao/khong-linh-duoc.gif",
+   "rarity": "common",
+   "price_xu": 20000,
+   "zorder": 1
+  },
+  {
+   "id": "khuong-lap",
+   "kind": "treasure",
+   "name": "Khuong Lap",
+   "description": "",
+   "image": "/linhbao/khuong-lap.webp",
+   "rarity": "common",
+   "price_xu": 20000,
+   "zorder": 1
+  },
+  {
+   "id": "kim-nguyen-tu",
+   "kind": "treasure",
+   "name": "Kim Nguyen Tu",
+   "description": "",
+   "image": "/linhbao/kim-nguyen-tu.gif",
+   "rarity": "common",
+   "price_xu": 20000,
+   "zorder": 1
+  },
+  {
+   "id": "lam-minh-an",
+   "kind": "treasure",
+   "name": "Lam Minh An",
+   "description": "",
+   "image": "/linhbao/lam-minh-an.gif",
+   "rarity": "common",
+   "price_xu": 20000,
+   "zorder": 1
+  },
+  {
+   "id": "liet-phong-thu",
+   "kind": "treasure",
+   "name": "Liet Phong Thu",
+   "description": "",
+   "image": "/linhbao/liet-phong-thu.webp",
+   "rarity": "common",
+   "price_xu": 20000,
+   "zorder": 1
+  },
+  {
+   "id": "linh-huyen-truong",
+   "kind": "treasure",
+   "name": "Linh Huyen Truong",
+   "description": "",
+   "image": "/linhbao/linh-huyen-truong.gif",
+   "rarity": "common",
+   "price_xu": 20000,
+   "zorder": 1
+  },
+  {
+   "id": "nu-oa",
+   "kind": "treasure",
+   "name": "Nu Oa",
+   "description": "",
+   "image": "/linhbao/nu-oa.png",
+   "rarity": "common",
+   "price_xu": 20000,
+   "zorder": 1
+  },
+  {
+   "id": "phong-loi-si",
+   "kind": "treasure",
+   "name": "Phong Loi Si",
+   "description": "",
+   "image": "/linhbao/phong-loi-si.webp",
+   "rarity": "common",
+   "price_xu": 20000,
+   "zorder": 1
+  },
+  {
+   "id": "sieu-giau-du-bai",
+   "kind": "treasure",
+   "name": "Sieu Giau Du Bai",
+   "description": "",
+   "image": "/linhbao/sieu-giau-du-bai.webp",
+   "rarity": "common",
+   "price_xu": 20000,
+   "zorder": 1
+  },
+  {
+   "id": "thai-duong-phan-quyet",
+   "kind": "treasure",
+   "name": "Thai Duong Phan Quyet",
+   "description": "",
+   "image": "/linhbao/thai-duong-phan-quyet.webp",
+   "rarity": "common",
+   "price_xu": 20000,
+   "zorder": 1
+  },
+  {
+   "id": "thien-ma-phe-tam-dao",
+   "kind": "treasure",
+   "name": "Thien Ma Phe Tam Dao",
+   "description": "",
+   "image": "/linhbao/thien-ma-phe-tam-dao.webp",
+   "rarity": "common",
+   "price_xu": 20000,
+   "zorder": 1
+  },
+  {
+   "id": "thuy-hoa-hon-nguyen-lien",
+   "kind": "treasure",
+   "name": "Thuy Hoa Hon Nguyen Lien",
+   "description": "",
+   "image": "/linhbao/thuy-hoa-hon-nguyen-lien.webp",
+   "rarity": "common",
+   "price_xu": 20000,
+   "zorder": 1
+  },
+  {
+   "id": "tieu-bat-gioi",
+   "kind": "treasure",
+   "name": "Tieu Bat Gioi",
+   "description": "",
+   "image": "/linhbao/tieu-bat-gioi.webp",
+   "rarity": "common",
+   "price_xu": 20000,
+   "zorder": 1
+  },
+  {
+   "id": "tu-do-nam",
+   "kind": "treasure",
+   "name": "Tu Do Nam",
+   "description": "",
+   "image": "/linhbao/tu-do-nam.webp",
+   "rarity": "common",
+   "price_xu": 20000,
+   "zorder": 1
+  },
+  {
+   "id": "u-minh-hon-ngu",
+   "kind": "treasure",
+   "name": "U Minh Hon Ngu",
+   "description": "",
+   "image": "/linhbao/u-minh-hon-ngu.webp",
+   "rarity": "common",
+   "price_xu": 20000,
+   "zorder": 1
+  },
+  {
+   "id": "viem-nguc-chi-dong",
+   "kind": "treasure",
+   "name": "Viem Nguc Chi Dong",
+   "description": "",
+   "image": "/linhbao/viem-nguc-chi-dong.webp",
+   "rarity": "common",
+   "price_xu": 20000,
+   "zorder": 1
+  }
+ ]
+}

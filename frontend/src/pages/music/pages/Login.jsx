@@ -15,7 +15,7 @@ export default function Login() {
     setBusy(true);
     try {
       await login(username, password);
-      navigate("/");
+      navigate("/music");
     } catch (err) {
       toast.error(err.message);
     } finally {
@@ -27,7 +27,7 @@ export default function Login() {
     setBusy(true);
     try {
       await guest();
-      navigate("/");
+      navigate("/music");
     } catch (err) {
       toast.error(err.message);
     } finally {
@@ -37,7 +37,7 @@ export default function Login() {
 
   return (
     <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "radial-gradient(1200px 600px at 50% -10%, #14371f 0%, #0a0a0a 55%)" }}>
-      <form onSubmit={onSubmit} style={{ width: 360, background: "#121212", border: "1px solid var(--border)", borderRadius: 14, padding: 32 }}>
+      <form onSubmit={onSubmit} style={{ width: "min(360px, 92vw)", background: "#121212", border: "1px solid var(--border)", borderRadius: 14, padding: 32 }}>
         <div style={{ textAlign: "center", marginBottom: 22 }}>
           <div style={{ width: 56, height: 56, borderRadius: 16, background: "linear-gradient(135deg,#1ed760,#0a4d2b)", margin: "0 auto 12px", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 28 }}>🎧</div>
           <h1 style={{ margin: 0, fontSize: 24 }}>Đăng nhập D4M Music</h1>
@@ -74,7 +74,7 @@ export default function Login() {
         </button>
 
         <p className="hint" style={{ textAlign: "center" }}>
-          Chưa có tài khoản? <Link to="/register" style={{ color: "var(--accent)" }}>Đăng ký ngay</Link>
+          Chưa có tài khoản? <Link to="/music/register" style={{ color: "var(--accent)" }}>Đăng ký ngay</Link>
         </p>
       </form>
     </div>

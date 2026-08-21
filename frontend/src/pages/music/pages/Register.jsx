@@ -22,7 +22,7 @@ export default function Register() {
     setBusy(true);
     try {
       await register({ username, password, full_name, email });
-      navigate("/");
+      navigate("/music");
     } catch (err) {
       toast.error(err.message);
     } finally {
@@ -32,7 +32,7 @@ export default function Register() {
 
   return (
     <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "radial-gradient(1200px 600px at 50% -10%, #14371f 0%, #0a0a0a 55%)", padding: "20px" }}>
-      <form onSubmit={onSubmit} style={{ width: 400, background: "#121212", border: "1px solid var(--border)", borderRadius: 14, padding: 32 }}>
+      <form onSubmit={onSubmit} style={{ width: "min(400px, 92vw)", background: "#121212", border: "1px solid var(--border)", borderRadius: 14, padding: 32 }}>
         <div style={{ textAlign: "center", marginBottom: 22 }}>
           <div style={{ width: 56, height: 56, borderRadius: 16, background: "linear-gradient(135deg,#1ed760,#0a4d2b)", margin: "0 auto 12px", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 28 }}>🎧</div>
           <h1 style={{ margin: 0, fontSize: 24 }}>Đăng ký tài khoản</h1>
@@ -50,7 +50,7 @@ export default function Register() {
         </button>
 
         <p className="hint" style={{ textAlign: "center" }}>
-          Đã có tài khoản? <Link to="/login" style={{ color: "var(--accent)" }}>Đăng nhập</Link>
+          Đã có tài khoản? <Link to="/music/login" style={{ color: "var(--accent)" }}>Đăng nhập</Link>
         </p>
       </form>
     </div>

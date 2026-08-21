@@ -13,7 +13,13 @@
  */
 
 const rawApiUrl = import.meta.env.VITE_API_BASE_URL || "";
-const rawWsUrl = import.meta.env.VITE_WS_BASE_URL || "";
+const rawWsUrl =
+  import.meta.env.VITE_WS_BASE_URL ||
+  // Để trống .env → WS tự suy từ host hiện tại (wss:// theo https, ws:// theo http)
+  // để chạy được cả qua proxy (vite dev / nginx docker) lẫn gọi thẳng backend.
+  (typeof window !== "undefined"
+    ? `${window.location.protocol === "https:" ? "wss" : "ws"}://${window.location.host}`
+    : "");
 
 export const API_BASE_URL = rawApiUrl.replace(/\/+$/, "");
 export const WS_BASE_URL = rawWsUrl.replace(/\/+$/, "");
@@ -180,10 +186,17 @@ export const SOCIAL = {
   // 🎨 Sticker GIF
   STICKERS: `${API_BASE_URL}/api/social/stickers`,
   STICKER_FILE: (name) => `${API_BASE_URL}/api/social/sticker/${name}`,
-  // 🖼️ Khung viền avatar (40 kiểu từ github d4m-dev/gif — lưu trong frontend/public/avatar_frames)
-  AVATAR_FRAMES: `${API_BASE_URL}/avatar_frames.json`,                 // manifest tĩnh (danh sách)
+  // 🖼️ Khung viền avatar (40 kiểu từ github d4m-dev/gif — lưu trong backend/assets/avatar_frames)
+  AVATAR_FRAMES: `${API_BASE_URL}/avatar_frames.json`,                 // manifest tĩnh (danh sách + độ hiếm)
   AVATAR_FRAME_FILE: (name) => `${API_BASE_URL}/avatar_frames/${name}`, // file frame GIF/WebP/PNG
   AVATAR_FRAME_DIR: `${API_BASE_URL}/avatar_frames`,                    // thư mục gốc
+  // 🐉💎 Linh thú & Linh bảo
+  SPIRIT_CATALOG: `${API_BASE_URL}/api/social/spirits/catalog`,         // danh mục toàn bộ
+  SPIRIT_ME: `${API_BASE_URL}/api/social/spirits/me`,                   // kho đồ + trang bị + Xu
+  SPIRIT_BUY: `${API_BASE_URL}/api/social/spirits/buy`,                 // mua bằng Xu
+  SPIRIT_EQUIP: `${API_BASE_URL}/api/social/spirits/equip`,             // trang bị
+  SPIRIT_UNEQUIP: `${API_BASE_URL}/api/social/spirits/unequip`,         // tháo
+  SPIRIT_FILE: (path) => `${API_BASE_URL}${path}`,                      // /linhbao/<file>
 };
 
 // ============================================================

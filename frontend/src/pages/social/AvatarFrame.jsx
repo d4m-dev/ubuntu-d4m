@@ -1,5 +1,5 @@
 // src/pages/social/AvatarFrame.jsx
-// 🖼️ Avatar + khung viền GIF động (từ github d4m-dev/gif)
+// 🖼️ Avatar + khung viền GIF động + 🐉 Linh thú + 💎 Linh bảo
 import { API_BASE_URL } from "../../config/urls";
 import { NAME_EFFECTS } from "./socialStyles";
 
@@ -16,10 +16,28 @@ export function nameEffectLabel(id) {
   return eff.label;
 }
 
-// Component Avatar có khung viền GIF động
+// 🏷️ Badge Linh thú / Linh bảo (ảnh nhỏ nổi quanh avatar)
+export function SpiritBadge({ item, className, size }) {
+  if (!item?.image) return null;
+  return (
+    <img
+      src={full(item.image)}
+      alt={item.name || ""}
+      title={item.name ? `${item.name} (${item.rarity_label || item.rarity || ""})` : ""}
+      loading="lazy"
+      className={className}
+      style={{ width: size, height: size }}
+    />
+  );
+}
+
+// Component Avatar có khung viền GIF động + Linh thú + Linh bảo
+// pet/treasure: { id, image, name, rarity } hoặc null
 const FALLBACK = "https://ui-avatars.com/api/?name=D&background=random&color=fff";
-export default function AvatarFrame({ src, frame, size = 40, alt = "" }) {
+export default function AvatarFrame({ src, frame, pet = null, treasure = null, size = 40, alt = "", showSpirits = true }) {
   const avatarSrc = full(src) || FALLBACK;
+  const petSize = Math.max(14, Math.round(size * 0.52));
+  const trSize = Math.max(10, Math.round(size * 0.38));
   return (
     <span
       className="d4m-avatar-frame-wrap"
@@ -39,6 +57,16 @@ export default function AvatarFrame({ src, frame, size = 40, alt = "" }) {
           loading="lazy"
           className="d4m-frame"
         />
+      )}
+      {showSpirits && (
+        <>
+          {pet?.image && (
+            <SpiritBadge item={pet} className="d4m-spirit-pet" size={petSize} />
+          )}
+          {treasure?.image && (
+            <SpiritBadge item={treasure} className="d4m-spirit-treasure" size={trSize} />
+          )}
+        </>
       )}
     </span>
   );

@@ -29,7 +29,8 @@ from api import (
     player, dashboard, websockets, chatbox, social, auth, widgets, 
     projects, ai_admin, audio_engine, bio_premium, music, telegram_bot, astrology, ytdl,
     admin_scripts, admin_security, dldriver, autocode, omni_dl, d4m_music, system,
-    donate, ws_donate, upload, notification, profile_public, songs_upload, social_dm
+    donate, ws_donate, upload, notification, profile_public, songs_upload, social_dm,
+    spirit  # 🐉💎 Linh thú & Linh bảo (Social Hub)
 )
 
 # ==========================================
@@ -38,8 +39,16 @@ from api import (
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     init_db()                   
-    db_manager.connect()   
+    db_manager.connect()  
     db_manager.init_social_tables() 
+    # 🐉 Đảm bảo schema Linh thú/Linh bảo (tương thích MySQL lẫn MariaDB)
+    # rồi đồng bộ danh mục từ backend/assets/spirit_items.json
+    try:
+        from services.spirit_service import ensure_spirit_schema, sync_catalog_from_manifest
+        ensure_spirit_schema()
+        sync_catalog_from_manifest()
+    except Exception as e:
+        logging.warning(f"⚠️ Spirit schema/catalog sync: {e}")
     task_janitor = asyncio.create_task(ai_janitor_task())
     task_telegram = asyncio.create_task(telegram_polling_task())
     
@@ -114,9 +123,52 @@ def setup_static_mounts(app: FastAPI):
         route_url = "/static/telegram" if route_name == "telegram_audio" else f"/{route_name.replace('_files', '-files')}"
         app.mount(route_url, StaticFiles(directory=dir_path), name=route_name)
 
+    # 🖼️ ASSETS SOCIAL HUB: khung viền avatar + 🐉 Linh thú & Linh bảo (folder linhbao)
+    ASSETS_DIR = os.path.join(BASE_DIR, "assets")
+
+    class ImmutableStaticFiles(StaticFiles):
+        """StaticFiles + Cache-Control immutable (429 khung/165 linhbao tải 1 lần, cache mãi)."""
+        async def get_response(self, path, scope):
+            resp = await super().get_response(path, scope)
+            resp.headers["Cache-Control"] = "public, max-age=31536000, immutable"
+            resp.headers["X-Content-Type-Options"] = "nosniff"
+            return resp
+
+    SPIRIT_STATIC = {
+        "avatar_frames": os.path.join(ASSETS_DIR, "avatar_frames"),   # /avatar_frames/<file> (429 khung)
+        "linhbao": os.path.join(ASSETS_DIR, "linhbao"),               # /linhbao/<file> (165 art linh thú/linh bảo)
+    }
+    for route_name, dir_path in SPIRIT_STATIC.items():
+        os.makedirs(dir_path, exist_ok=True)
+        route_url = {
+            "avatar_frames": "/avatar_frames",
+            "linhbao": "/linhbao",
+        }[route_name]
+        app.mount(route_url, ImmutableStaticFiles(directory=dir_path), name=route_name)
+
+    # 📄 Manifest JSON (danh sách khung viền + Linh thú/Linh bảo)
+    from fastapi.responses import FileResponse
+
+    @app.get("/avatar_frames.json", include_in_schema=False)
+    async def avatar_frames_manifest():
+        path = os.path.join(ASSETS_DIR, "avatar_frames.json")
+        if not os.path.exists(path):
+            return {"status": "success", "data": []}
+        return FileResponse(path, media_type="application/json",
+                            headers={"Cache-Control": "public, max-age=300"})
+
+    @app.get("/spirit_items.json", include_in_schema=False)
+    async def spirit_items_manifest():
+        path = os.path.join(ASSETS_DIR, "spirit_items.json")
+        if not os.path.exists(path):
+            return {"status": "success", "data": []}
+        return FileResponse(path, media_type="application/json",
+                            headers={"Cache-Control": "public, max-age=300"})
+
 def setup_routers(app: FastAPI):
     api_routers = [
-        auth.router, dashboard.router, websockets.router, chatbox.router, social.router,
+        auth.router, dashboard.router, websockets.router, chatbox.router,
+        social.router, spirit.router,  # 🐉💎 Spirit = Linh thú & Linh bảo
         widgets.router, projects.router, ai_admin.router, audio_engine.router, bio_premium.router,
         music.router, telegram_bot.router, astrology.router, ytdl.router, player.router, admin_scripts.router,
         admin_security.router, dldriver.router, autocode.router, omni_dl.router,

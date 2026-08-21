@@ -23,6 +23,8 @@ CREATE TABLE IF NOT EXISTS `users` (
             `avatar_frame` varchar(255) DEFAULT NULL,
             `name_effect` varchar(50) DEFAULT 'default',
             `chat_theme` varchar(50) DEFAULT 'default',
+            `equipped_pet` varchar(50) DEFAULT NULL,
+            `equipped_treasure` varchar(50) DEFAULT NULL,
             PRIMARY KEY (`id`)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -658,3 +660,29 @@ CREATE TABLE IF NOT EXISTS `post_comments` (
   KEY `idx_comment_user` (`user_id`),
   KEY `idx_comment_parent` (`parent_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ============================================================
+-- 🐉💎 LINH THÚ & LINH BẢO (Social Hub)
+-- ============================================================
+CREATE TABLE IF NOT EXISTS `spirit_items` (
+    `id`          VARCHAR(50)  NOT NULL,
+    `kind`        ENUM('pet','treasure') NOT NULL,
+    `name`        VARCHAR(150) NOT NULL,
+    `description` VARCHAR(255) DEFAULT NULL,
+    `image`       VARCHAR(255) NOT NULL,
+    `rarity`      VARCHAR(20)  NOT NULL DEFAULT 'common',
+    `price_xu`    INT          NOT NULL DEFAULT 0,
+    `zorder`      INT          NOT NULL DEFAULT 0,
+    PRIMARY KEY (`id`),
+    KEY `idx_kind` (`kind`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS `user_spirit_items` (
+    `user_id`     INT         NOT NULL,
+    `item_id`     VARCHAR(50) NOT NULL,
+    `acquired_at` TIMESTAMP   NULL DEFAULT current_timestamp(),
+    PRIMARY KEY (`user_id`, `item_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Danh mục 165 Linh thú/Linh bảo được backend tự đồng bộ từ
+-- backend/assets/spirit_items.json khi khởi động (không cần seed tay).

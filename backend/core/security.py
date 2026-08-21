@@ -114,6 +114,10 @@ def get_current_active_user(authorization: str):
     if payload is None:
         raise HTTPException(status_code=401, detail="Token không hợp lệ hoặc đã hết hạn.")
 
+    # 👑 Admin cấu hình (role=admin, không nằm bảng users) — bỏ qua tra cứu active DB
+    if payload.get("role") in (1, "admin"):
+        return payload
+
     # Lấy user id từ payload (user_id, id hoặc sub nếu là số)
     uid = payload.get("user_id") or payload.get("id")
     sub = payload.get("sub")

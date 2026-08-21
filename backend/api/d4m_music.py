@@ -59,10 +59,24 @@ def get_current_user_id(credentials: HTTPAuthorizationCredentials = Depends(_bea
     payload = decode_token(credentials.credentials)
     if not payload:
         raise HTTPException(status_code=401, detail="Token không hợp lệ hoặc đã hết hạn.")
-    try:
-        return int(payload["sub"])
-    except (KeyError, TypeError, ValueError):
+    # 🔄 Tương thích MỌI dạng token: SSO (id + sub=username) lẫn music (sub=str(id)) lẫn admin
+    uid = payload.get("id") or payload.get("user_id")
+    sub = payload.get("sub")
+    if not uid and sub is not None:
+        if str(sub).isdigit():
+            uid = int(sub)
+        else:
+            try:
+                with _db() as conn:
+                    with conn.cursor() as cur:
+                        cur.execute("SELECT id FROM users WHERE username=%s", (sub,))
+                        row = cur.fetchone()
+                        uid = row["id"] if row else None
+            except Exception:
+                uid = None
+    if not uid:
         raise HTTPException(status_code=401, detail="Token không hợp lệ.")
+    return int(uid)
 
 
 # ==========================================

@@ -26,6 +26,8 @@ def get_d4m_schema_queries():
             `avatar_frame` varchar(255) DEFAULT NULL,
             `name_effect` varchar(50) DEFAULT 'default',
             `chat_theme` varchar(50) DEFAULT 'default',
+            `equipped_pet` varchar(50) DEFAULT NULL,
+            `equipped_treasure` varchar(50) DEFAULT NULL,
             PRIMARY KEY (`id`)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;""",
         
@@ -389,6 +391,38 @@ def get_d4m_schema_queries():
             KEY `idx_comment_post` (`post_id`),
             KEY `idx_comment_user` (`user_id`),
             KEY `idx_comment_parent` (`parent_id`)
-        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;"""
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;""",
 
+        # ============================================================
+        # 🐉💎 LINH THÚ & LINH BẢO (Social Hub)
+        # ============================================================
+        # 31. Danh mục Linh thú / Linh bảo (catalog)
+        """CREATE TABLE IF NOT EXISTS `spirit_items` (
+            `id`          varchar(50)  NOT NULL,
+            `kind`        enum('pet','treasure') NOT NULL,
+            `name`        varchar(150) NOT NULL,
+            `description` varchar(255) DEFAULT NULL,
+            `image`       varchar(255) NOT NULL,
+            `rarity`      varchar(20)  NOT NULL DEFAULT 'common',
+            `price_xu`    int(11)      NOT NULL DEFAULT 0,
+            `zorder`      int(11)      NOT NULL DEFAULT 0,
+            PRIMARY KEY (`id`),
+            KEY `idx_kind` (`kind`)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;""",
+
+        # 32. Kho đồ: vật phẩm người dùng đã sở hữu
+        """CREATE TABLE IF NOT EXISTS `user_spirit_items` (
+            `user_id`     int(11)     NOT NULL,
+            `item_id`     varchar(50) NOT NULL,
+            `acquired_at` timestamp   NULL DEFAULT current_timestamp(),
+            PRIMARY KEY (`user_id`, `item_id`)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;""",
+
+        # 33. Nâng cấp bảng users đã tồn tại (MariaDB: ADD COLUMN IF NOT EXISTS)
+        "ALTER TABLE `users` ADD COLUMN IF NOT EXISTS `equipped_pet` varchar(50) DEFAULT NULL;",
+        "ALTER TABLE `users` ADD COLUMN IF NOT EXISTS `equipped_treasure` varchar(50) DEFAULT NULL;",
+
+        # 📄 Ghi chú: danh mục spirit_items được backend tự đồng bộ từ
+        # backend/assets/spirit_items.json khi khởi động (sync_catalog_from_manifest),
+        # nên KHÔNG cần seed cứng ở đây.
     ]

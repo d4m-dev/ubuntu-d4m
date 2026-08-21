@@ -139,6 +139,19 @@ SOCIAL = {
 }
 
 # ============================================================
+# 🐉💎 LINH THÚ & LINH BẢO (Social Hub) — /api/social/spirits/*
+# ============================================================
+SPIRIT = {
+    "PREFIX": "/api/social/spirits",
+    "CATALOG": "/catalog",          # GET  — danh mục toàn bộ Linh thú + Linh bảo
+    "ME": "/me",                    # GET  — kho đồ + trang bị + số Xu của tôi
+    "BUY": "/buy",                  # POST — mua vật phẩm bằng Xu
+    "EQUIP": "/equip",              # POST — trang bị vật phẩm đã sở hữu
+    "UNEQUIP": "/unequip",          # POST — tháo trang bị (kind: pet|treasure)
+    "ADMIN_GRANT": "/admin/grant",  # POST — Admin tặng vật phẩm cho user
+}
+
+# ============================================================
 # 📊 DASHBOARD, AI, WIDGETS, SCRIPTS, SECURITY, PLAYER, WS
 # ============================================================
 DASHBOARD = {"PREFIX": "/api/dashboard",

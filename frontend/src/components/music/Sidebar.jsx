@@ -22,28 +22,28 @@ export default function Sidebar() {
         </div>
       </div>
 
-      <NavLink to="/" end className={link}>
+      <NavLink to="/music" end className={link}>
         <HomeIcon /> Trang chủ
       </NavLink>
-      <NavLink to="/search" className={link}>
+      <NavLink to="/music/search" className={link}>
         <SearchIcon /> Tìm kiếm
       </NavLink>
-      <NavLink to="/library" className={link}>
+      <NavLink to="/music/library" className={link}>
         <LibraryIcon /> Thư viện
       </NavLink>
 
       <div className="section-title">THƯ MỤC CỦA BẠN</div>
-      <NavLink to="/liked" className={link}>
+      <NavLink to="/music/liked" className={link}>
         <HeartIcon filled /> Bài hát đã thích
       </NavLink>
-      <NavLink to="/history" className={link}>
+      <NavLink to="/music/history" className={link}>
         <ClockIcon /> Lịch sử nghe
       </NavLink>
 
       {isAdmin && (
         <>
           <div className="section-title">QUẢN TRỊ</div>
-          <NavLink to="/admin" className={link}>
+          <NavLink to="/music/admin" className={link}>
             <MusicIcon /> Quản lý nhạc
           </NavLink>
         </>

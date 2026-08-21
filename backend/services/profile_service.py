@@ -41,15 +41,39 @@ def _check_reset_otp(email: str):
     if _forgot_reset_attempts.get(email, 0) >= MAX_RESET_ATTEMPTS:
         raise HTTPException(status_code=429, detail="Quá nhiều lần nhập OTP sai. Vui lòng thử lại sau.")
 
-def get_user_profile(user_id: int):
-    users = db_executor.select_as_list_dict(
-        "SELECT id, username, full_name, email, phone, dob, address, avatar_url, role, active, "
-        "avatar_frame, name_effect, chat_theme FROM users WHERE id=%s", (user_id,)
-    )
-    if not users: raise HTTPException(status_code=404, detail="Không tìm thấy người dùng.")
-    user = users[0]
+def get_user_profile(user_id: int, username: str = None):
+    from services.spirit_service import spirit_select_sql, spirit_payload
+    users = []
+    if user_id is not None:
+        users = db_executor.select_as_list_dict(
+            "SELECT id, username, full_name, email, phone, dob, address, avatar_url, role, active, "
+            f"avatar_frame, name_effect, chat_theme, {spirit_select_sql()} "
+            "FROM users u WHERE u.id=%s", (user_id,)
+        )
+    if not users:
+        # 👑 Tài khoản admin cấu hình (không nằm bảng users) — hồ sơ tổng hợp để trang không gãy
+        if username:
+            return {
+                "id": None, "username": username, "full_name": username,
+                "email": None, "phone": None, "dob": None, "address": None, "cccd": None,
+                "avatar_url": f"https://ui-avatars.com/api/?name={username}&background=random&color=fff",
+                "role": 1, "active": 1, "avatar_frame": None,
+                "name_effect": "default", "chat_theme": "default",
+                "pet": None, "treasure": None, "xu": 0,
+            }
+        raise HTTPException(status_code=404, detail="Không tìm thấy người dùng.")
+    user = dict(users[0])
     if not user.get("avatar_url"): 
         user["avatar_url"] = f"https://ui-avatars.com/api/?name={user['username']}&background=random&color=fff"
+    # 🐉💎 Gọn hóa dữ liệu Linh thú/Linh bảo + số Xu
+    spirit = spirit_payload(user)
+    user["pet"] = spirit["pet"]
+    user["treasure"] = spirit["treasure"]
+    try:
+        xu_rows = db_executor.select_as_list_dict("SELECT xu FROM players WHERE user_id=%s", (user_id,))
+        user["xu"] = int(xu_rows[0]["xu"]) if xu_rows else 0
+    except Exception:
+        user["xu"] = 0
     return user
 
 def update_user_profile(user_id: int, data: UpdateProfileRequest):

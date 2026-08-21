@@ -12,7 +12,7 @@ export default function MobileNav() {
       className={`lg:hidden fixed bottom-0 left-0 right-0 z-30 glass border-t border-white/5 h-14 flex ${current ? "" : ""}`}
     >
       <NavLink
-        to="/"
+        to="/music"
         end
         data-testid="mobile-nav-home"
         className={({ isActive }) => `${item} ${isActive ? "text-white" : "text-white/60"}`}
@@ -21,7 +21,7 @@ export default function MobileNav() {
         Trang chủ
       </NavLink>
       <NavLink
-        to="/search"
+        to="/music/search"
         data-testid="mobile-nav-search"
         className={({ isActive }) => `${item} ${isActive ? "text-white" : "text-white/60"}`}
       >
@@ -29,7 +29,7 @@ export default function MobileNav() {
         Tìm
       </NavLink>
       <NavLink
-        to="/library"
+        to="/music/library"
         data-testid="mobile-nav-library"
         className={({ isActive }) => `${item} ${isActive ? "text-white" : "text-white/60"}`}
       >

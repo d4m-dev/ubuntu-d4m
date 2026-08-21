@@ -55,9 +55,23 @@ def get_current_user_id(authorization: str = Header(None)):
     token = authorization.split(" ")[1]
     try:
         payload = jwt.decode(token, settings.SECRET_KEY, algorithms=["HS256"])
-        return payload.get("id"), payload.get("sub")
     except Exception:
         raise HTTPException(status_code=401, detail="Token hết hạn hoặc lỗi.")
+    # 🔄 Tương thích mọi dạng token: SSO (id + sub=username), music (sub=str(id)), admin (sub, role)
+    uid = payload.get("id") or payload.get("user_id")
+    sub = payload.get("sub")
+    if not uid and sub is not None:
+        if str(sub).isdigit():
+            uid = int(sub)
+        else:
+            rows = db_executor.select_as_list_dict(
+                "SELECT id FROM users WHERE username=%s", (sub,))
+            if rows:
+                uid = rows[0]["id"]
+    # Admin cấu hình (không nằm bảng users) vẫn hợp lệ — uid=None
+    if not uid and payload.get("role") not in (1, "admin"):
+        raise HTTPException(status_code=401, detail="Không xác định được tài khoản.")
+    return uid, sub
 
 def verify_admin(authorization: str = Header(None)):
     if not authorization or not authorization.startswith("Bearer "):

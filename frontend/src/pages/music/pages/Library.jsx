@@ -20,7 +20,7 @@ export default function Library() {
       <>
         <TopBar />
         <Empty>
-          Bạn cần <Link to="/login" style={{ color: "var(--accent)" }}>đăng nhập</Link> để xem thư viện cá nhân.
+          Bạn cần <Link to="/music/login" style={{ color: "var(--accent)" }}>đăng nhập</Link> để xem thư viện cá nhân.
         </Empty>
       </>
     );
@@ -54,11 +54,11 @@ export default function Library() {
         <h2 className="section-title-lg">Truy cập nhanh</h2>
       </div>
       <div style={{ display: "flex", gap: 16, flexWrap: "wrap" }}>
-        <Link to="/liked" className="song-card" style={{ textDecoration: "none", display: "block", width: 220 }}>
+        <Link to="/music/liked" className="song-card" style={{ textDecoration: "none", display: "block", width: "min(220px, 100%)" }}>
           <div className="title">💚 Bài hát đã thích</div>
           <div className="artist">Xem toàn bộ bài hát bạn đã thả tim</div>
         </Link>
-        <Link to="/history" className="song-card" style={{ textDecoration: "none", display: "block", width: 220 }}>
+        <Link to="/music/history" className="song-card" style={{ textDecoration: "none", display: "block", width: "min(220px, 100%)" }}>
           <div className="title">🕘 Lịch sử nghe</div>
           <div className="artist">Xem lại các bài hát đã nghe gần đây</div>
         </Link>

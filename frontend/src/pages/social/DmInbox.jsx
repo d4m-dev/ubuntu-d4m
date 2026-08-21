@@ -244,7 +244,7 @@ export default function DmInbox({ currentUser, onBack, onUnreadChange, onNavigat
                     onClick={() => startNewConversation(u)}
                     className="w-full flex items-center gap-3 p-2 rounded-xl hover:bg-white/5 text-left"
                   >
-                    <img src={u.avatar_url || AVATAR(u.username)} alt={`Ảnh đại diện ${u.fullname}`} loading="lazy" className="w-10 h-10 rounded-full object-cover" />
+                    <AvatarFrame src={u.avatar_url || AVATAR(u.username)} frame={u.avatar_frame} pet={u.pet} treasure={u.treasure} size={40} alt={`Ảnh đại diện ${u.fullname}`} />
                     <div>
                       <div className="text-sm font-semibold text-white">{u.fullname || u.username}</div>
                       <div className="text-xs text-gray-500">@{u.username}</div>
@@ -273,7 +273,7 @@ export default function DmInbox({ currentUser, onBack, onUnreadChange, onNavigat
                     onClick={() => openConversation(c.conversation_id, c.user)}
                     className={`w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-white/5 transition ${activeConvo?.conversation_id === c.conversation_id ? "bg-white/5" : ""}`}
                   >
-                    <img src={c.user.avatar_url || AVATAR(c.user.username)} alt={`Ảnh đại diện ${c.user.fullname}`} loading="lazy" className="w-11 h-11 rounded-full object-cover" />
+                    <AvatarFrame src={c.user.avatar_url || AVATAR(c.user.username)} frame={c.user.avatar_frame} pet={c.user.pet} treasure={c.user.treasure} size={44} alt={`Ảnh đại diện ${c.user.fullname}`} />
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center justify-between">
                         <span className="text-sm font-semibold text-white truncate">{c.user.fullname || c.user.username}</span>
@@ -303,7 +303,7 @@ export default function DmInbox({ currentUser, onBack, onUnreadChange, onNavigat
                 <button onClick={() => setActiveConvo(null)} className="md:hidden p-1 -ml-2 rounded-full hover:bg-white/10 text-gray-300" aria-label="Quay lại hộp thư">
                   <IconBack />
                 </button>
-                <img src={activeConvo.user.avatar_url || AVATAR(activeConvo.user.username)} alt={`Ảnh đại diện ${activeConvo.user.fullname}`} className="w-9 h-9 rounded-full object-cover" />
+                <AvatarFrame src={activeConvo.user.avatar_url || AVATAR(activeConvo.user.username)} frame={activeConvo.user.avatar_frame} pet={activeConvo.user.pet} treasure={activeConvo.user.treasure} size={36} alt={`Ảnh đại diện ${activeConvo.user.fullname}`} />
                 <div>
                   <div className="text-sm font-semibold text-white">{activeConvo.user.fullname || activeConvo.user.username}</div>
                   <div className="text-xs text-gray-500">
@@ -327,7 +327,7 @@ export default function DmInbox({ currentUser, onBack, onUnreadChange, onNavigat
                   return (
                     <div key={m.id} className={`d4m-chat ${mine ? "mine" : "theirs"}`}>
                       {!mine && (
-                        <AvatarFrame src={m.avatar_url || AVATAR(m.username)} frame={m.avatar_frame} size={28} alt="" />
+                        <AvatarFrame src={m.avatar_url || AVATAR(m.username)} frame={m.avatar_frame} pet={m.pet} treasure={m.treasure} size={28} alt="" />
                       )}
                       <div className="ml-1.5 mr-1.5" />
                       <div

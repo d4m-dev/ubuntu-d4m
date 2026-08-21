@@ -251,3 +251,11 @@ export function PlayerProvider({ children }) {
 export function usePlayer() {
   return useContext(PlayerContext);
 }
+
+// ⏱️ Định dạng giây → "mm:ss" (dùng chung cho SongRow, QueuePanel, NowPlayingModal)
+export function formatTime(sec) {
+  const s = Math.max(0, Math.floor(Number(sec) || 0));
+  const m = Math.floor(s / 60);
+  const r = s % 60;
+  return `${m}:${r < 10 ? "0" : ""}${r}`;
+}

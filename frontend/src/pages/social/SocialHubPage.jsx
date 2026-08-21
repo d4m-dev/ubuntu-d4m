@@ -70,7 +70,9 @@ export default function SocialHubPage() {
     const token = getToken();
     if (!token) { setAuthError("no_token"); return; }
     const payload = parseJwt(token);
-    if (!payload || (payload.exp && payload.exp * 1000 < Date.now()) || payload.active !== 1) {
+    // 👑 Chấp nhận cả token admin (không có claim active) lẫn SSO (active=1)
+    const activeOk = payload && (payload.active === 1 || Number(payload.role) === 1 || payload.role === "admin");
+    if (!payload || (payload.exp && payload.exp * 1000 < Date.now()) || !activeOk) {
       setAuthError("invalid_token"); return;
     }
     setCurrentUser({
@@ -83,6 +85,7 @@ export default function SocialHubPage() {
     setIsAuth(true);
     fetchMusicLibrary();
     fetchFeed();
+    fetchMyProfile();
   }, []);
 
   // 🎨 Inject CSS toàn cục cho khung avatar & hiệu ứng tên & chat theme
@@ -145,6 +148,29 @@ export default function SocialHubPage() {
       const res = await fetch(ENDPOINTS.SOCIAL.FEED, { headers: { Authorization: `Bearer ${getToken()}` } });
       if (res.ok) { const r = await res.json(); setFeed(r.data || []); }
     } catch (e) {} finally { setLoadingFeed(false); }
+  };
+
+  // 👤 Nạp hồ sơ đầy đủ của tôi (khung viền + Linh thú + Linh bảo + Xu)
+  // để avatar của CHÍNH TÔI cũng hiển thị đồng bộ như người khác
+  const fetchMyProfile = async () => {
+    try {
+      const res = await fetch(`${API_BASE_URL}/api/auth/profile/me`, { headers: { Authorization: `Bearer ${getToken()}` } });
+      if (!res.ok) return;
+      const r = await res.json();
+      if (r.status === "success" && r.data) {
+        setCurrentUser((prev) => ({
+          ...prev,
+          fullname: r.data.full_name || prev?.fullname,
+          avatar_url: r.data.avatar_url || prev?.avatar_url,
+          avatar_frame: r.data.avatar_frame || null,
+          name_effect: r.data.name_effect || "default",
+          chat_theme: r.data.chat_theme || "default",
+          pet: r.data.pet || null,
+          treasure: r.data.treasure || null,
+          xu: r.data.xu || 0,
+        }));
+      }
+    } catch (e) {}
   };
 
   // 🖼️ Chọn & upload ảnh đăng kèm status
@@ -241,7 +267,7 @@ export default function SocialHubPage() {
     else if (action === "dm") setShowDm(true);
     else if (action === "create") setShowComposer(true);
     else if (action === "activity") setShowActivity(true);
-    else if (action === "profile") navigate("/admin/profile");
+    else if (action === "profile") setShowCustomization(true); // 👤 Hồ sơ & Phong cách ngay trong social
   };
 
   // ==========================================
@@ -356,7 +382,7 @@ export default function SocialHubPage() {
                     {/* Header post */}
                     <div className="flex gap-3">
                       <div className="flex-shrink-0">
-                        <AvatarFrame src={post.avatar_url} frame={post.avatar_frame} size={40} alt="" />
+                        <AvatarFrame src={post.avatar_url} frame={post.avatar_frame} pet={post.pet} treasure={post.treasure} size={40} alt="" />
                       </div>
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-1.5 text-sm">
@@ -457,7 +483,7 @@ export default function SocialHubPage() {
               </div>
 
               <div className="flex gap-3">
-                <img src={getAvatar(currentUser?.avatar_url)} alt="" className="w-9 h-9 rounded-full object-cover flex-shrink-0" />
+                <AvatarFrame src={currentUser?.avatar_url} frame={currentUser?.avatar_frame} pet={currentUser?.pet} treasure={currentUser?.treasure} size={36} alt="" />
                 <div className="flex-1">
                   <div className="text-sm font-semibold mb-1">{currentUser?.fullname}</div>
                   <textarea
@@ -585,6 +611,9 @@ export default function SocialHubPage() {
           active={activeTab === "for_you"}
           dmUnread={dmUnread}
           avatarUrl={getAvatar(currentUser?.avatar_url)}
+          frame={currentUser?.avatar_frame}
+          pet={currentUser?.pet}
+          treasure={currentUser?.treasure}
           onNavigate={handleNav}
         />
 
@@ -609,8 +638,10 @@ export default function SocialHubPage() {
       {showCustomization && (
         <CustomizationPanel
           currentUser={currentUser}
-          onBack={() => setShowCustomization(false)}
+          onBack={() => { setShowCustomization(false); fetchFeed(); fetchMyProfile(); }}
           onNavigate={handleNav}
+          onEditInfo={() => { setShowCustomization(false); navigate("/admin/profile"); }}
+          onSpiritChanged={() => { fetchFeed(); fetchMyProfile(); }}
           onSaved={(updates) => {
             setCurrentUser((prev) => ({ ...prev, ...updates }));
             setShowCustomization(false);

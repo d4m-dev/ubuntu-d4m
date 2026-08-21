@@ -82,7 +82,9 @@ export default memo(function SongRow({ song, index, contextSongs, showAlbum = fa
     <div
       data-testid={`song-row-${song.id}`}
       className={`group grid items-center gap-3 px-3 py-2 rounded-md hover:bg-white/5 transition-colors ${
-        showAlbum ? "grid-cols-[32px_1fr_1fr_60px_40px]" : "grid-cols-[32px_1fr_60px_40px]"
+        showAlbum
+          ? "grid-cols-[32px_1fr_60px_40px] md:grid-cols-[32px_1fr_1fr_60px_40px]"
+          : "grid-cols-[32px_1fr_60px_40px]"
       }`}
     >
       <div className="w-8 flex items-center justify-center text-white/50 text-sm">
@@ -119,7 +121,7 @@ export default memo(function SongRow({ song, index, contextSongs, showAlbum = fa
             {song.title}
           </div>
           <Link
-            to={`/artist/${encodeURIComponent(song.artist)}`}
+            to={`/music/artist/${encodeURIComponent(song.artist)}`}
             onClick={(e) => e.stopPropagation()}
             className="truncate text-xs text-white/60 hover:text-white hover:underline block"
           >
@@ -135,7 +137,7 @@ export default memo(function SongRow({ song, index, contextSongs, showAlbum = fa
       <div className="text-xs text-white/50 tabular-nums text-right">
         {formatTime(song.duration)}
       </div>
-      <div className="flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+      <div className="flex items-center justify-end gap-1 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity">
         <button
           data-testid={`row-like-${song.id}`}
           onClick={() => (user ? like.mutate() : toast.error("Vui lòng đăng nhập"))}

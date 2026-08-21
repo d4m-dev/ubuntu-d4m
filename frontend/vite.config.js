@@ -102,6 +102,19 @@ export default defineConfig({
         changeOrigin: true,
         ws: true, // ⚡ Hỗ trợ WebSocket realtime (DM, notification) trong dev
       },
+      // 🖼️🐉💎 Assets Social Hub (khung viền + Linh thú/Linh bảo) — cùng backend
+      "/avatar_frames": {
+        target: process.env.VITE_API_PROXY || "http://127.0.0.1:16868",
+        changeOrigin: true,
+      },
+      "/linhbao": {
+        target: process.env.VITE_API_PROXY || "http://127.0.0.1:16868",
+        changeOrigin: true,
+      },
+      "/spirit_items.json": {
+        target: process.env.VITE_API_PROXY || "http://127.0.0.1:16868",
+        changeOrigin: true,
+      },
     },
   },
 })

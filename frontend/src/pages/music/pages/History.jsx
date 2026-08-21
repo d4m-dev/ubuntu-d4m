@@ -20,7 +20,7 @@ export default function History() {
       <>
         <TopBar />
         <Empty>
-          Bạn cần <Link to="/login" style={{ color: "var(--accent)" }}>đăng nhập</Link> để xem lịch sử nghe.
+          Bạn cần <Link to="/music/login" style={{ color: "var(--accent)" }}>đăng nhập</Link> để xem lịch sử nghe.
         </Empty>
       </>
     );

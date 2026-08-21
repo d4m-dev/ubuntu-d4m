@@ -32,7 +32,7 @@ export default function Home() {
 
       <div className="section-head">
         <h2 className="section-title-lg">🔥 Thịnh hành</h2>
-        <span className="link-more" style={{ cursor: "pointer" }} onClick={() => navigate("/search")}>
+        <span className="link-more" style={{ cursor: "pointer" }} onClick={() => navigate("/music/search")}>
           Xem tất cả
         </span>
       </div>

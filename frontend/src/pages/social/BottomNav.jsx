@@ -3,10 +3,14 @@
 // Được nhúng vào SocialHubPage VÀ các panel (DM, Hoạt động, Cá nhân hóa)
 // với z-index rất cao (z-[100]) để LUÔN hiển thị trên mọi phần chức năng.
 import { IconHome, IconMessage, IconPlus, IconHeart } from "./icons";
+import AvatarFrame from "./AvatarFrame";
 
-export default function BottomNav({ active, dmUnread = 0, avatarUrl, onNavigate }) {
+export default function BottomNav({ active, dmUnread = 0, avatarUrl, frame, pet, treasure, onNavigate }) {
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-[100] bg-black/95 backdrop-blur-xl border-t border-white/10">
+    <nav
+      className="fixed bottom-0 left-0 right-0 z-[100] bg-black/95 backdrop-blur-xl border-t border-white/10"
+      style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
+    >
       <div className="max-w-[640px] mx-auto flex items-center justify-around py-3 text-gray-400">
         {/* Home */}
         <button
@@ -47,13 +51,9 @@ export default function BottomNav({ active, dmUnread = 0, avatarUrl, onNavigate 
           style={{ width: 24, height: 24 }}
         ><IconHeart /></button>
 
-        {/* Hồ sơ */}
-        <button onClick={() => onNavigate("profile")} className="p-1 hover:text-gray-200" title="Hồ sơ">
-          {avatarUrl ? (
-            <img src={avatarUrl} alt="" className="w-6 h-6 rounded-full object-cover" />
-          ) : (
-            <span className="block w-6 h-6 rounded-full bg-white/15" />
-          )}
+        {/* Hồ sơ — mở bảng Hồ sơ & Phong cách */}
+        <button onClick={() => onNavigate("profile")} className="p-1 hover:text-gray-200" title="Hồ sơ & Phong cách">
+          <AvatarFrame src={avatarUrl} frame={frame} pet={pet} treasure={treasure} size={26} alt="" />
         </button>
       </div>
     </nav>

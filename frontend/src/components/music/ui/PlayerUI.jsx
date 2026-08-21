@@ -101,7 +101,7 @@ export function SongListHeader() {
 export function PlaylistCard({ playlist }) {
   const navigate = useNavigate();
   return (
-    <div className="playlist-card" onClick={() => navigate(`/playlist/${playlist.id}`)}>
+    <div className="playlist-card" onClick={() => navigate(`/music/playlist/${playlist.id}`)}>
       <div className="art">
         <img src={playlist.cover || STATIC.FALLBACK_COVER} alt={playlist.name} loading="lazy" />
       </div>

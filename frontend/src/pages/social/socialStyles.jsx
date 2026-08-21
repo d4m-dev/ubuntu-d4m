@@ -82,6 +82,26 @@ export const SOCIAL_GLOBAL_CSS = `
     position:absolute; inset:0; width:100%; height:100%; border-radius:50%;
     object-fit:contain; pointer-events:none; mix-blend-mode:screen;
   }
+  /* 🐉 Linh thú — art nền đen kiểu game: blend-screen xóa nền đen,
+     nổi như hào quang quanh avatar (góc phải dưới) */
+  .d4m-avatar-frame-wrap > img.d4m-spirit-pet {
+    position:absolute; right:-32%; bottom:-14%;
+    width:88% !important; height:88% !important;
+    object-fit:contain; mix-blend-mode:screen;
+    filter:drop-shadow(0 0 6px rgba(120,200,255,.45));
+    pointer-events:none; z-index:3;
+    animation:d4m-pet-bob 2.6s ease-in-out infinite;
+  }
+  /* 💎 Linh bảo — góc trái dưới */
+  .d4m-avatar-frame-wrap > img.d4m-spirit-treasure {
+    position:absolute; left:-28%; bottom:-10%;
+    width:74% !important; height:74% !important;
+    object-fit:contain; mix-blend-mode:screen;
+    filter:drop-shadow(0 0 5px rgba(255,200,80,.5));
+    pointer-events:none; z-index:3;
+    animation:d4m-pet-bob 3.4s ease-in-out infinite reverse;
+  }
+  @keyframes d4m-pet-bob { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-3px)} }
   /* Chat bubbles giống Messenger */
   .d4m-chat { display:flex; width:100%; }
   .d4m-chat.mine { justify-content:flex-end; }

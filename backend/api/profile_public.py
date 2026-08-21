@@ -15,6 +15,7 @@ from core.database import db_executor
 from core.cache import cache_get, cache_set
 from core import urls as U
 from api.d4m_music import _song_json, _pl_folder
+from services.spirit_service import spirit_select_sql, spirit_payload
 
 logger = logging.getLogger("d4m_profile_public")
 
@@ -31,14 +32,15 @@ def get_public_profile(username: str):
         return cached
 
     try:
-        # 1. Thông tin user
+        # 1. Thông tin user (kèm khung viền + Linh thú/Linh bảo)
         users = db_executor.select_as_list_dict(
-            "SELECT id, username, full_name, avatar_url, role, created_at "
-            "FROM users WHERE username=%s AND active=1", (username,))
+            f"SELECT id, username, full_name, avatar_url, role, created_at, "
+            f"avatar_frame, name_effect, {spirit_select_sql()} "
+            f"FROM users u WHERE u.username=%s AND u.active=1", (username,))
         if not users:
             raise HTTPException(status_code=404, detail="Không tìm thấy hồ sơ công khai.")
 
-        user = users[0]
+        user = dict(users[0])
 
         # 2. Playlist công khai của user
         from core.database import db_manager
@@ -66,6 +68,7 @@ def get_public_profile(username: str):
                     "song_count": counts.get(p["id"], 0),
                 })
 
+        spirit = spirit_payload(user)
         result = {
             "status": "success",
             "user": {
@@ -75,6 +78,11 @@ def get_public_profile(username: str):
                 "avatar_url": user["avatar_url"] or "",
                 "role": user["role"],
                 "created_at": user["created_at"].isoformat() if hasattr(user["created_at"], "isoformat") else str(user["created_at"] or ""),
+                # 🖼️🐉💎 Cá nhân hóa
+                "avatar_frame": user.get("avatar_frame"),
+                "name_effect": user.get("name_effect") or "default",
+                "pet": spirit["pet"],
+                "treasure": spirit["treasure"],
             },
             "playlists": pl_json,
         }

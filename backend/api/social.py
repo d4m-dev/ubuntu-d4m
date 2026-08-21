@@ -13,6 +13,7 @@ from core.database import db_executor, db_inserter, db_deleter
 from services.social_media_service import (
     process_image_upload, safe_social_path, SOCIAL_MEDIA_DIR, _is_safe_filename,
 )
+from services.spirit_service import spirit_select_sql, spirit_payload
 
 router = APIRouter(prefix=U.SOCIAL["PREFIX"], tags=["Social Hub"])
 
@@ -145,12 +146,13 @@ async def get_social_image(year_month: str, filename: str):
 def get_feed(current_user: dict = Depends(get_current_user)):
     """Lấy danh sách bảng tin an toàn chống Crash 100%."""
     try:
-        sql = """
+        sql = f"""
             SELECT
                 p.id as post_id, p.content, p.created_at, p.attached_media, p.media_type,
                 u.id as user_id, u.username,
                 COALESCE(u.fullname, u.full_name, u.username) as fullname,
                 u.avatar_url, u.role, u.avatar_frame, u.name_effect, u.chat_theme,
+                {spirit_select_sql()},
                 (SELECT GROUP_CONCAT(m.file_url SEPARATOR '||') FROM media m
                  WHERE m.post_id = p.id AND m.media_type = 'image') as images,
                 (SELECT m.file_url FROM media m
@@ -169,6 +171,7 @@ def get_feed(current_user: dict = Depends(get_current_user)):
             dt_str = dt.isoformat() if hasattr(dt, "isoformat") else str(dt) if dt else None
             images = (post.get("images") or "").split("||") if post.get("images") else []
 
+            spirit = spirit_payload(post)
             formatted_posts.append({
                 "post_id": post["post_id"],
                 "user_id": post["user_id"],
@@ -179,6 +182,8 @@ def get_feed(current_user: dict = Depends(get_current_user)):
                 "avatar_frame": post.get("avatar_frame"),
                 "name_effect": post.get("name_effect") or "default",
                 "chat_theme": post.get("chat_theme") or "default",
+                "pet": spirit["pet"],           # 🐉 Linh thú đang trang bị
+                "treasure": spirit["treasure"], # 💎 Linh bảo đang trang bị
                 "content": post["content"],
                 "created_at": dt_str,
                 "attached_media": post["attached_media"],

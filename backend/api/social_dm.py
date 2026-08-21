@@ -20,6 +20,7 @@ from pydantic import BaseModel, Field
 
 from core import urls as U
 from core.database import db_executor, db_inserter, db_updater
+from services.spirit_service import spirit_select_sql, spirit_payload
 
 logger = logging.getLogger("d4m_social_dm")
 
@@ -120,14 +121,17 @@ def _canonical_pair(a: int, b: int):
 
 
 def _convo_other_user(convo: dict, me: int) -> dict:
-    """Lấy thông tin người còn lại trong cuộc trò chuyện."""
+    """Lấy thông tin người còn lại trong cuộc trò chuyện (kèm khung viền + Linh thú/Linh bảo)."""
     other_id = convo["user1_id"] if convo["user1_id"] != me else convo["user2_id"]
     u = db_executor.select_as_list_dict(
-        "SELECT id, username, COALESCE(fullname, full_name, username) as fullname, avatar_url, role "
-        "FROM users WHERE id=%s", (other_id,))
+        f"""SELECT id, username, COALESCE(fullname, full_name, username) as fullname, avatar_url, role,
+                   avatar_frame, name_effect, {spirit_select_sql()}
+            FROM users u WHERE u.id=%s""", (other_id,))
     if not u:
         return {"id": other_id, "username": "?user", "fullname": "Người dùng", "avatar_url": "", "role": -1}
-    return u[0]
+    row = dict(u[0])
+    row.update(spirit_payload(row))
+    return row
 
 
 # ==========================================================
@@ -206,20 +210,26 @@ def get_messages(conversation_id: int, current_user: dict = Depends(get_current_
     if c["user1_id"] not in (me,) and c["user2_id"] not in (me,):
         raise HTTPException(status_code=403, detail="Bạn không thuộc cuộc trò chuyện này.")
     rows = db_executor.select_as_list_dict(
-        """SELECT m.id, m.sender_id, m.content, m.created_at, m.is_read,
+        f"""SELECT m.id, m.sender_id, m.content, m.created_at, m.is_read,
                   u.username, COALESCE(u.fullname, u.full_name, u.username) as fullname, u.avatar_url,
-                  u.avatar_frame, u.name_effect, u.chat_theme
+                  u.avatar_frame, u.name_effect, u.chat_theme,
+                  {spirit_select_sql()}
            FROM messages m
            JOIN users u ON m.sender_id = u.id
            WHERE m.conversation_id=%s ORDER BY m.created_at ASC LIMIT 500""", (conversation_id,))
     data = []
     for m in rows:
         dt = m.get("created_at")
+        spirit = spirit_payload(m)
         data.append({
             "id": m["id"], "sender_id": m["sender_id"], "content": m["content"],
             "created_at": dt.isoformat() if hasattr(dt, "isoformat") else str(dt) if dt else None,
             "is_read": m["is_read"], "username": m["username"], "fullname": m["fullname"],
             "avatar_url": m["avatar_url"],
+            "avatar_frame": m.get("avatar_frame"),
+            "name_effect": m.get("name_effect") or "default",
+            "chat_theme": m.get("chat_theme") or "default",
+            "pet": spirit["pet"], "treasure": spirit["treasure"],
         })
     # đánh dấu đã đọc tất cả tin nhắn của người khác
     try:
@@ -253,11 +263,13 @@ async def send_message(conversation_id: int, body: MessageCreate,
         "UPDATE conversations SET last_message_at=current_timestamp() WHERE id=%s", (conversation_id,))
 
     msg = db_executor.select_as_list_dict(
-        """SELECT m.id, m.sender_id, m.content, m.created_at, m.is_read,
+        f"""SELECT m.id, m.sender_id, m.content, m.created_at, m.is_read,
                   u.username, COALESCE(u.fullname, u.full_name, u.username) as fullname, u.avatar_url,
-                  u.avatar_frame, u.name_effect, u.chat_theme
+                  u.avatar_frame, u.name_effect, u.chat_theme,
+                  {spirit_select_sql()}
            FROM messages m JOIN users u ON m.sender_id=u.id WHERE m.id=%s""", (mid,))[0]
     dt = msg.get("created_at")
+    spirit = spirit_payload(msg)
     payload = {
         "type": "dm",
         "conversation_id": conversation_id,
@@ -265,6 +277,10 @@ async def send_message(conversation_id: int, body: MessageCreate,
             "id": msg["id"], "sender_id": msg["sender_id"], "content": msg["content"],
             "created_at": dt.isoformat() if hasattr(dt, "isoformat") else str(dt) if dt else None,
             "is_read": 0, "username": msg["username"], "fullname": msg["fullname"], "avatar_url": msg["avatar_url"],
+            "avatar_frame": msg.get("avatar_frame"),
+            "name_effect": msg.get("name_effect") or "default",
+            "chat_theme": msg.get("chat_theme") or "default",
+            "pet": spirit["pet"], "treasure": spirit["treasure"],
         },
     }
     # gửi realtime cho người nhận
@@ -298,17 +314,23 @@ def mark_read(conversation_id: int, current_user: dict = Depends(get_current_use
 def search_users(q: str = "", current_user: dict = Depends(get_current_user)):
     me = current_user["user_id"]
     try:
+        base = f"""SELECT u.id, u.username, COALESCE(u.fullname, u.full_name, u.username) as fullname,
+                          u.avatar_url, u.role, u.avatar_frame, {spirit_select_sql()}
+                   FROM users u WHERE u.id<>%s"""
         if q:
             rows = db_executor.select_as_list_dict(
-                """SELECT id, username, COALESCE(fullname, full_name, username) as fullname, avatar_url, role
-                   FROM users WHERE id<>%s AND (username LIKE %s OR fullname LIKE %s OR full_name LIKE %s)
-                   ORDER BY id ASC LIMIT 20""",
+                base + " AND (u.username LIKE %s OR u.fullname LIKE %s OR u.full_name LIKE %s)"
+                       " ORDER BY u.id ASC LIMIT 20",
                 (me, f"%{q}%", f"%{q}%", f"%{q}%"))
         else:
             rows = db_executor.select_as_list_dict(
-                """SELECT id, username, COALESCE(fullname, full_name, username) as fullname, avatar_url, role
-                   FROM users WHERE id<>%s ORDER BY id ASC LIMIT 20""", (me,))
-        return {"status": "success", "data": rows}
+                base + " ORDER BY u.id ASC LIMIT 20", (me,))
+        data = []
+        for r in rows:
+            r = dict(r)
+            r.update(spirit_payload(r))
+            data.append(r)
+        return {"status": "success", "data": data}
     except Exception as e:
         logger.error(f"search_users lỗi: {e}")
         raise HTTPException(status_code=500, detail="Lỗi tìm kiếm.")
@@ -322,9 +344,15 @@ def list_users(current_user: dict = Depends(get_current_user)):
     me = current_user["user_id"]
     try:
         rows = db_executor.select_as_list_dict(
-            """SELECT id, username, COALESCE(fullname, full_name, username) as fullname, avatar_url, role
-               FROM users WHERE id<>%s ORDER BY id ASC LIMIT 50""", (me,))
-        return {"status": "success", "data": rows}
+            f"""SELECT u.id, u.username, COALESCE(u.fullname, u.full_name, u.username) as fullname,
+                       u.avatar_url, u.role, u.avatar_frame, {spirit_select_sql()}
+               FROM users u WHERE u.id<>%s ORDER BY u.id ASC LIMIT 50""", (me,))
+        data = []
+        for r in rows:
+            r = dict(r)
+            r.update(spirit_payload(r))
+            data.append(r)
+        return {"status": "success", "data": data}
     except Exception as e:
         logger.error(f"list_users lỗi: {e}")
         raise HTTPException(status_code=500, detail="Lỗi lấy danh sách.")
@@ -337,9 +365,10 @@ def list_users(current_user: dict = Depends(get_current_user)):
 def get_comments(post_id: int, current_user: dict = Depends(get_current_user)):
     try:
         rows = db_executor.select_as_list_dict(
-            """SELECT c.id, c.post_id, c.user_id, c.parent_id, c.content, c.image_url, c.created_at,
+            f"""SELECT c.id, c.post_id, c.user_id, c.parent_id, c.content, c.image_url, c.created_at,
                       u.username, COALESCE(u.fullname, u.full_name, u.username) as fullname, u.avatar_url, u.role,
-                      u.avatar_frame, u.name_effect, u.chat_theme
+                      u.avatar_frame, u.name_effect, u.chat_theme,
+                      {spirit_select_sql()}
                FROM post_comments c
                JOIN users u ON c.user_id = u.id
                WHERE c.post_id=%s ORDER BY c.created_at ASC""", (post_id,))
@@ -347,12 +376,14 @@ def get_comments(post_id: int, current_user: dict = Depends(get_current_user)):
         comments, replies = [], {}
         for r in rows:
             dt = r.get("created_at")
+            spirit = spirit_payload(r)
             item = {
                 "id": r["id"], "post_id": r["post_id"], "user_id": r["user_id"],
                 "parent_id": r["parent_id"], "content": r["content"], "image_url": r.get("image_url"),
                 "created_at": dt.isoformat() if hasattr(dt, "isoformat") else str(dt) if dt else None,
                 "username": r["username"], "fullname": r["fullname"], "avatar_url": r["avatar_url"], "role": r["role"],
                 "avatar_frame": r.get("avatar_frame"), "name_effect": r.get("name_effect") or "default",
+                "pet": spirit["pet"], "treasure": spirit["treasure"],
             }
             if r["parent_id"]:
                 replies.setdefault(r["parent_id"], []).append(item)
@@ -395,11 +426,13 @@ def add_comment(post_id: int, body: CommentCreate, current_user: dict = Depends(
     except Exception:
         pass
     comment = db_executor.select_as_list_dict(
-        """SELECT c.id, c.post_id, c.user_id, c.parent_id, c.content, c.image_url, c.created_at,
+        f"""SELECT c.id, c.post_id, c.user_id, c.parent_id, c.content, c.image_url, c.created_at,
                   u.username, COALESCE(u.fullname, u.full_name, u.username) as fullname, u.avatar_url, u.role,
-                  u.avatar_frame, u.name_effect
+                  u.avatar_frame, u.name_effect,
+                  {spirit_select_sql()}
            FROM post_comments c JOIN users u ON c.user_id=u.id WHERE c.id=%s""", (cid,))[0]
     dt = comment.get("created_at")
+    spirit = spirit_payload(comment)
     return {"status": "success", "data": {
         "id": comment["id"], "post_id": comment["post_id"], "user_id": comment["user_id"],
         "parent_id": comment["parent_id"], "content": comment["content"], "image_url": comment.get("image_url"),
@@ -407,4 +440,5 @@ def add_comment(post_id: int, body: CommentCreate, current_user: dict = Depends(
         "username": comment["username"], "fullname": comment["fullname"],
         "avatar_url": comment["avatar_url"], "role": comment["role"], "replies": [],
         "avatar_frame": comment.get("avatar_frame"), "name_effect": comment.get("name_effect") or "default",
+        "pet": spirit["pet"], "treasure": spirit["treasure"],
     }}

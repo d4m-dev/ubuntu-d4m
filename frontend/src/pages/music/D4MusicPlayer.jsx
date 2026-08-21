@@ -27,6 +27,7 @@ import History from "./pages/History";
 import Admin from "./pages/Admin";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import ArtistPage from "./pages/ArtistPage";
 
 // Khởi tạo Query Client cho hệ thống call API
 const queryClient = new QueryClient({
@@ -57,6 +58,7 @@ export default function D4MusicPlayer() {
                 <Route index element={<Home />} />
                 <Route path="search" element={<SearchPage />} />
                 <Route path="playlist/:id" element={<PlaylistDetail />} />
+                <Route path="artist/:name" element={<ArtistPage />} />
                 <Route path="library" element={<Library />} />
                 <Route path="liked" element={<LikedSongs />} />
                 <Route path="history" element={<History />} />

@@ -83,6 +83,70 @@ Bản gộp này giữ nguyên toàn bộ hệ sinh thái D4M (SSO, Social, Tool
 - **Admin**: upload nhạc, upload ảnh, security radar/blacklist, scripts/cron
 - **Telegram Bot**: báo cáo hệ thống, thời tiết
 
+### 🖼️💎 Cá nhân hóa Social Hub (Khung viền + Linh thú + Linh bảo)
+
+| Tính năng | Mô tả |
+|-----------|-------|
+| 🖼️ **Khung viền Avatar** | **429 khung** (`backend/assets/avatar_frames/`, chủ yếu loạt `khung-*`), phân 4 cấp độ hiếm: **Thường / Hiếm / Sử thi / Huyền thoại** (viền màu tương ứng trong bảng chọn) |
+| 🐉 **Linh thú** | 19 thú (hồ ly cửu vĩ, kỳ lân, huyền long, phượng hoàng...) — kho đồ, mua bằng **Xu** (`players.xu`), trang bị / tháo, hiển thị aura góc phải avatar |
+| 💎 **Linh bảo** | 146 báu vật / hộ thể (kiếm tiên, cờ, tháp, Thần Tài, Na Tra...) hiển thị aura góc trái avatar |
+| 🎨 **Hiển thị** | Art nền đen kiểu game → `mix-blend-mode: screen` xóa nền đen, nổi như hào quang quanh avatar trên nền tối |
+| ⚡ **Chịu tải lớn** | Picker 429 khung / 165 linh vật có **tìm kiếm + lọc độ hiếm + phân trang "Xem thêm"**; ảnh tĩnh serve với `Cache-Control: immutable` (tải 1 lần) |
+| 📍 **Đồng bộ** | Bảng tin (feed), bình luận, tin nhắn DM, hộp thư, hồ sơ công khai — tất cả đều render khung + linh thú + linh bảo của từng người |
+
+> 📋 Danh sách phân loại thú/báu vật nằm ở `backend/assets/linhbao_classification.md`.
+> Muốn chuyển mục nào sang nhóm kia, hoặc đổi độ hiếm / giá: sửa **`backend/assets/spirit_items.json`** rồi restart backend (backend tự UPSERT danh mục vào DB khi khởi động).
+
+**API (prefix `/api/social/spirits`)**
+
+| Method | Đường dẫn | Chức năng |
+|--------|-----------|-----------|
+| GET | `/catalog` | Danh mục toàn bộ Linh thú + Linh bảo (kèm trạng thái sở hữu/trang bị) |
+| GET | `/me` | Kho đồ của tôi + trang bị hiện tại + số Xu |
+| POST | `/buy` | Mua vật phẩm bằng Xu (trừ nguyên tử, chống race) |
+| POST | `/equip` | Trang bị vật phẩm đã sở hữu |
+| POST | `/unequip` | Tháo trang bị (`{"kind": "pet"\|"treasure"}`) |
+| POST | `/admin/grant` | Admin tặng vật phẩm cho user (`{"user_id", "item_id"}`) |
+
+**Thêm / sửa vật phẩm (không cần sửa code)**
+
+1. Thả ảnh (PNG/GIF/WebP, nền đen kiểu game là đẹp nhất) vào `backend/assets/linhbao/`
+2. Thêm 1 entry vào `backend/assets/spirit_items.json`:
+   ```json
+   {"id": "ten-file", "kind": "pet", "name": "Tên Hiển Thị", "description": "Mô tả",
+    "image": "/linhbao/ten-file.webp", "rarity": "epic", "price_xu": 200000, "zorder": 3}
+   ```
+3. Restart backend → danh mục tự UPSERT vào bảng `spirit_items`.
+   (Hoặc tặng trực tiếp cho user: `POST /api/social/spirits/admin/grant` `{"user_id", "item_id"}`)
+4. Khung viền mới: thả file vào `backend/assets/avatar_frames/` rồi thêm entry vào `backend/assets/avatar_frames.json` (`rarity`: `common|rare|epic|legendary`).
+
+**Nâng cấp DB đã chạy sẵn** (DB mới KHÔNG cần — backend tự tạo bảng + cột khi khởi động):
+
+```bash
+mysql -u d4m -padmin123 social_hub < database/spirit_items.sql
+```
+
+**Đồng bộ tính năng vào clone riêng** (file patch nằm ở root repo):
+
+```bash
+git am KHUNG_LINHTHU_LINHBAO.patch     # hoặc: git apply KHUNG_LINHTHU_LINHBAO.patch
+```
+
+**Cấu trúc hệ thống Cá nhân hóa (1 mối, không rải rác)**
+
+```
+backend/assets/avatar_frames/          # 429 khung viền thật
+backend/assets/avatar_frames.json      # manifest khung (+ rarity) — backend serve /avatar_frames.json
+backend/assets/linhbao/                # 165 art Linh thú + Linh bảo (nền đen)
+backend/assets/spirit_items.json       # 👑 NGUỒN SỰ THẬT: catalog (kind/rarity/giá) — tự UPSERT vào DB khi khởi động
+backend/assets/linhbao_classification.md  # danh sách phân loại thú/báu vật để duyệt
+backend/api/spirit.py                  # API /api/social/spirits/* (catalog, me, buy, equip, unequip, admin/grant)
+backend/services/spirit_service.py     # SQL fragment + formatter + sync_catalog_from_manifest()
+backend/tests/test_spirit_suite.py     # test suite (pip install sqlglot fastapi ... rồi chạy)
+database/spirit_items.sql              # migration cho DB cũ (DB mới tự tạo)
+frontend/src/pages/social/*            # AvatarFrame (badge aura), CustomizationPanel (4 tab), feed/DM/comments
+```
+
 ---
 
 ## 🧱 Kiến trúc / Cấu trúc thư mục

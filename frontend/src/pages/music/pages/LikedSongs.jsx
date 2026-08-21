@@ -20,7 +20,7 @@ export default function LikedSongs() {
       <>
         <TopBar />
         <Empty>
-          Bạn cần <Link to="/login" style={{ color: "var(--accent)" }}>đăng nhập</Link> để xem bài hát đã thích.
+          Bạn cần <Link to="/music/login" style={{ color: "var(--accent)" }}>đăng nhập</Link> để xem bài hát đã thích.
         </Empty>
       </>
     );

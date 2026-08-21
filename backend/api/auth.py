@@ -101,8 +101,8 @@ async def logout(authorization: str = Header(None)):
 # ==========================================
 @router.get("/profile/me")
 async def get_my_profile(auth_data: tuple = Depends(get_current_user_id)):
-    user_id, _ = auth_data
-    return {"status": "success", "data": get_user_profile(user_id)}
+    user_id, username = auth_data
+    return {"status": "success", "data": get_user_profile(user_id, username)}
 
 @router.put("/profile/update")
 async def update_profile(data: UpdateProfileRequest, auth_data: tuple = Depends(get_current_user_id)):

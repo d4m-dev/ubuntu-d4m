@@ -29,7 +29,7 @@ export default function Admin() {
         <TopBar />
         <Empty>
           Bạn không có quyền quản trị.{" "}
-          <Link to="/login" style={{ color: "var(--accent)" }}>Đăng nhập tài khoản admin</Link>
+          <Link to="/music/login" style={{ color: "var(--accent)" }}>Đăng nhập tài khoản admin</Link>
         </Empty>
       </>
     );

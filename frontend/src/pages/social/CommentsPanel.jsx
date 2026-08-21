@@ -122,7 +122,7 @@ export default function CommentsPanel({ post, currentUser, onClose }) {
         {/* Bài viết gốc */}
         <div className="px-4 py-3 border-b border-white/10">
           <div className="flex gap-3">
-            <AvatarFrame src={post.avatar_url || AVATAR(post.username)} frame={post.avatar_frame} size={36} alt="" />
+            <AvatarFrame src={post.avatar_url || AVATAR(post.username)} frame={post.avatar_frame} pet={post.pet} treasure={post.treasure} size={36} alt="" />
             <div className="min-w-0">
               <span className="text-sm font-semibold text-white" style={cssFrom(nameEffectStyle(post.name_effect))}>{post.fullname || post.username}</span>
               <span className="text-xs text-gray-500 ml-1">@{post.username} · {fmtAgo(post.created_at)}</span>
@@ -237,7 +237,7 @@ export default function CommentsPanel({ post, currentUser, onClose }) {
 function CommentRow({ c, me, onReply, small = false }) {
   return (
     <div className="flex gap-2">
-      <AvatarFrame src={c.avatar_url || AVATAR(c.username)} frame={c.avatar_frame} size={small ? 24 : 32} alt="" />
+      <AvatarFrame src={c.avatar_url || AVATAR(c.username)} frame={c.avatar_frame} pet={small ? null : c.pet} treasure={small ? null : c.treasure} size={small ? 24 : 32} alt="" />
       <div className="min-w-0 flex-1">
         <div className="flex items-baseline gap-1.5">
           <span className="text-xs font-semibold text-white" style={cssFrom(nameEffectStyle(c.name_effect))}>{c.fullname || c.username}</span>

@@ -1,0 +1,3008 @@
+{
+ "status": "success",
+ "data": [
+  {
+   "name": "khung-1-nam.png",
+   "url": "/avatar_frames/khung-1-nam.png",
+   "type": "png",
+   "label": "Khung 1 Nam",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-2-nam.gif",
+   "url": "/avatar_frames/khung-2-nam.gif",
+   "type": "gif",
+   "label": "Khung 2 Nam",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-3-nam-hh3d.webp",
+   "url": "/avatar_frames/khung-3-nam-hh3d.webp",
+   "type": "webp",
+   "label": "Khung 3 Nam Hh3d",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-024.png",
+   "url": "/avatar_frames/khung-vip-dc-024.png",
+   "type": "png",
+   "label": "Khung Vip Dc 024",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-025.png",
+   "url": "/avatar_frames/khung-vip-dc-025.png",
+   "type": "png",
+   "label": "Khung Vip Dc 025",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-026.png",
+   "url": "/avatar_frames/khung-vip-dc-026.png",
+   "type": "png",
+   "label": "Khung Vip Dc 026",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-027.png",
+   "url": "/avatar_frames/khung-vip-dc-027.png",
+   "type": "png",
+   "label": "Khung Vip Dc 027",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-028.png",
+   "url": "/avatar_frames/khung-vip-dc-028.png",
+   "type": "png",
+   "label": "Khung Vip Dc 028",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-029.png",
+   "url": "/avatar_frames/khung-vip-dc-029.png",
+   "type": "png",
+   "label": "Khung Vip Dc 029",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-030.png",
+   "url": "/avatar_frames/khung-vip-dc-030.png",
+   "type": "png",
+   "label": "Khung Vip Dc 030",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-031.png",
+   "url": "/avatar_frames/khung-vip-dc-031.png",
+   "type": "png",
+   "label": "Khung Vip Dc 031",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-032.png",
+   "url": "/avatar_frames/khung-vip-dc-032.png",
+   "type": "png",
+   "label": "Khung Vip Dc 032",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-033.png",
+   "url": "/avatar_frames/khung-vip-dc-033.png",
+   "type": "png",
+   "label": "Khung Vip Dc 033",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-034.png",
+   "url": "/avatar_frames/khung-vip-dc-034.png",
+   "type": "png",
+   "label": "Khung Vip Dc 034",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-035.png",
+   "url": "/avatar_frames/khung-vip-dc-035.png",
+   "type": "png",
+   "label": "Khung Vip Dc 035",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-036.png",
+   "url": "/avatar_frames/khung-vip-dc-036.png",
+   "type": "png",
+   "label": "Khung Vip Dc 036",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-037.png",
+   "url": "/avatar_frames/khung-vip-dc-037.png",
+   "type": "png",
+   "label": "Khung Vip Dc 037",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-038.png",
+   "url": "/avatar_frames/khung-vip-dc-038.png",
+   "type": "png",
+   "label": "Khung Vip Dc 038",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-039.png",
+   "url": "/avatar_frames/khung-vip-dc-039.png",
+   "type": "png",
+   "label": "Khung Vip Dc 039",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-040.png",
+   "url": "/avatar_frames/khung-vip-dc-040.png",
+   "type": "png",
+   "label": "Khung Vip Dc 040",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-041.png",
+   "url": "/avatar_frames/khung-vip-dc-041.png",
+   "type": "png",
+   "label": "Khung Vip Dc 041",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-042.png",
+   "url": "/avatar_frames/khung-vip-dc-042.png",
+   "type": "png",
+   "label": "Khung Vip Dc 042",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-043.png",
+   "url": "/avatar_frames/khung-vip-dc-043.png",
+   "type": "png",
+   "label": "Khung Vip Dc 043",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-044.png",
+   "url": "/avatar_frames/khung-vip-dc-044.png",
+   "type": "png",
+   "label": "Khung Vip Dc 044",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-045.png",
+   "url": "/avatar_frames/khung-vip-dc-045.png",
+   "type": "png",
+   "label": "Khung Vip Dc 045",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-046.png",
+   "url": "/avatar_frames/khung-vip-dc-046.png",
+   "type": "png",
+   "label": "Khung Vip Dc 046",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-047.png",
+   "url": "/avatar_frames/khung-vip-dc-047.png",
+   "type": "png",
+   "label": "Khung Vip Dc 047",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-048.png",
+   "url": "/avatar_frames/khung-vip-dc-048.png",
+   "type": "png",
+   "label": "Khung Vip Dc 048",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-049.png",
+   "url": "/avatar_frames/khung-vip-dc-049.png",
+   "type": "png",
+   "label": "Khung Vip Dc 049",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-050.png",
+   "url": "/avatar_frames/khung-vip-dc-050.png",
+   "type": "png",
+   "label": "Khung Vip Dc 050",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-051.png",
+   "url": "/avatar_frames/khung-vip-dc-051.png",
+   "type": "png",
+   "label": "Khung Vip Dc 051",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-052.png",
+   "url": "/avatar_frames/khung-vip-dc-052.png",
+   "type": "png",
+   "label": "Khung Vip Dc 052",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-053.png",
+   "url": "/avatar_frames/khung-vip-dc-053.png",
+   "type": "png",
+   "label": "Khung Vip Dc 053",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-054.png",
+   "url": "/avatar_frames/khung-vip-dc-054.png",
+   "type": "png",
+   "label": "Khung Vip Dc 054",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-055.png",
+   "url": "/avatar_frames/khung-vip-dc-055.png",
+   "type": "png",
+   "label": "Khung Vip Dc 055",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-056.png",
+   "url": "/avatar_frames/khung-vip-dc-056.png",
+   "type": "png",
+   "label": "Khung Vip Dc 056",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-057.png",
+   "url": "/avatar_frames/khung-vip-dc-057.png",
+   "type": "png",
+   "label": "Khung Vip Dc 057",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-058.png",
+   "url": "/avatar_frames/khung-vip-dc-058.png",
+   "type": "png",
+   "label": "Khung Vip Dc 058",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-059.png",
+   "url": "/avatar_frames/khung-vip-dc-059.png",
+   "type": "png",
+   "label": "Khung Vip Dc 059",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-060.png",
+   "url": "/avatar_frames/khung-vip-dc-060.png",
+   "type": "png",
+   "label": "Khung Vip Dc 060",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-061.png",
+   "url": "/avatar_frames/khung-vip-dc-061.png",
+   "type": "png",
+   "label": "Khung Vip Dc 061",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-062.png",
+   "url": "/avatar_frames/khung-vip-dc-062.png",
+   "type": "png",
+   "label": "Khung Vip Dc 062",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-063.png",
+   "url": "/avatar_frames/khung-vip-dc-063.png",
+   "type": "png",
+   "label": "Khung Vip Dc 063",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-064.png",
+   "url": "/avatar_frames/khung-vip-dc-064.png",
+   "type": "png",
+   "label": "Khung Vip Dc 064",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-065.png",
+   "url": "/avatar_frames/khung-vip-dc-065.png",
+   "type": "png",
+   "label": "Khung Vip Dc 065",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-066.png",
+   "url": "/avatar_frames/khung-vip-dc-066.png",
+   "type": "png",
+   "label": "Khung Vip Dc 066",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-067.png",
+   "url": "/avatar_frames/khung-vip-dc-067.png",
+   "type": "png",
+   "label": "Khung Vip Dc 067",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-068.png",
+   "url": "/avatar_frames/khung-vip-dc-068.png",
+   "type": "png",
+   "label": "Khung Vip Dc 068",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-069.png",
+   "url": "/avatar_frames/khung-vip-dc-069.png",
+   "type": "png",
+   "label": "Khung Vip Dc 069",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-070.png",
+   "url": "/avatar_frames/khung-vip-dc-070.png",
+   "type": "png",
+   "label": "Khung Vip Dc 070",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-071.png",
+   "url": "/avatar_frames/khung-vip-dc-071.png",
+   "type": "png",
+   "label": "Khung Vip Dc 071",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-072.png",
+   "url": "/avatar_frames/khung-vip-dc-072.png",
+   "type": "png",
+   "label": "Khung Vip Dc 072",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-073.png",
+   "url": "/avatar_frames/khung-vip-dc-073.png",
+   "type": "png",
+   "label": "Khung Vip Dc 073",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-074.png",
+   "url": "/avatar_frames/khung-vip-dc-074.png",
+   "type": "png",
+   "label": "Khung Vip Dc 074",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-075.png",
+   "url": "/avatar_frames/khung-vip-dc-075.png",
+   "type": "png",
+   "label": "Khung Vip Dc 075",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-076.png",
+   "url": "/avatar_frames/khung-vip-dc-076.png",
+   "type": "png",
+   "label": "Khung Vip Dc 076",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-077.png",
+   "url": "/avatar_frames/khung-vip-dc-077.png",
+   "type": "png",
+   "label": "Khung Vip Dc 077",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-078.png",
+   "url": "/avatar_frames/khung-vip-dc-078.png",
+   "type": "png",
+   "label": "Khung Vip Dc 078",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-079.png",
+   "url": "/avatar_frames/khung-vip-dc-079.png",
+   "type": "png",
+   "label": "Khung Vip Dc 079",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-080.png",
+   "url": "/avatar_frames/khung-vip-dc-080.png",
+   "type": "png",
+   "label": "Khung Vip Dc 080",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-081.png",
+   "url": "/avatar_frames/khung-vip-dc-081.png",
+   "type": "png",
+   "label": "Khung Vip Dc 081",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-082.png",
+   "url": "/avatar_frames/khung-vip-dc-082.png",
+   "type": "png",
+   "label": "Khung Vip Dc 082",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-083.png",
+   "url": "/avatar_frames/khung-vip-dc-083.png",
+   "type": "png",
+   "label": "Khung Vip Dc 083",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-084.png",
+   "url": "/avatar_frames/khung-vip-dc-084.png",
+   "type": "png",
+   "label": "Khung Vip Dc 084",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-085.png",
+   "url": "/avatar_frames/khung-vip-dc-085.png",
+   "type": "png",
+   "label": "Khung Vip Dc 085",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-086.png",
+   "url": "/avatar_frames/khung-vip-dc-086.png",
+   "type": "png",
+   "label": "Khung Vip Dc 086",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-087.png",
+   "url": "/avatar_frames/khung-vip-dc-087.png",
+   "type": "png",
+   "label": "Khung Vip Dc 087",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-088.png",
+   "url": "/avatar_frames/khung-vip-dc-088.png",
+   "type": "png",
+   "label": "Khung Vip Dc 088",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-089.png",
+   "url": "/avatar_frames/khung-vip-dc-089.png",
+   "type": "png",
+   "label": "Khung Vip Dc 089",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-090.png",
+   "url": "/avatar_frames/khung-vip-dc-090.png",
+   "type": "png",
+   "label": "Khung Vip Dc 090",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-091.png",
+   "url": "/avatar_frames/khung-vip-dc-091.png",
+   "type": "png",
+   "label": "Khung Vip Dc 091",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-092.png",
+   "url": "/avatar_frames/khung-vip-dc-092.png",
+   "type": "png",
+   "label": "Khung Vip Dc 092",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-093.png",
+   "url": "/avatar_frames/khung-vip-dc-093.png",
+   "type": "png",
+   "label": "Khung Vip Dc 093",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-094.png",
+   "url": "/avatar_frames/khung-vip-dc-094.png",
+   "type": "png",
+   "label": "Khung Vip Dc 094",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-095.png",
+   "url": "/avatar_frames/khung-vip-dc-095.png",
+   "type": "png",
+   "label": "Khung Vip Dc 095",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-096.png",
+   "url": "/avatar_frames/khung-vip-dc-096.png",
+   "type": "png",
+   "label": "Khung Vip Dc 096",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-097.png",
+   "url": "/avatar_frames/khung-vip-dc-097.png",
+   "type": "png",
+   "label": "Khung Vip Dc 097",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-098.png",
+   "url": "/avatar_frames/khung-vip-dc-098.png",
+   "type": "png",
+   "label": "Khung Vip Dc 098",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-099.png",
+   "url": "/avatar_frames/khung-vip-dc-099.png",
+   "type": "png",
+   "label": "Khung Vip Dc 099",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-100.png",
+   "url": "/avatar_frames/khung-vip-dc-100.png",
+   "type": "png",
+   "label": "Khung Vip Dc 100",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-101.png",
+   "url": "/avatar_frames/khung-vip-dc-101.png",
+   "type": "png",
+   "label": "Khung Vip Dc 101",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-102.png",
+   "url": "/avatar_frames/khung-vip-dc-102.png",
+   "type": "png",
+   "label": "Khung Vip Dc 102",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-103.png",
+   "url": "/avatar_frames/khung-vip-dc-103.png",
+   "type": "png",
+   "label": "Khung Vip Dc 103",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-104.png",
+   "url": "/avatar_frames/khung-vip-dc-104.png",
+   "type": "png",
+   "label": "Khung Vip Dc 104",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-105.png",
+   "url": "/avatar_frames/khung-vip-dc-105.png",
+   "type": "png",
+   "label": "Khung Vip Dc 105",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-106.png",
+   "url": "/avatar_frames/khung-vip-dc-106.png",
+   "type": "png",
+   "label": "Khung Vip Dc 106",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-107.png",
+   "url": "/avatar_frames/khung-vip-dc-107.png",
+   "type": "png",
+   "label": "Khung Vip Dc 107",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-108.png",
+   "url": "/avatar_frames/khung-vip-dc-108.png",
+   "type": "png",
+   "label": "Khung Vip Dc 108",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-109.png",
+   "url": "/avatar_frames/khung-vip-dc-109.png",
+   "type": "png",
+   "label": "Khung Vip Dc 109",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-110.png",
+   "url": "/avatar_frames/khung-vip-dc-110.png",
+   "type": "png",
+   "label": "Khung Vip Dc 110",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-111.png",
+   "url": "/avatar_frames/khung-vip-dc-111.png",
+   "type": "png",
+   "label": "Khung Vip Dc 111",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-112.png",
+   "url": "/avatar_frames/khung-vip-dc-112.png",
+   "type": "png",
+   "label": "Khung Vip Dc 112",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-113.png",
+   "url": "/avatar_frames/khung-vip-dc-113.png",
+   "type": "png",
+   "label": "Khung Vip Dc 113",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-114.png",
+   "url": "/avatar_frames/khung-vip-dc-114.png",
+   "type": "png",
+   "label": "Khung Vip Dc 114",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-115.png",
+   "url": "/avatar_frames/khung-vip-dc-115.png",
+   "type": "png",
+   "label": "Khung Vip Dc 115",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-116.png",
+   "url": "/avatar_frames/khung-vip-dc-116.png",
+   "type": "png",
+   "label": "Khung Vip Dc 116",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-117.png",
+   "url": "/avatar_frames/khung-vip-dc-117.png",
+   "type": "png",
+   "label": "Khung Vip Dc 117",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-118.png",
+   "url": "/avatar_frames/khung-vip-dc-118.png",
+   "type": "png",
+   "label": "Khung Vip Dc 118",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-119.png",
+   "url": "/avatar_frames/khung-vip-dc-119.png",
+   "type": "png",
+   "label": "Khung Vip Dc 119",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-120.png",
+   "url": "/avatar_frames/khung-vip-dc-120.png",
+   "type": "png",
+   "label": "Khung Vip Dc 120",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-121.png",
+   "url": "/avatar_frames/khung-vip-dc-121.png",
+   "type": "png",
+   "label": "Khung Vip Dc 121",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-122.png",
+   "url": "/avatar_frames/khung-vip-dc-122.png",
+   "type": "png",
+   "label": "Khung Vip Dc 122",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-123.png",
+   "url": "/avatar_frames/khung-vip-dc-123.png",
+   "type": "png",
+   "label": "Khung Vip Dc 123",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-124.png",
+   "url": "/avatar_frames/khung-vip-dc-124.png",
+   "type": "png",
+   "label": "Khung Vip Dc 124",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-125.png",
+   "url": "/avatar_frames/khung-vip-dc-125.png",
+   "type": "png",
+   "label": "Khung Vip Dc 125",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-126.png",
+   "url": "/avatar_frames/khung-vip-dc-126.png",
+   "type": "png",
+   "label": "Khung Vip Dc 126",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-127.png",
+   "url": "/avatar_frames/khung-vip-dc-127.png",
+   "type": "png",
+   "label": "Khung Vip Dc 127",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-128.png",
+   "url": "/avatar_frames/khung-vip-dc-128.png",
+   "type": "png",
+   "label": "Khung Vip Dc 128",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-129.png",
+   "url": "/avatar_frames/khung-vip-dc-129.png",
+   "type": "png",
+   "label": "Khung Vip Dc 129",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-130.png",
+   "url": "/avatar_frames/khung-vip-dc-130.png",
+   "type": "png",
+   "label": "Khung Vip Dc 130",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-131.png",
+   "url": "/avatar_frames/khung-vip-dc-131.png",
+   "type": "png",
+   "label": "Khung Vip Dc 131",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-132.png",
+   "url": "/avatar_frames/khung-vip-dc-132.png",
+   "type": "png",
+   "label": "Khung Vip Dc 132",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-133.png",
+   "url": "/avatar_frames/khung-vip-dc-133.png",
+   "type": "png",
+   "label": "Khung Vip Dc 133",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-134.png",
+   "url": "/avatar_frames/khung-vip-dc-134.png",
+   "type": "png",
+   "label": "Khung Vip Dc 134",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-135.png",
+   "url": "/avatar_frames/khung-vip-dc-135.png",
+   "type": "png",
+   "label": "Khung Vip Dc 135",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-136.png",
+   "url": "/avatar_frames/khung-vip-dc-136.png",
+   "type": "png",
+   "label": "Khung Vip Dc 136",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-137.png",
+   "url": "/avatar_frames/khung-vip-dc-137.png",
+   "type": "png",
+   "label": "Khung Vip Dc 137",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-138.png",
+   "url": "/avatar_frames/khung-vip-dc-138.png",
+   "type": "png",
+   "label": "Khung Vip Dc 138",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-139.png",
+   "url": "/avatar_frames/khung-vip-dc-139.png",
+   "type": "png",
+   "label": "Khung Vip Dc 139",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-140.png",
+   "url": "/avatar_frames/khung-vip-dc-140.png",
+   "type": "png",
+   "label": "Khung Vip Dc 140",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-141.png",
+   "url": "/avatar_frames/khung-vip-dc-141.png",
+   "type": "png",
+   "label": "Khung Vip Dc 141",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-142.png",
+   "url": "/avatar_frames/khung-vip-dc-142.png",
+   "type": "png",
+   "label": "Khung Vip Dc 142",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-143.png",
+   "url": "/avatar_frames/khung-vip-dc-143.png",
+   "type": "png",
+   "label": "Khung Vip Dc 143",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-144.png",
+   "url": "/avatar_frames/khung-vip-dc-144.png",
+   "type": "png",
+   "label": "Khung Vip Dc 144",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-145.png",
+   "url": "/avatar_frames/khung-vip-dc-145.png",
+   "type": "png",
+   "label": "Khung Vip Dc 145",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-146.png",
+   "url": "/avatar_frames/khung-vip-dc-146.png",
+   "type": "png",
+   "label": "Khung Vip Dc 146",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-147.png",
+   "url": "/avatar_frames/khung-vip-dc-147.png",
+   "type": "png",
+   "label": "Khung Vip Dc 147",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-148.png",
+   "url": "/avatar_frames/khung-vip-dc-148.png",
+   "type": "png",
+   "label": "Khung Vip Dc 148",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-149.png",
+   "url": "/avatar_frames/khung-vip-dc-149.png",
+   "type": "png",
+   "label": "Khung Vip Dc 149",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-150.png",
+   "url": "/avatar_frames/khung-vip-dc-150.png",
+   "type": "png",
+   "label": "Khung Vip Dc 150",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-151.png",
+   "url": "/avatar_frames/khung-vip-dc-151.png",
+   "type": "png",
+   "label": "Khung Vip Dc 151",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-152.png",
+   "url": "/avatar_frames/khung-vip-dc-152.png",
+   "type": "png",
+   "label": "Khung Vip Dc 152",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-153.png",
+   "url": "/avatar_frames/khung-vip-dc-153.png",
+   "type": "png",
+   "label": "Khung Vip Dc 153",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-154.png",
+   "url": "/avatar_frames/khung-vip-dc-154.png",
+   "type": "png",
+   "label": "Khung Vip Dc 154",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-155.png",
+   "url": "/avatar_frames/khung-vip-dc-155.png",
+   "type": "png",
+   "label": "Khung Vip Dc 155",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-156.png",
+   "url": "/avatar_frames/khung-vip-dc-156.png",
+   "type": "png",
+   "label": "Khung Vip Dc 156",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-157.png",
+   "url": "/avatar_frames/khung-vip-dc-157.png",
+   "type": "png",
+   "label": "Khung Vip Dc 157",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-158.png",
+   "url": "/avatar_frames/khung-vip-dc-158.png",
+   "type": "png",
+   "label": "Khung Vip Dc 158",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-159.png",
+   "url": "/avatar_frames/khung-vip-dc-159.png",
+   "type": "png",
+   "label": "Khung Vip Dc 159",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-160.png",
+   "url": "/avatar_frames/khung-vip-dc-160.png",
+   "type": "png",
+   "label": "Khung Vip Dc 160",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-161.png",
+   "url": "/avatar_frames/khung-vip-dc-161.png",
+   "type": "png",
+   "label": "Khung Vip Dc 161",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-162.png",
+   "url": "/avatar_frames/khung-vip-dc-162.png",
+   "type": "png",
+   "label": "Khung Vip Dc 162",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-163.png",
+   "url": "/avatar_frames/khung-vip-dc-163.png",
+   "type": "png",
+   "label": "Khung Vip Dc 163",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-164.png",
+   "url": "/avatar_frames/khung-vip-dc-164.png",
+   "type": "png",
+   "label": "Khung Vip Dc 164",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-165.png",
+   "url": "/avatar_frames/khung-vip-dc-165.png",
+   "type": "png",
+   "label": "Khung Vip Dc 165",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-166.png",
+   "url": "/avatar_frames/khung-vip-dc-166.png",
+   "type": "png",
+   "label": "Khung Vip Dc 166",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-167.png",
+   "url": "/avatar_frames/khung-vip-dc-167.png",
+   "type": "png",
+   "label": "Khung Vip Dc 167",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-168.png",
+   "url": "/avatar_frames/khung-vip-dc-168.png",
+   "type": "png",
+   "label": "Khung Vip Dc 168",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-169.png",
+   "url": "/avatar_frames/khung-vip-dc-169.png",
+   "type": "png",
+   "label": "Khung Vip Dc 169",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-170.png",
+   "url": "/avatar_frames/khung-vip-dc-170.png",
+   "type": "png",
+   "label": "Khung Vip Dc 170",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-171.png",
+   "url": "/avatar_frames/khung-vip-dc-171.png",
+   "type": "png",
+   "label": "Khung Vip Dc 171",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-172.png",
+   "url": "/avatar_frames/khung-vip-dc-172.png",
+   "type": "png",
+   "label": "Khung Vip Dc 172",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-173.png",
+   "url": "/avatar_frames/khung-vip-dc-173.png",
+   "type": "png",
+   "label": "Khung Vip Dc 173",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-174.png",
+   "url": "/avatar_frames/khung-vip-dc-174.png",
+   "type": "png",
+   "label": "Khung Vip Dc 174",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-175.png",
+   "url": "/avatar_frames/khung-vip-dc-175.png",
+   "type": "png",
+   "label": "Khung Vip Dc 175",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-176.png",
+   "url": "/avatar_frames/khung-vip-dc-176.png",
+   "type": "png",
+   "label": "Khung Vip Dc 176",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-177.png",
+   "url": "/avatar_frames/khung-vip-dc-177.png",
+   "type": "png",
+   "label": "Khung Vip Dc 177",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-178.png",
+   "url": "/avatar_frames/khung-vip-dc-178.png",
+   "type": "png",
+   "label": "Khung Vip Dc 178",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-179.png",
+   "url": "/avatar_frames/khung-vip-dc-179.png",
+   "type": "png",
+   "label": "Khung Vip Dc 179",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-180.png",
+   "url": "/avatar_frames/khung-vip-dc-180.png",
+   "type": "png",
+   "label": "Khung Vip Dc 180",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-181.png",
+   "url": "/avatar_frames/khung-vip-dc-181.png",
+   "type": "png",
+   "label": "Khung Vip Dc 181",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-182.png",
+   "url": "/avatar_frames/khung-vip-dc-182.png",
+   "type": "png",
+   "label": "Khung Vip Dc 182",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-183.png",
+   "url": "/avatar_frames/khung-vip-dc-183.png",
+   "type": "png",
+   "label": "Khung Vip Dc 183",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-184.png",
+   "url": "/avatar_frames/khung-vip-dc-184.png",
+   "type": "png",
+   "label": "Khung Vip Dc 184",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-185.png",
+   "url": "/avatar_frames/khung-vip-dc-185.png",
+   "type": "png",
+   "label": "Khung Vip Dc 185",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-186.png",
+   "url": "/avatar_frames/khung-vip-dc-186.png",
+   "type": "png",
+   "label": "Khung Vip Dc 186",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-187.png",
+   "url": "/avatar_frames/khung-vip-dc-187.png",
+   "type": "png",
+   "label": "Khung Vip Dc 187",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-188.png",
+   "url": "/avatar_frames/khung-vip-dc-188.png",
+   "type": "png",
+   "label": "Khung Vip Dc 188",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-189.png",
+   "url": "/avatar_frames/khung-vip-dc-189.png",
+   "type": "png",
+   "label": "Khung Vip Dc 189",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-190-fx.png",
+   "url": "/avatar_frames/khung-vip-dc-190-fx.png",
+   "type": "png",
+   "label": "Khung Vip Dc 190 Fx",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-191.png",
+   "url": "/avatar_frames/khung-vip-dc-191.png",
+   "type": "png",
+   "label": "Khung Vip Dc 191",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-200-1.png",
+   "url": "/avatar_frames/khung-vip-dc-200-1.png",
+   "type": "png",
+   "label": "Khung Vip Dc 200 1",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-201.png",
+   "url": "/avatar_frames/khung-vip-dc-201.png",
+   "type": "png",
+   "label": "Khung Vip Dc 201",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-202.png",
+   "url": "/avatar_frames/khung-vip-dc-202.png",
+   "type": "png",
+   "label": "Khung Vip Dc 202",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-203.png",
+   "url": "/avatar_frames/khung-vip-dc-203.png",
+   "type": "png",
+   "label": "Khung Vip Dc 203",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-204.png",
+   "url": "/avatar_frames/khung-vip-dc-204.png",
+   "type": "png",
+   "label": "Khung Vip Dc 204",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-205.png",
+   "url": "/avatar_frames/khung-vip-dc-205.png",
+   "type": "png",
+   "label": "Khung Vip Dc 205",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-206.png",
+   "url": "/avatar_frames/khung-vip-dc-206.png",
+   "type": "png",
+   "label": "Khung Vip Dc 206",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-207.png",
+   "url": "/avatar_frames/khung-vip-dc-207.png",
+   "type": "png",
+   "label": "Khung Vip Dc 207",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-208.png",
+   "url": "/avatar_frames/khung-vip-dc-208.png",
+   "type": "png",
+   "label": "Khung Vip Dc 208",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-209.png",
+   "url": "/avatar_frames/khung-vip-dc-209.png",
+   "type": "png",
+   "label": "Khung Vip Dc 209",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-210.png",
+   "url": "/avatar_frames/khung-vip-dc-210.png",
+   "type": "png",
+   "label": "Khung Vip Dc 210",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-211.png",
+   "url": "/avatar_frames/khung-vip-dc-211.png",
+   "type": "png",
+   "label": "Khung Vip Dc 211",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-212.png",
+   "url": "/avatar_frames/khung-vip-dc-212.png",
+   "type": "png",
+   "label": "Khung Vip Dc 212",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-213.png",
+   "url": "/avatar_frames/khung-vip-dc-213.png",
+   "type": "png",
+   "label": "Khung Vip Dc 213",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-214.png",
+   "url": "/avatar_frames/khung-vip-dc-214.png",
+   "type": "png",
+   "label": "Khung Vip Dc 214",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-215.png",
+   "url": "/avatar_frames/khung-vip-dc-215.png",
+   "type": "png",
+   "label": "Khung Vip Dc 215",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-216.png",
+   "url": "/avatar_frames/khung-vip-dc-216.png",
+   "type": "png",
+   "label": "Khung Vip Dc 216",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-217.png",
+   "url": "/avatar_frames/khung-vip-dc-217.png",
+   "type": "png",
+   "label": "Khung Vip Dc 217",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-218.png",
+   "url": "/avatar_frames/khung-vip-dc-218.png",
+   "type": "png",
+   "label": "Khung Vip Dc 218",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-219.png",
+   "url": "/avatar_frames/khung-vip-dc-219.png",
+   "type": "png",
+   "label": "Khung Vip Dc 219",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-220.png",
+   "url": "/avatar_frames/khung-vip-dc-220.png",
+   "type": "png",
+   "label": "Khung Vip Dc 220",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-221.png",
+   "url": "/avatar_frames/khung-vip-dc-221.png",
+   "type": "png",
+   "label": "Khung Vip Dc 221",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-222.png",
+   "url": "/avatar_frames/khung-vip-dc-222.png",
+   "type": "png",
+   "label": "Khung Vip Dc 222",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-223.png",
+   "url": "/avatar_frames/khung-vip-dc-223.png",
+   "type": "png",
+   "label": "Khung Vip Dc 223",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-224-fx.png",
+   "url": "/avatar_frames/khung-vip-dc-224-fx.png",
+   "type": "png",
+   "label": "Khung Vip Dc 224 Fx",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-225.png",
+   "url": "/avatar_frames/khung-vip-dc-225.png",
+   "type": "png",
+   "label": "Khung Vip Dc 225",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-226.png",
+   "url": "/avatar_frames/khung-vip-dc-226.png",
+   "type": "png",
+   "label": "Khung Vip Dc 226",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-227.png",
+   "url": "/avatar_frames/khung-vip-dc-227.png",
+   "type": "png",
+   "label": "Khung Vip Dc 227",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-228.png",
+   "url": "/avatar_frames/khung-vip-dc-228.png",
+   "type": "png",
+   "label": "Khung Vip Dc 228",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-229.png",
+   "url": "/avatar_frames/khung-vip-dc-229.png",
+   "type": "png",
+   "label": "Khung Vip Dc 229",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-230.png",
+   "url": "/avatar_frames/khung-vip-dc-230.png",
+   "type": "png",
+   "label": "Khung Vip Dc 230",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-231.png",
+   "url": "/avatar_frames/khung-vip-dc-231.png",
+   "type": "png",
+   "label": "Khung Vip Dc 231",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-232.png",
+   "url": "/avatar_frames/khung-vip-dc-232.png",
+   "type": "png",
+   "label": "Khung Vip Dc 232",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-233.png",
+   "url": "/avatar_frames/khung-vip-dc-233.png",
+   "type": "png",
+   "label": "Khung Vip Dc 233",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-234.png",
+   "url": "/avatar_frames/khung-vip-dc-234.png",
+   "type": "png",
+   "label": "Khung Vip Dc 234",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-235.png",
+   "url": "/avatar_frames/khung-vip-dc-235.png",
+   "type": "png",
+   "label": "Khung Vip Dc 235",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-236.png",
+   "url": "/avatar_frames/khung-vip-dc-236.png",
+   "type": "png",
+   "label": "Khung Vip Dc 236",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-237.png",
+   "url": "/avatar_frames/khung-vip-dc-237.png",
+   "type": "png",
+   "label": "Khung Vip Dc 237",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-238.png",
+   "url": "/avatar_frames/khung-vip-dc-238.png",
+   "type": "png",
+   "label": "Khung Vip Dc 238",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-240.webp",
+   "url": "/avatar_frames/khung-vip-dc-240.webp",
+   "type": "webp",
+   "label": "Khung Vip Dc 240",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-241.webp",
+   "url": "/avatar_frames/khung-vip-dc-241.webp",
+   "type": "webp",
+   "label": "Khung Vip Dc 241",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-242.webp",
+   "url": "/avatar_frames/khung-vip-dc-242.webp",
+   "type": "webp",
+   "label": "Khung Vip Dc 242",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-243.webp",
+   "url": "/avatar_frames/khung-vip-dc-243.webp",
+   "type": "webp",
+   "label": "Khung Vip Dc 243",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-244.webp",
+   "url": "/avatar_frames/khung-vip-dc-244.webp",
+   "type": "webp",
+   "label": "Khung Vip Dc 244",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-245.webp",
+   "url": "/avatar_frames/khung-vip-dc-245.webp",
+   "type": "webp",
+   "label": "Khung Vip Dc 245",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-246.webp",
+   "url": "/avatar_frames/khung-vip-dc-246.webp",
+   "type": "webp",
+   "label": "Khung Vip Dc 246",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-247.webp",
+   "url": "/avatar_frames/khung-vip-dc-247.webp",
+   "type": "webp",
+   "label": "Khung Vip Dc 247",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-248.webp",
+   "url": "/avatar_frames/khung-vip-dc-248.webp",
+   "type": "webp",
+   "label": "Khung Vip Dc 248",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-253.webp",
+   "url": "/avatar_frames/khung-vip-dc-253.webp",
+   "type": "webp",
+   "label": "Khung Vip Dc 253",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-254.webp",
+   "url": "/avatar_frames/khung-vip-dc-254.webp",
+   "type": "webp",
+   "label": "Khung Vip Dc 254",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-255.webp",
+   "url": "/avatar_frames/khung-vip-dc-255.webp",
+   "type": "webp",
+   "label": "Khung Vip Dc 255",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-256.webp",
+   "url": "/avatar_frames/khung-vip-dc-256.webp",
+   "type": "webp",
+   "label": "Khung Vip Dc 256",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-257.webp",
+   "url": "/avatar_frames/khung-vip-dc-257.webp",
+   "type": "webp",
+   "label": "Khung Vip Dc 257",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-258.webp",
+   "url": "/avatar_frames/khung-vip-dc-258.webp",
+   "type": "webp",
+   "label": "Khung Vip Dc 258",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-259.webp",
+   "url": "/avatar_frames/khung-vip-dc-259.webp",
+   "type": "webp",
+   "label": "Khung Vip Dc 259",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-260.webp",
+   "url": "/avatar_frames/khung-vip-dc-260.webp",
+   "type": "webp",
+   "label": "Khung Vip Dc 260",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-261.webp",
+   "url": "/avatar_frames/khung-vip-dc-261.webp",
+   "type": "webp",
+   "label": "Khung Vip Dc 261",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-262.webp",
+   "url": "/avatar_frames/khung-vip-dc-262.webp",
+   "type": "webp",
+   "label": "Khung Vip Dc 262",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-263.webp",
+   "url": "/avatar_frames/khung-vip-dc-263.webp",
+   "type": "webp",
+   "label": "Khung Vip Dc 263",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-264.webp",
+   "url": "/avatar_frames/khung-vip-dc-264.webp",
+   "type": "webp",
+   "label": "Khung Vip Dc 264",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-265.webp",
+   "url": "/avatar_frames/khung-vip-dc-265.webp",
+   "type": "webp",
+   "label": "Khung Vip Dc 265",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-266.webp",
+   "url": "/avatar_frames/khung-vip-dc-266.webp",
+   "type": "webp",
+   "label": "Khung Vip Dc 266",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-267.webp",
+   "url": "/avatar_frames/khung-vip-dc-267.webp",
+   "type": "webp",
+   "label": "Khung Vip Dc 267",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-268.webp",
+   "url": "/avatar_frames/khung-vip-dc-268.webp",
+   "type": "webp",
+   "label": "Khung Vip Dc 268",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-269.webp",
+   "url": "/avatar_frames/khung-vip-dc-269.webp",
+   "type": "webp",
+   "label": "Khung Vip Dc 269",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-270.webp",
+   "url": "/avatar_frames/khung-vip-dc-270.webp",
+   "type": "webp",
+   "label": "Khung Vip Dc 270",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-271.webp",
+   "url": "/avatar_frames/khung-vip-dc-271.webp",
+   "type": "webp",
+   "label": "Khung Vip Dc 271",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-272.webp",
+   "url": "/avatar_frames/khung-vip-dc-272.webp",
+   "type": "webp",
+   "label": "Khung Vip Dc 272",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-276.webp",
+   "url": "/avatar_frames/khung-vip-dc-276.webp",
+   "type": "webp",
+   "label": "Khung Vip Dc 276",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-277.webp",
+   "url": "/avatar_frames/khung-vip-dc-277.webp",
+   "type": "webp",
+   "label": "Khung Vip Dc 277",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-278.webp",
+   "url": "/avatar_frames/khung-vip-dc-278.webp",
+   "type": "webp",
+   "label": "Khung Vip Dc 278",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-279.webp",
+   "url": "/avatar_frames/khung-vip-dc-279.webp",
+   "type": "webp",
+   "label": "Khung Vip Dc 279",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-280.webp",
+   "url": "/avatar_frames/khung-vip-dc-280.webp",
+   "type": "webp",
+   "label": "Khung Vip Dc 280",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-281.webp",
+   "url": "/avatar_frames/khung-vip-dc-281.webp",
+   "type": "webp",
+   "label": "Khung Vip Dc 281",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-282.webp",
+   "url": "/avatar_frames/khung-vip-dc-282.webp",
+   "type": "webp",
+   "label": "Khung Vip Dc 282",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-285.webp",
+   "url": "/avatar_frames/khung-vip-dc-285.webp",
+   "type": "webp",
+   "label": "Khung Vip Dc 285",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-286.webp",
+   "url": "/avatar_frames/khung-vip-dc-286.webp",
+   "type": "webp",
+   "label": "Khung Vip Dc 286",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-287.webp",
+   "url": "/avatar_frames/khung-vip-dc-287.webp",
+   "type": "webp",
+   "label": "Khung Vip Dc 287",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-288.webp",
+   "url": "/avatar_frames/khung-vip-dc-288.webp",
+   "type": "webp",
+   "label": "Khung Vip Dc 288",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-289.webp",
+   "url": "/avatar_frames/khung-vip-dc-289.webp",
+   "type": "webp",
+   "label": "Khung Vip Dc 289",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-290.webp",
+   "url": "/avatar_frames/khung-vip-dc-290.webp",
+   "type": "webp",
+   "label": "Khung Vip Dc 290",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-291.webp",
+   "url": "/avatar_frames/khung-vip-dc-291.webp",
+   "type": "webp",
+   "label": "Khung Vip Dc 291",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-292.webp",
+   "url": "/avatar_frames/khung-vip-dc-292.webp",
+   "type": "webp",
+   "label": "Khung Vip Dc 292",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-293.webp",
+   "url": "/avatar_frames/khung-vip-dc-293.webp",
+   "type": "webp",
+   "label": "Khung Vip Dc 293",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-297.webp",
+   "url": "/avatar_frames/khung-vip-dc-297.webp",
+   "type": "webp",
+   "label": "Khung Vip Dc 297",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-298.webp",
+   "url": "/avatar_frames/khung-vip-dc-298.webp",
+   "type": "webp",
+   "label": "Khung Vip Dc 298",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-299.webp",
+   "url": "/avatar_frames/khung-vip-dc-299.webp",
+   "type": "webp",
+   "label": "Khung Vip Dc 299",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-300.webp",
+   "url": "/avatar_frames/khung-vip-dc-300.webp",
+   "type": "webp",
+   "label": "Khung Vip Dc 300",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-301.webp",
+   "url": "/avatar_frames/khung-vip-dc-301.webp",
+   "type": "webp",
+   "label": "Khung Vip Dc 301",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-302.webp",
+   "url": "/avatar_frames/khung-vip-dc-302.webp",
+   "type": "webp",
+   "label": "Khung Vip Dc 302",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-304.webp",
+   "url": "/avatar_frames/khung-vip-dc-304.webp",
+   "type": "webp",
+   "label": "Khung Vip Dc 304",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-305.webp",
+   "url": "/avatar_frames/khung-vip-dc-305.webp",
+   "type": "webp",
+   "label": "Khung Vip Dc 305",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-306.webp",
+   "url": "/avatar_frames/khung-vip-dc-306.webp",
+   "type": "webp",
+   "label": "Khung Vip Dc 306",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-307.webp",
+   "url": "/avatar_frames/khung-vip-dc-307.webp",
+   "type": "webp",
+   "label": "Khung Vip Dc 307",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-308.webp",
+   "url": "/avatar_frames/khung-vip-dc-308.webp",
+   "type": "webp",
+   "label": "Khung Vip Dc 308",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-309.webp",
+   "url": "/avatar_frames/khung-vip-dc-309.webp",
+   "type": "webp",
+   "label": "Khung Vip Dc 309",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-310.webp",
+   "url": "/avatar_frames/khung-vip-dc-310.webp",
+   "type": "webp",
+   "label": "Khung Vip Dc 310",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-311.webp",
+   "url": "/avatar_frames/khung-vip-dc-311.webp",
+   "type": "webp",
+   "label": "Khung Vip Dc 311",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-312.webp",
+   "url": "/avatar_frames/khung-vip-dc-312.webp",
+   "type": "webp",
+   "label": "Khung Vip Dc 312",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-315.webp",
+   "url": "/avatar_frames/khung-vip-dc-315.webp",
+   "type": "webp",
+   "label": "Khung Vip Dc 315",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-316.webp",
+   "url": "/avatar_frames/khung-vip-dc-316.webp",
+   "type": "webp",
+   "label": "Khung Vip Dc 316",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-317.webp",
+   "url": "/avatar_frames/khung-vip-dc-317.webp",
+   "type": "webp",
+   "label": "Khung Vip Dc 317",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-318.webp",
+   "url": "/avatar_frames/khung-vip-dc-318.webp",
+   "type": "webp",
+   "label": "Khung Vip Dc 318",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-319.webp",
+   "url": "/avatar_frames/khung-vip-dc-319.webp",
+   "type": "webp",
+   "label": "Khung Vip Dc 319",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-320.webp",
+   "url": "/avatar_frames/khung-vip-dc-320.webp",
+   "type": "webp",
+   "label": "Khung Vip Dc 320",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-321.webp",
+   "url": "/avatar_frames/khung-vip-dc-321.webp",
+   "type": "webp",
+   "label": "Khung Vip Dc 321",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-322.webp",
+   "url": "/avatar_frames/khung-vip-dc-322.webp",
+   "type": "webp",
+   "label": "Khung Vip Dc 322",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-323.webp",
+   "url": "/avatar_frames/khung-vip-dc-323.webp",
+   "type": "webp",
+   "label": "Khung Vip Dc 323",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-324.webp",
+   "url": "/avatar_frames/khung-vip-dc-324.webp",
+   "type": "webp",
+   "label": "Khung Vip Dc 324",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-325.webp",
+   "url": "/avatar_frames/khung-vip-dc-325.webp",
+   "type": "webp",
+   "label": "Khung Vip Dc 325",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-328.webp",
+   "url": "/avatar_frames/khung-vip-dc-328.webp",
+   "type": "webp",
+   "label": "Khung Vip Dc 328",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-329.webp",
+   "url": "/avatar_frames/khung-vip-dc-329.webp",
+   "type": "webp",
+   "label": "Khung Vip Dc 329",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-330.webp",
+   "url": "/avatar_frames/khung-vip-dc-330.webp",
+   "type": "webp",
+   "label": "Khung Vip Dc 330",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-331.webp",
+   "url": "/avatar_frames/khung-vip-dc-331.webp",
+   "type": "webp",
+   "label": "Khung Vip Dc 331",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-332.webp",
+   "url": "/avatar_frames/khung-vip-dc-332.webp",
+   "type": "webp",
+   "label": "Khung Vip Dc 332",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-vip-dc-333.webp",
+   "url": "/avatar_frames/khung-vip-dc-333.webp",
+   "type": "webp",
+   "label": "Khung Vip Dc 333",
+   "rarity": "common"
+  },
+  {
+   "name": "khung-2-9-2025.png",
+   "url": "/avatar_frames/khung-2-9-2025.png",
+   "type": "png",
+   "label": "Khung 2 9 2025",
+   "rarity": "rare"
+  },
+  {
+   "name": "khung-8-3-2025.png",
+   "url": "/avatar_frames/khung-8-3-2025.png",
+   "type": "png",
+   "label": "Khung 8 3 2025",
+   "rarity": "rare"
+  },
+  {
+   "name": "khung-couple-chuc-nu.png",
+   "url": "/avatar_frames/khung-couple-chuc-nu.png",
+   "type": "png",
+   "label": "Khung Couple Chuc Nu",
+   "rarity": "rare"
+  },
+  {
+   "name": "khung-couple-nguu-lang.png",
+   "url": "/avatar_frames/khung-couple-nguu-lang.png",
+   "type": "png",
+   "label": "Khung Couple Nguu Lang",
+   "rarity": "rare"
+  },
+  {
+   "name": "khung-hoa-20-10-2024.png",
+   "url": "/avatar_frames/khung-hoa-20-10-2024.png",
+   "type": "png",
+   "label": "Khung Hoa 20 10 2024",
+   "rarity": "rare"
+  },
+  {
+   "name": "khung-hong-nhan-phu-quan.webp",
+   "url": "/avatar_frames/khung-hong-nhan-phu-quan.webp",
+   "type": "webp",
+   "label": "Khung Hong Nhan Phu Quan",
+   "rarity": "rare"
+  },
+  {
+   "name": "khung-hong-nhan-the-tu.webp",
+   "url": "/avatar_frames/khung-hong-nhan-the-tu.webp",
+   "type": "webp",
+   "label": "Khung Hong Nhan The Tu",
+   "rarity": "rare"
+  },
+  {
+   "name": "khung-noel-2024-1.png",
+   "url": "/avatar_frames/khung-noel-2024-1.png",
+   "type": "png",
+   "label": "Khung Noel 2024 1",
+   "rarity": "rare"
+  },
+  {
+   "name": "khung-noel-2024-2.png",
+   "url": "/avatar_frames/khung-noel-2024-2.png",
+   "type": "png",
+   "label": "Khung Noel 2024 2",
+   "rarity": "rare"
+  },
+  {
+   "name": "khung-noel-2024-3.png",
+   "url": "/avatar_frames/khung-noel-2024-3.png",
+   "type": "png",
+   "label": "Khung Noel 2024 3",
+   "rarity": "rare"
+  },
+  {
+   "name": "khung-noel-2025-1.webp",
+   "url": "/avatar_frames/khung-noel-2025-1.webp",
+   "type": "webp",
+   "label": "Khung Noel 2025 1",
+   "rarity": "rare"
+  },
+  {
+   "name": "khung-noel-2025-2.webp",
+   "url": "/avatar_frames/khung-noel-2025-2.webp",
+   "type": "webp",
+   "label": "Khung Noel 2025 2",
+   "rarity": "rare"
+  },
+  {
+   "name": "khung-phao-30-4.png",
+   "url": "/avatar_frames/khung-phao-30-4.png",
+   "type": "png",
+   "label": "Khung Phao 30 4",
+   "rarity": "rare"
+  },
+  {
+   "name": "khung-phuc-loi-mua-10.png",
+   "url": "/avatar_frames/khung-phuc-loi-mua-10.png",
+   "type": "png",
+   "label": "Khung Phuc Loi Mua 10",
+   "rarity": "rare"
+  },
+  {
+   "name": "khung-phuc-loi-mua-11-fxx.webp",
+   "url": "/avatar_frames/khung-phuc-loi-mua-11-fxx.webp",
+   "type": "webp",
+   "label": "Khung Phuc Loi Mua 11 Fxx",
+   "rarity": "rare"
+  },
+  {
+   "name": "khung-phuc-loi-mua-12.webp",
+   "url": "/avatar_frames/khung-phuc-loi-mua-12.webp",
+   "type": "webp",
+   "label": "Khung Phuc Loi Mua 12",
+   "rarity": "rare"
+  },
+  {
+   "name": "khung-phuc-loi-mua-13.webp",
+   "url": "/avatar_frames/khung-phuc-loi-mua-13.webp",
+   "type": "webp",
+   "label": "Khung Phuc Loi Mua 13",
+   "rarity": "rare"
+  },
+  {
+   "name": "khung-phuc-loi-mua-14.webp",
+   "url": "/avatar_frames/khung-phuc-loi-mua-14.webp",
+   "type": "webp",
+   "label": "Khung Phuc Loi Mua 14",
+   "rarity": "rare"
+  },
+  {
+   "name": "khung-phuc-loi-mua-15.webp",
+   "url": "/avatar_frames/khung-phuc-loi-mua-15.webp",
+   "type": "webp",
+   "label": "Khung Phuc Loi Mua 15",
+   "rarity": "rare"
+  },
+  {
+   "name": "khung-phuc-loi-mua-16.webp",
+   "url": "/avatar_frames/khung-phuc-loi-mua-16.webp",
+   "type": "webp",
+   "label": "Khung Phuc Loi Mua 16",
+   "rarity": "rare"
+  },
+  {
+   "name": "khung-phuc-loi-mua-4.png",
+   "url": "/avatar_frames/khung-phuc-loi-mua-4.png",
+   "type": "png",
+   "label": "Khung Phuc Loi Mua 4",
+   "rarity": "rare"
+  },
+  {
+   "name": "khung-phuc-loi-mua-5.png",
+   "url": "/avatar_frames/khung-phuc-loi-mua-5.png",
+   "type": "png",
+   "label": "Khung Phuc Loi Mua 5",
+   "rarity": "rare"
+  },
+  {
+   "name": "khung-phuc-loi-mua-6.png",
+   "url": "/avatar_frames/khung-phuc-loi-mua-6.png",
+   "type": "png",
+   "label": "Khung Phuc Loi Mua 6",
+   "rarity": "rare"
+  },
+  {
+   "name": "khung-phuc-loi-mua-7.png",
+   "url": "/avatar_frames/khung-phuc-loi-mua-7.png",
+   "type": "png",
+   "label": "Khung Phuc Loi Mua 7",
+   "rarity": "rare"
+  },
+  {
+   "name": "khung-phuc-loi-mua-8.png",
+   "url": "/avatar_frames/khung-phuc-loi-mua-8.png",
+   "type": "png",
+   "label": "Khung Phuc Loi Mua 8",
+   "rarity": "rare"
+  },
+  {
+   "name": "khung-phuc-loi-mua-9.png",
+   "url": "/avatar_frames/khung-phuc-loi-mua-9.png",
+   "type": "png",
+   "label": "Khung Phuc Loi Mua 9",
+   "rarity": "rare"
+  },
+  {
+   "name": "khung-tet-2025-1.png",
+   "url": "/avatar_frames/khung-tet-2025-1.png",
+   "type": "png",
+   "label": "Khung Tet 2025 1",
+   "rarity": "rare"
+  },
+  {
+   "name": "khung-tet-2025-2.gif",
+   "url": "/avatar_frames/khung-tet-2025-2.gif",
+   "type": "gif",
+   "label": "Khung Tet 2025 2",
+   "rarity": "rare"
+  },
+  {
+   "name": "khung-trung-thu-1-2025.webp",
+   "url": "/avatar_frames/khung-trung-thu-1-2025.webp",
+   "type": "webp",
+   "label": "Khung Trung Thu 1 2025",
+   "rarity": "rare"
+  },
+  {
+   "name": "khung-trung-thu-2-2025.webp",
+   "url": "/avatar_frames/khung-trung-thu-2-2025.webp",
+   "type": "webp",
+   "label": "Khung Trung Thu 2 2025",
+   "rarity": "rare"
+  },
+  {
+   "name": "khung-trung-thu-3-2025.webp",
+   "url": "/avatar_frames/khung-trung-thu-3-2025.webp",
+   "type": "webp",
+   "label": "Khung Trung Thu 3 2025",
+   "rarity": "rare"
+  },
+  {
+   "name": "khung-noel-vip-2024.png",
+   "url": "/avatar_frames/khung-noel-vip-2024.png",
+   "type": "png",
+   "label": "Khung Noel Vip 2024",
+   "rarity": "epic"
+  },
+  {
+   "name": "khung-tet-vip-2025.png",
+   "url": "/avatar_frames/khung-tet-vip-2025.png",
+   "type": "png",
+   "label": "Khung Tet Vip 2025",
+   "rarity": "epic"
+  },
+  {
+   "name": "khung-trung-thu-vip-2025.webp",
+   "url": "/avatar_frames/khung-trung-thu-vip-2025.webp",
+   "type": "webp",
+   "label": "Khung Trung Thu Vip 2025",
+   "rarity": "epic"
+  },
+  {
+   "name": "khung-vip-1.png",
+   "url": "/avatar_frames/khung-vip-1.png",
+   "type": "png",
+   "label": "Khung Vip 1",
+   "rarity": "epic"
+  },
+  {
+   "name": "khung-vip-10.png",
+   "url": "/avatar_frames/khung-vip-10.png",
+   "type": "png",
+   "label": "Khung Vip 10",
+   "rarity": "epic"
+  },
+  {
+   "name": "khung-vip-11.png",
+   "url": "/avatar_frames/khung-vip-11.png",
+   "type": "png",
+   "label": "Khung Vip 11",
+   "rarity": "epic"
+  },
+  {
+   "name": "khung-vip-12.png",
+   "url": "/avatar_frames/khung-vip-12.png",
+   "type": "png",
+   "label": "Khung Vip 12",
+   "rarity": "epic"
+  },
+  {
+   "name": "khung-vip-13.webp",
+   "url": "/avatar_frames/khung-vip-13.webp",
+   "type": "webp",
+   "label": "Khung Vip 13",
+   "rarity": "epic"
+  },
+  {
+   "name": "khung-vip-14.gif",
+   "url": "/avatar_frames/khung-vip-14.gif",
+   "type": "gif",
+   "label": "Khung Vip 14",
+   "rarity": "epic"
+  },
+  {
+   "name": "khung-vip-15.webp",
+   "url": "/avatar_frames/khung-vip-15.webp",
+   "type": "webp",
+   "label": "Khung Vip 15",
+   "rarity": "epic"
+  },
+  {
+   "name": "khung-vip-16.png",
+   "url": "/avatar_frames/khung-vip-16.png",
+   "type": "png",
+   "label": "Khung Vip 16",
+   "rarity": "epic"
+  },
+  {
+   "name": "khung-vip-17.webp",
+   "url": "/avatar_frames/khung-vip-17.webp",
+   "type": "webp",
+   "label": "Khung Vip 17",
+   "rarity": "epic"
+  },
+  {
+   "name": "khung-vip-18.webp",
+   "url": "/avatar_frames/khung-vip-18.webp",
+   "type": "webp",
+   "label": "Khung Vip 18",
+   "rarity": "epic"
+  },
+  {
+   "name": "khung-vip-19.png",
+   "url": "/avatar_frames/khung-vip-19.png",
+   "type": "png",
+   "label": "Khung Vip 19",
+   "rarity": "epic"
+  },
+  {
+   "name": "khung-vip-192-fix.webp",
+   "url": "/avatar_frames/khung-vip-192-fix.webp",
+   "type": "webp",
+   "label": "Khung Vip 192 Fix",
+   "rarity": "epic"
+  },
+  {
+   "name": "khung-vip-193.webp",
+   "url": "/avatar_frames/khung-vip-193.webp",
+   "type": "webp",
+   "label": "Khung Vip 193",
+   "rarity": "epic"
+  },
+  {
+   "name": "khung-vip-194.webp",
+   "url": "/avatar_frames/khung-vip-194.webp",
+   "type": "webp",
+   "label": "Khung Vip 194",
+   "rarity": "epic"
+  },
+  {
+   "name": "khung-vip-195.webp",
+   "url": "/avatar_frames/khung-vip-195.webp",
+   "type": "webp",
+   "label": "Khung Vip 195",
+   "rarity": "epic"
+  },
+  {
+   "name": "khung-vip-196.webp",
+   "url": "/avatar_frames/khung-vip-196.webp",
+   "type": "webp",
+   "label": "Khung Vip 196",
+   "rarity": "epic"
+  },
+  {
+   "name": "khung-vip-197.webp",
+   "url": "/avatar_frames/khung-vip-197.webp",
+   "type": "webp",
+   "label": "Khung Vip 197",
+   "rarity": "epic"
+  },
+  {
+   "name": "khung-vip-198.webp",
+   "url": "/avatar_frames/khung-vip-198.webp",
+   "type": "webp",
+   "label": "Khung Vip 198",
+   "rarity": "epic"
+  },
+  {
+   "name": "khung-vip-2-9-2025-v2.png",
+   "url": "/avatar_frames/khung-vip-2-9-2025-v2.png",
+   "type": "png",
+   "label": "Khung Vip 2 9 2025 V2",
+   "rarity": "epic"
+  },
+  {
+   "name": "khung-vip-2.png",
+   "url": "/avatar_frames/khung-vip-2.png",
+   "type": "png",
+   "label": "Khung Vip 2",
+   "rarity": "epic"
+  },
+  {
+   "name": "khung-vip-20-10-2025.webp",
+   "url": "/avatar_frames/khung-vip-20-10-2025.webp",
+   "type": "webp",
+   "label": "Khung Vip 20 10 2025",
+   "rarity": "epic"
+  },
+  {
+   "name": "khung-vip-20.png",
+   "url": "/avatar_frames/khung-vip-20.png",
+   "type": "png",
+   "label": "Khung Vip 20",
+   "rarity": "epic"
+  },
+  {
+   "name": "khung-vip-21.webp",
+   "url": "/avatar_frames/khung-vip-21.webp",
+   "type": "webp",
+   "label": "Khung Vip 21",
+   "rarity": "epic"
+  },
+  {
+   "name": "khung-vip-22.png",
+   "url": "/avatar_frames/khung-vip-22.png",
+   "type": "png",
+   "label": "Khung Vip 22",
+   "rarity": "epic"
+  },
+  {
+   "name": "khung-vip-23.png",
+   "url": "/avatar_frames/khung-vip-23.png",
+   "type": "png",
+   "label": "Khung Vip 23",
+   "rarity": "epic"
+  },
+  {
+   "name": "khung-vip-239.webp",
+   "url": "/avatar_frames/khung-vip-239.webp",
+   "type": "webp",
+   "label": "Khung Vip 239",
+   "rarity": "epic"
+  },
+  {
+   "name": "khung-vip-249-fix.webp",
+   "url": "/avatar_frames/khung-vip-249-fix.webp",
+   "type": "webp",
+   "label": "Khung Vip 249 Fix",
+   "rarity": "epic"
+  },
+  {
+   "name": "khung-vip-250-fix.webp",
+   "url": "/avatar_frames/khung-vip-250-fix.webp",
+   "type": "webp",
+   "label": "Khung Vip 250 Fix",
+   "rarity": "epic"
+  },
+  {
+   "name": "khung-vip-252.webp",
+   "url": "/avatar_frames/khung-vip-252.webp",
+   "type": "webp",
+   "label": "Khung Vip 252",
+   "rarity": "epic"
+  },
+  {
+   "name": "khung-vip-273.webp",
+   "url": "/avatar_frames/khung-vip-273.webp",
+   "type": "webp",
+   "label": "Khung Vip 273",
+   "rarity": "epic"
+  },
+  {
+   "name": "khung-vip-274-1.webp",
+   "url": "/avatar_frames/khung-vip-274-1.webp",
+   "type": "webp",
+   "label": "Khung Vip 274 1",
+   "rarity": "epic"
+  },
+  {
+   "name": "khung-vip-275.webp",
+   "url": "/avatar_frames/khung-vip-275.webp",
+   "type": "webp",
+   "label": "Khung Vip 275",
+   "rarity": "epic"
+  },
+  {
+   "name": "khung-vip-284.webp",
+   "url": "/avatar_frames/khung-vip-284.webp",
+   "type": "webp",
+   "label": "Khung Vip 284",
+   "rarity": "epic"
+  },
+  {
+   "name": "khung-vip-294.webp",
+   "url": "/avatar_frames/khung-vip-294.webp",
+   "type": "webp",
+   "label": "Khung Vip 294",
+   "rarity": "epic"
+  },
+  {
+   "name": "khung-vip-295.webp",
+   "url": "/avatar_frames/khung-vip-295.webp",
+   "type": "webp",
+   "label": "Khung Vip 295",
+   "rarity": "epic"
+  },
+  {
+   "name": "khung-vip-296.webp",
+   "url": "/avatar_frames/khung-vip-296.webp",
+   "type": "webp",
+   "label": "Khung Vip 296",
+   "rarity": "epic"
+  },
+  {
+   "name": "khung-vip-3.png",
+   "url": "/avatar_frames/khung-vip-3.png",
+   "type": "png",
+   "label": "Khung Vip 3",
+   "rarity": "epic"
+  },
+  {
+   "name": "khung-vip-303.webp",
+   "url": "/avatar_frames/khung-vip-303.webp",
+   "type": "webp",
+   "label": "Khung Vip 303",
+   "rarity": "epic"
+  },
+  {
+   "name": "khung-vip-313-v2.webp",
+   "url": "/avatar_frames/khung-vip-313-v2.webp",
+   "type": "webp",
+   "label": "Khung Vip 313 V2",
+   "rarity": "epic"
+  },
+  {
+   "name": "khung-vip-314-v2.webp",
+   "url": "/avatar_frames/khung-vip-314-v2.webp",
+   "type": "webp",
+   "label": "Khung Vip 314 V2",
+   "rarity": "epic"
+  },
+  {
+   "name": "khung-vip-326.webp",
+   "url": "/avatar_frames/khung-vip-326.webp",
+   "type": "webp",
+   "label": "Khung Vip 326",
+   "rarity": "epic"
+  },
+  {
+   "name": "khung-vip-327.webp",
+   "url": "/avatar_frames/khung-vip-327.webp",
+   "type": "webp",
+   "label": "Khung Vip 327",
+   "rarity": "epic"
+  },
+  {
+   "name": "khung-vip-334.webp",
+   "url": "/avatar_frames/khung-vip-334.webp",
+   "type": "webp",
+   "label": "Khung Vip 334",
+   "rarity": "epic"
+  },
+  {
+   "name": "khung-vip-335.webp",
+   "url": "/avatar_frames/khung-vip-335.webp",
+   "type": "webp",
+   "label": "Khung Vip 335",
+   "rarity": "epic"
+  },
+  {
+   "name": "khung-vip-336.webp",
+   "url": "/avatar_frames/khung-vip-336.webp",
+   "type": "webp",
+   "label": "Khung Vip 336",
+   "rarity": "epic"
+  },
+  {
+   "name": "khung-vip-337.webp",
+   "url": "/avatar_frames/khung-vip-337.webp",
+   "type": "webp",
+   "label": "Khung Vip 337",
+   "rarity": "epic"
+  },
+  {
+   "name": "khung-vip-338.webp",
+   "url": "/avatar_frames/khung-vip-338.webp",
+   "type": "webp",
+   "label": "Khung Vip 338",
+   "rarity": "epic"
+  },
+  {
+   "name": "khung-vip-339-ss.webp",
+   "url": "/avatar_frames/khung-vip-339-ss.webp",
+   "type": "webp",
+   "label": "Khung Vip 339 Ss",
+   "rarity": "epic"
+  },
+  {
+   "name": "khung-vip-340.webp",
+   "url": "/avatar_frames/khung-vip-340.webp",
+   "type": "webp",
+   "label": "Khung Vip 340",
+   "rarity": "epic"
+  },
+  {
+   "name": "khung-vip-341.webp",
+   "url": "/avatar_frames/khung-vip-341.webp",
+   "type": "webp",
+   "label": "Khung Vip 341",
+   "rarity": "epic"
+  },
+  {
+   "name": "khung-vip-342-v2.webp",
+   "url": "/avatar_frames/khung-vip-342-v2.webp",
+   "type": "webp",
+   "label": "Khung Vip 342 V2",
+   "rarity": "epic"
+  },
+  {
+   "name": "khung-vip-343.webp",
+   "url": "/avatar_frames/khung-vip-343.webp",
+   "type": "webp",
+   "label": "Khung Vip 343",
+   "rarity": "epic"
+  },
+  {
+   "name": "khung-vip-344.webp",
+   "url": "/avatar_frames/khung-vip-344.webp",
+   "type": "webp",
+   "label": "Khung Vip 344",
+   "rarity": "epic"
+  },
+  {
+   "name": "khung-vip-4.png",
+   "url": "/avatar_frames/khung-vip-4.png",
+   "type": "png",
+   "label": "Khung Vip 4",
+   "rarity": "epic"
+  },
+  {
+   "name": "khung-vip-5.png",
+   "url": "/avatar_frames/khung-vip-5.png",
+   "type": "png",
+   "label": "Khung Vip 5",
+   "rarity": "epic"
+  },
+  {
+   "name": "khung-vip-6.png",
+   "url": "/avatar_frames/khung-vip-6.png",
+   "type": "png",
+   "label": "Khung Vip 6",
+   "rarity": "epic"
+  },
+  {
+   "name": "khung-vip-7.png",
+   "url": "/avatar_frames/khung-vip-7.png",
+   "type": "png",
+   "label": "Khung Vip 7",
+   "rarity": "epic"
+  },
+  {
+   "name": "khung-vip-8-3-2026.webp",
+   "url": "/avatar_frames/khung-vip-8-3-2026.webp",
+   "type": "webp",
+   "label": "Khung Vip 8 3 2026",
+   "rarity": "epic"
+  },
+  {
+   "name": "khung-vip-8.png",
+   "url": "/avatar_frames/khung-vip-8.png",
+   "type": "png",
+   "label": "Khung Vip 8",
+   "rarity": "epic"
+  },
+  {
+   "name": "khung-vip-9.png",
+   "url": "/avatar_frames/khung-vip-9.png",
+   "type": "png",
+   "label": "Khung Vip 9",
+   "rarity": "epic"
+  },
+  {
+   "name": "khung-vip-halloween.webp",
+   "url": "/avatar_frames/khung-vip-halloween.webp",
+   "type": "webp",
+   "label": "Khung Vip Halloween",
+   "rarity": "epic"
+  },
+  {
+   "name": "khung-vip-hh3d.png",
+   "url": "/avatar_frames/khung-vip-hh3d.png",
+   "type": "png",
+   "label": "Khung Vip Hh3d",
+   "rarity": "epic"
+  },
+  {
+   "name": "khung-vip-id-17427-fixx.webp",
+   "url": "/avatar_frames/khung-vip-id-17427-fixx.webp",
+   "type": "webp",
+   "label": "Khung Vip Id 17427 Fixx",
+   "rarity": "epic"
+  },
+  {
+   "name": "khung-vip-id-249.webp",
+   "url": "/avatar_frames/khung-vip-id-249.webp",
+   "type": "webp",
+   "label": "Khung Vip Id 249",
+   "rarity": "epic"
+  },
+  {
+   "name": "khung-vip-id-25323.png",
+   "url": "/avatar_frames/khung-vip-id-25323.png",
+   "type": "png",
+   "label": "Khung Vip Id 25323",
+   "rarity": "epic"
+  },
+  {
+   "name": "khung-vip-id-25535.webp",
+   "url": "/avatar_frames/khung-vip-id-25535.webp",
+   "type": "webp",
+   "label": "Khung Vip Id 25535",
+   "rarity": "epic"
+  },
+  {
+   "name": "khung-vip-id-30032-v2-1.webp",
+   "url": "/avatar_frames/khung-vip-id-30032-v2-1.webp",
+   "type": "webp",
+   "label": "Khung Vip Id 30032 V2 1",
+   "rarity": "epic"
+  },
+  {
+   "name": "khung-vip-id-30032.webp",
+   "url": "/avatar_frames/khung-vip-id-30032.webp",
+   "type": "webp",
+   "label": "Khung Vip Id 30032",
+   "rarity": "epic"
+  },
+  {
+   "name": "khung-vip-id-30268-v2-1.webp",
+   "url": "/avatar_frames/khung-vip-id-30268-v2-1.webp",
+   "type": "webp",
+   "label": "Khung Vip Id 30268 V2 1",
+   "rarity": "epic"
+  },
+  {
+   "name": "khung-vip-id-30268.webp",
+   "url": "/avatar_frames/khung-vip-id-30268.webp",
+   "type": "webp",
+   "label": "Khung Vip Id 30268",
+   "rarity": "epic"
+  },
+  {
+   "name": "khung-vip-id-394.webp",
+   "url": "/avatar_frames/khung-vip-id-394.webp",
+   "type": "webp",
+   "label": "Khung Vip Id 394",
+   "rarity": "epic"
+  },
+  {
+   "name": "khung-vip-id-7448.png",
+   "url": "/avatar_frames/khung-vip-id-7448.png",
+   "type": "png",
+   "label": "Khung Vip Id 7448",
+   "rarity": "epic"
+  },
+  {
+   "name": "khung-vip-moc-1.png",
+   "url": "/avatar_frames/khung-vip-moc-1.png",
+   "type": "png",
+   "label": "Khung Vip Moc 1",
+   "rarity": "epic"
+  },
+  {
+   "name": "khung-vip-moc-2.webp",
+   "url": "/avatar_frames/khung-vip-moc-2.webp",
+   "type": "webp",
+   "label": "Khung Vip Moc 2",
+   "rarity": "epic"
+  },
+  {
+   "name": "khung-vip-moc-3.webp",
+   "url": "/avatar_frames/khung-vip-moc-3.webp",
+   "type": "webp",
+   "label": "Khung Vip Moc 3",
+   "rarity": "epic"
+  },
+  {
+   "name": "khung-vip-moc-4.webp",
+   "url": "/avatar_frames/khung-vip-moc-4.webp",
+   "type": "webp",
+   "label": "Khung Vip Moc 4",
+   "rarity": "epic"
+  },
+  {
+   "name": "khung-vip-noel-2025.webp",
+   "url": "/avatar_frames/khung-vip-noel-2025.webp",
+   "type": "webp",
+   "label": "Khung Vip Noel 2025",
+   "rarity": "epic"
+  },
+  {
+   "name": "khung-vip-tet-2026-01.webp",
+   "url": "/avatar_frames/khung-vip-tet-2026-01.webp",
+   "type": "webp",
+   "label": "Khung Vip Tet 2026 01",
+   "rarity": "epic"
+  },
+  {
+   "name": "khung-vip-tet-2026-02.webp",
+   "url": "/avatar_frames/khung-vip-tet-2026-02.webp",
+   "type": "webp",
+   "label": "Khung Vip Tet 2026 02",
+   "rarity": "epic"
+  },
+  {
+   "name": "khung-vip-tet-2026.webp",
+   "url": "/avatar_frames/khung-vip-tet-2026.webp",
+   "type": "webp",
+   "label": "Khung Vip Tet 2026",
+   "rarity": "epic"
+  },
+  {
+   "name": "khung-luan-vo-top-2.png",
+   "url": "/avatar_frames/khung-luan-vo-top-2.png",
+   "type": "png",
+   "label": "Khung Luan Vo Top 2",
+   "rarity": "legendary"
+  },
+  {
+   "name": "khung-luan-vo-top-3.png",
+   "url": "/avatar_frames/khung-luan-vo-top-3.png",
+   "type": "png",
+   "label": "Khung Luan Vo Top 3",
+   "rarity": "legendary"
+  },
+  {
+   "name": "khung-top-1-luan-vo.gif",
+   "url": "/avatar_frames/khung-top-1-luan-vo.gif",
+   "type": "gif",
+   "label": "Khung Top 1 Luan Vo",
+   "rarity": "legendary"
+  },
+  {
+   "name": "khung-top-1-truyen-thua-1-2025.png",
+   "url": "/avatar_frames/khung-top-1-truyen-thua-1-2025.png",
+   "type": "png",
+   "label": "Khung Top 1 Truyen Thua 1 2025",
+   "rarity": "legendary"
+  },
+  {
+   "name": "khung-top-1-truyen-thua-11-2024.png",
+   "url": "/avatar_frames/khung-top-1-truyen-thua-11-2024.png",
+   "type": "png",
+   "label": "Khung Top 1 Truyen Thua 11 2024",
+   "rarity": "legendary"
+  },
+  {
+   "name": "khung-top-1-truyen-thua-2025-v2.png",
+   "url": "/avatar_frames/khung-top-1-truyen-thua-2025-v2.png",
+   "type": "png",
+   "label": "Khung Top 1 Truyen Thua 2025 V2",
+   "rarity": "legendary"
+  },
+  {
+   "name": "khung-top-1-truyen-thua-2025-v3.webp",
+   "url": "/avatar_frames/khung-top-1-truyen-thua-2025-v3.webp",
+   "type": "webp",
+   "label": "Khung Top 1 Truyen Thua 2025 V3",
+   "rarity": "legendary"
+  },
+  {
+   "name": "khung-top-1-truyen-thua-2025-v4.webp",
+   "url": "/avatar_frames/khung-top-1-truyen-thua-2025-v4.webp",
+   "type": "webp",
+   "label": "Khung Top 1 Truyen Thua 2025 V4",
+   "rarity": "legendary"
+  },
+  {
+   "name": "khung-top-1-truyen-thua-2025.gif",
+   "url": "/avatar_frames/khung-top-1-truyen-thua-2025.gif",
+   "type": "gif",
+   "label": "Khung Top 1 Truyen Thua 2025",
+   "rarity": "legendary"
+  },
+  {
+   "name": "khung-top-1-truyen-thua-2026-v1.webp",
+   "url": "/avatar_frames/khung-top-1-truyen-thua-2026-v1.webp",
+   "type": "webp",
+   "label": "Khung Top 1 Truyen Thua 2026 V1",
+   "rarity": "legendary"
+  },
+  {
+   "name": "khung-top-1-truyen-thua-4-2025.gif",
+   "url": "/avatar_frames/khung-top-1-truyen-thua-4-2025.gif",
+   "type": "gif",
+   "label": "Khung Top 1 Truyen Thua 4 2025",
+   "rarity": "legendary"
+  },
+  {
+   "name": "khung-top-1-truyen-thua-v5.webp",
+   "url": "/avatar_frames/khung-top-1-truyen-thua-v5.webp",
+   "type": "webp",
+   "label": "Khung Top 1 Truyen Thua V5",
+   "rarity": "legendary"
+  },
+  {
+   "name": "khung-top-bxh-tien-duyen-pq-v2.webp",
+   "url": "/avatar_frames/khung-top-bxh-tien-duyen-pq-v2.webp",
+   "type": "webp",
+   "label": "Khung Top Bxh Tien Duyen Pq V2",
+   "rarity": "legendary"
+  },
+  {
+   "name": "khung-top-bxh-tien-duyen-pq.png",
+   "url": "/avatar_frames/khung-top-bxh-tien-duyen-pq.png",
+   "type": "png",
+   "label": "Khung Top Bxh Tien Duyen Pq",
+   "rarity": "legendary"
+  },
+  {
+   "name": "khung-top-bxh-tien-duyen-tt-v2.webp",
+   "url": "/avatar_frames/khung-top-bxh-tien-duyen-tt-v2.webp",
+   "type": "webp",
+   "label": "Khung Top Bxh Tien Duyen Tt V2",
+   "rarity": "legendary"
+  },
+  {
+   "name": "khung-top-bxh-tien-duyen-tt.png",
+   "url": "/avatar_frames/khung-top-bxh-tien-duyen-tt.png",
+   "type": "png",
+   "label": "Khung Top Bxh Tien Duyen Tt",
+   "rarity": "legendary"
+  },
+  {
+   "name": "khung-vip-top-tien-duyen-pq-v2.webp",
+   "url": "/avatar_frames/khung-vip-top-tien-duyen-pq-v2.webp",
+   "type": "webp",
+   "label": "Khung Vip Top Tien Duyen Pq V2",
+   "rarity": "legendary"
+  },
+  {
+   "name": "khung-vip-top-tien-duyen-pq-v3.webp",
+   "url": "/avatar_frames/khung-vip-top-tien-duyen-pq-v3.webp",
+   "type": "webp",
+   "label": "Khung Vip Top Tien Duyen Pq V3",
+   "rarity": "legendary"
+  },
+  {
+   "name": "khung-vip-top-tien-duyen-pq-v4.webp",
+   "url": "/avatar_frames/khung-vip-top-tien-duyen-pq-v4.webp",
+   "type": "webp",
+   "label": "Khung Vip Top Tien Duyen Pq V4",
+   "rarity": "legendary"
+  },
+  {
+   "name": "khung-vip-top-tien-duyen-pq-v5.webp",
+   "url": "/avatar_frames/khung-vip-top-tien-duyen-pq-v5.webp",
+   "type": "webp",
+   "label": "Khung Vip Top Tien Duyen Pq V5",
+   "rarity": "legendary"
+  },
+  {
+   "name": "khung-vip-top-tien-duyen-pq-v6.webp",
+   "url": "/avatar_frames/khung-vip-top-tien-duyen-pq-v6.webp",
+   "type": "webp",
+   "label": "Khung Vip Top Tien Duyen Pq V6",
+   "rarity": "legendary"
+  },
+  {
+   "name": "khung-vip-top-tien-duyen-pq.gif",
+   "url": "/avatar_frames/khung-vip-top-tien-duyen-pq.gif",
+   "type": "gif",
+   "label": "Khung Vip Top Tien Duyen Pq",
+   "rarity": "legendary"
+  },
+  {
+   "name": "khung-vip-top-tien-duyen-tt-v2.webp",
+   "url": "/avatar_frames/khung-vip-top-tien-duyen-tt-v2.webp",
+   "type": "webp",
+   "label": "Khung Vip Top Tien Duyen Tt V2",
+   "rarity": "legendary"
+  },
+  {
+   "name": "khung-vip-top-tien-duyen-tt-v3.webp",
+   "url": "/avatar_frames/khung-vip-top-tien-duyen-tt-v3.webp",
+   "type": "webp",
+   "label": "Khung Vip Top Tien Duyen Tt V3",
+   "rarity": "legendary"
+  },
+  {
+   "name": "khung-vip-top-tien-duyen-tt-v4.webp",
+   "url": "/avatar_frames/khung-vip-top-tien-duyen-tt-v4.webp",
+   "type": "webp",
+   "label": "Khung Vip Top Tien Duyen Tt V4",
+   "rarity": "legendary"
+  },
+  {
+   "name": "khung-vip-top-tien-duyen-tt-v5.webp",
+   "url": "/avatar_frames/khung-vip-top-tien-duyen-tt-v5.webp",
+   "type": "webp",
+   "label": "Khung Vip Top Tien Duyen Tt V5",
+   "rarity": "legendary"
+  },
+  {
+   "name": "khung-vip-top-tien-duyen-tt-v6.webp",
+   "url": "/avatar_frames/khung-vip-top-tien-duyen-tt-v6.webp",
+   "type": "webp",
+   "label": "Khung Vip Top Tien Duyen Tt V6",
+   "rarity": "legendary"
+  },
+  {
+   "name": "khung-vip-top-tien-duyen-tt.gif",
+   "url": "/avatar_frames/khung-vip-top-tien-duyen-tt.gif",
+   "type": "gif",
+   "label": "Khung Vip Top Tien Duyen Tt",
+   "rarity": "legendary"
+  }
+ ]
+}

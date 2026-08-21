@@ -69,8 +69,13 @@ export default function ProfilePage() {
         const res = await fetch(ENDPOINTS.AUTH.PROFILE_ME, {
           headers: getHeaders(),
         });
-        if (!res.ok) throw new Error();
-        
+        // 🛡️ Chỉ đăng xuất khi token THẬT SỰ hết hạn (401).
+        // Các lỗi khác (mạng, 500...) giữ nguyên phiên để không mất token oan.
+        if (res.status === 401) {
+          const e = new Error("auth"); e.auth = true; throw e;
+        }
+        if (!res.ok) throw new Error("load");
+
         const result = await res.json();
         const data = result.data || result;
         
@@ -86,12 +91,17 @@ export default function ProfilePage() {
         });
         setIsLoadingProfile(false);
       } catch (err) {
-        showToast("Phiên đăng nhập hết hạn!", "error");
-        setTimeout(() => {
-          localStorage.removeItem("d4m_sso_token");
-          localStorage.removeItem("d4m_token");
-          navigate("/auth");
-        }, 1500);
+        if (err && err.auth) {
+          showToast("Phiên đăng nhập hết hạn!", "error");
+          setTimeout(() => {
+            localStorage.removeItem("d4m_sso_token");
+            localStorage.removeItem("d4m_token");
+            navigate("/auth");
+          }, 1500);
+        } else {
+          showToast("Không tải được hồ sơ — kiểm tra kết nối backend.", "error");
+          setIsLoadingProfile(false);
+        }
       }
     };
 
