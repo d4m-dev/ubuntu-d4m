@@ -319,7 +319,7 @@ export default function SocialHubPage() {
   return (
     <div className="min-h-screen bg-black text-white font-sans selection:bg-gray-700">
       <SEO title="Social Hub" description="Mạng xã hội D4M — cập nhật trạng thái, chia sẻ âm nhạc và kết nối cộng đồng." />
-      <div className="max-w-[640px] mx-auto min-h-screen flex flex-col relative">
+      <div className="max-w-[640px] md:max-w-[780px] lg:max-w-[880px] mx-auto min-h-screen flex flex-col relative">
 
         {/* ========== HEADER (THREADS STYLE) ========== */}
         <header className="sticky top-0 z-40 bg-black/90 backdrop-blur-xl border-b border-white/10">

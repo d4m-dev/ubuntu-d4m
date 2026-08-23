@@ -51,6 +51,8 @@ async def send_telegram_menu():
     keyboard = {
         "inline_keyboard": [
             [{"text": f"🌐 Tên miền & Tunnel: {tunnel_status}", "callback_data": "toggle_tunnel"}],
+            [{"text": "🌌 Hệ Sinh Thái", "callback_data": "eco_dash"}, {"text": "🎵 Top Tuần", "callback_data": "eco_top"}],
+            [{"text": "👥 Users", "callback_data": "eco_users"}, {"text": "💰 QR Donate", "callback_data": "eco_qr_hint"}],
             [{"text": "📊 Giám Sát", "callback_data": "server_stats"}, {"text": "🔬 Top Tiến Trình", "callback_data": "top_processes"}],
             [{"text": "🧹 Dọn rác", "callback_data": "clean_trash"}, {"text": "📦 Sao Lưu", "callback_data": "backup_code"}],
             [{"text": "🔄 Khởi động lại", "callback_data": "restart_api"}]
@@ -61,6 +63,8 @@ async def send_telegram_menu():
         "💡 <b>Mẹo thao tác:</b>\n"
         "- Ném <code>Link YouTube</code> để bot tải siêu tốc.\n"
         "- Lệnh DJ: <code>Phát bài [tên]</code>.\n"
-        "- Gõ <code>>[lệnh bash]</code> để chạy Terminal từ xa.", 
+        "- Gõ <code>>[lệnh bash]</code> để chạy Terminal từ xa.\n"
+                "- Lệnh hệ sinh thái: <code>/dash</code> <code>/qr 50000</code> <code>/users</code> "
+                "<code>/grant &lt;id&gt;</code> <code>/xu &lt;id&gt; &lt;số&gt;</code> <code>/top</code>.", 
         reply_markup=keyboard
     )

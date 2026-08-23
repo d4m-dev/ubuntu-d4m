@@ -191,6 +191,8 @@ DONATE = {
     "PREFIX": "/api/donate",
     "QR": "/qr",
     "SEPAY_WEBHOOK": "/sepay-webhook",
+    "PAYOS_WEBHOOK": "/payos-webhook",
+    "STATUS": "/status/{qr_id}",     # polling trạng thái QR (fallback WS)
     "WS_DONATE": "/donate/{user_id}",  # path con của WS.PREFIX (/api/ws)
 }
 

@@ -78,15 +78,39 @@ export default function DonateModal({ open, onClose }) {
     window.dispatchEvent(new CustomEvent("d4m:user-activated"));
   }, []);
 
+  // 👤 Tên hiển thị cho lời cảm ơn
+  const userName = (() => {
+    try {
+      const stored = getUser();
+      if (stored && (stored.full_name || stored.username)) return stored.full_name || stored.username;
+      const t = getToken();
+      if (t) {
+        const p = JSON.parse(
+          decodeURIComponent(atob(t.split(".")[1].replace(/-/g, "+").replace(/_/g, "/"))
+            .split("").map((c) => "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2)).join(""))
+        );
+        return p.full_name || p.sub || "bạn";
+      }
+    } catch { /* fallback */ }
+    return "bạn";
+  })();
+
   // 🎉 Dùng chung khi nhận tiền (WS hoặc polling)
   const onPaid = useCallback((amt) => {
     setPaidAmount(amt);
-    showToast(`🎉 Cảm ơn sếp đã donate ${Number(amt).toLocaleString("vi-VN")}đ! Tài khoản đã được kích hoạt.`);
+    showToast(`❤️ Cảm ơn ${userName} đã ủng hộ ${Number(amt).toLocaleString("vi-VN")}đ. Xin cảm ơn!`);
     setConfetti(true);
     setStep(3);
     refreshUserActive();
     clearInterval(ttlTimerRef.current);
-  }, [refreshUserActive]);
+  }, [refreshUserActive, userName]);
+
+  // ⏱️ Màn cảm ơn: TỰ ĐÓNG MODAL sau 6 giây
+  useEffect(() => {
+    if (step !== 3) return;
+    const t = setTimeout(() => { setConfetti(false); onClose(); }, 6000);
+    return () => clearTimeout(t);
+  }, [step, onClose]);
 
   // Đếm ngược 15 phút khi ở màn 2
   useEffect(() => {
@@ -167,7 +191,7 @@ export default function DonateModal({ open, onClose }) {
         const r = await fetch(DONATE.STATUS(qrId));
         if (!r.ok) return;
         const d = await r.json();
-        if (d.qr_status === "paid") onPaid(d.amount || amount);
+        if (d.qr_status === "paid" || d.qr_status === "success") onPaid(d.amount || amount);
         else if (d.qr_status === "expired") setTtlLeft(0);
       } catch { /* mạng lỗi thoáng qua */ }
     }, 5000);
@@ -341,10 +365,14 @@ export default function DonateModal({ open, onClose }) {
               {I.check}
             </div>
             <h2 className="d4m-page-title" style={{ fontSize: "clamp(1.15rem, 4.5vw, 1.4rem)", display: "block" }}>
-              Cảm ơn sếp! 🎉
+              Cảm ơn {userName}! 🎉
             </h2>
             <p className="d4m-page-subtitle">
-              Sếp đã donate <strong style={{ color: "var(--d4m-primary)" }}>{paidAmount.toLocaleString("vi-VN")}đ</strong>. Tài khoản đã được kích hoạt!
+              Cảm ơn <strong>{userName}</strong> đã ủng hộ{" "}
+              <strong style={{ color: "var(--d4m-primary)" }}>{paidAmount.toLocaleString("vi-VN")}đ</strong>. Xin cảm ơn! ❤️
+            </p>
+            <p className="d4m-page-subtitle" style={{ fontSize: ".72rem", marginTop: ".4rem" }}>
+              Tài khoản đã kích hoạt • Modal tự đóng sau vài giây...
             </p>
 
             <div className="d4m-card mt-4" style={{ textAlign: "left", padding: "1rem" }}>

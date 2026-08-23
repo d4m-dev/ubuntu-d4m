@@ -196,9 +196,18 @@ export default function CustomizationPanel({ currentUser, onBack, onSaved, onSpi
       (!q || i.name.toLowerCase().includes(q)));
   };
 
-  // 🖼️ Preview tổng hợp (khung đang chọn + linh thú/linh bảo đang trang bị)
-  const petItem = catalog.find((i) => i.id === equipped.pet) || null;
-  const treasureItem = catalog.find((i) => i.id === equipped.treasure) || null;
+  // 🧪 THỬ TRƯỚC KHI MUA — chạm linh vật để ướm thử lên avatar preview
+  const [tryPet, setTryPet] = useState(null);
+  const [tryTreasure, setTryTreasure] = useState(null);
+  const tryOn = (item) => {
+    if (item.kind === "pet") setTryPet((p) => (p?.id === item.id ? null : item));
+    else setTryTreasure((t) => (t?.id === item.id ? null : item));
+  };
+
+  // 🖼️ Preview tổng hợp: khung đang chọn + (đồ THỬ || đồ đang trang bị)
+  const petItem = tryPet || (catalog.find((i) => i.id === equipped.pet) || null);
+  const treasureItem = tryTreasure || (catalog.find((i) => i.id === equipped.treasure) || null);
+  const trying = Boolean(tryPet || tryTreasure);
 
   const TABS = [
     { id: "frame", label: `🖼️ Khung (${frames.length})` },
@@ -227,18 +236,27 @@ export default function CustomizationPanel({ currentUser, onBack, onSaved, onSpi
           {visible.map((item) => {
             const rar = rarityOf(item.rarity);
             const isEquipped = equipped[kind] === item.id;
+            const isTry = (tryPet?.id === item.id) || (tryTreasure?.id === item.id);
             const busy = busyId === item.id;
             return (
               <div
                 key={item.id}
-                className={`rounded-2xl border-2 p-3 text-center transition ${isEquipped ? "bg-white/[0.07]" : "bg-white/[0.02]"}`}
-                style={{ borderColor: isEquipped ? "#1ed760" : rar.border }}
+                role="button"
+                tabIndex={0}
+                onClick={() => tryOn(item)}
+                onKeyDown={(e) => { if (e.key === "Enter") tryOn(item); }}
+                className={`relative rounded-2xl border-2 p-3 text-center transition cursor-pointer hover:bg-white/[0.06] ${isEquipped ? "bg-white/[0.07]" : "bg-white/[0.02]"}`}
+                style={{ borderColor: isEquipped ? "#1ed760" : isTry ? "#e5e7eb" : rar.border }}
+                title="Chạm để ướm thử lên avatar"
               >
+                {isTry && !isEquipped && (
+                  <span className="absolute top-1.5 right-1.5 text-[9px] font-bold text-white bg-black/70 border border-white/30 rounded-full px-1.5 py-0.5">🧪 thử</span>
+                )}
                 <div className="relative inline-block">
                   <img
                     src={full(item.image)} alt={item.name} loading="lazy"
-                    className="w-20 h-20 mx-auto object-contain rounded-xl"
-                    style={{ mixBlendMode: "screen", background: "radial-gradient(circle, rgba(255,255,255,.06), transparent 70%)" }}
+                    className="w-20 h-20 mx-auto object-cover rounded-full"
+                    style={{ background: "radial-gradient(circle at 50% 38%, #1c2440, #0a0d18 72%)", border: "2px solid rgba(255,255,255,.25)" }}
                   />
                   {isEquipped && <span className="absolute -top-1 -right-1 text-[10px] bg-[#1ed760] text-black font-bold rounded-full px-1.5">✓</span>}
                 </div>
@@ -248,7 +266,7 @@ export default function CustomizationPanel({ currentUser, onBack, onSaved, onSpi
                 <div className="mt-2">
                   {item.owned ? (
                     <button
-                      onClick={() => toggleEquip(item)}
+                      onClick={(e) => { e.stopPropagation(); toggleEquip(item); }}
                       disabled={busy}
                       className={`w-full py-1.5 rounded-full text-xs font-bold transition disabled:opacity-50 ${isEquipped ? "bg-white/10 text-gray-300 hover:bg-white/20" : "bg-[#1ed760] text-black hover:brightness-110"}`}
                     >
@@ -256,7 +274,7 @@ export default function CustomizationPanel({ currentUser, onBack, onSaved, onSpi
                     </button>
                   ) : (
                     <button
-                      onClick={() => buy(item)}
+                      onClick={(e) => { e.stopPropagation(); buy(item); }}
                       disabled={busy || xu < item.price_xu}
                       className="w-full py-1.5 rounded-full text-xs font-bold bg-amber-500/20 text-amber-300 hover:bg-amber-500/30 disabled:opacity-40 disabled:cursor-not-allowed transition"
                       title={xu < item.price_xu ? "Không đủ Xu" : ""}
@@ -273,7 +291,7 @@ export default function CustomizationPanel({ currentUser, onBack, onSaved, onSpi
           )}
         </div>
         <LoadMore shown={visible.length} total={items.length} onMore={() => setSpiritLimit((n) => n + 24)} />
-        <p className="text-[11px] text-gray-500">💡 Trang bị có hiệu lực ngay — hiển thị cạnh avatar của bạn ở mọi nơi: bảng tin, bình luận, tin nhắn.</p>
+        <p className="text-[11px] text-gray-500">🧪 Chạm thẻ để ướm thử lên avatar trước khi mua • Trang bị có hiệu lực ngay toàn hệ thống.</p>
       </div>
     );
   };
@@ -281,7 +299,7 @@ export default function CustomizationPanel({ currentUser, onBack, onSaved, onSpi
   // 🌀 Portal ra body — thoát ancestor backdrop-filter/transform, căn giữa an toàn
   return createPortal(
     <div className="fixed inset-0 z-[70] bg-black/80 backdrop-blur-sm flex overflow-y-auto p-4" onClick={onBack}>
-      <div className="w-full max-w-md m-auto bg-[#111] border border-white/10 rounded-2xl overflow-hidden flex flex-col max-h-[90dvh]" onClick={(e) => e.stopPropagation()}>
+      <div className="w-full max-w-md md:max-w-xl m-auto bg-[#111] border border-white/10 rounded-2xl overflow-hidden flex flex-col max-h-[90dvh]" onClick={(e) => e.stopPropagation()}>
         <div className="flex items-center gap-3 px-4 py-3 border-b border-white/10">
           <button onClick={onBack} aria-label="Quay lại" className="p-1.5 -ml-2 rounded-full hover:bg-white/10 text-gray-300"><IconBack /></button>
           <h2 className="font-bold text-lg flex-1">Hồ sơ & Phong cách</h2>
@@ -301,11 +319,11 @@ export default function CustomizationPanel({ currentUser, onBack, onSaved, onSpi
           ))}
         </div>
 
-        <div className="flex-1 overflow-y-auto p-4 space-y-5">
-          {/* 👤 HEADER HỒ SƠ — preview trực tiếp mọi thứ đang chọn */}
-          <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4 text-center">
-            <AvatarFrame src={currentUser?.avatar_url} frame={frame} pet={petItem} treasure={treasureItem} size={88} alt="" />
-            <div className="mt-3 text-lg font-bold" style={{ ...cssFrom(nameEffectStyle(effect)) }}>
+        {/* 👤 PREVIEW CỐ ĐỊNH 1 CHỖ — luôn hiển thị trong khi cuộn danh sách bên dưới */}
+        <div className="px-4 pt-3 shrink-0">
+          <div className="rounded-2xl border border-white/10 bg-white/[0.03] py-3 px-6 md:px-8 text-center">
+            <AvatarFrame src={currentUser?.avatar_url} frame={frame} pet={petItem} treasure={treasureItem} size={80} alt="" />
+            <div className="mt-2 text-base md:text-lg font-bold" style={{ ...cssFrom(nameEffectStyle(effect)) }}>
               {currentUser?.fullname || currentUser?.username}
             </div>
             <div className="text-xs text-gray-500">
@@ -322,16 +340,16 @@ export default function CustomizationPanel({ currentUser, onBack, onSaved, onSpi
                 )}
               </div>
             )}
-            {onEditInfo && (
-              <button onClick={onEditInfo} className="mt-3 text-[11px] text-gray-400 underline hover:text-white transition">
-                Sửa thông tin cơ bản (tên, SĐT, địa chỉ...)
-              </button>
+            {trying && (
+              <p className="mt-1.5 text-[10px] text-[#1ed760] font-bold">🧪 Đang ướm thử — mua/trang bị bằng nút trong thẻ</p>
             )}
-            <p className="mt-2 text-[10px] text-gray-600">
-              Mọi thay đổi hiện toàn hệ thống: bảng tin, bình luận, tin nhắn, hồ sơ.
+            <p className="mt-1.5 text-[10px] text-gray-600">
+              Chạm khung / linh vật để xem trước • mọi thay đổi hiện toàn hệ thống.
             </p>
           </div>
+        </div>
 
+        <div className="flex-1 overflow-y-auto p-4 space-y-5 min-h-0">
           {/* 🖼️ TAB KHUNG VIỀN (429 khung: tìm kiếm + lọc hiếm + phân trang) */}
           {tab === "frame" && (
             <div className="space-y-3">
@@ -343,7 +361,7 @@ export default function CustomizationPanel({ currentUser, onBack, onSaved, onSpi
               <div className="flex items-center gap-2 flex-wrap">
                 <button
                   onClick={() => setFrame(null)}
-                  className={`w-12 h-12 rounded-full border-2 ${!frame ? "border-[#1ed760]" : "border-white/15"} bg-white/5 flex items-center justify-center text-gray-400 hover:bg-white/10`}
+                  className={`w-12 h-12 md:w-14 md:h-14 rounded-full border-2 ${!frame ? "border-[#1ed760]" : "border-white/15"} bg-white/5 flex items-center justify-center text-gray-400 hover:bg-white/10`}
                   title="Không khung"
                 >✕</button>
                 {visibleFrames.map((f) => {
@@ -352,11 +370,11 @@ export default function CustomizationPanel({ currentUser, onBack, onSaved, onSpi
                     <button
                       key={f.name}
                       onClick={() => setFrame(f.name)}
-                      className={`w-12 h-12 rounded-full border-2 overflow-hidden transition ${frame === f.name ? "border-[#1ed760]" : "hover:border-white/40"}`}
+                      className={`w-12 h-12 md:w-14 md:h-14 rounded-full border-2 overflow-hidden transition ${frame === f.name ? "border-[#1ed760]" : "hover:border-white/40"}`}
                       style={frame === f.name ? {} : { borderColor: rar.border }}
                       title={`${f.label || f.name} · ${rar.label}`}
                     >
-                      <img src={SOCIAL.AVATAR_FRAME_FILE(f.name)} alt={f.label || f.name} loading="lazy" className="w-full h-full object-cover" />
+                      <img src={SOCIAL.AVATAR_FRAME_FILE(f.name)} alt={f.label || f.name} loading="lazy" className="w-full h-full object-contain" />
                     </button>
                   );
                 })}
@@ -365,9 +383,6 @@ export default function CustomizationPanel({ currentUser, onBack, onSaved, onSpi
                 )}
               </div>
               <LoadMore shown={visibleFrames.length} total={filteredFrames.length} onMore={() => setFrameLimit((n) => n + 60)} />
-              <button onClick={save} disabled={saving} className="w-full py-2.5 bg-white text-black font-bold rounded-full hover:bg-gray-200 disabled:opacity-50 text-sm">
-                {saving ? "Đang lưu..." : "Lưu khung viền"}
-              </button>
             </div>
           )}
 
@@ -415,12 +430,22 @@ export default function CustomizationPanel({ currentUser, onBack, onSaved, onSpi
                 </div>
               </div>
 
-              <button onClick={save} disabled={saving} className="w-full py-3 bg-white text-black font-bold rounded-full hover:bg-gray-200 disabled:opacity-50">
-                {saving ? "Đang lưu..." : "Lưu phong cách"}
-              </button>
             </>
           )}
         </div>
+
+        {/* 📌 Nút LƯU cố định đáy panel — không bị đẩy trôi khi cuộn */}
+        {(tab === "frame" || tab === "style") && (
+          <div className="p-3 border-t border-white/10 bg-[#111] shrink-0">
+            <button
+              onClick={save}
+              disabled={saving}
+              className="w-full py-2.5 bg-white text-black font-bold rounded-full hover:bg-gray-200 disabled:opacity-50 text-sm"
+            >
+              {saving ? "Đang lưu..." : tab === "frame" ? "Lưu khung viền" : "Lưu phong cách"}
+            </button>
+          </div>
+        )}
       </div>
     </div>,
     document.body

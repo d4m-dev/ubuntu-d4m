@@ -78,26 +78,34 @@ export const SOCIAL_GLOBAL_CSS = `
   @keyframes d4m-pop { 0%{transform:scale(.8);opacity:0} 100%{transform:scale(1);opacity:1} }
   .d4m-avatar-frame-wrap { position:relative; display:inline-block; }
   .d4m-avatar-frame-wrap > img.d4m-avatar { border-radius:50%; object-fit:cover; }
+  /* 🖼️ Khung viền: VÒNG NGOÀI bao trọn avatar — căn tâm TUYỆT ĐỐI
+     (left/top 50% + translate) để không lệch dù canvas ảnh không đều */
   .d4m-avatar-frame-wrap > img.d4m-frame {
-    position:absolute; inset:0; width:100%; height:100%; border-radius:50%;
-    object-fit:contain; pointer-events:none; mix-blend-mode:screen;
+    position:absolute; left:50%; top:50%;
+    width:146%; height:146%;
+    transform:translate(-50%,-50%);
+    object-fit:contain; pointer-events:none; z-index:2;
+    filter:drop-shadow(0 1px 3px rgba(0,0,0,.45));
   }
-  /* 🐉 Linh thú — art nền đen kiểu game: blend-screen xóa nền đen,
-     nổi như hào quang quanh avatar (góc phải dưới) */
+  /* 🐉 Linh thú — huy hiệu ĐẶC (nền tối + viền sáng), không trong suốt */
   .d4m-avatar-frame-wrap > img.d4m-spirit-pet {
-    position:absolute; right:-32%; bottom:-14%;
-    width:88% !important; height:88% !important;
-    object-fit:contain; mix-blend-mode:screen;
-    filter:drop-shadow(0 0 6px rgba(120,200,255,.45));
+    position:absolute; right:-26%; bottom:-12%;
+    width:64% !important; height:64% !important;
+    border-radius:50%; object-fit:cover;
+    background:radial-gradient(circle at 50% 38%, #1c2440, #0a0d18 72%);
+    border:2px solid rgba(125,200,255,.8);
+    box-shadow:0 2px 8px rgba(0,0,0,.6), 0 0 6px rgba(125,200,255,.35);
     pointer-events:none; z-index:3;
     animation:d4m-pet-bob 2.6s ease-in-out infinite;
   }
-  /* 💎 Linh bảo — góc trái dưới */
+  /* 💎 Linh bảo — huy hiệu đặc viền vàng */
   .d4m-avatar-frame-wrap > img.d4m-spirit-treasure {
-    position:absolute; left:-28%; bottom:-10%;
-    width:74% !important; height:74% !important;
-    object-fit:contain; mix-blend-mode:screen;
-    filter:drop-shadow(0 0 5px rgba(255,200,80,.5));
+    position:absolute; left:-20%; bottom:-8%;
+    width:50% !important; height:50% !important;
+    border-radius:50%; object-fit:cover;
+    background:radial-gradient(circle at 50% 38%, #2b2108, #120d02 72%);
+    border:2px solid rgba(255,200,80,.85);
+    box-shadow:0 2px 6px rgba(0,0,0,.55), 0 0 6px rgba(255,200,80,.35);
     pointer-events:none; z-index:3;
     animation:d4m-pet-bob 3.4s ease-in-out infinite reverse;
   }

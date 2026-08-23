@@ -18,6 +18,7 @@ from core.tg_handlers import trigger_audio_processing, trigger_ytdl_download, tr
 
 # 🚀 IMPORT BỘ LẬP LỊCH TÁC VỤ NGẦM
 from core.tg_scheduler import run_scheduler
+from core import tg_ecosystem as eco
 
 # BỘ NHỚ TRẠNG THÁI
 pending_audio_tasks = {}
@@ -32,6 +33,7 @@ async def telegram_polling_task():
     
     # Cắm điện cho trạm lập lịch
     asyncio.create_task(run_scheduler())
+    asyncio.create_task(eco.daily_loop())
     
     update_id = 0
     url = f"https://api.telegram.org/bot{settings.TELEGRAM_BOT_TOKEN}/getUpdates"
@@ -239,6 +241,35 @@ async def telegram_polling_task():
                                             os.remove(os.path.join(TEMP_DL_DIR, dl_file))
                                     except Exception as e: await send_telegram_message(f"❌ Lỗi tải mạng: {e}")
 
+                                elif text.startswith("/qr"):
+                                    try: amt = int(text.split()[1])
+                                    except Exception: amt = 0
+                                    asyncio.create_task(eco.cmd_qr(amt))
+
+                                elif text.startswith("/users"):
+                                    asyncio.create_task(eco.cmd_users())
+
+                                elif text.startswith("/grant"):
+                                    try: uid = int(text.split()[1])
+                                    except Exception:
+                                        await send_telegram_message("🐉 Cú pháp: <code>/grant &lt;user_id&gt;</code>")
+                                        continue
+                                    asyncio.create_task(eco.cmd_grant(uid))
+
+                                elif text.startswith("/xu"):
+                                    parts = text.split()
+                                    try: uid, amt = int(parts[1]), int(parts[2])
+                                    except Exception:
+                                        await send_telegram_message("🪙 Cú pháp: <code>/xu &lt;user_id&gt; &lt;số_xu&gt;</code>")
+                                        continue
+                                    asyncio.create_task(eco.cmd_xu(uid, amt))
+
+                                elif text.startswith("/top"):
+                                    asyncio.create_task(eco.cmd_top())
+
+                                elif text.startswith("/dash"):
+                                    asyncio.create_task(eco.cmd_dash())
+
                                 else:
                                     asyncio.create_task(trigger_jarvis_ai(chat_id, text))
                                         
@@ -253,6 +284,25 @@ async def telegram_polling_task():
                             
                             if chat_id == str(settings.TELEGRAM_CHAT_ID).strip():
                                 
+                                # ========== 🌌 ECOSYSTEM CALLBACKS ==========
+                                if data_cb == "eco_dash":
+                                    await eco.cmd_dash()
+                                elif data_cb == "eco_top":
+                                    await eco.cmd_top()
+                                elif data_cb == "eco_users":
+                                    await eco.cmd_users()
+                                elif data_cb == "eco_qr_hint":
+                                    await send_telegram_message("💰 Gõ <code>/qr 50000</code> để tạo QR nhận tiền ngay tại chat!")
+                                elif data_cb in ("eco_social", "eco_music", "eco_donate"):
+                                    await eco.cb_dash(data_cb.split("_")[1])
+                                elif data_cb.startswith("user_act_"):
+                                    await eco.cb_user_toggle(int(data_cb.split("_")[2]))
+                                elif data_cb.startswith("spirit_pg_"):
+                                    _, _, kind, pg = data_cb.split("_")
+                                    await eco.cb_spirit_page(kind, int(pg))
+                                elif data_cb.startswith("spirit_give_"):
+                                    await eco.cb_spirit_give(data_cb.split("_")[2])
+
                                 if data_cb.startswith("ytdl_fmt_"):
                                     parts = data_cb.split("_")
                                     tid, fmt = parts[2], parts[3]

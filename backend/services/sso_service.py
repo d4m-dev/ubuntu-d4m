@@ -118,6 +118,13 @@ def process_sso_verify(data: SSOVerifyOTP):
         raise HTTPException(status_code=400, detail="OTP không hợp lệ hoặc sai email!")
     _otp_attempts.pop(data.email, None)
     db_updater.update("UPDATE users SET is_verified=TRUE, otp_code=NULL WHERE id=%s", (users[0]['id'],))
+    # 🔔 Alert Telegram: user mới gia nhập
+    try:
+        from core.tg_ecosystem import alert_new_user
+        import asyncio
+        asyncio.create_task(alert_new_user(users[0].get("username", "?"), users[0]["id"]))
+    except Exception:
+        pass
 
 def process_sso_login(data: LoginRequest):
     _check_lockout(data.username)

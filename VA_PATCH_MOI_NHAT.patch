@@ -1,0 +1,944 @@
+From 64006066330bf11425877eef3c414f05349e0fb4 Mon Sep 17 00:00:00 2001
+From: D4M Agent <agent@d4m.local>
+Date: Fri, 21 Aug 2026 16:47:58 +0000
+Subject: [PATCH] fix(donate): het 502 - httpx lazy import (khong sap server
+ khi thieu lib), PayOS loi tu fallback VietQR, khong bao gio chet endpoint
+
+---
+ README.md                                     |  11 +
+ backend/.env.example                          |  10 +
+ backend/api/donate.py                         | 395 ++++++++++++------
+ backend/core/config.py                        |   7 +
+ backend/core/db_schema.py                     |  28 ++
+ backend/core/urls.py                          |   2 +
+ backend/requirements.txt                      |   3 +
+ backend/services/spirit_service.py            |  34 +-
+ .../src/components/donate/DonateModal.jsx     |   2 +-
+ .../src/pages/social/CustomizationPanel.jsx   |  87 ++--
+ frontend/src/pages/social/SocialHubPage.jsx   |   2 +-
+ frontend/src/pages/social/socialStyles.jsx    |  34 +-
+ 12 files changed, 426 insertions(+), 189 deletions(-)
+
+diff --git a/README.md b/README.md
+index 9dbade8..08b9f3a 100644
+--- a/README.md
++++ b/README.md
+@@ -120,6 +120,17 @@ Bản gộp này giữ nguyên toàn bộ hệ sinh thái D4M (SSO, Social, Tool
+    (Hoặc tặng trực tiếp cho user: `POST /api/social/spirits/admin/grant` `{"user_id", "item_id"}`)
+ 4. Khung viền mới: thả file vào `backend/assets/avatar_frames/` rồi thêm entry vào `backend/assets/avatar_frames.json` (`rarity`: `common|rare|epic|legendary`).
+ 
++**💳 Donate qua PayOS** (khuyến nghị) — điền 3 khóa vào `backend/.env`:
++```bash
++PAYOS_CLIENT_ID=...
++PAYOS_API_KEY=...
++PAYOS_CHECKSUM_KEY=...
++```
++Backend tự tạo payment request + QR động (15 phút), webhook `POST /api/donate/payos-webhook`
++verify signature HMAC-SHA256 đúng spec PayOS → kích hoạt tài khoản + notify realtime.
++Chưa điền khóa → tự fallback VietQR cũ. Cấu hình webhook URL trong PayOS trỏ tới
++`https://<host-backend>/api/donate/payos-webhook`.
++
+ **Nâng cấp DB đã chạy sẵn** (DB mới KHÔNG cần — backend tự tạo bảng + cột khi khởi động):
+ 
+ ```bash
+diff --git a/backend/.env.example b/backend/.env.example
+index 02b1624..6f6932a 100644
+--- a/backend/.env.example
++++ b/backend/.env.example
+@@ -94,3 +94,13 @@ SENDER_PASSWORD=app-password-google
+ # ============================================================
+ # VITE_API_BASE_URL=
+ # VITE_WS_BASE_URL=
++
++# 💳 PAYOS — 3 khóa từ Kênh thanh toán PayOS (payos.vn)
++# Đủ 3 khóa -> donate dùng PayOS (QR động + webhook verify signature).
++# Thiếu -> tự fallback VietQR cũ.
++PAYOS_CLIENT_ID=
++PAYOS_API_KEY=
++PAYOS_CHECKSUM_KEY=
++# (tuỳ chọn) URL điều hướng sau thanh toán
++PAYOS_RETURN_URL=
++PAYOS_CANCEL_URL=
+diff --git a/backend/api/donate.py b/backend/api/donate.py
+index e51c9bb..07ba0d5 100644
+--- a/backend/api/donate.py
++++ b/backend/api/donate.py
+@@ -1,24 +1,46 @@
+ # -*- coding: utf-8 -*-
+ """
+ ============================================================
+-💰 D4M DONATE & TỰ ĐỘNG NÂNG CẤP TÀI KHOẢN (SEPAY)
++💰 D4M DONATE & TỰ ĐỘNG KÍCH HOẠT TÀI KHOẢN — PayOS
+ ============================================================
+-- POST /api/donate/qr           : Tạo mã QR tĩnh VietQR (hạn 15 phút).
+-- POST /api/donate/sepay-webhook: Nhận webhook SePay, kích hoạt tài khoản,
+-                                  lưu lịch sử + notify realtime WebSocket.
+-
+-CHỐNG GIAO DỊCH GIẢ / REPLAY:
+-  - trans_id UNIQUE trong donate_logs -> webhook trùng giao dịch bị bỏ qua.
+-  - Mỗi mã QR có thời hạn 15 phút (donate_qr.expires_at) -> QR hết hạn.
+-  - Kiểm tra user tồn tại + content đúng định dạng D4M {user_id}.
++Cấu hình trong backend/.env:
++  PAYOS_CLIENT_ID=...
++  PAYOS_API_KEY=...
++  PAYOS_CHECKSUM_KEY=...
++  (tuỳ chọn) PAYOS_RETURN_URL / PAYOS_CANCEL_URL
++
++Endpoints:
++- POST /api/donate/qr            : tạo payment request PayOS -> QR (hạn 15 phút).
++                                   Nếu CHƯA cấu hình key -> fallback VietQR cũ.
++- GET  /api/donate/status/{qr_id}: polling trạng thái (fallback khi WS bị chặn).
++- POST /api/donate/payos-webhook : PayOS báo thanh toán thành công (verify signature).
++- POST /api/donate/sepay-webhook : (giữ tương thích ngược) webhook SePay cũ.
++
++CHỐNG GIẢ / REPLAY:
++  - signature HMAC-SHA256(checksum_key) theo spec PayOS.
++  - trans_id UNIQUE trong donate_logs.
++  - QR hết hạn 15 phút.
+ ============================================================
+ """
++import base64
++import hashlib
++import hmac
++import io
+ import logging
+ import re
++import time
+ import uuid
+ from datetime import datetime, timedelta
+ from urllib.parse import quote
+ 
++# httpx có sẵn trong requirements (backend đã dùng) — import an toàn,
++# thiếu thì PayOS tự fallback VietQR, KHÔNG làm sập server khi khởi động.
++try:
++    import httpx
++except ImportError:  # pragma: no cover
++    httpx = None
++    logging.getLogger("d4m_donate").warning("httpx thiếu -> PayOS sẽ fallback VietQR.")
++
+ from fastapi import APIRouter, Request, HTTPException, Header
+ from pydantic import BaseModel, Field
+ 
+@@ -29,9 +51,11 @@ from api.ws_donate import donate_manager
+ 
+ logger = logging.getLogger("d4m_donate")
+ 
+-router = APIRouter(prefix=U.DONATE["PREFIX"], tags=["Donate & SePay"])
++router = APIRouter(prefix=U.DONATE["PREFIX"], tags=["Donate & PayOS"])
++
++QR_TTL_MINUTES = 15
++PAYOS_BASE = "https://api-merchant.payos.vn"
+ 
+-QR_TTL_MINUTES = 15  # mỗi mã QR chỉ có hiệu lực 15 phút
+ 
+ # ==========================================================
+ # 📦 SCHEMAS
+@@ -46,50 +70,131 @@ class SePayWebhookPayload(BaseModel):
+     content: str = ""
+     transID: str = ""
+     time: str = ""
+-    # Các trường khác của SePay bỏ qua an toàn.
+ 
+ 
+ # ==========================================================
+-# 🖼️ TẠO MÃ QR TĨNH VIETQR (HẠN 15 PHÚT)
++# 🔐 PAYOS CRYPTO (đúng spec tài liệu)
++# ==========================================================
++def payos_configured() -> bool:
++    return bool(settings.PAYOS_CLIENT_ID and settings.PAYOS_API_KEY and settings.PAYOS_CHECKSUM_KEY)
++
++
++def _create_link_signature(order_code: int, amount: int, description: str,
++                           return_url: str, cancel_url: str) -> str:
++    """HMAC-SHA256(checksum_key, 'amount=..&cancelUrl=..&description=..&orderCode=..&returnUrl=..')"""
++    data = (f"amount={amount}&cancelUrl={cancel_url}&description={description}"
++            f"&orderCode={order_code}&returnUrl={return_url}")
++    return hmac.new(settings.PAYOS_CHECKSUM_KEY.encode(), data.encode(),
++                    hashlib.sha256).hexdigest()
++
++
++def _verify_webhook_signature(data: dict, signature: str) -> bool:
++    """Sort key alphabet, null->'', nối key=value&..., HMAC-SHA256 checksum key."""
++    if not signature:
++        return False
++    parts = []
++    for k in sorted(data.keys()):
++        v = data.get(k)
++        if v is None or str(v) in ("null", "undefined"):
++            v = ""
++        parts.append(f"{k}={v}")
++    calc = hmac.new(settings.PAYOS_CHECKSUM_KEY.encode(),
++                    "&".join(parts).encode(), hashlib.sha256).hexdigest()
++    return hmac.compare_digest(calc, signature)
++
++
++def _qr_data_uri(qr_content: str) -> str:
++    """Sinh ảnh QR PNG base64 (self-contained, không gọi dịch vụ ngoài)."""
++    try:
++        import qrcode
++        buf = io.BytesIO()
++        qrcode.make(qr_content).save(buf, format="PNG")
++        return "data:image/png;base64," + base64.b64encode(buf.getvalue()).decode()
++    except Exception as e:
++        logger.warning(f"[DONATE] qrcode lib lỗi, dùng quickchart fallback: {e}")
++        return f"https://quickchart.io/qr?size=240&text={quote(qr_content, safe='')}"
++
++
++# ==========================================================
++# 🖼️ TẠO MÃ QR (PayOS ưu tiên, VietQR fallback)
+ # ==========================================================
+ @router.post(U.DONATE["QR"])
+ async def create_donate_qr(req: DonateQRRequest):
+-    """Tạo mã QR + phiên QR có thời hạn 15 phút."""
+     try:
+-        # Kiểm tra user tồn tại
+         user = db_executor.select_as_list_dict(
+             "SELECT id, username, full_name FROM users WHERE id=%s", (req.user_id,))
+         if not user:
+             raise HTTPException(status_code=404, detail="Không tìm thấy tài khoản.")
+ 
+-        add_info = f"D4M {req.user_id}"
+-        add_info_enc = quote(add_info, safe="")
+-        account_name_enc = quote(settings.BANK_ACCOUNT_NAME or user[0].get("full_name") or "", safe="")
++        expires_at = datetime.utcnow() + timedelta(minutes=QR_TTL_MINUTES)
+ 
+-        qr_url = (
+-            f"https://img.vietqr.io/image/{settings.BANK_ID}-{settings.BANK_ACCOUNT}-compact2.png"
+-            f"?amount={req.amount}"
+-            f"&addInfo={add_info_enc}"
+-            f"&accountName={account_name_enc}"
+-        )
++        qr_id = qr_url = None
++        provider = "vietqr"
++
++        # ---------------- PAYOS (ưu tiên, KHÔNG bao giờ làm chết endpoint) ----------------
++        if payos_configured() and httpx is not None:
++            try:
++                order_code = int(time.time() * 1000) % 10_000_000_000
++                description = f"D4M {req.user_id}"
++                return_url = getattr(settings, "PAYOS_RETURN_URL", "") or "https://payos.vn"
++                cancel_url = getattr(settings, "PAYOS_CANCEL_URL", "") or "https://payos.vn"
++                signature = _create_link_signature(order_code, req.amount, description,
++                                                   return_url, cancel_url)
++                resp = httpx.post(
++                    f"{PAYOS_BASE}/v2/payment-requests",
++                    headers={
++                        "x-client-id": settings.PAYOS_CLIENT_ID,
++                        "x-api-key": settings.PAYOS_API_KEY,
++                        "Content-Type": "application/json",
++                    },
++                    json={
++                        "orderCode": order_code,
++                        "amount": req.amount,
++                        "description": description,
++                        "returnUrl": return_url,
++                        "cancelUrl": cancel_url,
++                        "signature": signature,
++                    },
++                    timeout=20,
++                )
++                body = resp.json()
++                if resp.status_code == 200 and body.get("code") in ("0000", 0):
++                    pdata = body.get("data", {})
++                    qr_content = pdata.get("qrCode") or pdata.get("checkoutUrl") or ""
++                    qr_url = _qr_data_uri(qr_content) if qr_content else pdata.get("checkoutUrl", "")
++                    qr_id = str(order_code)
++                    provider = "payos"
++                    logger.info(f"[DONATE] PayOS OK link={pdata.get('paymentLinkId')} "
++                                f"user {req.user_id} {req.amount}đ")
++                else:
++                    logger.error(f"[DONATE] PayOS từ chối: {resp.status_code} {body} -> fallback VietQR")
++            except Exception as e:
++                logger.error(f"[DONATE] PayOS lỗi ({e}) -> fallback VietQR")
++
++        # ---------------- VIETQR FALLBACK ----------------
++        if qr_id is None:
++            add_info = f"D4M {req.user_id}"
++            qr_url = (
++                f"https://img.vietqr.io/image/{settings.BANK_ID}-{settings.BANK_ACCOUNT}-compact2.png"
++                f"?amount={req.amount}&addInfo={quote(add_info, safe='')}"
++                f"&accountName={quote(settings.BANK_ACCOUNT_NAME or user[0].get('full_name') or '', safe='')}"
++            )
++            qr_id = uuid.uuid4().hex[:20]
++            provider = "vietqr"
+ 
+-        # Tạo phiên QR với thời hạn 15 phút
+-        qr_id = uuid.uuid4().hex[:20]
+-        expires_at = datetime.utcnow() + timedelta(minutes=QR_TTL_MINUTES)
+         db_inserter.insert(
+             "INSERT INTO donate_qr (id, user_id, amount, qr_url, status, expires_at) "
+             "VALUES (%s, %s, %s, %s, 'pending', %s)",
+             (qr_id, req.user_id, req.amount, qr_url, expires_at.strftime("%Y-%m-%d %H:%M:%S")),
+         )
+-        logger.info(f"[DONATE] Tạo QR {qr_id} cho user {req.user_id}, {req.amount}đ, hết hạn {expires_at}")
+ 
+         return {
+             "status": "success",
++            "provider": provider,
+             "qr_id": qr_id,
+             "qr_url": qr_url,
+-            "add_info": add_info,
++            "add_info": f"D4M {req.user_id}",
+             "amount": req.amount,
+-            "bank": settings.BANK_ID,
+             "expires_at": expires_at.strftime("%Y-%m-%d %H:%M:%S"),
+             "ttl_minutes": QR_TTL_MINUTES,
+         }
+@@ -101,114 +206,138 @@ async def create_donate_qr(req: DonateQRRequest):
+ 
+ 
+ # ==========================================================
+-# 🔔 WEBHOOK SEPAY — KIỂM TRA GIAO DỊCH THẬT/GIẢ
++# 🔎 POLLING TRẠNG THÁI (fallback khi WebSocket bị chặn)
+ # ==========================================================
+-@router.post(U.DONATE["SEPAY_WEBHOOK"])
+-async def sepay_webhook(
+-    payload: SePayWebhookPayload,
+-    request: Request,
+-    authorization: str = Header(default=""),
+-):
+-    """Xử lý webhook: chống giả mạo + replay + QR hết hạn."""
+-    try:
+-        # ---------- 1. XÁC THỰC ----------
+-        expected = f"Bearer {settings.SEPAy_TOKEN}".strip()
+-        provided = (authorization or "").strip()
+-        if not expected or not provided or provided != expected:
+-            logger.warning(f"[DONATE] Webhook bị từ chối (token sai).")
+-            raise HTTPException(status_code=401, detail="Unauthorized")
+-
+-        # ---------- 2. BÓC TÁCH USER_ID ----------
+-        content = (payload.content or "").strip()
+-        match = re.search(r"D4M\s*(\d+)", content, re.IGNORECASE)
+-        if not match:
+-            logger.info(f"[DONATE] Bỏ qua giao dịch không đúng định dạng D4M: {content}")
+-            return {"status": "ignored", "reason": "Không khớp định dạng D4M {user_id}"}
+-
+-        user_id = int(match.group(1))
+-        trans_id = (payload.transID or "").strip()
+-        amount = int(payload.transferAmount)
+-
+-        # ---------- 3. CHỐNG REPLAY / GIAO DỊCH GIẢ ----------
+-        # Nếu trans_id đã tồn tại -> giao dịch trùng (replay attack) -> bỏ qua
+-        if trans_id:
+-            exists = db_executor.select_as_list_dict(
+-                "SELECT id FROM donate_logs WHERE trans_id=%s", (trans_id,))
+-            if exists:
+-                logger.warning(f"[DONATE] trans_id {trans_id} ĐÃ TỒN TẠI (replay/fake) - bỏ qua.")
+-                return {"status": "ignored", "reason": "Giao dịch trùng lặp (trans_id đã tồn tại)"}
+-
+-        # ---------- 4. KIỂM TRA USER TỒN TẠI ----------
+-        user = db_executor.select_as_list_dict(
+-            "SELECT id, username, active FROM users WHERE id=%s", (user_id,))
+-        if not user:
+-            logger.warning(f"[DONATE] user_id {user_id} không tồn tại.")
+-            return {"status": "ignored", "reason": "User không tồn tại"}
+-
+-        # ---------- 5. TÌM PHIÊN QR TƯƠNG ỨNG & KIỂM TRA HẠN ----------
+-        qr = db_executor.select_as_list_dict(
+-            "SELECT id, amount, status, expires_at FROM donate_qr "
+-            "WHERE user_id=%s AND status='pending' ORDER BY created_at DESC LIMIT 1",
+-            (user_id,))
+-        qr_id = None
+-        qr_expired = False
+-        if qr:
+-            qr_id = qr[0]["id"]
+-            try:
+-                expires_at = qr[0]["expires_at"]
+-                # expires_at có thể là datetime
+-                exp_dt = expires_at if hasattr(expires_at, "timestamp") else datetime.strptime(str(expires_at), "%Y-%m-%d %H:%M:%S")
+-                if datetime.utcnow() > exp_dt:
+-                    qr_expired = True
+-                    db_updater.update("UPDATE donate_qr SET status='expired' WHERE id=%s", (qr_id,))
+-                    logger.info(f"[DONATE] QR {qr_id} đã hết hạn 15 phút.")
+-            except Exception as e:
+-                logger.warning(f"[DONATE] Lỗi parse expires_at QR: {e}")
++@router.get(U.DONATE["STATUS"])
++def donate_status(qr_id: str):
++    rows = db_executor.select_as_list_dict(
++        "SELECT status, amount FROM donate_qr WHERE id=%s", (qr_id,))
++    if not rows:
++        raise HTTPException(status_code=404, detail="Không tìm thấy phiên QR.")
++    return {"status": "success", "qr_status": rows[0]["status"], "amount": rows[0]["amount"]}
+ 
+-        # ---------- 6. KÍCH HOẠT TÀI KHOẢN ----------
+-        if user[0].get("active") != 1:
+-            db_updater.update("UPDATE users SET active = 1 WHERE id = %s", (user_id,))
+-            logger.info(f"[DONATE] ✅ Kích hoạt tài khoản user {user_id} (active 0->1).")
+ 
+-        # ---------- 7. ĐÁNH DẤU QR THÀNH CÔNG ----------
+-        if qr_id:
+-            db_updater.update("UPDATE donate_qr SET status='success' WHERE id=%s", (qr_id,))
++# ==========================================================
++# 🧾 NGHIỆP VỤ CHUNG SAU KHI NHẬN TIỀN
++# ==========================================================
++async def _finalize_payment(user_id: int, amount: int, trans_id: str, content: str):
++    # 1. Chống replay
++    if trans_id:
++        exists = db_executor.select_as_list_dict(
++            "SELECT id FROM donate_logs WHERE trans_id=%s", (trans_id,))
++        if exists:
++            logger.warning(f"[DONATE] trans_id {trans_id} trùng (replay) - bỏ qua.")
++            return {"status": "ignored", "reason": "Giao dịch trùng lặp"}
+ 
+-        # ---------- 8. LƯU LỊCH SỬ (UNIQUE trans_id) ----------
+-        log_status = "expired" if qr_expired else "success"
+-        try:
+-            db_inserter.insert(
+-                "INSERT INTO donate_logs (user_id, qr_id, amount, content, trans_id, time, status) "
+-                "VALUES (%s, %s, %s, %s, %s, %s, %s)",
+-                (
+-                    user_id, qr_id, amount, content, trans_id,
+-                    payload.time or datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S"),
+-                    log_status,
+-                ),
+-            )
+-            logger.info(f"[DONATE] Đã lưu donate_logs user {user_id}, amount {amount}, status {log_status}.")
+-        except Exception as log_err:
+-            # UNIQUE trans_id bị vi phạm -> replay, không làm hỏng luồng
+-            if "Duplicate entry" in str(log_err):
+-                logger.warning(f"[DONATE] trans_id {trans_id} trùng khi insert -> bỏ qua (replay).")
+-                return {"status": "ignored", "reason": "Giao dịch trùng lặp"}
+-            logger.error(f"[DONATE] Lỗi lưu donate_logs: {log_err}")
+-
+-        # ---------- 9. NOTIFY REALTIME (kèm số tiền) ----------
++    # 2. User tồn tại?
++    user = db_executor.select_as_list_dict(
++        "SELECT id, username, active FROM users WHERE id=%s", (user_id,))
++    if not user:
++        return {"status": "ignored", "reason": "User không tồn tại"}
++
++    # 3. Phiên QR pending + hạn 15 phút
++    qr = db_executor.select_as_list_dict(
++        "SELECT id, status, expires_at FROM donate_qr WHERE user_id=%s AND status='pending' "
++        "ORDER BY created_at DESC LIMIT 1", (user_id,))
++    qr_id, qr_expired = None, False
++    if qr:
++        qr_id = qr[0]["id"]
+         try:
+-            await donate_manager.notify_payment_success(user_id, amount=amount, trans_id=trans_id, qr_expired=qr_expired)
+-        except Exception as ws_err:
+-            logger.error(f"[DONATE] Lỗi notify WebSocket: {ws_err}")
++            exp = qr[0]["expires_at"]
++            exp_dt = exp if hasattr(exp, "timestamp") else datetime.strptime(str(exp), "%Y-%m-%d %H:%M:%S")
++            if datetime.utcnow() > exp_dt:
++                qr_expired = True
++                db_updater.update("UPDATE donate_qr SET status='expired' WHERE id=%s", (qr_id,))
++        except Exception:
++            pass
+ 
+-        return {
+-            "status": "success",
+-            "message": "Đã kích hoạt tài khoản thành công.",
+-            "amount": amount,
+-            "qr_expired": qr_expired,
+-        }
++    # 4. Kích hoạt tài khoản
++    if user[0].get("active") != 1:
++        db_updater.update("UPDATE users SET active = 1 WHERE id = %s", (user_id,))
++        logger.info(f"[DONATE] ✅ Kích hoạt user {user_id}.")
+ 
+-    except HTTPException:
+-        raise
++    # 5. QR success
++    if qr_id and not qr_expired:
++        db_updater.update("UPDATE donate_qr SET status='success' WHERE id=%s", (qr_id,))
++
++    # 6. Lịch sử (UNIQUE trans_id chống replay)
++    try:
++        db_inserter.insert(
++            "INSERT INTO donate_logs (user_id, qr_id, amount, content, trans_id, time, status) "
++            "VALUES (%s, %s, %s, %s, %s, %s, %s)",
++            (user_id, qr_id, amount, content, trans_id or uuid.uuid4().hex,
++             datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S"),
++             "expired" if qr_expired else "success"),
++        )
++    except Exception as e:
++        if "Duplicate entry" in str(e):
++            return {"status": "ignored", "reason": "Giao dịch trùng lặp"}
++        logger.error(f"[DONATE] Lỗi lưu logs: {e}")
++
++    # 7. Notify realtime
++    try:
++        await donate_manager.notify_payment_success(user_id, amount=amount,
++                                                    trans_id=trans_id, qr_expired=qr_expired)
+     except Exception as e:
+-        logger.error(f"[DONATE] Lỗi xử lý Webhook SePay: {e}", exc_info=True)
+-        raise HTTPException(status_code=500, detail="Lỗi xử lý webhook")
++        logger.error(f"[DONATE] WS notify lỗi: {e}")
++
++    return {"status": "success", "amount": amount, "qr_expired": qr_expired}
++
++
++# ==========================================================
++# 🪝 WEBHOOK PAYOS
++# ==========================================================
++@router.post(U.DONATE["PAYOS_WEBHOOK"])
++async def payos_webhook(request: Request):
++    if not payos_configured():
++        raise HTTPException(status_code=503, detail="PayOS chưa được cấu hình.")
++    try:
++        body = await request.json()
++    except Exception:
++        raise HTTPException(status_code=400, detail="Body không hợp lệ.")
++
++    data = body.get("data") or {}
++    signature = body.get("signature") or ""
++
++    # ---------- 1. XÁC THỰC CHỮ KÝ ----------
++    if not _verify_webhook_signature(data, signature):
++        logger.warning("[DONATE] PayOS webhook signature SAI - từ chối.")
++        raise HTTPException(status_code=401, detail="Invalid signature")
++
++    # ---------- 2. CHỈ NHẬN GIAO DỊCH THÀNH CÔNG ----------
++    if not (body.get("success") is True or str(data.get("code")) == "00"):
++        return {"status": "ignored", "reason": "Giao dịch chưa thành công"}
++
++    # ---------- 3. BÓC TÁCH ----------
++    content = str(data.get("description") or "")
++    m = re.search(r"D4M\s*(\d+)", content, re.IGNORECASE)
++    if not m:
++        return {"status": "ignored", "reason": "Không khớp định dạng D4M {user_id}"}
++    user_id = int(m.group(1))
++    amount = int(data.get("amount") or 0)
++    trans_id = str(data.get("reference") or data.get("paymentLinkId") or "")
++
++    result = await _finalize_payment(user_id, amount, trans_id, content)
++    logger.info(f"[DONATE] PayOS webhook user {user_id} +{amount}đ -> {result.get('status')}")
++    return result
++
++
++# ==========================================================
++# 🪝 WEBHOOK SEPAY (tương thích ngược)
++# ==========================================================
++@router.post(U.DONATE["SEPAY_WEBHOOK"])
++async def sepay_webhook(payload: SePayWebhookPayload, authorization: str = Header(default="")):
++    expected = f"Bearer {settings.SEPAy_TOKEN}".strip()
++    provided = (authorization or "").strip()
++    if not expected or not provided or provided != expected:
++        raise HTTPException(status_code=401, detail="Unauthorized")
++
++    content = (payload.content or "").strip()
++    m = re.search(r"D4M\s*(\d+)", content, re.IGNORECASE)
++    if not m:
++        return {"status": "ignored", "reason": "Không khớp định dạng D4M {user_id}"}
++    user_id = int(m.group(1))
++    amount = int(payload.transferAmount)
++    trans_id = (payload.transID or "").strip()
++
++    return await _finalize_payment(user_id, amount, trans_id, content)
+diff --git a/backend/core/config.py b/backend/core/config.py
+index 75b9abe..0bd29dd 100644
+--- a/backend/core/config.py
++++ b/backend/core/config.py
+@@ -39,6 +39,13 @@ class Settings(BaseSettings):
+     BANK_ACCOUNT: str = ""           # Số tài khoản nhận tiền
+     BANK_ACCOUNT_NAME: str = ""      # Tên chủ tài khoản
+ 
++    # 💳 PAYOS (ưu tiên khi đủ 3 khóa — thiếu thì fallback VietQR)
++    PAYOS_CLIENT_ID: str = ""        # Client ID (x-client-id)
++    PAYOS_API_KEY: str = ""          # API Key (x-api-key)
++    PAYOS_CHECKSUM_KEY: str = ""     # Checksum Key (HMAC-SHA256 signature)
++    PAYOS_RETURN_URL: str = ""       # (tuỳ chọn) URL sau thanh toán thành công
++    PAYOS_CANCEL_URL: str = ""       # (tuỳ chọn) URL khi hủy thanh toán
++
+     # Cú pháp chuẩn của Pydantic V2
+     model_config = SettingsConfigDict(
+         env_file=".env",
+diff --git a/backend/core/db_schema.py b/backend/core/db_schema.py
+index d0f2c03..9c57c5b 100644
+--- a/backend/core/db_schema.py
++++ b/backend/core/db_schema.py
+@@ -422,6 +422,34 @@ def get_d4m_schema_queries():
+         "ALTER TABLE `users` ADD COLUMN IF NOT EXISTS `equipped_pet` varchar(50) DEFAULT NULL;",
+         "ALTER TABLE `users` ADD COLUMN IF NOT EXISTS `equipped_treasure` varchar(50) DEFAULT NULL;",
+ 
++        # 34. 💰 DONATE — phiên QR 15 phút + lịch sử chống replay
++        #     (DB đời cũ chưa có -> tự tạo khi khởi động, hết lỗi 1146)
++        """CREATE TABLE IF NOT EXISTS `donate_qr` (
++            `id` varchar(64) NOT NULL,
++            `user_id` int(11) NOT NULL,
++            `amount` int(11) NOT NULL,
++            `qr_url` text DEFAULT NULL,
++            `status` varchar(20) NOT NULL DEFAULT 'pending',
++            `expires_at` datetime NOT NULL,
++            `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
++            PRIMARY KEY (`id`),
++            KEY `idx_donate_qr_user` (`user_id`)
++        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;""",
++        """CREATE TABLE IF NOT EXISTS `donate_logs` (
++            `id` int(11) NOT NULL AUTO_INCREMENT,
++            `user_id` int(11) NOT NULL,
++            `qr_id` varchar(64) DEFAULT NULL,
++            `amount` int(11) NOT NULL,
++            `content` varchar(255) DEFAULT NULL,
++            `trans_id` varchar(100) DEFAULT NULL,
++            `time` datetime DEFAULT NULL,
++            `status` varchar(20) NOT NULL DEFAULT 'success',
++            `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
++            PRIMARY KEY (`id`),
++            UNIQUE KEY `uniq_trans_id` (`trans_id`),
++            KEY `idx_donate_user` (`user_id`)
++        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;""",
++
+         # 📄 Ghi chú: danh mục spirit_items được backend tự đồng bộ từ
+         # backend/assets/spirit_items.json khi khởi động (sync_catalog_from_manifest),
+         # nên KHÔNG cần seed cứng ở đây.
+diff --git a/backend/core/urls.py b/backend/core/urls.py
+index 2838c60..e18f98f 100644
+--- a/backend/core/urls.py
++++ b/backend/core/urls.py
+@@ -191,6 +191,8 @@ DONATE = {
+     "PREFIX": "/api/donate",
+     "QR": "/qr",
+     "SEPAY_WEBHOOK": "/sepay-webhook",
++    "PAYOS_WEBHOOK": "/payos-webhook",
++    "STATUS": "/status/{qr_id}",     # polling trạng thái QR (fallback WS)
+     "WS_DONATE": "/donate/{user_id}",  # path con của WS.PREFIX (/api/ws)
+ }
+ 
+diff --git a/backend/requirements.txt b/backend/requirements.txt
+index 4a6e1b0..82523e5 100644
+--- a/backend/requirements.txt
++++ b/backend/requirements.txt
+@@ -59,3 +59,6 @@ pydantic[email]>=2.7
+ # torch torchvision torchaudio   # Lõi AI cho Demucs và Whisper
+ # ffmpeg-python                  # Thao tác cắt ghép video/audio
+ pytest>=8.0
++
++# 💳 PayOS QR generation (self-hosted, không phụ thuộc dịch vụ ngoài)
++qrcode>=7.4
+diff --git a/backend/services/spirit_service.py b/backend/services/spirit_service.py
+index 60377c4..add8261 100644
+--- a/backend/services/spirit_service.py
++++ b/backend/services/spirit_service.py
+@@ -41,21 +41,36 @@ _SPIRIT_NULL_SQL = """
+ # ============================================================
+ _SPIRIT_OK = None
+ 
++# Các cột CÁ NHÂN HÓA bắt buộc trên bảng users (DB đời cũ có thể thiếu)
++REQUIRED_USER_COLS = {
++    "avatar_frame": "VARCHAR(255) DEFAULT NULL",
++    "name_effect": "VARCHAR(50) DEFAULT 'default'",
++    "chat_theme": "VARCHAR(50) DEFAULT 'default'",
++    "equipped_pet": "VARCHAR(50) DEFAULT NULL",
++    "equipped_treasure": "VARCHAR(50) DEFAULT NULL",
++}
++
++def _missing_user_cols() -> list:
++    from core.database import db_executor
++    names = ",".join(f"'{c}'" for c in REQUIRED_USER_COLS)
++    rows = db_executor.select_as_list_dict(
++        "SELECT COLUMN_NAME FROM information_schema.COLUMNS "
++        f"WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME='users' AND COLUMN_NAME IN ({names})")
++    have = {r["COLUMN_NAME"] for r in rows}
++    return [c for c in REQUIRED_USER_COLS if c not in have]
++
+ def spirit_schema_ok(refresh: bool = False) -> bool:
+-    """True khi users có 2 cột equipped_* VÀ 2 bảng spirit_* tồn tại."""
++    """True khi users đủ 5 cột cá nhân hóa VÀ 2 bảng spirit_* tồn tại."""
+     global _SPIRIT_OK
+     if _SPIRIT_OK is None or refresh:
+         try:
+             from core.database import db_executor
+-            cols = db_executor.select_as_list_dict(
+-                "SELECT COLUMN_NAME FROM information_schema.COLUMNS "
+-                "WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME='users' "
+-                "AND COLUMN_NAME IN ('equipped_pet','equipped_treasure')")
++            missing = _missing_user_cols()
+             tables = db_executor.select_as_list_dict(
+                 "SELECT TABLE_NAME FROM information_schema.TABLES "
+                 "WHERE TABLE_SCHEMA = DATABASE() "
+                 "AND TABLE_NAME IN ('spirit_items','user_spirit_items')")
+-            _SPIRIT_OK = len(cols) == 2 and len(tables) == 2
++            _SPIRIT_OK = len(missing) == 0 and len(tables) == 2
+         except Exception:
+             _SPIRIT_OK = False
+     return bool(_SPIRIT_OK)
+@@ -90,10 +105,9 @@ def ensure_spirit_schema() -> bool:
+             "SELECT COLUMN_NAME FROM information_schema.COLUMNS "
+             "WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME='users' "
+             "AND COLUMN_NAME IN ('equipped_pet','equipped_treasure')")}
+-        if "equipped_pet" not in cols:
+-            db_updater.update("ALTER TABLE `users` ADD COLUMN `equipped_pet` VARCHAR(50) DEFAULT NULL")
+-        if "equipped_treasure" not in cols:
+-            db_updater.update("ALTER TABLE `users` ADD COLUMN `equipped_treasure` VARCHAR(50) DEFAULT NULL")
++        # 🩺 Tự vá TẤT CẢ cột cá nhân hóa còn thiếu (DB đời cũ thiếu avatar_frame...)
++        for col in _missing_user_cols():
++            db_updater.update(f"ALTER TABLE `users` ADD COLUMN `{col}` {REQUIRED_USER_COLS[col]}")
+     except Exception as e:
+         import logging
+         logging.warning(f"🐉 ensure_spirit_schema: {e}")
+diff --git a/frontend/src/components/donate/DonateModal.jsx b/frontend/src/components/donate/DonateModal.jsx
+index 71f0912..58ee9d5 100644
+--- a/frontend/src/components/donate/DonateModal.jsx
++++ b/frontend/src/components/donate/DonateModal.jsx
+@@ -167,7 +167,7 @@ export default function DonateModal({ open, onClose }) {
+         const r = await fetch(DONATE.STATUS(qrId));
+         if (!r.ok) return;
+         const d = await r.json();
+-        if (d.qr_status === "paid") onPaid(d.amount || amount);
++        if (d.qr_status === "paid" || d.qr_status === "success") onPaid(d.amount || amount);
+         else if (d.qr_status === "expired") setTtlLeft(0);
+       } catch { /* mạng lỗi thoáng qua */ }
+     }, 5000);
+diff --git a/frontend/src/pages/social/CustomizationPanel.jsx b/frontend/src/pages/social/CustomizationPanel.jsx
+index b657c27..20d5305 100644
+--- a/frontend/src/pages/social/CustomizationPanel.jsx
++++ b/frontend/src/pages/social/CustomizationPanel.jsx
+@@ -196,9 +196,18 @@ export default function CustomizationPanel({ currentUser, onBack, onSaved, onSpi
+       (!q || i.name.toLowerCase().includes(q)));
+   };
+ 
+-  // 🖼️ Preview tổng hợp (khung đang chọn + linh thú/linh bảo đang trang bị)
+-  const petItem = catalog.find((i) => i.id === equipped.pet) || null;
+-  const treasureItem = catalog.find((i) => i.id === equipped.treasure) || null;
++  // 🧪 THỬ TRƯỚC KHI MUA — chạm linh vật để ướm thử lên avatar preview
++  const [tryPet, setTryPet] = useState(null);
++  const [tryTreasure, setTryTreasure] = useState(null);
++  const tryOn = (item) => {
++    if (item.kind === "pet") setTryPet((p) => (p?.id === item.id ? null : item));
++    else setTryTreasure((t) => (t?.id === item.id ? null : item));
++  };
++
++  // 🖼️ Preview tổng hợp: khung đang chọn + (đồ THỬ || đồ đang trang bị)
++  const petItem = tryPet || (catalog.find((i) => i.id === equipped.pet) || null);
++  const treasureItem = tryTreasure || (catalog.find((i) => i.id === equipped.treasure) || null);
++  const trying = Boolean(tryPet || tryTreasure);
+ 
+   const TABS = [
+     { id: "frame", label: `🖼️ Khung (${frames.length})` },
+@@ -227,18 +236,27 @@ export default function CustomizationPanel({ currentUser, onBack, onSaved, onSpi
+           {visible.map((item) => {
+             const rar = rarityOf(item.rarity);
+             const isEquipped = equipped[kind] === item.id;
++            const isTry = (tryPet?.id === item.id) || (tryTreasure?.id === item.id);
+             const busy = busyId === item.id;
+             return (
+               <div
+                 key={item.id}
+-                className={`rounded-2xl border-2 p-3 text-center transition ${isEquipped ? "bg-white/[0.07]" : "bg-white/[0.02]"}`}
+-                style={{ borderColor: isEquipped ? "#1ed760" : rar.border }}
++                role="button"
++                tabIndex={0}
++                onClick={() => tryOn(item)}
++                onKeyDown={(e) => { if (e.key === "Enter") tryOn(item); }}
++                className={`relative rounded-2xl border-2 p-3 text-center transition cursor-pointer hover:bg-white/[0.06] ${isEquipped ? "bg-white/[0.07]" : "bg-white/[0.02]"}`}
++                style={{ borderColor: isEquipped ? "#1ed760" : isTry ? "#e5e7eb" : rar.border }}
++                title="Chạm để ướm thử lên avatar"
+               >
++                {isTry && !isEquipped && (
++                  <span className="absolute top-1.5 right-1.5 text-[9px] font-bold text-white bg-black/70 border border-white/30 rounded-full px-1.5 py-0.5">🧪 thử</span>
++                )}
+                 <div className="relative inline-block">
+                   <img
+                     src={full(item.image)} alt={item.name} loading="lazy"
+-                    className="w-20 h-20 mx-auto object-contain rounded-xl"
+-                    style={{ mixBlendMode: "screen", background: "radial-gradient(circle, rgba(255,255,255,.06), transparent 70%)" }}
++                    className="w-20 h-20 mx-auto object-cover rounded-full"
++                    style={{ background: "radial-gradient(circle at 50% 38%, #1c2440, #0a0d18 72%)", border: "2px solid rgba(255,255,255,.25)" }}
+                   />
+                   {isEquipped && <span className="absolute -top-1 -right-1 text-[10px] bg-[#1ed760] text-black font-bold rounded-full px-1.5">✓</span>}
+                 </div>
+@@ -248,7 +266,7 @@ export default function CustomizationPanel({ currentUser, onBack, onSaved, onSpi
+                 <div className="mt-2">
+                   {item.owned ? (
+                     <button
+-                      onClick={() => toggleEquip(item)}
++                      onClick={(e) => { e.stopPropagation(); toggleEquip(item); }}
+                       disabled={busy}
+                       className={`w-full py-1.5 rounded-full text-xs font-bold transition disabled:opacity-50 ${isEquipped ? "bg-white/10 text-gray-300 hover:bg-white/20" : "bg-[#1ed760] text-black hover:brightness-110"}`}
+                     >
+@@ -256,7 +274,7 @@ export default function CustomizationPanel({ currentUser, onBack, onSaved, onSpi
+                     </button>
+                   ) : (
+                     <button
+-                      onClick={() => buy(item)}
++                      onClick={(e) => { e.stopPropagation(); buy(item); }}
+                       disabled={busy || xu < item.price_xu}
+                       className="w-full py-1.5 rounded-full text-xs font-bold bg-amber-500/20 text-amber-300 hover:bg-amber-500/30 disabled:opacity-40 disabled:cursor-not-allowed transition"
+                       title={xu < item.price_xu ? "Không đủ Xu" : ""}
+@@ -273,7 +291,7 @@ export default function CustomizationPanel({ currentUser, onBack, onSaved, onSpi
+           )}
+         </div>
+         <LoadMore shown={visible.length} total={items.length} onMore={() => setSpiritLimit((n) => n + 24)} />
+-        <p className="text-[11px] text-gray-500">💡 Trang bị có hiệu lực ngay — hiển thị cạnh avatar của bạn ở mọi nơi: bảng tin, bình luận, tin nhắn.</p>
++        <p className="text-[11px] text-gray-500">🧪 Chạm thẻ để ướm thử lên avatar trước khi mua • Trang bị có hiệu lực ngay toàn hệ thống.</p>
+       </div>
+     );
+   };
+@@ -281,7 +299,7 @@ export default function CustomizationPanel({ currentUser, onBack, onSaved, onSpi
+   // 🌀 Portal ra body — thoát ancestor backdrop-filter/transform, căn giữa an toàn
+   return createPortal(
+     <div className="fixed inset-0 z-[70] bg-black/80 backdrop-blur-sm flex overflow-y-auto p-4" onClick={onBack}>
+-      <div className="w-full max-w-md m-auto bg-[#111] border border-white/10 rounded-2xl overflow-hidden flex flex-col max-h-[90dvh]" onClick={(e) => e.stopPropagation()}>
++      <div className="w-full max-w-md md:max-w-xl m-auto bg-[#111] border border-white/10 rounded-2xl overflow-hidden flex flex-col max-h-[90dvh]" onClick={(e) => e.stopPropagation()}>
+         <div className="flex items-center gap-3 px-4 py-3 border-b border-white/10">
+           <button onClick={onBack} aria-label="Quay lại" className="p-1.5 -ml-2 rounded-full hover:bg-white/10 text-gray-300"><IconBack /></button>
+           <h2 className="font-bold text-lg flex-1">Hồ sơ & Phong cách</h2>
+@@ -301,11 +319,11 @@ export default function CustomizationPanel({ currentUser, onBack, onSaved, onSpi
+           ))}
+         </div>
+ 
+-        <div className="flex-1 overflow-y-auto p-4 space-y-5">
+-          {/* 👤 HEADER HỒ SƠ — preview trực tiếp mọi thứ đang chọn */}
+-          <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4 text-center">
+-            <AvatarFrame src={currentUser?.avatar_url} frame={frame} pet={petItem} treasure={treasureItem} size={88} alt="" />
+-            <div className="mt-3 text-lg font-bold" style={{ ...cssFrom(nameEffectStyle(effect)) }}>
++        {/* 👤 PREVIEW CỐ ĐỊNH 1 CHỖ — luôn hiển thị trong khi cuộn danh sách bên dưới */}
++        <div className="px-4 pt-3 shrink-0">
++          <div className="rounded-2xl border border-white/10 bg-white/[0.03] py-3 px-6 md:px-8 text-center">
++            <AvatarFrame src={currentUser?.avatar_url} frame={frame} pet={petItem} treasure={treasureItem} size={80} alt="" />
++            <div className="mt-2 text-base md:text-lg font-bold" style={{ ...cssFrom(nameEffectStyle(effect)) }}>
+               {currentUser?.fullname || currentUser?.username}
+             </div>
+             <div className="text-xs text-gray-500">
+@@ -322,16 +340,16 @@ export default function CustomizationPanel({ currentUser, onBack, onSaved, onSpi
+                 )}
+               </div>
+             )}
+-            {onEditInfo && (
+-              <button onClick={onEditInfo} className="mt-3 text-[11px] text-gray-400 underline hover:text-white transition">
+-                Sửa thông tin cơ bản (tên, SĐT, địa chỉ...)
+-              </button>
++            {trying && (
++              <p className="mt-1.5 text-[10px] text-[#1ed760] font-bold">🧪 Đang ướm thử — mua/trang bị bằng nút trong thẻ</p>
+             )}
+-            <p className="mt-2 text-[10px] text-gray-600">
+-              Mọi thay đổi hiện toàn hệ thống: bảng tin, bình luận, tin nhắn, hồ sơ.
++            <p className="mt-1.5 text-[10px] text-gray-600">
++              Chạm khung / linh vật để xem trước • mọi thay đổi hiện toàn hệ thống.
+             </p>
+           </div>
++        </div>
+ 
++        <div className="flex-1 overflow-y-auto p-4 space-y-5 min-h-0">
+           {/* 🖼️ TAB KHUNG VIỀN (429 khung: tìm kiếm + lọc hiếm + phân trang) */}
+           {tab === "frame" && (
+             <div className="space-y-3">
+@@ -343,7 +361,7 @@ export default function CustomizationPanel({ currentUser, onBack, onSaved, onSpi
+               <div className="flex items-center gap-2 flex-wrap">
+                 <button
+                   onClick={() => setFrame(null)}
+-                  className={`w-12 h-12 rounded-full border-2 ${!frame ? "border-[#1ed760]" : "border-white/15"} bg-white/5 flex items-center justify-center text-gray-400 hover:bg-white/10`}
++                  className={`w-12 h-12 md:w-14 md:h-14 rounded-full border-2 ${!frame ? "border-[#1ed760]" : "border-white/15"} bg-white/5 flex items-center justify-center text-gray-400 hover:bg-white/10`}
+                   title="Không khung"
+                 >✕</button>
+                 {visibleFrames.map((f) => {
+@@ -352,11 +370,11 @@ export default function CustomizationPanel({ currentUser, onBack, onSaved, onSpi
+                     <button
+                       key={f.name}
+                       onClick={() => setFrame(f.name)}
+-                      className={`w-12 h-12 rounded-full border-2 overflow-hidden transition ${frame === f.name ? "border-[#1ed760]" : "hover:border-white/40"}`}
++                      className={`w-12 h-12 md:w-14 md:h-14 rounded-full border-2 overflow-hidden transition ${frame === f.name ? "border-[#1ed760]" : "hover:border-white/40"}`}
+                       style={frame === f.name ? {} : { borderColor: rar.border }}
+                       title={`${f.label || f.name} · ${rar.label}`}
+                     >
+-                      <img src={SOCIAL.AVATAR_FRAME_FILE(f.name)} alt={f.label || f.name} loading="lazy" className="w-full h-full object-cover" />
++                      <img src={SOCIAL.AVATAR_FRAME_FILE(f.name)} alt={f.label || f.name} loading="lazy" className="w-full h-full object-contain" />
+                     </button>
+                   );
+                 })}
+@@ -365,9 +383,6 @@ export default function CustomizationPanel({ currentUser, onBack, onSaved, onSpi
+                 )}
+               </div>
+               <LoadMore shown={visibleFrames.length} total={filteredFrames.length} onMore={() => setFrameLimit((n) => n + 60)} />
+-              <button onClick={save} disabled={saving} className="w-full py-2.5 bg-white text-black font-bold rounded-full hover:bg-gray-200 disabled:opacity-50 text-sm">
+-                {saving ? "Đang lưu..." : "Lưu khung viền"}
+-              </button>
+             </div>
+           )}
+ 
+@@ -415,12 +430,22 @@ export default function CustomizationPanel({ currentUser, onBack, onSaved, onSpi
+                 </div>
+               </div>
+ 
+-              <button onClick={save} disabled={saving} className="w-full py-3 bg-white text-black font-bold rounded-full hover:bg-gray-200 disabled:opacity-50">
+-                {saving ? "Đang lưu..." : "Lưu phong cách"}
+-              </button>
+             </>
+           )}
+         </div>
++
++        {/* 📌 Nút LƯU cố định đáy panel — không bị đẩy trôi khi cuộn */}
++        {(tab === "frame" || tab === "style") && (
++          <div className="p-3 border-t border-white/10 bg-[#111] shrink-0">
++            <button
++              onClick={save}
++              disabled={saving}
++              className="w-full py-2.5 bg-white text-black font-bold rounded-full hover:bg-gray-200 disabled:opacity-50 text-sm"
++            >
++              {saving ? "Đang lưu..." : tab === "frame" ? "Lưu khung viền" : "Lưu phong cách"}
++            </button>
++          </div>
++        )}
+       </div>
+     </div>,
+     document.body
+diff --git a/frontend/src/pages/social/SocialHubPage.jsx b/frontend/src/pages/social/SocialHubPage.jsx
+index 5b42d8e..5a46c32 100644
+--- a/frontend/src/pages/social/SocialHubPage.jsx
++++ b/frontend/src/pages/social/SocialHubPage.jsx
+@@ -319,7 +319,7 @@ export default function SocialHubPage() {
+   return (
+     <div className="min-h-screen bg-black text-white font-sans selection:bg-gray-700">
+       <SEO title="Social Hub" description="Mạng xã hội D4M — cập nhật trạng thái, chia sẻ âm nhạc và kết nối cộng đồng." />
+-      <div className="max-w-[640px] mx-auto min-h-screen flex flex-col relative">
++      <div className="max-w-[640px] md:max-w-[780px] lg:max-w-[880px] mx-auto min-h-screen flex flex-col relative">
+ 
+         {/* ========== HEADER (THREADS STYLE) ========== */}
+         <header className="sticky top-0 z-40 bg-black/90 backdrop-blur-xl border-b border-white/10">
+diff --git a/frontend/src/pages/social/socialStyles.jsx b/frontend/src/pages/social/socialStyles.jsx
+index ddee502..5431026 100644
+--- a/frontend/src/pages/social/socialStyles.jsx
++++ b/frontend/src/pages/social/socialStyles.jsx
+@@ -78,26 +78,34 @@ export const SOCIAL_GLOBAL_CSS = `
+   @keyframes d4m-pop { 0%{transform:scale(.8);opacity:0} 100%{transform:scale(1);opacity:1} }
+   .d4m-avatar-frame-wrap { position:relative; display:inline-block; }
+   .d4m-avatar-frame-wrap > img.d4m-avatar { border-radius:50%; object-fit:cover; }
++  /* 🖼️ Khung viền: VÒNG NGOÀI bao trọn avatar — căn tâm TUYỆT ĐỐI
++     (left/top 50% + translate) để không lệch dù canvas ảnh không đều */
+   .d4m-avatar-frame-wrap > img.d4m-frame {
+-    position:absolute; inset:0; width:100%; height:100%; border-radius:50%;
+-    object-fit:contain; pointer-events:none; mix-blend-mode:screen;
++    position:absolute; left:50%; top:50%;
++    width:146%; height:146%;
++    transform:translate(-50%,-50%);
++    object-fit:contain; pointer-events:none; z-index:2;
++    filter:drop-shadow(0 1px 3px rgba(0,0,0,.45));
+   }
+-  /* 🐉 Linh thú — art nền đen kiểu game: blend-screen xóa nền đen,
+-     nổi như hào quang quanh avatar (góc phải dưới) */
++  /* 🐉 Linh thú — huy hiệu ĐẶC (nền tối + viền sáng), không trong suốt */
+   .d4m-avatar-frame-wrap > img.d4m-spirit-pet {
+-    position:absolute; right:-32%; bottom:-14%;
+-    width:88% !important; height:88% !important;
+-    object-fit:contain; mix-blend-mode:screen;
+-    filter:drop-shadow(0 0 6px rgba(120,200,255,.45));
++    position:absolute; right:-26%; bottom:-12%;
++    width:64% !important; height:64% !important;
++    border-radius:50%; object-fit:cover;
++    background:radial-gradient(circle at 50% 38%, #1c2440, #0a0d18 72%);
++    border:2px solid rgba(125,200,255,.8);
++    box-shadow:0 2px 8px rgba(0,0,0,.6), 0 0 6px rgba(125,200,255,.35);
+     pointer-events:none; z-index:3;
+     animation:d4m-pet-bob 2.6s ease-in-out infinite;
+   }
+-  /* 💎 Linh bảo — góc trái dưới */
++  /* 💎 Linh bảo — huy hiệu đặc viền vàng */
+   .d4m-avatar-frame-wrap > img.d4m-spirit-treasure {
+-    position:absolute; left:-28%; bottom:-10%;
+-    width:74% !important; height:74% !important;
+-    object-fit:contain; mix-blend-mode:screen;
+-    filter:drop-shadow(0 0 5px rgba(255,200,80,.5));
++    position:absolute; left:-20%; bottom:-8%;
++    width:50% !important; height:50% !important;
++    border-radius:50%; object-fit:cover;
++    background:radial-gradient(circle at 50% 38%, #2b2108, #120d02 72%);
++    border:2px solid rgba(255,200,80,.85);
++    box-shadow:0 2px 6px rgba(0,0,0,.55), 0 0 6px rgba(255,200,80,.35);
+     pointer-events:none; z-index:3;
+     animation:d4m-pet-bob 3.4s ease-in-out infinite reverse;
+   }
+-- 
+2.47.3
+

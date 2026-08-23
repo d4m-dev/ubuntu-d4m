@@ -422,6 +422,34 @@ def get_d4m_schema_queries():
         "ALTER TABLE `users` ADD COLUMN IF NOT EXISTS `equipped_pet` varchar(50) DEFAULT NULL;",
         "ALTER TABLE `users` ADD COLUMN IF NOT EXISTS `equipped_treasure` varchar(50) DEFAULT NULL;",
 
+        # 34. 💰 DONATE — phiên QR 15 phút + lịch sử chống replay
+        #     (DB đời cũ chưa có -> tự tạo khi khởi động, hết lỗi 1146)
+        """CREATE TABLE IF NOT EXISTS `donate_qr` (
+            `id` varchar(64) NOT NULL,
+            `user_id` int(11) NOT NULL,
+            `amount` int(11) NOT NULL,
+            `qr_url` text DEFAULT NULL,
+            `status` varchar(20) NOT NULL DEFAULT 'pending',
+            `expires_at` datetime NOT NULL,
+            `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+            PRIMARY KEY (`id`),
+            KEY `idx_donate_qr_user` (`user_id`)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;""",
+        """CREATE TABLE IF NOT EXISTS `donate_logs` (
+            `id` int(11) NOT NULL AUTO_INCREMENT,
+            `user_id` int(11) NOT NULL,
+            `qr_id` varchar(64) DEFAULT NULL,
+            `amount` int(11) NOT NULL,
+            `content` varchar(255) DEFAULT NULL,
+            `trans_id` varchar(100) DEFAULT NULL,
+            `time` datetime DEFAULT NULL,
+            `status` varchar(20) NOT NULL DEFAULT 'success',
+            `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+            PRIMARY KEY (`id`),
+            UNIQUE KEY `uniq_trans_id` (`trans_id`),
+            KEY `idx_donate_user` (`user_id`)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;""",
+
         # 📄 Ghi chú: danh mục spirit_items được backend tự đồng bộ từ
         # backend/assets/spirit_items.json khi khởi động (sync_catalog_from_manifest),
         # nên KHÔNG cần seed cứng ở đây.

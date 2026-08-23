@@ -1,0 +1,14 @@
+ERROR:root:DbInserter EXCEPTION: 1146 (42S02): Table 'social_hub.donate_qr' doesn't exist - SQL: INSERT INTO donate_qr (id, user_id, amount, qr_url, status, expires_at) VALUES (%s, %s, %s, %s, 'pending', %s)
+ERROR:root:DbExecutor EXCEPTION: 1146 (42S02): Table 'social_hub.donate_qr' doesn't exist - SQL: SELECT status, amount FROM donate_qr WHERE id=%s
+
+
+
+Client ID
+d9e10e1d-0dfb-49a3-8b44-f891108832f6
+
+API Key
+aadc7276-b6ac-4c77-b2f2-7053bcceb3d3
+
+Checksum Key
+813df6f759883e971cbf273b8af1ffbd83d31724df33a5229fd75c519b3c084f
+
