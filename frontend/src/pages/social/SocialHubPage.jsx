@@ -95,7 +95,7 @@ const PostAudioPlayer = memo(function PostAudioPlayer({ title, url }) {
 // ==================================================================
 const PostCard = memo(function PostCard({ post, liked, canDelete, onLike, onComment, onDelete, onShare, getMediaUrl, formatTimeAgo }) {
   return (
-    <article className="px-4 py-4 hover:bg-white/[0.02] transition-colors">
+    <article className="d4m-post-card px-4 py-4 transition-colors">
       <div className="flex gap-3">
         <div className="flex-shrink-0">
           <AvatarFrame src={post.avatar_url} frame={post.avatar_frame} pet={post.pet} treasure={post.treasure} size={40} alt={`Avatar ${post.fullname || post.username}`} />
@@ -463,13 +463,31 @@ export default function SocialHubPage() {
   return (
     <div className="min-h-screen bg-black text-white font-sans selection:bg-gray-700">
       <SEO title="Social Hub" description="Mạng xã hội D4M — cập nhật trạng thái, chia sẻ âm nhạc và kết nối cộng đồng." />
-      <div className="max-w-[640px] md:max-w-[780px] lg:max-w-[880px] mx-auto min-h-screen flex flex-col relative">
+      <div className="max-w-[640px] md:max-w-[780px] lg:max-w-[1120px] mx-auto min-h-screen relative lg:px-6">
+        <div className="lg:flex lg:gap-8 min-h-screen">
+
+        {/* 🖥️ RAIL TRÁI (desktop) — điều hướng kiểu Threads */}
+        <aside className="hidden lg:flex flex-col w-60 shrink-0 sticky top-0 h-screen py-6 pr-2">
+          <button onClick={() => navigate("/hub")} className="text-2xl font-extrabold tracking-tighter text-left px-3 mb-6 hover:opacity-80 transition" aria-label="Về trung tâm D4M">
+            <span className="d4m-brand-gradient">Threads</span> <span className="text-gray-500 font-light">D4M</span>
+          </button>
+          <button onClick={() => handleNav("home")} className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-[15px] font-semibold text-gray-300 hover:bg-white/5 hover:text-white transition"><span style={{width:22,height:22}} className="block"><IconHome /></span> Trang chủ</button>
+          <button onClick={() => handleNav("dm")} className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-[15px] font-semibold text-gray-300 hover:bg-white/5 hover:text-white transition"><span style={{width:22,height:22}} className="block"><IconMessage /></span> Tin nhắn {dmUnread > 0 && <span className="ml-auto text-[10px] bg-[#1ed760] text-black rounded-full px-1.5 py-0.5 font-bold">{dmUnread}</span>}</button>
+          <button onClick={() => handleNav("create")} className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-[15px] font-semibold text-gray-300 hover:bg-white/5 hover:text-white transition"><span style={{width:22,height:22}} className="block"><IconPlus /></span> Đăng bài</button>
+          <button onClick={() => handleNav("activity")} className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-[15px] font-semibold text-gray-300 hover:bg-white/5 hover:text-white transition"><span style={{width:22,height:22}} className="block"><IconHeart /></span> Hoạt động</button>
+          <button onClick={() => setShowCustomization(true)} className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-[15px] font-semibold text-gray-300 hover:bg-white/5 hover:text-white transition"><span className="text-base leading-none">🎨</span> Hồ sơ & Phong cách</button>
+          <div className="flex-1" />
+          <button onClick={handleLogout} className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-[15px] font-semibold text-gray-500 hover:bg-rose-500/10 hover:text-rose-400 transition"><span style={{width:22,height:22}} className="block"><IconLogout /></span> Đăng xuất</button>
+        </aside>
+
+        {/* CỘT GIỮA: feed */}
+        <div className="flex-1 min-w-0 flex flex-col relative">
 
         {/* HEADER */}
         <header className="sticky top-0 z-40 bg-black/90 backdrop-blur-xl border-b border-white/10">
           <div className="flex items-center justify-between px-4 h-12">
             <button onClick={() => navigate("/hub")} className="text-2xl font-extrabold tracking-tighter hover:opacity-70 transition" aria-label="Về trung tâm D4M">
-              <span className="text-white">Threads</span>
+              <span className="d4m-brand-gradient">Threads</span>
               <span className="text-gray-500 font-light"> D4M</span>
             </button>
             <div className="flex items-center gap-5 text-gray-400">
@@ -663,7 +681,7 @@ export default function SocialHubPage() {
                     <button
                       onClick={submitPost}
                       disabled={isSubmitting}
-                      className="px-5 py-2 bg-white text-black rounded-full text-sm font-bold hover:bg-gray-200 transition active:scale-95 disabled:opacity-50"
+                      className="px-5 py-2 d4m-btn-grad rounded-full text-sm font-bold transition active:scale-95 disabled:opacity-50"
                     >
                       {isSubmitting ? "Đang đăng..." : "Đăng"}
                     </button>
@@ -684,6 +702,8 @@ export default function SocialHubPage() {
           treasure={currentUser?.treasure}
           onNavigate={handleNav}
         />
+        </div>
+        </div>
       </div>
 
       {showDm && <DmInbox currentUser={currentUser} onBack={() => setShowDm(false)} onUnreadChange={setDmUnread} onNavigate={handleNav} />}

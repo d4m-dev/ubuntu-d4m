@@ -109,4 +109,12 @@ export const SOCIAL_GLOBAL_CSS = `
   .d4m-bubble { max-width:75%; padding:8px 14px; word-wrap:break-word; white-space:pre-wrap; }
   .d4m-chat.mine .d4m-bubble { border-bottom-right-radius:4px; }
   .d4m-chat.theirs .d4m-bubble { border-bottom-left-radius:4px; }
+  /* 🎨 Thương hiệu D4M: chữ gradient + nút nhấn nổi bật */
+  .d4m-brand-gradient { background: linear-gradient(90deg,#1ed760 0%,#00d2d3 50%,#5352ed 100%); -webkit-background-clip:text; background-clip:text; color:transparent; }
+  .d4m-btn-grad { background: linear-gradient(135deg,#1ed760,#00b894); color:#000 !important; box-shadow: 0 4px 16px rgba(30,215,96,.35); }
+  .d4m-btn-grad:hover { filter:brightness(1.08); }
+  @media (min-width:1024px){
+    .d4m-post-card { border-radius:16px; margin:4px 8px; border:1px solid transparent; }
+    .d4m-post-card:hover { background:rgba(255,255,255,.04); border-color:rgba(255,255,255,.06); }
+  }
 `;

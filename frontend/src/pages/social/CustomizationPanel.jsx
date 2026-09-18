@@ -307,29 +307,16 @@ export default function CustomizationPanel({ currentUser, onBack, onSaved, onSpi
   // 🌀 Portal ra body — thoát ancestor backdrop-filter/transform, căn giữa an toàn
   return createPortal(
     <div className="fixed inset-0 z-[70] bg-black/80 backdrop-blur-sm flex overflow-y-auto p-4" onClick={onBack} role="dialog" aria-modal="true" aria-label="Hồ sơ và phong cách">
-      <div className="w-full max-w-md md:max-w-xl m-auto bg-[#111] border border-white/10 rounded-2xl overflow-hidden flex flex-col max-h-[90dvh]" onClick={(e) => e.stopPropagation()}>
+      <div className="w-full max-w-md md:max-w-5xl m-auto bg-[#0d0d10] border border-white/10 rounded-3xl overflow-hidden flex flex-col max-h-[92dvh] shadow-2xl" onClick={(e) => e.stopPropagation()}>
         <div className="flex items-center gap-3 px-4 py-3 border-b border-white/10">
           <button onClick={onBack} aria-label="Quay lại" className="p-1.5 -ml-2 rounded-full hover:bg-white/10 text-gray-300"><IconBack /></button>
           <h2 className="font-bold text-lg flex-1">Hồ sơ & Phong cách</h2>
           <span className="text-xs px-2 py-1 rounded-full bg-[#1ed760]/10 text-[#1ed760] font-bold">🪙 {xu.toLocaleString("vi-VN")}</span>
         </div>
 
-        {/* Tabs */}
-        <div className="flex gap-1 px-3 pt-3 border-b border-white/10 overflow-x-auto">
-          {TABS.map((t) => (
-            <button
-              key={t.id}
-              onClick={() => setTab(t.id)}
-              aria-pressed={tab === t.id}
-              className={`px-3 py-2 text-xs font-bold rounded-t-xl whitespace-nowrap transition ${tab === t.id ? "bg-white/10 text-white border-b-2 border-[#1ed760]" : "text-gray-500 hover:text-gray-300"}`}
-            >
-              {t.label}
-            </button>
-          ))}
-        </div>
-
-        {/* 👤 PREVIEW CỐ ĐỊNH 1 CHỖ — luôn nhìn thấy khi cuộn danh sách */}
-        <div className="px-4 pt-3 shrink-0">
+        <div className="flex-1 min-h-0 flex flex-col md:flex-row">
+        {/* 👤 CỘT TRÁI: preview cố định */}
+        <div className="shrink-0 md:w-72 lg:w-80 border-b md:border-b-0 md:border-r border-white/10 p-3 md:p-4 bg-white/[0.02] md:overflow-y-auto">
           <div className="rounded-2xl border border-white/10 bg-white/[0.03] py-3 px-6 md:px-8 text-center">
             <AvatarFrame src={currentUser?.avatar_url} frame={frame} pet={petItem} treasure={treasureItem} size={80} alt="" />
             <div className="mt-2 text-base md:text-lg font-bold" style={{ ...cssFrom(nameEffectStyle(effect)) }}>
@@ -363,7 +350,22 @@ export default function CustomizationPanel({ currentUser, onBack, onSaved, onSpi
           </div>
         </div>
 
-        <div className="flex-1 overflow-y-auto p-4 space-y-5 min-h-0">
+        <div className="flex-1 min-h-0 flex flex-col">
+        {/* Tabs */}
+        <div className="flex gap-1 px-3 pt-3 border-b border-white/10 overflow-x-auto">
+          {TABS.map((t) => (
+            <button
+              key={t.id}
+              onClick={() => setTab(t.id)}
+              aria-pressed={tab === t.id}
+              className={`px-3 py-2 text-xs font-bold rounded-t-xl whitespace-nowrap transition ${tab === t.id ? "bg-white/10 text-white border-b-2 border-[#1ed760]" : "text-gray-500 hover:text-gray-300"}`}
+            >
+              {t.label}
+            </button>
+          ))}
+        </div>
+
+        <div className="flex-1 overflow-y-auto p-4 space-y-4 min-h-0">
           {/* 🖼️ TAB KHUNG VIỀN */}
           {tab === "frame" && (
             <div className="space-y-3">
@@ -465,6 +467,8 @@ export default function CustomizationPanel({ currentUser, onBack, onSaved, onSpi
             </button>
           </div>
         )}
+        </div>
+        </div>
       </div>
     </div>,
     document.body
