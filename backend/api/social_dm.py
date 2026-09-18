@@ -245,7 +245,7 @@ def get_messages(conversation_id: int, current_user: dict = Depends(get_current_
 # 🚀 DM — GỬI TIN NHẮN
 # ==========================================================
 @router.post(U.SOCIAL["CONVERSATION_SEND"])
-async def send_message(conversation_id: int, body: MessageCreate,
+def send_message(conversation_id: int, body: MessageCreate,
                        current_user: dict = Depends(get_current_user)):
     me = current_user["user_id"]
     convo = db_executor.select_as_list_dict(

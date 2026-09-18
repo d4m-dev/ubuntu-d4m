@@ -124,7 +124,7 @@ def check_folder(folder_name: str, admin=Depends(require_admin)):
 # 📤 API 2: UPLOAD (5-in-1, Partial Upload)
 # ==========================================================
 @router.post(U.SONGS_UPLOAD["UPLOAD"])
-async def upload_song(
+def upload_song(
     folder_name: str = Form(...),
     title: str = Form(None),
     artist: str = Form(None),

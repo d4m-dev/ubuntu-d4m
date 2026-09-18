@@ -39,8 +39,8 @@ def save_manual_schedule(user_id: int, date: str, shift_name: str) -> dict:
     if not is_off and shift_name != "DELETE":
         start_time, end_time = SHIFT_TIME_MAP.get(shift_name, ("00:00", "08:00"))
     
-    check_sql = f"SELECT id, gcal_event_id FROM work_schedules WHERE work_date='{date}'"
-    existing = db_executor.select_as_list_dict(check_sql)
+    check_sql = "SELECT id, gcal_event_id FROM work_schedules WHERE work_date=%s"
+    existing = db_executor.select_as_list_dict(check_sql, (date,))  # 🛡️ parameterized
     
     gcal_event_id = None
     if existing:
@@ -48,7 +48,7 @@ def save_manual_schedule(user_id: int, date: str, shift_name: str) -> dict:
             if ex.get('gcal_event_id'):
                 gcal_event_id = ex.get('gcal_event_id')
                 break
-        db_inserter.insert(f"DELETE FROM work_schedules WHERE work_date='{date}'", ())
+        db_inserter.insert("DELETE FROM work_schedules WHERE work_date=%s", (date,))  # 🛡️ parameterized
     
     if shift_name == "DELETE":
         return {"status": "success", "message": "Đã xóa lịch"}
@@ -84,7 +84,7 @@ def batch_update_schedules_from_ai(user_id: int, schedules_list: list) -> int:
         else:
             s_time, e_time = SHIFT_TIME_MAP.get(safe_shift.upper(), ("00:00", "08:00"))
         
-        check_sql = f"SELECT id, gcal_event_id FROM work_schedules WHERE work_date='{work_date}'"
+        check_sql = "SELECT id, gcal_event_id FROM work_schedules WHERE work_date=%s"
         existing_records = db_executor.select_as_list_dict(check_sql)
         
         existing_gcal_id = None
@@ -93,7 +93,7 @@ def batch_update_schedules_from_ai(user_id: int, schedules_list: list) -> int:
                 if ex.get('gcal_event_id'):
                     existing_gcal_id = ex.get('gcal_event_id')
                     break
-            db_inserter.insert(f"DELETE FROM work_schedules WHERE work_date='{work_date}'", ())
+            db_inserter.insert("DELETE FROM work_schedules WHERE work_date=%s", (work_date,))  # 🛡️ parameterized
 
         gcal_id = None
         try:

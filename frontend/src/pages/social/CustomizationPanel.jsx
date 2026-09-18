@@ -1,6 +1,7 @@
 // src/pages/social/CustomizationPanel.jsx
-// 🎨 Bảng cá nhân hóa: 🖼️ Khung viền (429) + 🐉 Linh thú + 💎 Linh bảo + ✨ Phong cách
-// Thiết kế cho dữ liệu LỚN: tìm kiếm + lọc độ hiếm + phân trang ("Xem thêm").
+// 🎨 HỒ SƠ & PHONG CÁCH: 🖼️ Khung viền (429) + 🐉 Linh thú + 💎 Linh bảo + ✨ Phong cách
+// 🛡️ HARDENED: preview CỐ ĐỊNH 1 chỗ, chạm để ƯỚM THỬ trước khi mua,
+//    search + lọc hiếm + phân trang, nút Lưu footer cố định, a11y đầy đủ.
 import { useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 import { SOCIAL, API_BASE_URL } from "../../config/urls";
@@ -23,7 +24,7 @@ const RARITY_CHIPS = [["all", "Tất cả"], ["common", "Thường"], ["rare", "
 
 const full = (u) => (u && u.startsWith("http") ? u : API_BASE_URL + u);
 
-// 🔎 Thanh tìm kiếm + chip độ hiếm + nút xem thêm (dùng chung cho khung & linh vật)
+// 🔎 Thanh tìm kiếm + chip độ hiếm (dùng chung)
 function FilterBar({ query, onQuery, rarity, onRarity, counts, placeholder }) {
   return (
     <div className="space-y-2">
@@ -31,6 +32,7 @@ function FilterBar({ query, onQuery, rarity, onRarity, counts, placeholder }) {
         value={query}
         onChange={(e) => onQuery(e.target.value)}
         placeholder={placeholder}
+        aria-label={placeholder}
         className="w-full px-3 py-2 rounded-xl bg-white/5 border border-white/10 text-sm text-white placeholder-gray-500 outline-none focus:border-[#1ed760]/60"
       />
       <div className="flex gap-1.5 flex-wrap">
@@ -38,6 +40,7 @@ function FilterBar({ query, onQuery, rarity, onRarity, counts, placeholder }) {
           <button
             key={id}
             onClick={() => onRarity(id)}
+            aria-pressed={rarity === id}
             className={`px-2.5 py-1 rounded-full text-[11px] font-bold border transition ${rarity === id ? "bg-white/15 text-white border-white/40" : "text-gray-400 border-white/10 hover:border-white/30"}`}
             style={id !== "all" && rarity !== id ? { color: rarityOf(id).color } : {}}
           >
@@ -115,8 +118,9 @@ export default function CustomizationPanel({ currentUser, onBack, onSaved, onSpi
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // 💾 Lưu khung viền + hiệu ứng tên + theme chat
+  // 💾 Lưu khung viền + hiệu ứng tên + theme chat (có lock chống spam)
   const save = async () => {
+    if (saving) return;
     setSaving(true);
     try {
       const res = await fetch(`${API_BASE_URL}/api/auth/profile/update`, {
@@ -134,6 +138,7 @@ export default function CustomizationPanel({ currentUser, onBack, onSaved, onSpi
 
   // 🛒 Mua linh vật bằng Xu
   const buy = async (item) => {
+    if (busyId) return;
     setBusyId(item.id);
     try {
       const res = await fetch(SOCIAL.SPIRIT_BUY, {
@@ -152,6 +157,7 @@ export default function CustomizationPanel({ currentUser, onBack, onSaved, onSpi
 
   // ⚔️ Trang bị / tháo
   const toggleEquip = async (item) => {
+    if (busyId) return;
     const isEquipped = equipped[item.kind] === item.id;
     setBusyId(item.id);
     try {
@@ -168,7 +174,7 @@ export default function CustomizationPanel({ currentUser, onBack, onSaved, onSpi
     finally { setBusyId(null); }
   };
 
-  // ============ 🖼️ LỌC KHUNG ============
+  // ============ 🖼️ LỌC KHUNG (useMemo — không tính lại mỗi render) ============
   const frameCounts = useMemo(() => {
     const c = { common: 0, rare: 0, epic: 0, legendary: 0 };
     frames.forEach((f) => { c[f.rarity] = (c[f.rarity] || 0) + 1; });
@@ -196,7 +202,7 @@ export default function CustomizationPanel({ currentUser, onBack, onSaved, onSpi
       (!q || i.name.toLowerCase().includes(q)));
   };
 
-  // 🧪 THỬ TRƯỚC KHI MUA — chạm linh vật để ướm thử lên avatar preview
+  // 🧪 THỬ TRƯỚC KHI MUA — chạm linh vật để ướm lên avatar preview
   const [tryPet, setTryPet] = useState(null);
   const [tryTreasure, setTryTreasure] = useState(null);
   const tryOn = (item) => {
@@ -204,7 +210,7 @@ export default function CustomizationPanel({ currentUser, onBack, onSaved, onSpi
     else setTryTreasure((t) => (t?.id === item.id ? null : item));
   };
 
-  // 🖼️ Preview tổng hợp: khung đang chọn + (đồ THỬ || đồ đang trang bị)
+  // 🖼️ Preview: khung đang chọn + (đồ THỬ || đồ trang bị)
   const petItem = tryPet || (catalog.find((i) => i.id === equipped.pet) || null);
   const treasureItem = tryTreasure || (catalog.find((i) => i.id === equipped.treasure) || null);
   const trying = Boolean(tryPet || tryTreasure);
@@ -244,6 +250,8 @@ export default function CustomizationPanel({ currentUser, onBack, onSaved, onSpi
                 role="button"
                 tabIndex={0}
                 onClick={() => tryOn(item)}
+                aria-pressed={isTry}
+                aria-label={`Ướm thử ${item.name}`}
                 onKeyDown={(e) => { if (e.key === "Enter") tryOn(item); }}
                 className={`relative rounded-2xl border-2 p-3 text-center transition cursor-pointer hover:bg-white/[0.06] ${isEquipped ? "bg-white/[0.07]" : "bg-white/[0.02]"}`}
                 style={{ borderColor: isEquipped ? "#1ed760" : isTry ? "#e5e7eb" : rar.border }}
@@ -298,7 +306,7 @@ export default function CustomizationPanel({ currentUser, onBack, onSaved, onSpi
 
   // 🌀 Portal ra body — thoát ancestor backdrop-filter/transform, căn giữa an toàn
   return createPortal(
-    <div className="fixed inset-0 z-[70] bg-black/80 backdrop-blur-sm flex overflow-y-auto p-4" onClick={onBack}>
+    <div className="fixed inset-0 z-[70] bg-black/80 backdrop-blur-sm flex overflow-y-auto p-4" onClick={onBack} role="dialog" aria-modal="true" aria-label="Hồ sơ và phong cách">
       <div className="w-full max-w-md md:max-w-xl m-auto bg-[#111] border border-white/10 rounded-2xl overflow-hidden flex flex-col max-h-[90dvh]" onClick={(e) => e.stopPropagation()}>
         <div className="flex items-center gap-3 px-4 py-3 border-b border-white/10">
           <button onClick={onBack} aria-label="Quay lại" className="p-1.5 -ml-2 rounded-full hover:bg-white/10 text-gray-300"><IconBack /></button>
@@ -312,6 +320,7 @@ export default function CustomizationPanel({ currentUser, onBack, onSaved, onSpi
             <button
               key={t.id}
               onClick={() => setTab(t.id)}
+              aria-pressed={tab === t.id}
               className={`px-3 py-2 text-xs font-bold rounded-t-xl whitespace-nowrap transition ${tab === t.id ? "bg-white/10 text-white border-b-2 border-[#1ed760]" : "text-gray-500 hover:text-gray-300"}`}
             >
               {t.label}
@@ -319,7 +328,7 @@ export default function CustomizationPanel({ currentUser, onBack, onSaved, onSpi
           ))}
         </div>
 
-        {/* 👤 PREVIEW CỐ ĐỊNH 1 CHỖ — luôn hiển thị trong khi cuộn danh sách bên dưới */}
+        {/* 👤 PREVIEW CỐ ĐỊNH 1 CHỖ — luôn nhìn thấy khi cuộn danh sách */}
         <div className="px-4 pt-3 shrink-0">
           <div className="rounded-2xl border border-white/10 bg-white/[0.03] py-3 px-6 md:px-8 text-center">
             <AvatarFrame src={currentUser?.avatar_url} frame={frame} pet={petItem} treasure={treasureItem} size={80} alt="" />
@@ -343,6 +352,11 @@ export default function CustomizationPanel({ currentUser, onBack, onSaved, onSpi
             {trying && (
               <p className="mt-1.5 text-[10px] text-[#1ed760] font-bold">🧪 Đang ướm thử — mua/trang bị bằng nút trong thẻ</p>
             )}
+            {onEditInfo && (
+              <button onClick={onEditInfo} className="mt-2 text-[11px] text-gray-400 underline hover:text-white transition">
+                Sửa thông tin cơ bản (tên, SĐT, địa chỉ...)
+              </button>
+            )}
             <p className="mt-1.5 text-[10px] text-gray-600">
               Chạm khung / linh vật để xem trước • mọi thay đổi hiện toàn hệ thống.
             </p>
@@ -350,7 +364,7 @@ export default function CustomizationPanel({ currentUser, onBack, onSaved, onSpi
         </div>
 
         <div className="flex-1 overflow-y-auto p-4 space-y-5 min-h-0">
-          {/* 🖼️ TAB KHUNG VIỀN (429 khung: tìm kiếm + lọc hiếm + phân trang) */}
+          {/* 🖼️ TAB KHUNG VIỀN */}
           {tab === "frame" && (
             <div className="space-y-3">
               <FilterBar
@@ -361,6 +375,8 @@ export default function CustomizationPanel({ currentUser, onBack, onSaved, onSpi
               <div className="flex items-center gap-2 flex-wrap">
                 <button
                   onClick={() => setFrame(null)}
+                  aria-pressed={!frame}
+                  aria-label="Không dùng khung"
                   className={`w-12 h-12 md:w-14 md:h-14 rounded-full border-2 ${!frame ? "border-[#1ed760]" : "border-white/15"} bg-white/5 flex items-center justify-center text-gray-400 hover:bg-white/10`}
                   title="Không khung"
                 >✕</button>
@@ -370,6 +386,8 @@ export default function CustomizationPanel({ currentUser, onBack, onSaved, onSpi
                     <button
                       key={f.name}
                       onClick={() => setFrame(f.name)}
+                      aria-pressed={frame === f.name}
+                      aria-label={`Khung ${f.label || f.name}`}
                       className={`w-12 h-12 md:w-14 md:h-14 rounded-full border-2 overflow-hidden transition ${frame === f.name ? "border-[#1ed760]" : "hover:border-white/40"}`}
                       style={frame === f.name ? {} : { borderColor: rar.border }}
                       title={`${f.label || f.name} · ${rar.label}`}
@@ -392,7 +410,7 @@ export default function CustomizationPanel({ currentUser, onBack, onSaved, onSpi
           {/* 💎 TAB LINH BẢO */}
           {tab === "treasure" && renderSpiritTab("treasure")}
 
-          {/* ✨ TAB PHONG CÁCH (hiệu ứng tên + theme chat) */}
+          {/* ✨ TAB PHONG CÁCH */}
           {tab === "style" && (
             <>
               <div>
@@ -402,6 +420,7 @@ export default function CustomizationPanel({ currentUser, onBack, onSaved, onSpi
                     <button
                       key={e.id}
                       onClick={() => setEffect(e.id)}
+                      aria-pressed={effect === e.id}
                       className={`px-3 py-2 rounded-xl border-2 text-sm font-bold ${effect === e.id ? "border-[#1ed760] bg-white/10" : "border-white/15 hover:border-white/30"}`}
                       style={cssFrom(e.css)}
                     >
@@ -418,6 +437,7 @@ export default function CustomizationPanel({ currentUser, onBack, onSaved, onSpi
                     <button
                       key={id}
                       onClick={() => setTheme(id)}
+                      aria-pressed={theme === id}
                       className={`px-3 py-2.5 rounded-xl border-2 text-left ${theme === id ? "border-[#1ed760]" : "border-white/15 hover:border-white/30"}`}
                     >
                       <div className="text-xs font-semibold" style={{ color: t.theirsColor }}>{t.label}</div>
@@ -429,12 +449,11 @@ export default function CustomizationPanel({ currentUser, onBack, onSaved, onSpi
                   ))}
                 </div>
               </div>
-
             </>
           )}
         </div>
 
-        {/* 📌 Nút LƯU cố định đáy panel — không bị đẩy trôi khi cuộn */}
+        {/* 📌 Nút LƯU cố định đáy — không bị đẩy trôi khi cuộn */}
         {(tab === "frame" || tab === "style") && (
           <div className="p-3 border-t border-white/10 bg-[#111] shrink-0">
             <button
@@ -460,7 +479,6 @@ function cssFrom(str) {
     if (i > 0) {
       const k = decl.slice(0, i).trim();
       const v = decl.slice(i + 1).trim();
-      // convert kebab to camel
       const camel = k.replace(/-([a-z])/, (_, c) => c.toUpperCase());
       if (k === "-webkit-background-clip") obj.WebkitBackgroundClip = v;
       else if (k === "background-clip") obj.backgroundClip = v;

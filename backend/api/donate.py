@@ -17,6 +17,7 @@ Endpoints:
 🔔 Mỗi lần tiền về -> alert Telegram realtime (core.tg_ecosystem.alert_donate)
 ============================================================
 """
+import asyncio
 import base64
 import hashlib
 import hmac
@@ -47,6 +48,16 @@ logger = logging.getLogger("d4m_donate")
 router = APIRouter(prefix=U.DONATE["PREFIX"], tags=["Donate & PayOS"])
 
 QR_TTL_MINUTES = 15
+
+async def _http_post(url, **kw):
+    """httpx async — không chặn event loop."""
+    async with httpx.AsyncClient(timeout=kw.pop("timeout", 20)) as c:
+        return await c.post(url, **kw)
+
+async def _http_get(url, **kw):
+    async with httpx.AsyncClient(timeout=kw.pop("timeout", 10)) as c:
+        return await c.get(url, **kw)
+
 PAYOS_BASE = "https://api-merchant.payos.vn"
 
 
@@ -107,7 +118,7 @@ def _qr_data_uri(qr_content: str) -> str:
 @router.post(U.DONATE["QR"])
 async def create_donate_qr(req: DonateQRRequest):
     try:
-        user = db_executor.select_as_list_dict(
+        user = await asyncio.to_thread(db_executor.select_as_list_dict, 
             "SELECT id, username, full_name FROM users WHERE id=%s", (req.user_id,))
         if not user:
             raise HTTPException(status_code=404, detail="Không tìm thấy tài khoản.")
@@ -124,7 +135,7 @@ async def create_donate_qr(req: DonateQRRequest):
                 cancel_url = getattr(settings, "PAYOS_CANCEL_URL", "") or "https://payos.vn"
                 signature = _create_link_signature(order_code, req.amount, description,
                                                    return_url, cancel_url)
-                resp = httpx.post(
+                resp = await _http_post(
                     f"{PAYOS_BASE}/v2/payment-requests",
                     headers={"x-client-id": settings.PAYOS_CLIENT_ID,
                              "x-api-key": settings.PAYOS_API_KEY,
@@ -156,7 +167,7 @@ async def create_donate_qr(req: DonateQRRequest):
             qr_id = uuid.uuid4().hex[:20]
             provider = "vietqr"
 
-        db_inserter.insert(
+        await asyncio.to_thread(db_inserter.insert, 
             "INSERT INTO donate_qr (id, user_id, amount, qr_url, status, expires_at) "
             "VALUES (%s, %s, %s, %s, 'pending', %s)",
             (qr_id, req.user_id, req.amount, qr_url, expires_at.strftime("%Y-%m-%d %H:%M:%S")))
@@ -177,7 +188,7 @@ async def create_donate_qr(req: DonateQRRequest):
 # ==========================================================
 @router.get(U.DONATE["STATUS"])
 async def donate_status(qr_id: str):
-    rows = db_executor.select_as_list_dict(
+    rows = await asyncio.to_thread(db_executor.select_as_list_dict, 
         "SELECT status, amount, user_id FROM donate_qr WHERE id=%s", (qr_id,))
     if not rows:
         raise HTTPException(status_code=404, detail="Không tìm thấy phiên QR.")
@@ -185,7 +196,7 @@ async def donate_status(qr_id: str):
 
     if row["status"] == "pending" and payos_configured() and httpx is not None and qr_id.isdigit():
         try:
-            resp = httpx.get(f"{PAYOS_BASE}/v2/payment-requests/{qr_id}",
+            resp = await _http_get(f"{PAYOS_BASE}/v2/payment-requests/{qr_id}",
                              headers={"x-client-id": settings.PAYOS_CLIENT_ID,
                                       "x-api-key": settings.PAYOS_API_KEY},
                              timeout=10)
@@ -199,7 +210,7 @@ async def donate_status(qr_id: str):
                                             f"D4M {row['user_id']}")
                     return {"status": "success", "qr_status": "success", "amount": row["amount"]}
                 if st in ("CANCELLED", "EXPIRED"):
-                    db_updater.update("UPDATE donate_qr SET status='expired' WHERE id=%s", (qr_id,))
+                    await asyncio.to_thread(db_updater.update, "UPDATE donate_qr SET status='expired' WHERE id=%s", (qr_id,))
                     return {"status": "success", "qr_status": "expired", "amount": row["amount"]}
         except Exception as e:
             logger.warning(f"[DONATE] Polling PayOS lỗi: {e}")
@@ -212,17 +223,17 @@ async def donate_status(qr_id: str):
 # ==========================================================
 async def _finalize_payment(user_id: int, amount: int, trans_id: str, content: str):
     if trans_id:
-        exists = db_executor.select_as_list_dict(
+        exists = await asyncio.to_thread(db_executor.select_as_list_dict, 
             "SELECT id FROM donate_logs WHERE trans_id=%s", (trans_id,))
         if exists:
             return {"status": "ignored", "reason": "Giao dịch trùng lặp"}
 
-    user = db_executor.select_as_list_dict(
+    user = await asyncio.to_thread(db_executor.select_as_list_dict, 
         "SELECT id, username, active FROM users WHERE id=%s", (user_id,))
     if not user:
         return {"status": "ignored", "reason": "User không tồn tại"}
 
-    qr = db_executor.select_as_list_dict(
+    qr = await asyncio.to_thread(db_executor.select_as_list_dict, 
         "SELECT id, status, expires_at FROM donate_qr WHERE user_id=%s AND status='pending' "
         "ORDER BY created_at DESC LIMIT 1", (user_id,))
     qr_id, qr_expired = None, False
@@ -233,19 +244,19 @@ async def _finalize_payment(user_id: int, amount: int, trans_id: str, content: s
             exp_dt = exp if hasattr(exp, "timestamp") else datetime.strptime(str(exp), "%Y-%m-%d %H:%M:%S")
             if datetime.utcnow() > exp_dt:
                 qr_expired = True
-                db_updater.update("UPDATE donate_qr SET status='expired' WHERE id=%s", (qr_id,))
+                await asyncio.to_thread(db_updater.update, "UPDATE donate_qr SET status='expired' WHERE id=%s", (qr_id,))
         except Exception:
             pass
 
     if user[0].get("active") != 1:
-        db_updater.update("UPDATE users SET active = 1 WHERE id = %s", (user_id,))
+        await asyncio.to_thread(db_updater.update, "UPDATE users SET active = 1 WHERE id = %s", (user_id,))
         logger.info(f"[DONATE] ✅ Kích hoạt user {user_id}.")
 
     if qr_id and not qr_expired:
-        db_updater.update("UPDATE donate_qr SET status='success' WHERE id=%s", (qr_id,))
+        await asyncio.to_thread(db_updater.update, "UPDATE donate_qr SET status='success' WHERE id=%s", (qr_id,))
 
     try:
-        db_inserter.insert(
+        await asyncio.to_thread(db_inserter.insert, 
             "INSERT INTO donate_logs (user_id, qr_id, amount, content, trans_id, time, status) "
             "VALUES (%s, %s, %s, %s, %s, %s, %s)",
             (user_id, qr_id, amount, content, trans_id or uuid.uuid4().hex,

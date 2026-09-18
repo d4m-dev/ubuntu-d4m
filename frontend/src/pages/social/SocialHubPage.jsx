@@ -1,6 +1,7 @@
 // src/pages/social/SocialHubPage.jsx
 // Mạng xã hội D4M — giao diện theo phong cách Threads
-import React, { useState, useEffect, useRef } from "react";
+// 🛡️ BẢN HARDENED: fix memory-leak, re-render, spam-click, a11y, dead-buttons.
+import React, { useState, useEffect, useRef, useCallback, memo } from "react";
 import { createPortal } from "react-dom";
 import { useNavigate } from "react-router-dom";
 import { ENDPOINTS, API_BASE_URL } from "../../config/api";
@@ -22,6 +23,155 @@ import {
   IconRefresh, IconLogout, IconPlay, IconPause, IconCheck, IconImage,
 } from "./icons";
 
+// ==================================================================
+// 🎵 PLAYER TÁCH RIÊNG (React.memo + state nội bộ)
+// WHY: trước đây `progress` nằm ở state TRANG → mỗi lần timeupdate (~4 lần/s)
+// cả feed re-render gây giật. Giờ chỉ component này re-render.
+// ==================================================================
+const PostAudioPlayer = memo(function PostAudioPlayer({ title, url }) {
+  const audioRef = useRef(null);
+  const barRef = useRef(null);
+  const [playing, setPlaying] = useState(false);
+  const [progress, setProgress] = useState(0);
+
+  // WHY: lazy init — không tạo Audio nếu user không bấm play
+  const getAudio = () => {
+    if (!audioRef.current) {
+      const a = new Audio(url);
+      a.addEventListener("timeupdate", () => {
+        if (a.duration && isFinite(a.duration)) setProgress((a.currentTime / a.duration) * 100);
+      });
+      a.addEventListener("ended", () => { setPlaying(false); setProgress(0); });
+      a.addEventListener("error", () => { setPlaying(false); showToast("Không phát được âm thanh.", "error"); });
+      audioRef.current = a;
+    }
+    return audioRef.current;
+  };
+
+  // WHY: cleanup khi unmount — ngắt nguồn rò rỉ bộ nhớ / audio chạy ngầm
+  useEffect(() => () => { if (audioRef.current) { audioRef.current.pause(); audioRef.current.src = ""; } }, []);
+
+  const toggle = () => {
+    const a = getAudio();
+    if (playing) { a.pause(); setPlaying(false); return; }
+    a.play().catch(() => showToast("Trình duyệt chặn tự phát — bấm lại nhé.", "warning"));
+    setPlaying(true);
+  };
+  const seek = (e) => {
+    const a = audioRef.current;
+    if (!a || !a.duration || !isFinite(a.duration)) return; // WHY: chống NaN khi metadata chưa tải
+    const rect = barRef.current.getBoundingClientRect();
+    a.currentTime = ((e.clientX - rect.left) / rect.width) * a.duration;
+  };
+
+  return (
+    <div className="rounded-2xl border border-white/10 bg-[#111] p-3 flex items-center gap-3">
+      <button
+        onClick={toggle}
+        className="w-11 h-11 rounded-full bg-white text-black flex items-center justify-center hover:scale-105 active:scale-95 transition shrink-0"
+        aria-label={playing ? "Tạm dừng" : "Phát"}
+      >
+        {playing ? <IconPause /> : <IconPlay />}
+      </button>
+      <div className="flex-1 min-w-0">
+        <div className="text-sm font-semibold truncate">{title}</div>
+        <div
+          ref={barRef}
+          className="mt-2 h-1 bg-white/15 rounded-full cursor-pointer overflow-hidden"
+          onClick={seek}
+          role="slider"
+          aria-label="Tua bài hát"
+          aria-valuenow={Math.round(progress)}
+        >
+          <div className="h-full bg-white transition-all duration-100" style={{ width: `${progress}%` }} />
+        </div>
+      </div>
+    </div>
+  );
+});
+
+// ==================================================================
+// 📝 POST CARD (React.memo) — chỉ re-render khi dữ liệu bài viết đổi
+// ==================================================================
+const PostCard = memo(function PostCard({ post, liked, canDelete, onLike, onComment, onDelete, onShare, getMediaUrl, formatTimeAgo }) {
+  return (
+    <article className="px-4 py-4 hover:bg-white/[0.02] transition-colors">
+      <div className="flex gap-3">
+        <div className="flex-shrink-0">
+          <AvatarFrame src={post.avatar_url} frame={post.avatar_frame} pet={post.pet} treasure={post.treasure} size={40} alt={`Avatar ${post.fullname || post.username}`} />
+        </div>
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center gap-1.5 text-sm">
+            <span className="font-bold" style={cssFrom(nameEffectStyle(post.name_effect))}>{post.fullname}</span>
+            {Number(post.role) === 1 && <span className="text-blue-500" style={{ width: 14, height: 14 }}><IconCheck /></span>}
+            <span className="text-gray-500">@{post.username} · {formatTimeAgo(post.created_at)}</span>
+          </div>
+
+          {post.content && <p className="mt-1 text-[15px] leading-relaxed whitespace-pre-wrap">{post.content}</p>}
+
+          {post.images && post.images.length > 0 && (
+            <div className={`mt-3 grid gap-1 ${post.images.length > 1 ? "grid-cols-2" : "grid-cols-1"}`}>
+              {post.images.map((url, idx) => (
+                <img
+                  key={idx}
+                  src={getMediaUrl(url)}
+                  alt={`Ảnh ${idx + 1} của ${post.fullname || post.username}`}
+                  loading="lazy"
+                  decoding="async"
+                  className={`w-full object-cover rounded-xl border border-white/10 ${
+                    /\.gif(\?|$)/i.test(url)
+                      ? (post.images.length === 1 ? "w-24 h-24" : "aspect-square")
+                      : (post.images.length === 1 ? "max-h-[420px]" : "aspect-square")
+                  }`}
+                />
+              ))}
+            </div>
+          )}
+
+          {post.attached_media && post.stream_links && (
+            <div className="mt-3">
+              {post.media_type === "video" && post.stream_links.video_url && (
+                <div className="rounded-2xl overflow-hidden border border-white/10 bg-black">
+                  <video controls playsInline className="w-full max-h-[480px]">
+                    <source src={getMediaUrl(post.stream_links.video_url)} type="video/mp4" />
+                  </video>
+                </div>
+              )}
+              {post.media_type === "audio" && post.stream_links.vocal_url && (
+                <PostAudioPlayer title={post.attached_media} url={getMediaUrl(post.stream_links.vocal_url)} />
+              )}
+            </div>
+          )}
+
+          <div className="flex items-center gap-6 mt-3 text-gray-400">
+            <button
+              onClick={onLike}
+              className={`transition hover:scale-110 active:scale-90 ${liked ? "text-rose-500" : "hover:text-rose-400"}`}
+              style={{ width: 22, height: 22 }}
+              aria-label={liked ? "Bỏ thích" : "Thích"}
+              aria-pressed={liked}
+            >
+              <IconHeart filled={liked} />
+            </button>
+            <button onClick={onComment} className="flex items-center gap-1 hover:text-white transition hover:scale-110 active:scale-90" title="Bình luận" aria-label="Bình luận">
+              <span style={{ width: 22, height: 22 }} className="block"><IconComment /></span>
+              {post.comment_count > 0 && <span className="text-xs">{post.comment_count}</span>}
+            </button>
+            <button onClick={onShare} className="hover:text-white transition hover:scale-110 active:scale-90" title="Chia sẻ" aria-label="Chia sẻ" style={{ width: 22, height: 22 }}>
+              <IconShare />
+            </button>
+            {canDelete && (
+              <button onClick={onDelete} className="ml-auto text-gray-600 hover:text-rose-400 transition" title="Xóa" aria-label="Xóa bài viết" style={{ width: 20, height: 20 }}>
+                <IconTrash />
+              </button>
+            )}
+          </div>
+        </div>
+      </div>
+    </article>
+  );
+});
+
 export default function SocialHubPage() {
   const navigate = useNavigate();
 
@@ -33,7 +183,7 @@ export default function SocialHubPage() {
   // 2. STATE FEED & TAB
   const [feed, setFeed] = useState([]);
   const [loadingFeed, setLoadingFeed] = useState(true);
-  const [activeTab, setActiveTab] = useState("for_you"); // for_you | following
+  const [activeTab, setActiveTab] = useState("for_you");
 
   // 3. STATE TẠO POST (modal)
   const [showComposer, setShowComposer] = useState(false);
@@ -42,36 +192,30 @@ export default function SocialHubPage() {
   const [showMusicDropdown, setShowMusicDropdown] = useState(false);
   const [selectedMedia, setSelectedMedia] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  // 🖼️ Ảnh đăng kèm status
-  const [postImages, setPostImages] = useState([]);      // mảng {url, preview}
+  const [postImages, setPostImages] = useState([]);
   const [uploadingImage, setUploadingImage] = useState(false);
   const [showPostStickers, setShowPostStickers] = useState(false);
-  const [postSticker, setPostSticker] = useState(null);  // sticker GIF đăng kèm
+  const [postSticker, setPostSticker] = useState(null);
   const imageInputRef = useRef(null);
   const composerRef = useRef(null);
+  // 🧹 WHY: theo dõi object-URL để revoke, chống rò rỉ bộ nhớ
+  const objectUrlsRef = useRef([]);
 
-  // 4. STATE AUDIO PLAYER
-  const audioRef = useRef(new Audio());
-  const [playingId, setPlayingId] = useState(null);
-  const [progress, setProgress] = useState(0);
-
-  // 5. STATE LIKE
+  // 5. STATE LIKE + PANELS
   const [likedSet, setLikedSet] = useState(new Set());
-  // 💬 DM & Bình luận (Threads-style)
   const [showDm, setShowDm] = useState(false);
   const [dmUnread, setDmUnread] = useState(0);
   const [commentPost, setCommentPost] = useState(null);
   const [showActivity, setShowActivity] = useState(false);
   const [showCustomization, setShowCustomization] = useState(false);
 
-  // ==========================================
+  // ==========================================\
   // KIỂM TRA BẢO MẬT & QUYỀN TRUY CẬP
   // ==========================================
   useEffect(() => {
     const token = getToken();
     if (!token) { setAuthError("no_token"); return; }
     const payload = parseJwt(token);
-    // 👑 Chấp nhận cả token admin (không có claim active) lẫn SSO (active=1)
     const activeOk = payload && (payload.active === 1 || Number(payload.role) === 1 || payload.role === "admin");
     if (!payload || (payload.exp && payload.exp * 1000 < Date.now()) || !activeOk) {
       setAuthError("invalid_token"); return;
@@ -87,9 +231,10 @@ export default function SocialHubPage() {
     fetchMusicLibrary();
     fetchFeed();
     fetchMyProfile();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // 🎨 Inject CSS toàn cục cho khung avatar & hiệu ứng tên & chat theme
+  // 🎨 Inject CSS toàn cục (1 lần)
   useEffect(() => {
     if (document.getElementById("d4m-social-css")) return;
     const style = document.createElement("style");
@@ -98,64 +243,44 @@ export default function SocialHubPage() {
     document.head.appendChild(style);
   }, []);
 
-  // 🔄 Auto-refresh feed mỗi 30s (giống Threads tự cập nhật bảng tin)
+  // 🔄 Auto-refresh 30s — WHY: `silent` để KHÔNG nhấp nháy skeleton mỗi lần nền tự tải
   useEffect(() => {
     if (!isAuth) return;
-    const id = setInterval(() => { fetchFeed(); }, 30000);
+    const id = setInterval(() => { fetchFeed(true); }, 30000);
     return () => clearInterval(id);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAuth]);
 
-  // Audio events
-  useEffect(() => {
-    const audio = audioRef.current;
-    const updateProgress = () => setProgress((audio.currentTime / audio.duration) * 100 || 0);
-    const handleEnded = () => { setPlayingId(null); setProgress(0); };
-    audio.addEventListener("timeupdate", updateProgress);
-    audio.addEventListener("ended", handleEnded);
-    return () => {
-      audio.removeEventListener("timeupdate", updateProgress);
-      audio.removeEventListener("ended", handleEnded);
-      audio.pause();
-    };
-  }, []);
+  // 🧹 Revoke mọi object URL khi unmount
+  useEffect(() => () => { objectUrlsRef.current.forEach((u) => URL.revokeObjectURL(u)); }, []);
 
-  const togglePlay = (postId, audioUrl) => {
-    const audio = audioRef.current;
-    if (playingId === postId) { audio.pause(); setPlayingId(null); return; }
-    if (audio.src !== audioUrl) audio.src = audioUrl;
-    audio.play(); setPlayingId(postId);
-  };
-  const handleSeek = (e, postId) => {
-    if (playingId !== postId) return;
-    const rect = e.currentTarget.getBoundingClientRect();
-    const percent = (e.clientX - rect.left) / rect.width;
-    audioRef.current.currentTime = percent * audioRef.current.duration;
-  };
-
-  // ==========================================
+  // ==========================================\
   // API
   // ==========================================
-  const fetchMusicLibrary = async () => {
+  const authHeaders = useCallback(() => ({ Authorization: `Bearer ${getToken()}` }), []);
+
+  const fetchMusicLibrary = useCallback(async () => {
     try {
       const res = await fetch(ENDPOINTS.MUSIC.LIST, { headers: { Authorization: `Bearer ${getToken()}` } });
       if (res.ok) { const d = await res.json(); setMusicList(d.songs || []); }
-    } catch (e) {}
-  };
+    } catch (e) { /* mạng lỗi thoáng qua — bỏ qua */ }
+  }, []);
 
-  const fetchFeed = async () => {
-    setLoadingFeed(true);
+  const fetchFeed = useCallback(async (silent = false) => {
+    if (!silent) setLoadingFeed(true);
     try {
       const res = await fetch(ENDPOINTS.SOCIAL.FEED, { headers: { Authorization: `Bearer ${getToken()}` } });
+      // 🛡️ WHY: 401 = token chết -> về lock screen thay vì feed trống câm lặng
+      if (res.status === 401) { setIsAuth(false); setAuthError("invalid_token"); return; }
       if (res.ok) { const r = await res.json(); setFeed(r.data || []); }
-    } catch (e) {} finally { setLoadingFeed(false); }
-  };
+    } catch (e) { /* giữ feed cũ khi mạng lỗi */ }
+    finally { if (!silent) setLoadingFeed(false); }
+  }, []);
 
-  // 👤 Nạp hồ sơ đầy đủ của tôi (khung viền + Linh thú + Linh bảo + Xu)
-  // để avatar của CHÍNH TÔI cũng hiển thị đồng bộ như người khác
-  const fetchMyProfile = async () => {
+  const fetchMyProfile = useCallback(async () => {
     try {
       const res = await fetch(`${API_BASE_URL}/api/auth/profile/me`, { headers: { Authorization: `Bearer ${getToken()}` } });
+      if (res.status === 401) { setIsAuth(false); setAuthError("invalid_token"); return; }
       if (!res.ok) return;
       const r = await res.json();
       if (r.status === "success" && r.data) {
@@ -171,26 +296,26 @@ export default function SocialHubPage() {
           xu: r.data.xu || 0,
         }));
       }
-    } catch (e) {}
-  };
+    } catch (e) { /* bỏ qua */ }
+  }, []);
 
-  // 🖼️ Chọn & upload ảnh đăng kèm status
+  // 🖼️ Upload ảnh kèm preview + revoke an toàn
   const handleImageUpload = async (e) => {
     const files = Array.from(e.target.files || []);
-    e.target.value = ""; // cho phép chọn lại cùng file
+    e.target.value = "";
     if (!files.length) return;
     if (postImages.length + files.length > 6) return showToast("Tối đa 6 ảnh mỗi bài!", "error");
     setUploadingImage(true);
     for (const file of files) {
-      // Preview cục bộ trước
       const previewUrl = URL.createObjectURL(file);
+      objectUrlsRef.current.push(previewUrl); // 🧹 sẽ revoke khi unmount/xoá
       const tmpId = "tmp-" + Date.now() + "-" + Math.random().toString(36).slice(2);
       setPostImages((prev) => [...prev, { url: null, preview: previewUrl, tmpId }]);
       try {
         const fd = new FormData();
         fd.append("file", file);
         const res = await fetch(ENDPOINTS.SOCIAL.UPLOAD_IMAGE, {
-          method: "POST", headers: { Authorization: `Bearer ${getToken()}` }, body: fd,
+          method: "POST", headers: authHeaders(), body: fd,
         });
         const data = await res.json();
         if (data.status === "success") {
@@ -207,7 +332,16 @@ export default function SocialHubPage() {
     setUploadingImage(false);
   };
 
+  const removeComposerImage = (tmpId) => {
+    setPostImages((prev) => {
+      const target = prev.find((p) => p.tmpId === tmpId);
+      if (target?.preview) URL.revokeObjectURL(target.preview); // 🧹 revoke ngay khi bỏ ảnh
+      return prev.filter((p) => p.tmpId !== tmpId);
+    });
+  };
+
   const submitPost = async () => {
+    if (isSubmitting) return; // 🛡️ WHY: chống spam submit gấp đôi (ngoài disabled)
     const hasImg = postImages.some((p) => p.url) || !!postSticker;
     if (!postContent.trim() && !selectedMedia && !hasImg)
       return showToast("Thêm chữ, ảnh, sticker hoặc nhạc để đăng!", "error");
@@ -227,7 +361,7 @@ export default function SocialHubPage() {
       };
       const res = await fetch(ENDPOINTS.SOCIAL.POSTS, {
         method: "POST",
-        headers: { "Content-Type": "application/json", Authorization: `Bearer ${getToken()}` },
+        headers: { "Content-Type": "application/json", ...authHeaders() },
         body: JSON.stringify(payload),
       });
       if (res.ok) {
@@ -235,31 +369,41 @@ export default function SocialHubPage() {
         setPostImages([]); setShowMusicDropdown(false); setPostSticker(null);
         showToast("Đã đăng lên Threads D4M!");
         fetchFeed();
-      } else { const d = await res.json(); showToast(d.detail || "Lỗi đăng bài", "error"); }
+      } else if (res.status === 401) { setIsAuth(false); setAuthError("invalid_token"); }
+      else { const d = await res.json(); showToast(d.detail || "Lỗi đăng bài", "error"); }
     } catch (e) { showToast("Mất kết nối mạng!", "error"); }
     finally { setIsSubmitting(false); }
   };
 
-  const deletePost = async (postId) => {
+  const deletePost = useCallback(async (postId) => {
     if (!window.confirm("Xóa bài này vĩnh viễn?")) return;
     try {
       const res = await fetch(ENDPOINTS.SOCIAL.POST_DELETE(postId), { method: "DELETE", headers: { Authorization: `Bearer ${getToken()}` } });
       if (res.ok) { showToast("Đã xóa"); fetchFeed(); }
       else { const d = await res.json(); showToast(d.detail || "Lỗi xóa", "error"); }
     } catch (e) { showToast("Lỗi mạng khi xóa!", "error"); }
-  };
+  }, [fetchFeed]);
 
-  // Like (local toggle — có thể nâng cấp sau)
-  const toggleLike = (postId) => {
+  const toggleLike = useCallback((postId) => {
     setLikedSet((prev) => {
       const next = new Set(prev);
       if (next.has(postId)) next.delete(postId); else next.add(postId);
       return next;
     });
-  };
+  }, []);
 
-  // 🧭 Điều hướng từ BottomNav — đóng mọi panel rồi thực hiện hành động
-  const handleNav = (action) => {
+  // 🔗 WHY: nút Chia sẻ trước đây CHẾT (không handler) -> giờ share thật,
+  // fallback copy link nếu trình duyệt không có navigator.share
+  const sharePost = useCallback(async (post) => {
+    const text = `${post.fullname || post.username} trên Threads D4M: ${(post.content || "🎵 một bài viết").slice(0, 120)}`;
+    try {
+      if (navigator.share) { await navigator.share({ title: "Threads D4M", text }); return; }
+      await navigator.clipboard.writeText(text);
+      showToast("Đã copy nội dung để chia sẻ!");
+    } catch (e) { /* user hủy share */ }
+  }, []);
+
+  const handleNav = useCallback((action) => {
     setShowDm(false);
     setShowActivity(false);
     setShowCustomization(false);
@@ -268,31 +412,31 @@ export default function SocialHubPage() {
     else if (action === "dm") setShowDm(true);
     else if (action === "create") setShowComposer(true);
     else if (action === "activity") setShowActivity(true);
-    else if (action === "profile") setShowCustomization(true); // 👤 Hồ sơ & Phong cách ngay trong social
-  };
+    else if (action === "profile") setShowCustomization(true);
+  }, []);
 
+  // ==========================================\
+  // TIỆN ÍCH (ổn định reference cho React.memo)
   // ==========================================
-  // TIỆN ÍCH
-  // ==========================================
-  const formatTimeAgo = (dateString) => {
+  const formatTimeAgo = useCallback((dateString) => {
     const diff = Math.floor((new Date() - new Date(dateString)) / 1000);
     if (diff < 60) return `${diff}s`;
     if (diff < 3600) return `${Math.floor(diff / 60)}m`;
     if (diff < 86400) return `${Math.floor(diff / 3600)}h`;
     return `${Math.floor(diff / 86400)}d`;
-  };
-  const getMediaUrl = (url) => url?.startsWith("http") ? url : API_BASE_URL + url;
-  const handleLogout = () => { removeToken(); navigate("/auth?redirect=/social"); };
+  }, []);
+  const getMediaUrl = useCallback((url) => url?.startsWith("http") ? url : API_BASE_URL + url, []);
+  const handleLogout = useCallback(() => { removeToken(); navigate("/auth?redirect=/social"); }, [navigate]);
   const getAvatar = (avatar_url) => getMediaUrl(avatar_url) || EXTERNAL.PLACEHOLDER_IMG;
 
-  // Đóng composer khi click ngoài
+  // Đóng dropdown nhạc khi click ngoài
   useEffect(() => {
     const onClick = (e) => { if (composerRef.current && !composerRef.current.contains(e.target)) setShowMusicDropdown(false); };
     document.addEventListener("click", onClick);
     return () => document.removeEventListener("click", onClick);
   }, []);
 
-  // ==========================================
+  // ==========================================\
   // LOCK SCREEN
   // ==========================================
   if (!isAuth) {
@@ -313,36 +457,34 @@ export default function SocialHubPage() {
     );
   }
 
-  // ==========================================
-  // GIAO DIỆN CHÍNH — THREADS STYLE
+  // ==========================================\
+  // GIAO DIỆN CHÍNH
   // ==========================================
   return (
     <div className="min-h-screen bg-black text-white font-sans selection:bg-gray-700">
       <SEO title="Social Hub" description="Mạng xã hội D4M — cập nhật trạng thái, chia sẻ âm nhạc và kết nối cộng đồng." />
       <div className="max-w-[640px] md:max-w-[780px] lg:max-w-[880px] mx-auto min-h-screen flex flex-col relative">
 
-        {/* ========== HEADER (THREADS STYLE) ========== */}
+        {/* HEADER */}
         <header className="sticky top-0 z-40 bg-black/90 backdrop-blur-xl border-b border-white/10">
           <div className="flex items-center justify-between px-4 h-12">
-            {/* Logo Threads */}
-            <button onClick={() => navigate("/hub")} className="text-2xl font-extrabold tracking-tighter hover:opacity-70 transition">
+            <button onClick={() => navigate("/hub")} className="text-2xl font-extrabold tracking-tighter hover:opacity-70 transition" aria-label="Về trung tâm D4M">
               <span className="text-white">Threads</span>
               <span className="text-gray-500 font-light"> D4M</span>
             </button>
-            {/* Icons */}
             <div className="flex items-center gap-5 text-gray-400">
-              <button onClick={() => setShowCustomization(true)} className="hover:text-white transition" title="Cá nhân hóa" style={{ width: 22, height: 22 }}><span className="text-base leading-none">🎨</span></button>
-              <button onClick={fetchFeed} className="hover:text-white transition" title="Làm mới" style={{ width: 22, height: 22 }}><IconRefresh /></button>
-              <button onClick={handleLogout} className="hover:text-white transition" title="Đăng xuất" style={{ width: 22, height: 22 }}><IconLogout /></button>
+              <button onClick={() => setShowCustomization(true)} className="hover:text-white transition" title="Cá nhân hóa" aria-label="Cá nhân hóa" style={{ width: 22, height: 22 }}><span className="text-base leading-none">🎨</span></button>
+              <button onClick={() => fetchFeed()} className="hover:text-white transition" title="Làm mới" aria-label="Làm mới bảng tin" style={{ width: 22, height: 22 }}><IconRefresh /></button>
+              <button onClick={handleLogout} className="hover:text-white transition" title="Đăng xuất" aria-label="Đăng xuất" style={{ width: 22, height: 22 }}><IconLogout /></button>
             </div>
           </div>
 
-          {/* Tabs: Cho bạn / Đang theo dõi */}
           <div className="flex">
             {["for_you", "following"].map((tab) => (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
+                aria-pressed={activeTab === tab}
                 className={`flex-1 py-2.5 text-sm font-semibold transition ${activeTab === tab ? "text-white" : "text-gray-500 hover:text-gray-300"}`}
               >
                 {tab === "for_you" ? "Cho bạn" : "Đang theo dõi"}
@@ -352,11 +494,11 @@ export default function SocialHubPage() {
           </div>
         </header>
 
-        {/* ========== FEED ========== */}
+        {/* FEED */}
         <main className="flex-1 pb-20">
           {loadingFeed ? (
             <div className="space-y-6 p-4">
-              {[0,1,2,3].map(i => (
+              {[0, 1, 2, 3].map(i => (
                 <div key={i} className="flex gap-3 animate-pulse">
                   <div className="w-10 h-10 bg-gray-800 rounded-full flex-shrink-0"></div>
                   <div className="flex-1 space-y-2">
@@ -367,6 +509,16 @@ export default function SocialHubPage() {
                 </div>
               ))}
             </div>
+          ) : activeTab === "following" ? (
+            // WHY: tab following chưa có dữ liệu follow -> thông báo trung thực, không dead-end
+            <div className="text-center text-gray-500 py-20 px-6">
+              <div className="text-4xl mb-3 text-gray-600">👥</div>
+              <p className="font-semibold text-white">Tính năng "Đang theo dõi" sắp ra mắt</p>
+              <p className="text-sm mt-1">Hiện tại hãy khám phá bảng tin "Cho bạn" nhé!</p>
+              <button onClick={() => setActiveTab("for_you")} className="mt-4 px-5 py-2 bg-white text-black rounded-full text-sm font-bold hover:bg-gray-200 transition">
+                Về bảng tin Cho bạn
+              </button>
+            </div>
           ) : feed.length === 0 ? (
             <div className="text-center text-gray-500 py-20">
               <div className="text-4xl mb-3 text-gray-600">✕</div>
@@ -375,112 +527,31 @@ export default function SocialHubPage() {
             </div>
           ) : (
             <div className="divide-y divide-white/5">
-              {feed.map((post) => {
-                const isOwnerOrAdmin = currentUser && (Number(currentUser.role) === 1 || post.user_id === currentUser.id);
-                const liked = likedSet.has(post.post_id);
-                return (
-                  <article key={post.post_id} className="px-4 py-4 hover:bg-white/[0.02] transition-colors">
-                    {/* Header post */}
-                    <div className="flex gap-3">
-                      <div className="flex-shrink-0">
-                        <AvatarFrame src={post.avatar_url} frame={post.avatar_frame} pet={post.pet} treasure={post.treasure} size={40} alt="" />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-1.5 text-sm">
-                          <span className="font-bold" style={cssFrom(nameEffectStyle(post.name_effect))}>{post.fullname}</span>
-                          {Number(post.role) === 1 && <span className="text-blue-500" style={{ width: 14, height: 14 }}><IconCheck /></span>}
-                          <span className="text-gray-500">@{post.username} · {formatTimeAgo(post.created_at)}</span>
-                        </div>
-
-                        {/* Nội dung */}
-                        {post.content && <p className="mt-1 text-[15px] leading-relaxed whitespace-pre-wrap">{post.content}</p>}
-
-                        {/* 🖼️ Ảnh đăng kèm (grid như Threads) + sticker GIF */}
-                        {post.images && post.images.length > 0 && (
-                          <div className={`mt-3 grid gap-1 ${post.images.length > 1 ? "grid-cols-2" : "grid-cols-1"}`}>
-                            {post.images.map((url, idx) => (
-                              <img
-                                key={idx}
-                                src={getMediaUrl(url)}
-                                alt={`Ảnh ${idx + 1} của ${post.fullname || post.username}`}
-                                loading="lazy"
-                                decoding="async"
-                                className={`w-full object-cover rounded-xl border border-white/10 ${
-                                  /\.gif(\?|$)/i.test(url)
-                                    ? (post.images.length === 1 ? "w-24 h-24" : "aspect-square")
-                                    : (post.images.length === 1 ? "max-h-[420px]" : "aspect-square")
-                                }`}
-                              />
-                            ))}
-                          </div>
-                        )}
-
-                        {/* Music / Video player */}
-                        {post.attached_media && post.stream_links && (
-                          <div className="mt-3">
-                            {post.media_type === "video" && post.stream_links.video_url && (
-                              <div className="rounded-2xl overflow-hidden border border-white/10 bg-black">
-                                <video controls playsInline className="w-full max-h-[480px]">
-                                  <source src={getMediaUrl(post.stream_links.video_url)} type="video/mp4" />
-                                </video>
-                              </div>
-                            )}
-                            {post.media_type === "audio" && post.stream_links.vocal_url && (
-                              <div className="rounded-2xl border border-white/10 bg-[#111] p-3 flex items-center gap-3">
-                                <button
-                                  onClick={() => togglePlay(post.post_id, getMediaUrl(post.stream_links.vocal_url))}
-                                  className="w-11 h-11 rounded-full bg-white text-black flex items-center justify-center hover:scale-105 active:scale-95 transition shrink-0"
-                                  aria-label="Phát"
-                                >
-                                  {playingId === post.post_id ? <IconPause /> : <IconPlay />}
-                                </button>
-                                <div className="flex-1 min-w-0">
-                                  <div className="text-sm font-semibold truncate">{post.attached_media}</div>
-                                  <div className="mt-2 h-1 bg-white/15 rounded-full cursor-pointer overflow-hidden" onClick={(e) => handleSeek(e, post.post_id)}>
-                                    <div className="h-full bg-white transition-all duration-100" style={{ width: playingId === post.post_id ? `${progress}%` : "0%" }}></div>
-                                  </div>
-                                </div>
-                              </div>
-                            )}
-                          </div>
-                        )}
-
-                        {/* Action bar (Threads style) */}
-                        <div className="flex items-center gap-6 mt-3 text-gray-400">
-                          <button onClick={() => toggleLike(post.post_id)} className={`transition hover:scale-110 active:scale-90 ${liked ? "text-rose-500" : "hover:text-rose-400"}`} style={{ width: 22, height: 22 }}>
-                            <IconHeart filled={liked} />
-                          </button>
-                          <button onClick={() => setCommentPost(post)} className="flex items-center gap-1 hover:text-white transition hover:scale-110 active:scale-90" title="Bình luận">
-                            <span style={{ width: 22, height: 22 }} className="block"><IconComment /></span>
-                            {post.comment_count > 0 && (
-                              <span className="text-xs">{post.comment_count}</span>
-                            )}
-                          </button>
-                          <button className="hover:text-white transition hover:scale-110 active:scale-90" title="Chia sẻ" style={{ width: 22, height: 22 }}>
-                            <IconShare />
-                          </button>
-                          {isOwnerOrAdmin && (
-                            <button onClick={() => deletePost(post.post_id)} className="ml-auto text-gray-600 hover:text-rose-400 transition" title="Xóa" style={{ width: 20, height: 20 }}>
-                              <IconTrash />
-                            </button>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  </article>
-                );
-              })}
+              {feed.map((post) => (
+                <PostCard
+                  key={post.post_id}
+                  post={post}
+                  liked={likedSet.has(post.post_id)}
+                  canDelete={!!currentUser && (Number(currentUser.role) === 1 || post.user_id === currentUser.id)}
+                  onLike={() => toggleLike(post.post_id)}
+                  onComment={() => setCommentPost(post)}
+                  onDelete={() => deletePost(post.post_id)}
+                  onShare={() => sharePost(post)}
+                  getMediaUrl={getMediaUrl}
+                  formatTimeAgo={formatTimeAgo}
+                />
+              ))}
             </div>
           )}
         </main>
 
-        {/* ========== COMPOSER MODAL ========== */}
+        {/* COMPOSER MODAL */}
         {showComposer && createPortal(
-          <div className="fixed inset-0 z-[110] bg-black/80 backdrop-blur-sm flex overflow-y-auto p-4" onClick={(e) => { if (e.target === e.currentTarget) setShowComposer(false); }}>
+          <div className="fixed inset-0 z-[110] bg-black/80 backdrop-blur-sm flex overflow-y-auto p-4" onClick={(e) => { if (e.target === e.currentTarget) setShowComposer(false); }} role="dialog" aria-modal="true" aria-label="Tạo bài viết">
             <div className="w-full max-w-lg m-auto max-h-[90dvh] overflow-y-auto bg-[#111] rounded-2xl border border-white/10 p-5 animate-fade-in">
               <div className="flex items-center justify-between mb-4">
                 <h2 className="font-bold text-lg">Tạo bài viết</h2>
-                <button onClick={() => setShowComposer(false)} className="text-gray-500 hover:text-white" style={{ width: 24, height: 24 }}><IconPlus /></button>
+                <button onClick={() => setShowComposer(false)} className="text-gray-500 hover:text-white" style={{ width: 24, height: 24 }} aria-label="Đóng"><IconPlus /></button>
               </div>
 
               <div className="flex gap-3">
@@ -492,11 +563,12 @@ export default function SocialHubPage() {
                     value={postContent}
                     onChange={(e) => setPostContent(e.target.value)}
                     rows={4}
+                    maxLength={2000}
                     className="w-full bg-transparent text-white placeholder-gray-500 text-[15px] resize-none outline-none leading-relaxed"
                     placeholder="Bắt đầu một thread..."
+                    aria-label="Nội dung bài viết"
                   />
 
-                  {/* Preview ảnh đã chọn */}
                   {postImages.length > 0 && (
                     <div className="mt-3 grid grid-cols-3 gap-2">
                       {postImages.map((img) => (
@@ -508,7 +580,7 @@ export default function SocialHubPage() {
                             </div>
                           )}
                           <button
-                            onClick={() => setPostImages((prev) => prev.filter((p) => p.tmpId !== img.tmpId))}
+                            onClick={() => removeComposerImage(img.tmpId)}
                             className="absolute top-1 right-1 w-5 h-5 rounded-full bg-black/70 text-white text-xs flex items-center justify-center hover:bg-rose-500"
                             aria-label="Xóa ảnh"
                           >✕</button>
@@ -517,7 +589,6 @@ export default function SocialHubPage() {
                     </div>
                   )}
 
-                  {/* 🎨 Sticker đã chọn */}
                   {postSticker && (
                     <div className="mt-2 p-2 bg-white/5 rounded-xl border border-white/10 flex items-center justify-between w-fit">
                       <img src={getMediaUrl(postSticker)} alt="Sticker" className="w-14 h-14 rounded-lg object-cover" />
@@ -525,7 +596,6 @@ export default function SocialHubPage() {
                     </div>
                   )}
 
-                  {/* Selected media */}
                   {selectedMedia && (
                     <div className="mt-2 p-2.5 bg-white/5 rounded-xl border border-white/10 flex items-center justify-between">
                       <div className="flex items-center gap-2 min-w-0">
@@ -533,14 +603,12 @@ export default function SocialHubPage() {
                         <span className="text-xs font-semibold truncate">{selectedMedia.title}</span>
                         <span className="text-[10px] text-gray-500">{selectedMedia.artist}</span>
                       </div>
-                      <button onClick={() => setSelectedMedia(null)} className="text-gray-500 hover:text-rose-400 p-1" style={{ width: 20, height: 20 }}><IconPlus /></button>
+                      <button onClick={() => setSelectedMedia(null)} className="text-gray-500 hover:text-rose-400 p-1" style={{ width: 20, height: 20 }} aria-label="Bỏ nhạc đính kèm"><IconPlus /></button>
                     </div>
                   )}
 
-                  {/* Tools */}
                   <div className="flex items-center justify-between mt-4 pt-4 border-t border-white/5">
                     <div className="relative flex items-center">
-                      {/* 🖼️ Upload ảnh */}
                       <button
                         onClick={() => imageInputRef.current?.click()}
                         disabled={uploadingImage || postImages.length >= 6}
@@ -549,15 +617,7 @@ export default function SocialHubPage() {
                         style={{ width: 30, height: 30 }}
                         aria-label="Thêm ảnh"
                       ><IconImage /></button>
-                      <input
-                        ref={imageInputRef}
-                        type="file"
-                        accept="image/*"
-                        multiple
-                        className="hidden"
-                        onChange={handleImageUpload}
-                      />
-                      {/* 🎨 Nút sticker */}
+                      <input ref={imageInputRef} type="file" accept="image/*" multiple className="hidden" onChange={handleImageUpload} />
                       <div className="relative">
                         <button
                           onClick={(e) => { e.stopPropagation(); setShowPostStickers(!showPostStickers); }}
@@ -565,6 +625,7 @@ export default function SocialHubPage() {
                           style={{ width: 30, height: 30 }}
                           title="Sticker / GIF"
                           aria-label="Chọn sticker"
+                          aria-expanded={showPostStickers}
                         ><span className="text-base leading-none">😊</span></button>
                         {showPostStickers && (
                           <div className="absolute bottom-10 left-0 z-50">
@@ -575,7 +636,13 @@ export default function SocialHubPage() {
                           </div>
                         )}
                       </div>
-                      <button onClick={(e) => { e.stopPropagation(); setShowMusicDropdown(!showMusicDropdown); }} className="text-gray-400 hover:text-white p-2" style={{ width: 30, height: 30 }}><IconMessage /></button>
+                      <button
+                        onClick={(e) => { e.stopPropagation(); setShowMusicDropdown(!showMusicDropdown); }}
+                        className="text-gray-400 hover:text-white p-2"
+                        style={{ width: 30, height: 30 }}
+                        aria-label="Đính kèm nhạc"
+                        aria-expanded={showMusicDropdown}
+                      ><IconMessage /></button>
                       {showMusicDropdown && (
                         <div ref={composerRef} className="absolute bottom-10 left-0 w-64 max-h-60 overflow-y-auto bg-[#1c1c1c] border border-white/10 rounded-2xl shadow-2xl z-50 p-2">
                           <div className="text-[10px] font-bold text-gray-500 mb-2 px-2 uppercase tracking-wider">Kho nhạc D4M</div>
@@ -608,7 +675,6 @@ export default function SocialHubPage() {
           document.body
         )}
 
-        {/* ========== BOTTOM NAV (Threads style) — luôn hiển thị trên mọi phần chức năng ========== */}
         <BottomNav
           active={activeTab === "for_you"}
           dmUnread={dmUnread}
@@ -618,36 +684,24 @@ export default function SocialHubPage() {
           treasure={currentUser?.treasure}
           onNavigate={handleNav}
         />
-
       </div>
 
-      {/* 💬 Hộp thư DM (Threads-style) */}
       {showDm && <DmInbox currentUser={currentUser} onBack={() => setShowDm(false)} onUnreadChange={setDmUnread} onNavigate={handleNav} />}
-
-      {/* ❤️ Bảng hoạt động (activity) */}
       {showActivity && <ActivityPanel currentUser={currentUser} onBack={() => setShowActivity(false)} onNavigate={handleNav} />}
-
-      {/* 💬 Bảng bình luận + reply */}
       {commentPost && (
-        <CommentsPanel
-          post={commentPost}
-          currentUser={currentUser}
-          onClose={() => setCommentPost(null)}
-        />
+        <CommentsPanel post={commentPost} currentUser={currentUser} onClose={() => setCommentPost(null)} />
       )}
-
-      {/* 🎨 Bảng cá nhân hóa: khung avatar, hiệu ứng tên, theme chat */}
       {showCustomization && (
         <CustomizationPanel
           currentUser={currentUser}
-          onBack={() => { setShowCustomization(false); fetchFeed(); fetchMyProfile(); }}
+          onBack={() => { setShowCustomization(false); fetchFeed(true); fetchMyProfile(); }}
           onNavigate={handleNav}
           onEditInfo={() => { setShowCustomization(false); navigate("/admin/profile"); }}
-          onSpiritChanged={() => { fetchFeed(); fetchMyProfile(); }}
+          onSpiritChanged={() => { fetchFeed(true); fetchMyProfile(); }}
           onSaved={(updates) => {
             setCurrentUser((prev) => ({ ...prev, ...updates }));
             setShowCustomization(false);
-            fetchFeed();
+            fetchFeed(true);
           }}
         />
       )}

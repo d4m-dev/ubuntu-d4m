@@ -92,8 +92,12 @@ def setup_middlewares(app: FastAPI):
         "http://127.0.0.1:3000",  "http://localhost:3000",  # <-- Cổng React Create-App
         "http://127.0.0.1:5500",  "http://localhost:5500",  # <-- Cổng VS Code Live Server
         "http://127.0.0.1:8080",  "http://localhost:8080",  # <-- Cổng Vue/Web-server
-        "null"                                              # <-- Cho phép mở trực tiếp file:// trên trình duyệt
     ]
+    # 🛡️ BỎ "null" origin (nguy cơ credentialed request từ file://).
+    # Cần thêm origin lạ? Cấu hình qua env CORS_EXTRA_ORIGINS="https://a.com,https://b.com"
+    import os as _os
+    for _o in (_os.getenv("CORS_EXTRA_ORIGINS") or "").split(","):
+        if _o.strip(): ALLOWED_ORIGINS.append(_o.strip())
     
     app.add_middleware(DynamicHostingMiddleware) 
     app.add_middleware(AutoBrandingMiddleware)

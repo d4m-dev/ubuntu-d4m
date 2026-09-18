@@ -41,36 +41,21 @@ _SPIRIT_NULL_SQL = """
 # ============================================================
 _SPIRIT_OK = None
 
-# Các cột CÁ NHÂN HÓA bắt buộc trên bảng users (DB đời cũ có thể thiếu)
-REQUIRED_USER_COLS = {
-    "avatar_frame": "VARCHAR(255) DEFAULT NULL",
-    "name_effect": "VARCHAR(50) DEFAULT 'default'",
-    "chat_theme": "VARCHAR(50) DEFAULT 'default'",
-    "equipped_pet": "VARCHAR(50) DEFAULT NULL",
-    "equipped_treasure": "VARCHAR(50) DEFAULT NULL",
-}
-
-def _missing_user_cols() -> list:
-    from core.database import db_executor
-    names = ",".join(f"'{c}'" for c in REQUIRED_USER_COLS)
-    rows = db_executor.select_as_list_dict(
-        "SELECT COLUMN_NAME FROM information_schema.COLUMNS "
-        f"WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME='users' AND COLUMN_NAME IN ({names})")
-    have = {r["COLUMN_NAME"] for r in rows}
-    return [c for c in REQUIRED_USER_COLS if c not in have]
-
 def spirit_schema_ok(refresh: bool = False) -> bool:
-    """True khi users đủ 5 cột cá nhân hóa VÀ 2 bảng spirit_* tồn tại."""
+    """True khi users có 2 cột equipped_* VÀ 2 bảng spirit_* tồn tại."""
     global _SPIRIT_OK
     if _SPIRIT_OK is None or refresh:
         try:
             from core.database import db_executor
-            missing = _missing_user_cols()
+            cols = db_executor.select_as_list_dict(
+                "SELECT COLUMN_NAME FROM information_schema.COLUMNS "
+                "WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME='users' "
+                "AND COLUMN_NAME IN ('equipped_pet','equipped_treasure')")
             tables = db_executor.select_as_list_dict(
                 "SELECT TABLE_NAME FROM information_schema.TABLES "
                 "WHERE TABLE_SCHEMA = DATABASE() "
                 "AND TABLE_NAME IN ('spirit_items','user_spirit_items')")
-            _SPIRIT_OK = len(missing) == 0 and len(tables) == 2
+            _SPIRIT_OK = len(cols) == 2 and len(tables) == 2
         except Exception:
             _SPIRIT_OK = False
     return bool(_SPIRIT_OK)
@@ -105,9 +90,10 @@ def ensure_spirit_schema() -> bool:
             "SELECT COLUMN_NAME FROM information_schema.COLUMNS "
             "WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME='users' "
             "AND COLUMN_NAME IN ('equipped_pet','equipped_treasure')")}
-        # 🩺 Tự vá TẤT CẢ cột cá nhân hóa còn thiếu (DB đời cũ thiếu avatar_frame...)
-        for col in _missing_user_cols():
-            db_updater.update(f"ALTER TABLE `users` ADD COLUMN `{col}` {REQUIRED_USER_COLS[col]}")
+        if "equipped_pet" not in cols:
+            db_updater.update("ALTER TABLE `users` ADD COLUMN `equipped_pet` VARCHAR(50) DEFAULT NULL")
+        if "equipped_treasure" not in cols:
+            db_updater.update("ALTER TABLE `users` ADD COLUMN `equipped_treasure` VARCHAR(50) DEFAULT NULL")
     except Exception as e:
         import logging
         logging.warning(f"🐉 ensure_spirit_schema: {e}")

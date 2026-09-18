@@ -3,7 +3,7 @@ import os
 import jwt
 from typing import List, Optional
 
-from fastapi import APIRouter, HTTPException, Depends, Header, UploadFile, File
+from fastapi import APIRouter, HTTPException, Depends, Header, UploadFile, File, Request
 from fastapi.responses import FileResponse
 from pydantic import BaseModel
 
@@ -21,10 +21,15 @@ router = APIRouter(prefix=U.SOCIAL["PREFIX"], tags=["Social Hub"])
 # ==========================================
 # 🛡️ BỘ LỌC BẢO MẬT & ĐỊNH DANH TOKEN SSO THÔNG MINH
 # ==========================================
-def get_current_user(authorization: str = Header(None)):
-    if not authorization or not authorization.startswith("Bearer "):
+def get_current_user(authorization: str = Header(None), request: Request = None):
+    # 🛡️ Nhận token từ Header HOẶC cookie httpOnly
+    token = None
+    if authorization and authorization.startswith("Bearer "):
+        token = authorization.split(" ")[1]
+    elif request is not None:
+        token = request.cookies.get("d4m_token")
+    if not token:
         raise HTTPException(status_code=401, detail="Thiếu thẻ định danh (Token)")
-    token = authorization.split(" ")[1]
     try:
         payload = jwt.decode(token, settings.SECRET_KEY, algorithms=["HS256"])
 

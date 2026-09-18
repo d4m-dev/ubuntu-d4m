@@ -120,17 +120,6 @@ Bản gộp này giữ nguyên toàn bộ hệ sinh thái D4M (SSO, Social, Tool
    (Hoặc tặng trực tiếp cho user: `POST /api/social/spirits/admin/grant` `{"user_id", "item_id"}`)
 4. Khung viền mới: thả file vào `backend/assets/avatar_frames/` rồi thêm entry vào `backend/assets/avatar_frames.json` (`rarity`: `common|rare|epic|legendary`).
 
-**💳 Donate qua PayOS** (khuyến nghị) — điền 3 khóa vào `backend/.env`:
-```bash
-PAYOS_CLIENT_ID=...
-PAYOS_API_KEY=...
-PAYOS_CHECKSUM_KEY=...
-```
-Backend tự tạo payment request + QR động (15 phút), webhook `POST /api/donate/payos-webhook`
-verify signature HMAC-SHA256 đúng spec PayOS → kích hoạt tài khoản + notify realtime.
-Chưa điền khóa → tự fallback VietQR cũ. Cấu hình webhook URL trong PayOS trỏ tới
-`https://<host-backend>/api/donate/payos-webhook`.
-
 **Nâng cấp DB đã chạy sẵn** (DB mới KHÔNG cần — backend tự tạo bảng + cột khi khởi động):
 
 ```bash

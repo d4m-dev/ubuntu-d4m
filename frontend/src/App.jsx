@@ -1,5 +1,5 @@
 // src/App.jsx
-import { lazy, Suspense } from "react";
+import React, { lazy, Suspense } from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { Toaster } from "sonner";
 import SEO from "./components/common/SEO";
@@ -54,6 +54,8 @@ function PageFallback() {
     </div>
   );
 }
+
+
 
 export default function App() {
   return (

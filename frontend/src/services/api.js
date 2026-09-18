@@ -19,7 +19,9 @@ export const setToken = (token) => {
 };
 
 export const removeToken = () => {
+  // 🛡️ Xóa SẠCH mọi key token (trước đây sót d4m_token -> phiên cũ sống sót)
   localStorage.removeItem("d4m_sso_token");
+  localStorage.removeItem("d4m_token");
   localStorage.removeItem("token");
   localStorage.removeItem("d4m_user");
 };

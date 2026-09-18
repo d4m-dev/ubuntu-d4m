@@ -16,7 +16,7 @@ import time
 import logging
 import threading
 import queue
-from fastapi import APIRouter, Request, HTTPException, Depends
+from fastapi import APIRouter, Response, Request, HTTPException, Depends
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from pydantic import BaseModel
 
@@ -176,7 +176,7 @@ class GuestReq(BaseModel):
 
 
 class InteractReq(BaseModel):
-    song_id: int
+    song_id: str  #  nhận cả id số lẫn folder-slug (id của /api/music/list)
     action: str  # view | download
 
 
@@ -271,11 +271,13 @@ def d4m_register(req: RegisterReq):
             cur.execute("SELECT * FROM users WHERE id=%s", (uid,))
             row = cur.fetchone()
     token = create_access_token({"sub": str(uid), "role": -1})
+    from services.sso_service import set_auth_cookie
+    set_auth_cookie(response, token)  # 🛡️ httpOnly cookie
     return {"status": "success", "access_token": token, "token_type": "bearer", "user": _user_public(row)}
 
 
 @router.post(U.DMUSIC["AUTH_LOGIN"])
-def d4m_login(req: LoginReq):
+def d4m_login(req: LoginReq, response: Response):
     with _db() as conn:
         with conn.cursor() as cur:
             cur.execute("SELECT * FROM users WHERE username=%s", (req.username,))
@@ -285,11 +287,13 @@ def d4m_login(req: LoginReq):
     if row.get("active") != 1:
         raise HTTPException(403, "Tài khoản đã bị khóa.")
     token = create_access_token({"sub": str(row["id"]), "role": row.get("role")})
+    from services.sso_service import set_auth_cookie
+    set_auth_cookie(response, token)  # 🛡️ httpOnly cookie
     return {"status": "success", "access_token": token, "token_type": "bearer", "user": _user_public(row)}
 
 
 @router.post(U.DMUSIC["AUTH_GUEST"])
-def d4m_guest(req: GuestReq):
+def d4m_guest(req: GuestReq, response: Response):
     base = (req.username or "khach").strip().lower().replace(" ", "_")
     username = f"{base}_{int(time.time() * 1000)}"
     avatar = f"https://api.dicebear.com/7.x/avataaars/svg?seed={username}"
@@ -485,17 +489,29 @@ def d4m_my_playlists(user_id: int = Depends(get_current_user_id)):
 @router.post(U.DMUSIC["LIB_INTERACT"])
 def d4m_interact(req: InteractReq, request: Request, user_id: int = Depends(get_optional_user_id)):
     """Ghi nhận lượt nghe/tải. user_id lấy từ JWT (nullable nếu khách)."""
+    # 🔄 Nếu client gửi folder-slug -> quy về id số của bảng songs
+    song_key = req.song_id
+    if not str(song_key).isdigit():
+        with _db() as c2:
+            with c2.cursor() as cur2:
+                cur2.execute("SELECT id FROM songs WHERE folder_name=%s", (song_key,))
+                row2 = cur2.fetchone()
+        if not row2:
+            raise HTTPException(404, "Bài hát không tồn tại.")
+        song_key = row2["id"]
+    else:
+        song_key = int(song_key)
     with _db() as conn:
         ip = request.client.host
         with conn.cursor() as cur:
             if req.action == "view":
-                cur.execute("UPDATE songs SET total_views=total_views+1 WHERE id=%s", (req.song_id,))
+                cur.execute("UPDATE songs SET total_views=total_views+1 WHERE id=%s", (song_key,))
                 cur.execute("INSERT INTO song_views (song_id, user_id, ip_address) VALUES (%s,%s,%s)",
-                            (req.song_id, user_id, ip))
+                            (song_key, user_id, ip))
             elif req.action == "download":
-                cur.execute("UPDATE songs SET total_downloads=total_downloads+1 WHERE id=%s", (req.song_id,))
+                cur.execute("UPDATE songs SET total_downloads=total_downloads+1 WHERE id=%s", (song_key,))
                 cur.execute("INSERT INTO song_downloads (song_id, user_id, file_type, ip_address) VALUES (%s,%s,'mp3',%s)",
-                            (req.song_id, user_id, ip))
+                            (song_key, user_id, ip))
             else:
                 raise HTTPException(400, "Hành động không hợp lệ.")
     return {"status": "success", "action": req.action}
@@ -509,13 +525,13 @@ def d4m_toggle_like(req: ToggleLikeReq, user_id: int = Depends(get_current_user_
             exists = cur.fetchone()
             if exists:
                 cur.execute("DELETE FROM song_likes WHERE user_id=%s AND song_id=%s", (user_id, req.song_id))
-                cur.execute("UPDATE songs SET total_likes=GREATEST(total_likes-1,0) WHERE id=%s", (req.song_id,))
+                cur.execute("UPDATE songs SET total_likes=GREATEST(total_likes-1,0) WHERE id=%s", (song_key,))
                 liked = False
             else:
                 cur.execute("INSERT INTO song_likes (user_id, song_id) VALUES (%s,%s)", (user_id, req.song_id))
-                cur.execute("UPDATE songs SET total_likes=total_likes+1 WHERE id=%s", (req.song_id,))
+                cur.execute("UPDATE songs SET total_likes=total_likes+1 WHERE id=%s", (song_key,))
                 liked = True
-            cur.execute("SELECT total_likes FROM songs WHERE id=%s", (req.song_id,))
+            cur.execute("SELECT total_likes FROM songs WHERE id=%s", (song_key,))
             tl = cur.fetchone()["total_likes"]
     # Xóa cache home (liked state đổi)
     cache_delete_prefix("home:")

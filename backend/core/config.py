@@ -40,11 +40,11 @@ class Settings(BaseSettings):
     BANK_ACCOUNT_NAME: str = ""      # Tên chủ tài khoản
 
     # 💳 PAYOS (ưu tiên khi đủ 3 khóa — thiếu thì fallback VietQR)
-    PAYOS_CLIENT_ID: str = ""        # Client ID (x-client-id)
-    PAYOS_API_KEY: str = ""          # API Key (x-api-key)
-    PAYOS_CHECKSUM_KEY: str = ""     # Checksum Key (HMAC-SHA256 signature)
-    PAYOS_RETURN_URL: str = ""       # (tuỳ chọn) URL sau thanh toán thành công
-    PAYOS_CANCEL_URL: str = ""       # (tuỳ chọn) URL khi hủy thanh toán
+    PAYOS_CLIENT_ID: str = ""
+    PAYOS_API_KEY: str = ""
+    PAYOS_CHECKSUM_KEY: str = ""
+    PAYOS_RETURN_URL: str = ""
+    PAYOS_CANCEL_URL: str = ""
 
     # Cú pháp chuẩn của Pydantic V2
     model_config = SettingsConfigDict(

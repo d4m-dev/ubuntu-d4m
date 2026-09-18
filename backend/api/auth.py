@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from core import urls as U
 # Tên file: ubuntu-backend/api/auth.py
-from fastapi import APIRouter, Depends, UploadFile, File, Header, HTTPException
+from fastapi import APIRouter, Depends, UploadFile, File, Header, HTTPException, Response
 from core.rate_limit import blacklist_token
 from core.security import decode_token
 from schemas.auth_schemas import *
@@ -51,8 +51,10 @@ async def admin_delete_user_route(target_id: int, auth_data: tuple = Depends(ver
 # 🔑 API ĐĂNG NHẬP & ĐĂNG KÝ
 # ==========================================
 @router.post("/login")
-async def login(request: LoginRequest):
+async def login(request: LoginRequest, response: Response):
     token = process_admin_login(request)
+    from services.sso_service import set_auth_cookie
+    set_auth_cookie(response, token)  # 🛡️ httpOnly cookie
     return {"status": "success", "message": "✅ Đăng nhập thành công!", "access_token": token, "token_type": "bearer"}
 
 @router.post("/sso/register")
@@ -66,15 +68,17 @@ async def verify_otp(data: SSOVerifyOTP):
     return {"status": "success", "message": "Xác thực định danh thành công."}
 
 @router.post("/sso/login")
-async def sso_login(data: LoginRequest):
+async def sso_login(data: LoginRequest, response: Response):
     token = process_sso_login(data)
+    from services.sso_service import set_auth_cookie
+    set_auth_cookie(response, token)  # 🛡️ httpOnly cookie
     return {"status": "success", "message": "Đăng nhập thành công!", "access_token": token}
 
 # ==========================================
 # 🚪 API ĐĂNG XUẤT — Blacklist JWT Token
 # ==========================================
 @router.post("/logout")
-async def logout(authorization: str = Header(None)):
+async def logout(authorization: str = Header(None), response: Response = None):
     """
     Đăng xuất: vô hiệu hoá hoàn toàn token hiện tại (JWT Blacklist).
 
@@ -94,6 +98,8 @@ async def logout(authorization: str = Header(None)):
     if jti:
         blacklist_token(jti)
 
+    if response is not None:
+        response.delete_cookie("d4m_token", path="/")  # 🧹 xóa cookie httpOnly
     return {"status": "success", "message": "Đã đăng xuất. Token vô hiệu hoá hoàn toàn."}
 
 # ==========================================

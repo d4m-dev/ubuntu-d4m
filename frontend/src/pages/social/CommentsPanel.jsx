@@ -30,6 +30,8 @@ export default function CommentsPanel({ post, currentUser, onClose }) {
   const [loading, setLoading] = useState(true);
   const [commentImage, setCommentImage] = useState(null); // {url, preview}
   const [uploading, setUploading] = useState(false);
+  const [submitting, setSubmitting] = useState(false); // 🛡️ chống spam submit
+  const previewUrlRef = useRef(null); // 🧹 theo dõi object URL để revoke
   const [showStickers, setShowStickers] = useState(false);
   const imageInputRef = useRef(null);
   const me = currentUser?.id;
@@ -40,6 +42,7 @@ export default function CommentsPanel({ post, currentUser, onClose }) {
   };
 
   const loadComments = async () => {
+    setSubmitting(true);
     try {
       const res = await fetch(SOCIAL.POST_COMMENTS(post.post_id), { headers: authHeaders() });
       const data = await res.json();
@@ -52,6 +55,9 @@ export default function CommentsPanel({ post, currentUser, onClose }) {
 
   useEffect(() => { loadComments(); /* eslint-disable-next-line */ }, [post.post_id]);
 
+  // 🧹 WHY: dọn object URL khi đóng panel — chống rò rỉ bộ nhớ
+  useEffect(() => () => { if (previewUrlRef.current) URL.revokeObjectURL(previewUrlRef.current); }, []);
+
   // 🖼️ Chọn & upload ảnh cho bình luận / trả lời
   const handleImage = async (e) => {
     const file = e.target.files?.[0];
@@ -59,6 +65,7 @@ export default function CommentsPanel({ post, currentUser, onClose }) {
     if (!file) return;
     setUploading(true);
     const preview = URL.createObjectURL(file);
+    previewUrlRef.current = preview;
     setCommentImage({ url: null, preview });
     try {
       const fd = new FormData();
@@ -67,9 +74,15 @@ export default function CommentsPanel({ post, currentUser, onClose }) {
         method: "POST", headers: { Authorization: `Bearer ${getToken()}` }, body: fd,
       });
       const data = await res.json();
-      if (data.status === "success") setCommentImage({ url: data.url, preview });
-      else { setCommentImage(null); showToast(data.detail || "Lỗi tải ảnh", "error"); }
+      if (data.status === "success") {
+        previewUrlRef.current = null; // preview dùng lại cho tới khi submit xong
+        setCommentImage({ url: data.url, preview });
+      } else {
+        URL.revokeObjectURL(preview); previewUrlRef.current = null;
+        setCommentImage(null); showToast(data.detail || "Lỗi tải ảnh", "error");
+      }
     } catch (err) {
+      if (previewUrlRef.current) { URL.revokeObjectURL(previewUrlRef.current); previewUrlRef.current = null; }
       setCommentImage(null);
       showToast("Không tải được ảnh", "error");
     } finally {
@@ -79,6 +92,7 @@ export default function CommentsPanel({ post, currentUser, onClose }) {
 
   const submit = async (e) => {
     e.preventDefault();
+    if (submitting) return; // 🛡️ WHY: chống double-submit khi mạng chậm
     const text = content.trim();
     if (!text && !commentImage?.url) return;
     if (commentImage && !commentImage.url) return showToast("Ảnh đang tải lên...", "error");
@@ -94,6 +108,7 @@ export default function CommentsPanel({ post, currentUser, onClose }) {
       });
       const data = await res.json();
       if (data.status === "success") {
+        if (previewUrlRef.current) { URL.revokeObjectURL(previewUrlRef.current); previewUrlRef.current = null; }
         setContent("");
         setReplyTo(null);
         setCommentImage(null);
@@ -103,6 +118,8 @@ export default function CommentsPanel({ post, currentUser, onClose }) {
       }
     } catch (err) {
       showToast("Không kết nối được máy chủ", "error");
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -223,7 +240,7 @@ export default function CommentsPanel({ post, currentUser, onClose }) {
             />
             <button
               type="submit"
-              disabled={(!content.trim() && !commentImage?.url) || uploading}
+              disabled={(!content.trim() && !commentImage?.url) || uploading || submitting}
               className="px-5 py-2.5 rounded-full bg-[#1ed760] text-black text-sm font-bold disabled:opacity-40 hover:bg-[#3af176]"
             >
               Đăng

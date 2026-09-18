@@ -1,0 +1,247 @@
+ubuntu-d4m/
+├── backend/
+│   ├── api/
+│   │   ├── __init__.py
+│   │   ├── admin_scripts.py
+│   │   ├── admin_security.py
+│   │   ├── ai_admin.py
+│   │   ├── astrology.py
+│   │   ├── audio_engine.py
+│   │   ├── auth.py
+│   │   ├── autocode.py
+│   │   ├── bio_premium.py
+│   │   ├── chatbox.py
+│   │   ├── cleanup.py
+│   │   ├── d4m_music.py
+│   │   ├── dashboard.py
+│   │   ├── dldriver.py
+│   │   ├── donate.py
+│   │   ├── music.py
+│   │   ├── notification.py
+│   │   ├── omni_dl.py
+│   │   ├── player.py
+│   │   ├── profile_public.py
+│   │   ├── projects.py
+│   │   ├── server.py
+│   │   ├── social.py
+│   │   ├── social_dm.py
+│   │   ├── songs_upload.py
+│   │   ├── spirit.py
+│   │   ├── system.py
+│   │   ├── telegram_bot.py
+│   │   ├── upload.py
+│   │   ├── websockets.py
+│   │   ├── widgets.py
+│   │   ├── ws_donate.py
+│   │   └── ytdl.py
+│   ├── assets/
+│   │   ├── avatar_frames.json
+│   │   ├── linhbao_classification.md
+│   │   └── spirit_items.json
+│   ├── core/
+│   │   ├── .tunnel.pid
+│   │   ├── __init__.py
+│   │   ├── api_status.json
+│   │   ├── bot_ai.py
+│   │   ├── cache.py
+│   │   ├── config.py
+│   │   ├── database.py
+│   │   ├── db_logger.py
+│   │   ├── db_schema.py
+│   │   ├── gcal.py
+│   │   ├── rate_limit.py
+│   │   ├── scheduler.py
+│   │   ├── security.py
+│   │   ├── task.py
+│   │   ├── telegram.py
+│   │   ├── tg_ecosystem.py
+│   │   ├── tg_handlers.py
+│   │   ├── tg_scheduler.py
+│   │   ├── tg_utils.py
+│   │   ├── tunnel.py
+│   │   └── urls.py
+│   ├── db-admin/
+│   │   └── index.php
+│   ├── middlewares/
+│   │   ├── __init__.py
+│   │   ├── auto_branding.py
+│   │   ├── dynamic_hosting.py
+│   │   ├── ip_shield.py
+│   │   ├── logger_tracker.py
+│   │   ├── rate_limit.py
+│   │   ├── security.py
+│   │   └── security_headers.py
+│   ├── schemas/
+│   │   ├── ai_schemas.py
+│   │   ├── astrology_schemas.py
+│   │   ├── auth_schemas.py
+│   │   └── bio_schemas.py
+│   ├── scripts/
+│   │   ├── .bashrc
+│   │   ├── __init__.py
+│   │   ├── auto_start.sh
+│   │   ├── deploy.py
+│   │   ├── dldriver.py
+│   │   ├── download_folder.py
+│   │   ├── fcc.py
+│   │   ├── gen_security_report.py
+│   │   ├── scan_sizes.py
+│   │   ├── setup_google_drive.py
+│   │   ├── test_security.py
+│   │   └── tracks.py
+│   ├── services/
+│   │   ├── admin_user_service.py
+│   │   ├── ai_engine.py
+│   │   ├── astrology_service.py
+│   │   ├── bio_service.py
+│   │   ├── email_service.py
+│   │   ├── music_service.py
+│   │   ├── profile_service.py
+│   │   ├── scheduler.py
+│   │   ├── social_media_service.py
+│   │   ├── spirit_service.py
+│   │   └── sso_service.py
+│   ├── tests/
+│   │   └── test_spirit_suite.py
+│   ├── .dockerignore
+│   ├── .env.example
+│   ├── .gitignore
+│   ├── Dockerfile
+│   ├── README.md
+│   ├── main.py
+│   ├── requirements.txt
+│   ├── run_music_demo.py
+│   ├── setup-backend.py
+│   ├── test_security.py
+│   └── test_songs_upload.py
+├── database/
+│   ├── donate_table.sql
+│   ├── ecosystem_seed.sql
+│   ├── music_seed.sql
+│   ├── schema_full.sql
+│   ├── social_dm.sql
+│   └── spirit_items.sql
+├── frontend/
+│   ├── hosted_projects/
+│   │   └── .gitkeep
+│   ├── public/
+│   │   ├── robots.txt
+│   │   └── sitemap.xml
+│   ├── src/
+│   │   ├── api/
+│   │   │   └── client.js
+│   │   ├── assets/
+│   │   │   └── favicon/
+│   │   │       ├── favicon.svg
+│   │   │       └── site.webmanifest
+│   │   ├── components/
+│   │   │   ├── common/
+│   │   │   │   ├── ConfigWarning.jsx
+│   │   │   │   ├── Footer.jsx
+│   │   │   │   ├── NotificationBell.jsx
+│   │   │   │   ├── PageShell.jsx
+│   │   │   │   ├── Reveal.jsx
+│   │   │   │   ├── SEO.jsx
+│   │   │   │   └── Toast.jsx
+│   │   │   ├── donate/
+│   │   │   │   └── DonateModal.jsx
+│   │   │   ├── home/
+│   │   │   │   ├── CtaSection.jsx
+│   │   │   │   ├── FeaturesSection.jsx
+│   │   │   │   ├── HeroSection.jsx
+│   │   │   │   ├── HomeNavbar.jsx
+│   │   │   │   ├── SecuritySection.jsx
+│   │   │   │   ├── TechMarquee.jsx
+│   │   │   │   ├── TechPartners.jsx
+│   │   │   │   └── TerminalWindow.jsx
+│   │   │   └── hub/
+│   │   │       ├── CoreProjects.jsx
+│   │   │       ├── HubNavbar.jsx
+│   │   │       └── UserProjects.jsx
+│   │   ├── config/
+│   │   │   ├── api.js
+│   │   │   └── urls.js
+│   │   ├── lib/
+│   │   │   ├── format.js
+│   │   │   ├── toast.js
+│   │   │   └── utils.js
+│   │   ├── pages/
+│   │   │   ├── admin/
+│   │   │   │   ├── ProfilePage.jsx
+│   │   │   │   └── UploadSongPage.jsx
+│   │   │   ├── music/
+│   │   │   │   ├── D4MusicPlayer.jsx
+│   │   │   │   ├── MusicProCore.js
+│   │   │   │   ├── audio.js
+│   │   │   │   ├── auth.js
+│   │   │   │   ├── events.js
+│   │   │   │   ├── helpers.js
+│   │   │   │   ├── lyrics.js
+│   │   │   │   ├── musicProHtml.js
+│   │   │   │   ├── other.js
+│   │   │   │   ├── playlists.js
+│   │   │   │   ├── styles.css
+│   │   │   │   ├── tracking.js
+│   │   │   │   ├── ui.js
+│   │   │   │   └── utils.js
+│   │   │   ├── social/
+│   │   │   │   ├── ActivityPanel.jsx
+│   │   │   │   ├── AvatarFrame.jsx
+│   │   │   │   ├── BottomNav.jsx
+│   │   │   │   ├── CommentsPanel.jsx
+│   │   │   │   ├── CustomizationPanel.jsx
+│   │   │   │   ├── DmInbox.jsx
+│   │   │   │   ├── NumerologyPage.jsx
+│   │   │   │   ├── SocialHubPage.jsx
+│   │   │   │   ├── StickerPicker.jsx
+│   │   │   │   ├── VenusPage.jsx
+│   │   │   │   ├── cssUtils.js
+│   │   │   │   ├── icons.jsx
+│   │   │   │   └── socialStyles.jsx
+│   │   │   ├── tools/
+│   │   │   │   ├── AutoCodePage.jsx
+│   │   │   │   ├── GgDriveCommanderPage.jsx
+│   │   │   │   ├── JarvisChatPage.jsx
+│   │   │   │   ├── VocalRemovePage.jsx
+│   │   │   │   └── YtDownloaderPage.jsx
+│   │   │   ├── AuthPage.jsx
+│   │   │   ├── DocumentationPage.jsx
+│   │   │   ├── HomePage.jsx
+│   │   │   └── HubPage.jsx
+│   │   ├── services/
+│   │   │   └── api.js
+│   │   ├── App.css
+│   │   ├── App.jsx
+│   │   ├── index.css
+│   │   └── main.jsx
+│   ├── .dockerignore
+│   ├── .env.example
+│   ├── .env.production
+│   ├── .gitignore
+│   ├── Dockerfile
+│   ├── README.md
+│   ├── eslint.config.js
+│   ├── index.html
+│   ├── nginx.conf
+│   ├── package-lock.json
+│   ├── package.json
+│   ├── pgp-key.txt
+│   ├── security.txt
+│   ├── tailwind.config.js
+│   ├── tree.txt
+│   ├── vercel.json
+│   └── vite.config.js
+├── gifwork/
+│   ├── collect_items.mjs
+│   ├── collect_khung.mjs
+│   ├── dl_all.mjs
+│   ├── items.json
+│   ├── khung_urls.txt
+│   ├── package-lock.json
+│   ├── package.json
+│   └── shop_images.txt
+├── .gitignore
+├── README.md
+├── deploy.py
+├── docker-compose.yml
+└── lighthouse-report.md

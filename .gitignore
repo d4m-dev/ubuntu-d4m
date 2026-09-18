@@ -37,3 +37,5 @@ frontend/hosted_projects/*
 
 # Ảnh upload social (user-generated media)
 backend/images_workspace/*
+frontend/.env
+frontend/.env

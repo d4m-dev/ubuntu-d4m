@@ -4,7 +4,7 @@ import jwt
 import random
 import string
 import time
-from fastapi import HTTPException, Header
+from fastapi import HTTPException, Header, Request, Response
 from core.security import verify_password, create_access_token, get_password_hash, ADMIN_USERNAME
 from core.config import settings
 from core.database import db_executor, db_inserter, db_updater
@@ -49,10 +49,25 @@ def _check_otp_lockout(email: str):
 # ==========================================
 # 🛡️ LÁ CHẮN RADAR XÁC THỰC
 # ==========================================
-def get_current_user_id(authorization: str = Header(None)):
-    if not authorization or not authorization.startswith("Bearer "):
+COOKIE_NAME = "d4m_token"
+
+def set_auth_cookie(response: Response, token: str):
+    """🛡️ JWT vào cookie httpOnly (chống XSS-steal), Secure + SameSite=Lax."""
+    response.set_cookie(COOKIE_NAME, token, httponly=True, secure=True,
+                        samesite="lax", max_age=7 * 86400, path="/")
+
+def _extract_token(authorization, request):
+    if authorization and authorization.startswith("Bearer "):
+        return authorization.split(" ")[1]
+    if request is not None:
+        c = request.cookies.get(COOKIE_NAME)
+        if c: return c
+    return None
+
+def get_current_user_id(authorization: str = Header(None), request: Request = None):
+    token = _extract_token(authorization, request)
+    if not token:
         raise HTTPException(status_code=401, detail="Vui lòng đăng nhập lại.")
-    token = authorization.split(" ")[1]
     try:
         payload = jwt.decode(token, settings.SECRET_KEY, algorithms=["HS256"])
     except Exception:
@@ -73,10 +88,10 @@ def get_current_user_id(authorization: str = Header(None)):
         raise HTTPException(status_code=401, detail="Không xác định được tài khoản.")
     return uid, sub
 
-def verify_admin(authorization: str = Header(None)):
-    if not authorization or not authorization.startswith("Bearer "):
+def verify_admin(authorization: str = Header(None), request: Request = None):
+    token = _extract_token(authorization, request)
+    if not token:
         raise HTTPException(status_code=401, detail="Vui lòng đăng nhập lại.")
-    token = authorization.split(" ")[1]
     try:
         payload = jwt.decode(token, settings.SECRET_KEY, algorithms=["HS256"])
         role = payload.get("role")

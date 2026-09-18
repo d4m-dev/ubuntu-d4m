@@ -59,6 +59,3 @@ pydantic[email]>=2.7
 # torch torchvision torchaudio   # Lõi AI cho Demucs và Whisper
 # ffmpeg-python                  # Thao tác cắt ghép video/audio
 pytest>=8.0
-
-# 💳 PayOS QR generation (self-hosted, không phụ thuộc dịch vụ ngoài)
-qrcode>=7.4

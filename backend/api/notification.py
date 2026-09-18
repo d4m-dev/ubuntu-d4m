@@ -123,7 +123,7 @@ def push_notification(user_id: int, type: str = "info", title: str = "", message
 # 🔌 ENDPOINTS
 # ==========================================================
 @router.post(U.NOTIFICATION["PUSH"])
-async def push(req: PushNotificationRequest):
+def push(req: PushNotificationRequest):
     """Đẩy thông báo cho user (dùng cho admin/service)."""
     try:
         user = db_executor.select_as_list_dict("SELECT id FROM users WHERE id=%s", (req.user_id,))
@@ -139,7 +139,7 @@ async def push(req: PushNotificationRequest):
 
 
 @router.get(U.NOTIFICATION["LIST"])
-async def list_notifications(user_id: int):
+def list_notifications(user_id: int):
     """Danh sách thông báo của user (mới nhất trước)."""
     try:
         rows = db_executor.select_as_list_dict(
@@ -152,7 +152,7 @@ async def list_notifications(user_id: int):
 
 
 @router.post(U.NOTIFICATION["READ"])
-async def mark_read(notification_id: int, user_id: int):
+def mark_read(notification_id: int, user_id: int):
     """Đánh dấu một thông báo đã đọc."""
     db_updater.update(
         "UPDATE notifications SET is_read=1 WHERE id=%s AND user_id=%s",
@@ -161,7 +161,7 @@ async def mark_read(notification_id: int, user_id: int):
 
 
 @router.post(U.NOTIFICATION["READ_ALL"])
-async def mark_all_read(user_id: int):
+def mark_all_read(user_id: int):
     """Đánh dấu tất cả thông báo của user đã đọc."""
     db_updater.update("UPDATE notifications SET is_read=1 WHERE user_id=%s", (user_id,))
     return {"status": "success"}

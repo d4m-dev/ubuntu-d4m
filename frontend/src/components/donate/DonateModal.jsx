@@ -2,7 +2,7 @@
 // 💰 DonateModal — Popup donate & tự động kích hoạt tài khoản (SePay realtime).
 //    BẢN RESPONSIVE + ICON INLINE (không phụ thuộc CDN Font Awesome)
 //    + POLLING fallback khi WebSocket bị chặn (proxy/tunnel).
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { createPortal } from "react-dom";
 import { DONATE } from "../../config/urls";
 import { getToken, getUser, setUser } from "../../api/client";
@@ -78,8 +78,9 @@ export default function DonateModal({ open, onClose }) {
     window.dispatchEvent(new CustomEvent("d4m:user-activated"));
   }, []);
 
-  // 👤 Tên hiển thị cho lời cảm ơn
-  const userName = (() => {
+  // 🎉 Dùng chung khi nhận tiền (WS hoặc polling)
+  // 👤 WHY: tên lấy 1 lần (useMemo) — không parse token mỗi render
+  const userName = useMemo(() => {
     try {
       const stored = getUser();
       if (stored && (stored.full_name || stored.username)) return stored.full_name || stored.username;
@@ -93,9 +94,8 @@ export default function DonateModal({ open, onClose }) {
       }
     } catch { /* fallback */ }
     return "bạn";
-  })();
+  }, []);
 
-  // 🎉 Dùng chung khi nhận tiền (WS hoặc polling)
   const onPaid = useCallback((amt) => {
     setPaidAmount(amt);
     showToast(`❤️ Cảm ơn ${userName} đã ủng hộ ${Number(amt).toLocaleString("vi-VN")}đ. Xin cảm ơn!`);
@@ -105,7 +105,7 @@ export default function DonateModal({ open, onClose }) {
     clearInterval(ttlTimerRef.current);
   }, [refreshUserActive, userName]);
 
-  // ⏱️ Màn cảm ơn: TỰ ĐÓNG MODAL sau 6 giây
+  // ⏱️ WHY: màn cảm ơn TỰ ĐÓNG sau 6s — không kẹt UI, vẫn có nút bấm tay
   useEffect(() => {
     if (step !== 3) return;
     const t = setTimeout(() => { setConfetti(false); onClose(); }, 6000);
@@ -191,7 +191,7 @@ export default function DonateModal({ open, onClose }) {
         const r = await fetch(DONATE.STATUS(qrId));
         if (!r.ok) return;
         const d = await r.json();
-        if (d.qr_status === "paid" || d.qr_status === "success") onPaid(d.amount || amount);
+        if (d.qr_status === "paid") onPaid(d.amount || amount);
         else if (d.qr_status === "expired") setTtlLeft(0);
       } catch { /* mạng lỗi thoáng qua */ }
     }, 5000);

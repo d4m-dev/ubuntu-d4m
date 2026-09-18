@@ -57,7 +57,7 @@ api_status_db = load_status()
 # 📊 API DASHBOARD LÕI
 # ==========================================
 @router.get("/system-stats")
-async def get_system_stats():
+def get_system_stats():
     cpu_percent = psutil.cpu_percent(interval=0.1)
     ram = psutil.virtual_memory()
     disk = psutil.disk_usage('/')
@@ -77,13 +77,13 @@ async def get_system_stats():
     }
 
 @router.get("/services")
-async def get_services():
+def get_services():
     if api_status_db["internet_tunnel"]["active"] and not api_status_db["internet_tunnel"]["public_url"]:
         api_status_db["internet_tunnel"]["public_url"] = get_tunnel_url()
     return {"status": "success", "services": api_status_db}
 
 @router.post("/services/toggle/{service_name}")
-async def toggle_service(service_name: str):
+def toggle_service(service_name: str):
     if service_name in api_status_db:
         current_state = api_status_db[service_name]["active"]
         new_state = not current_state
@@ -118,7 +118,7 @@ async def toggle_service(service_name: str):
 # 📈 TRAFFIC ANALYTICS (Máy Đếm Nhịp Tim)
 # ==========================================
 @router.get("/analytics")
-async def get_traffic_analytics():
+def get_traffic_analytics():
     """Đếm log trong bảng api_logs, gom nhóm theo từng phút trong 7 phút gần nhất"""
     if not getattr(db_manager, "connection", None):
         return {"status": "error", "message": "Mất kết nối MariaDB"}
@@ -170,7 +170,7 @@ async def get_traffic_analytics():
 # 🚀 THEO DÕI HÀNG ĐỢI AI (MUSIC HUB)
 # ==========================================
 @router.get("/tasks")
-async def get_active_tasks():
+def get_active_tasks():
     tasks = []
     if not os.path.exists(MUSIC_DIR):
         return {"status": "success", "tasks": tasks}
@@ -226,7 +226,7 @@ async def get_active_tasks():
 # 📊 MUSIC ANALYTICS — biểu đồ lượt nghe/thích 7 ngày
 # ==========================================================
 @router.get("/music-analytics")
-async def get_music_analytics():
+def get_music_analytics():
     """Lượt nghe & thả tim theo ngày trong 7 ngày gần nhất (cho biểu đồ admin)."""
     try:
         today = datetime.now().date()
