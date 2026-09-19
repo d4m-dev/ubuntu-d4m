@@ -16,7 +16,7 @@ from fastapi import Header
 import jwt
 
 from api.audio_engine import WORKSPACE_DIR, process_audio_pipeline
-from api.cleanup import write_log, run_cleanup_task
+from services.cleanup import write_log, run_cleanup_task
 
 router = APIRouter(prefix=U.YTDL["PREFIX"], tags=["YouTube Downloader Pro"])
 

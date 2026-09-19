@@ -326,3 +326,25 @@ async def daily_loop():
         except Exception as e:
             logger.warning(f"[ECO] daily loop: {e}")
         await asyncio.sleep(60)
+
+# ============================================================
+# 💾🛡️ LỆNH BOT MỚI (tích hợp từ scripts cũ)
+# ============================================================
+async def cmd_scan():
+    """💾 /scan — báo cáo dung lượng (từ scripts/scan_sizes.py cũ)."""
+    await send_telegram_message("💾 Đang quét dung lượng hệ thống...")
+    try:
+        from services.scan_service import size_report
+        rep = await asyncio.to_thread(size_report)
+        await send_telegram_message(rep)
+    except Exception as e:
+        await send_telegram_message(f"❌ Lỗi quét dung lượng: {e}")
+
+async def cmd_security():
+    """🛡️ /security — tóm tắt báo cáo bảo mật (từ scripts/gen_security_report.py cũ)."""
+    try:
+        from services.security_report import security_summary
+        rep = await asyncio.to_thread(security_summary)
+        await send_telegram_message(rep)
+    except Exception as e:
+        await send_telegram_message(f"❌ Lỗi báo cáo bảo mật: {e}")

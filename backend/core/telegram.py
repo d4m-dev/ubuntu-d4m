@@ -270,6 +270,12 @@ async def telegram_polling_task():
                                 elif text.startswith("/dash"):
                                     asyncio.create_task(eco.cmd_dash())
 
+                                elif text.startswith("/scan"):
+                                    asyncio.create_task(eco.cmd_scan())
+
+                                elif text.startswith("/security"):
+                                    asyncio.create_task(eco.cmd_security())
+
                                 else:
                                     asyncio.create_task(trigger_jarvis_ai(chat_id, text))
                                         
@@ -427,7 +433,7 @@ async def telegram_polling_task():
                                         
                                         # Kích hoạt luôn luồng dọn rác phụ của hệ thống sếp
                                         try:
-                                            from api.cleanup import run_cleanup_task
+                                            from services.cleanup import run_cleanup_task
                                             await asyncio.to_thread(run_cleanup_task)
                                         except: pass
                                         
