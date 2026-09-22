@@ -20,6 +20,8 @@ backend/audio_workspace/inputs/*
 backend/audio_workspace/outputs/*
 backend/audio_workspace/pending/*
 backend/audio_workspace/temp_demucs_*
+backend/audio_workspace/music/*
+backend/assets/*
 
 # ===== DB & runtime =====
 backend/dump.rdb
