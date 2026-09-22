@@ -1,0 +1,55 @@
+/* 
+=========================================================
+  BÍ KÍP CSS: PHÀM NHÂN TU TIÊN - HIỆU ỨNG TEXT MASKING
+========================================================= 
+*/
+
+/* --- HẠT NHÂN CÔNG PHÁP (Class chính áp dụng cho Tên Đạo Hữu) --- */
+.dao-huu-name {
+    /* Bắt buộc để cắt nền theo hình chữ (Text Masking) */
+    color: transparent !important;
+    -webkit-text-fill-color: transparent !important;
+    background-clip: text !important;
+    -webkit-background-clip: text !important;
+    
+    /* Căn chỉnh cơ bản để hào quang không bị cắt xén */
+    display: inline-block;
+    padding: 0.2rem 0.5rem; 
+    font-weight: bold;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    
+    /* KẾT NỐI VỚI FILE JSON THÔNG QUA CSS VARIABLES */
+    font-family: var(--tier-font, 'sans-serif');
+    
+    /* Cứu giá cấp 1: Màu bệt */
+    background-color: var(--tier-fallback-color, #D1D5DB);
+    
+    /* Cứu giá cấp 2 & Tuyệt chiêu: Lớp trên là GIF, lớp dưới là Gradient */
+    background-image: var(--tier-gif), var(--tier-gradient);
+    
+    /* Hào quang phát sáng tỏa ra ngoài viền chữ */
+    filter: var(--tier-glow, none);
+    
+    /* Hiệu ứng chuyển mượt mà */
+    transition: filter 0.5s ease, background-image 0.5s ease;
+}
+
+/* --- TRẠNG THÁI ĐỘ KIẾP --- */
+.is-tribulation {
+    animation: lightning-shake 0.4s infinite, heavenly-glow 1s infinite alternate;
+}
+
+@keyframes lightning-shake {
+    0% { transform: translate(1px, 1px) rotate(0deg); }
+    25% { transform: translate(-1px, -2px) rotate(-1deg); }
+    50% { transform: translate(-2px, 1px) rotate(1deg); }
+    75% { transform: translate(2px, 1px) rotate(-1deg); }
+    100% { transform: translate(1px, -1px) rotate(0deg); }
+}
+
+@keyframes heavenly-glow {
+    from { filter: var(--tier-glow) brightness(1); }
+    to { filter: var(--tier-glow) brightness(1.5) drop-shadow(0 0 20px #ef4444); }
+}

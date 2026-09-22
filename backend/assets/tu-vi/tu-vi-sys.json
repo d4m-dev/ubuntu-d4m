@@ -1,0 +1,1157 @@
+{
+  "version": "1.3.0",
+  "system_name": "Phàm Nhân Tu Tiên - Hệ Thống Tu Vi (Bản Đầy Đủ)",
+  "description": "Đã thêm Phàm Nhân (0-pham-nhan) và khớp 100% cấu trúc thư mục assets.",
+  "realms": [
+    {
+      "id": "pham_nhan",
+      "major_realm": "Nhân Giới (Hạ Cảnh Giới)",
+      "tier_name": "Phàm Nhân",
+      "sub_stage": "Bình Thường",
+      "display_title": "Phàm Nhân",
+      "required_exp": 0,
+      "lifespan_years": 100,
+      "font_name": "PhamNhanFont",
+      "font_file": "./nhan-gioi/0-pham-nhan/pham-nhan.ttf",
+      "bg_gif": "./nhan-gioi/0-pham-nhan/pham-nhan.gif",
+      "text_effect": {
+        "fallback_color": "#9CA3AF",
+        "glow_shadow": "drop-shadow(0 0 2px rgba(156, 163, 175, 0.4))",
+        "fallback_gradient": "linear-gradient(135deg, #6B7280, #9CA3AF)"
+      },
+      "tribulation": {
+        "has_tribulation": false,
+        "name": null,
+        "description": "Người phàm tục, trải qua sinh lão bệnh tử."
+      },
+      "lore": "Thân thể phàm thai, chưa bước chân vào con đường tu tiên."
+    },
+    {
+      "id": "luyen_khi_so_ky",
+      "major_realm": "Nhân Giới (Hạ Cảnh Giới)",
+      "tier_name": "Luyện Khí Kỳ",
+      "sub_stage": "Sơ Kỳ",
+      "display_title": "Luyện Khí Sơ Kỳ",
+      "required_exp": 100,
+      "lifespan_years": 120,
+      "font_name": "LuyenKhiFont",
+      "font_file": "./nhan-gioi/1-luyen-khi/luyen-khi.ttf",
+      "bg_gif": "./nhan-gioi/1-luyen-khi/luyen-khi.gif",
+      "text_effect": {
+        "fallback_color": "#D1D5DB",
+        "glow_shadow": "drop-shadow(0 0 4px rgba(209, 213, 219, 0.4))",
+        "fallback_gradient": "linear-gradient(135deg, #9CA3AF, #E5E7EB)"
+      },
+      "tribulation": {
+        "has_tribulation": false,
+        "name": null,
+        "description": "Lọc tinh hoa thiên địa thành pháp lực ban sơ, chưa trải qua thiên kiếp."
+      },
+      "lore": "Giai đoạn đầu tiên, thanh lọc kinh mạch, hấp thu thiên địa linh khí sơ khai."
+    },
+    {
+      "id": "luyen_khi_trung_ky",
+      "major_realm": "Nhân Giới (Hạ Cảnh Giới)",
+      "tier_name": "Luyện Khí Kỳ",
+      "sub_stage": "Trung Kỳ",
+      "display_title": "Luyện Khí Trung Kỳ",
+      "required_exp": 1500,
+      "lifespan_years": 130,
+      "font_name": "LuyenKhiFont",
+      "font_file": "./nhan-gioi/1-luyen-khi/luyen-khi.ttf",
+      "bg_gif": "./nhan-gioi/1-luyen-khi/luyen-khi.gif",
+      "text_effect": {
+        "fallback_color": "#E5E7EB",
+        "glow_shadow": "drop-shadow(0 0 6px rgba(229, 231, 235, 0.5))",
+        "fallback_gradient": "linear-gradient(135deg, #D1D5DB, #FFFFFF)"
+      },
+      "tribulation": {
+        "has_tribulation": false,
+        "name": null,
+        "description": "Khí tức ngưng tụ dần vững chắc."
+      },
+      "lore": "Linh khí lưu chuyển thông suốt tiểu chu thiên."
+    },
+    {
+      "id": "luyen_khi_hau_ky",
+      "major_realm": "Nhân Giới (Hạ Cảnh Giới)",
+      "tier_name": "Luyện Khí Kỳ",
+      "sub_stage": "Hậu Kỳ",
+      "display_title": "Luyện Khí Hậu Kỳ",
+      "required_exp": 5000,
+      "lifespan_years": 150,
+      "font_name": "LuyenKhiFont",
+      "font_file": "./nhan-gioi/1-luyen-khi/luyen-khi.ttf",
+      "bg_gif": "./nhan-gioi/1-luyen-khi/luyen-khi.gif",
+      "text_effect": {
+        "fallback_color": "#F3F4F6",
+        "glow_shadow": "drop-shadow(0 0 8px rgba(167, 243, 208, 0.5))",
+        "fallback_gradient": "linear-gradient(135deg, #E5E7EB, #A7F3D0)"
+      },
+      "tribulation": {
+        "has_tribulation": false,
+        "name": null,
+        "description": "Đỉnh điểm phàm cốt, chuẩn bị Trúc Cơ."
+      },
+      "lore": "Đã đạt ngưỡng cực hạn phàm nhân, cần Trúc Cơ Đan để tiến vào tiên lộ chân chính."
+    },
+    {
+      "id": "luyen_khi_vien_man",
+      "major_realm": "Nhân Giới (Hạ Cảnh Giới)",
+      "tier_name": "Luyện Khí Kỳ",
+      "sub_stage": "Đại Viên Mãn",
+      "display_title": "Luyện Khí Viên Mãn (Chuẩn Bị Trúc Cơ)",
+      "required_exp": 12000,
+      "lifespan_years": 150,
+      "font_name": "LuyenKhiFont",
+      "font_file": "./nhan-gioi/1-luyen-khi/luyen-khi.ttf",
+      "bg_gif": "./nhan-gioi/1-luyen-khi/luyen-khi.gif",
+      "text_effect": {
+        "fallback_color": "#A7F3D0",
+        "glow_shadow": "drop-shadow(0 0 10px rgba(52, 211, 153, 0.6))",
+        "fallback_gradient": "linear-gradient(135deg, #6EE7B7, #34D399)"
+      },
+      "tribulation": {
+        "has_tribulation": true,
+        "name": "Trúc Cơ Quan Kiếp & Dịch Kinh Tẩy Tủy",
+        "description": "Cần nuốt Trúc Cơ Đan, chịu áp lực kinh mạch nổ tung để hóa khí thành dịch lỏng."
+      },
+      "lore": "Bước ngoặt sinh tử giữa người phàm và người tu tiên."
+    },
+    {
+      "id": "truc_co_so_ky",
+      "major_realm": "Nhân Giới (Hạ Cảnh Giới)",
+      "tier_name": "Trúc Cơ Kỳ",
+      "sub_stage": "Sơ Kỳ",
+      "display_title": "Trúc Cơ Sơ Kỳ",
+      "required_exp": 25000,
+      "lifespan_years": 200,
+      "font_name": "TrucCoFont",
+      "font_file": "./nhan-gioi/2-truc-co/truc-co.ttf",
+      "bg_gif": "./nhan-gioi/2-truc-co/truc-co.gif",
+      "text_effect": {
+        "fallback_color": "#34D399",
+        "glow_shadow": "drop-shadow(0 0 10px rgba(16, 185, 129, 0.5))",
+        "fallback_gradient": "linear-gradient(135deg, #10B981, #6EE7B7)"
+      },
+      "tribulation": {
+        "has_tribulation": false,
+        "name": null,
+        "description": "Đắp nền móng tiên đạo hoàn tất, chính thức nhập môn tu tiên."
+      },
+      "lore": "Pháp lực chuyển thành thể lỏng, thọ mệnh tăng lên 200 tuổi."
+    },
+    {
+      "id": "truc_co_trung_ky",
+      "major_realm": "Nhân Giới (Hạ Cảnh Giới)",
+      "tier_name": "Trúc Cơ Kỳ",
+      "sub_stage": "Trung Kỳ",
+      "display_title": "Trúc Cơ Trung Kỳ",
+      "required_exp": 55000,
+      "lifespan_years": 230,
+      "font_name": "TrucCoFont",
+      "font_file": "./nhan-gioi/2-truc-co/truc-co.ttf",
+      "bg_gif": "./nhan-gioi/2-truc-co/truc-co.gif",
+      "text_effect": {
+        "fallback_color": "#059669",
+        "glow_shadow": "drop-shadow(0 0 12px rgba(5, 150, 105, 0.6))",
+        "fallback_gradient": "linear-gradient(135deg, #059669, #34D399)"
+      },
+      "tribulation": {
+        "has_tribulation": false,
+        "name": null,
+        "description": "Linh lực dồi dào, ngự kiếm phi hành tùy tâm."
+      },
+      "lore": "Thần thức khuếch tán hàng chục dặm, pháp khí uy lực tăng gấp bội."
+    },
+    {
+      "id": "truc_co_hau_ky",
+      "major_realm": "Nhân Giới (Hạ Cảnh Giới)",
+      "tier_name": "Trúc Cơ Kỳ",
+      "sub_stage": "Hậu Kỳ",
+      "display_title": "Trúc Cơ Hậu Kỳ",
+      "required_exp": 110000,
+      "lifespan_years": 300,
+      "font_name": "TrucCoFont",
+      "font_file": "./nhan-gioi/2-truc-co/truc-co.ttf",
+      "bg_gif": "./nhan-gioi/2-truc-co/truc-co.gif",
+      "text_effect": {
+        "fallback_color": "#047857",
+        "glow_shadow": "drop-shadow(0 0 14px rgba(4, 120, 87, 0.7))",
+        "fallback_gradient": "linear-gradient(135deg, #047857, #10B981, #6EE7B7)"
+      },
+      "tribulation": {
+        "has_tribulation": false,
+        "name": null,
+        "description": "Linh hải sung mãn, chuẩn bị ngưng kết nội đan."
+      },
+      "lore": "Thọ mạng đạt đến 300 tuổi nếu có cơ duyên bồi bổ kỳ trân dị bảo."
+    },
+    {
+      "id": "truc_co_gia_dan",
+      "major_realm": "Nhân Giới (Hạ Cảnh Giới)",
+      "tier_name": "Trúc Cơ Kỳ",
+      "sub_stage": "Giả Đan Cảnh (Đỉnh Phong)",
+      "display_title": "Trúc Cơ Đỉnh Phong (Giả Đan)",
+      "required_exp": 200000,
+      "lifespan_years": 300,
+      "font_name": "TrucCoFont",
+      "font_file": "./nhan-gioi/2-truc-co/truc-co.ttf",
+      "bg_gif": "./nhan-gioi/2-truc-co/truc-co.gif",
+      "text_effect": {
+        "fallback_color": "#38BDF8",
+        "glow_shadow": "drop-shadow(0 0 15px rgba(56, 189, 248, 0.7))",
+        "fallback_gradient": "linear-gradient(135deg, #059669, #0284C7, #38BDF8)"
+      },
+      "tribulation": {
+        "has_tribulation": true,
+        "name": "Kết Đan Thiên Kiếp (Lôi Hỏa Tụ Thể)",
+        "description": "Ngưng tụ khí dịch thành kim đan thể rắn, chịu lôi kiếp rèn đúc."
+      },
+      "lore": "Nửa bước bước vào hàng ngũ cao thủ Kết Đan."
+    },
+    {
+      "id": "ket_dan_so_ky",
+      "major_realm": "Nhân Giới (Hạ Cảnh Giới)",
+      "tier_name": "Kết Đan Kỳ",
+      "sub_stage": "Sơ Kỳ",
+      "display_title": "Kết Đan Sơ Kỳ",
+      "required_exp": 380000,
+      "lifespan_years": 500,
+      "font_name": "KimDanFont",
+      "font_file": "./nhan-gioi/3-kim-dan/kim-dan.ttf",
+      "bg_gif": "./nhan-gioi/3-kim-dan/kim-dan.gif",
+      "text_effect": {
+        "fallback_color": "#38BDF8",
+        "glow_shadow": "drop-shadow(0 0 15px rgba(56, 189, 248, 0.7))",
+        "fallback_gradient": "linear-gradient(135deg, #0284C7, #38BDF8)"
+      },
+      "tribulation": {
+        "has_tribulation": false,
+        "name": null,
+        "description": "Viên nội đan sắc vàng óng ánh ngưng tụ đan điền."
+      },
+      "lore": "Chính thức trở thành tu tiên giả chân chính, uy chấn một phương, thọ 500 tuổi."
+    },
+    {
+      "id": "ket_dan_trung_ky",
+      "major_realm": "Nhân Giới (Hạ Cảnh Giới)",
+      "tier_name": "Kết Đan Kỳ",
+      "sub_stage": "Trung Kỳ",
+      "display_title": "Kết Đan Trung Kỳ",
+      "required_exp": 650000,
+      "lifespan_years": 550,
+      "font_name": "KimDanFont",
+      "font_file": "./nhan-gioi/3-kim-dan/kim-dan.ttf",
+      "bg_gif": "./nhan-gioi/3-kim-dan/kim-dan.gif",
+      "text_effect": {
+        "fallback_color": "#0284C7",
+        "glow_shadow": "drop-shadow(0 0 16px rgba(2, 132, 199, 0.8))",
+        "fallback_gradient": "linear-gradient(135deg, #0369A1, #38BDF8, #7DD3FC)"
+      },
+      "tribulation": {
+        "has_tribulation": false,
+        "name": null,
+        "description": "Nội đan xoay chuyển thuần thục, có thể thai nghén Bản Mệnh Pháp Bảo."
+      },
+      "lore": "Linh đan viên nhuận, luyện chế bản mệnh pháp bảo ôn dưỡng trong cơ thể."
+    },
+    {
+      "id": "ket_dan_hau_ky",
+      "major_realm": "Nhân Giới (Hạ Cảnh Giới)",
+      "tier_name": "Kết Đan Kỳ",
+      "sub_stage": "Hậu Kỳ",
+      "display_title": "Kết Đan Hậu Kỳ",
+      "required_exp": 1100000,
+      "lifespan_years": 700,
+      "font_name": "KimDanFont",
+      "font_file": "./nhan-gioi/3-kim-dan/kim-dan.ttf",
+      "bg_gif": "./nhan-gioi/3-kim-dan/kim-dan.gif",
+      "text_effect": {
+        "fallback_color": "#60A5FA",
+        "glow_shadow": "drop-shadow(0 0 18px rgba(96, 165, 250, 0.8))",
+        "fallback_gradient": "linear-gradient(135deg, #1D4ED8, #3B82F6, #93C5FD)"
+      },
+      "tribulation": {
+        "has_tribulation": false,
+        "name": null,
+        "description": "Đan khí ngập tràn, thọ mệnh đạt tối đa 700 tuổi."
+      },
+      "lore": "Đứng đầu trưởng lão tông môn trung bình tại Nhân Giới."
+    },
+    {
+      "id": "ket_dan_gia_anh",
+      "major_realm": "Nhân Giới (Hạ Cảnh Giới)",
+      "tier_name": "Kết Đan Kỳ",
+      "sub_stage": "Giả Anh Cảnh (Đỉnh Phong)",
+      "display_title": "Kết Đan Đỉnh Phong (Giả Anh)",
+      "required_exp": 1800000,
+      "lifespan_years": 700,
+      "font_name": "KimDanFont",
+      "font_file": "./nhan-gioi/3-kim-dan/kim-dan.ttf",
+      "bg_gif": "./nhan-gioi/3-kim-dan/kim-dan.gif",
+      "text_effect": {
+        "fallback_color": "#818CF8",
+        "glow_shadow": "drop-shadow(0 0 20px rgba(129, 140, 248, 0.9))",
+        "fallback_gradient": "linear-gradient(135deg, #3B82F6, #6366F1, #C084FC)"
+      },
+      "tribulation": {
+        "has_tribulation": true,
+        "name": "Nguyên Anh Phá Đan Lôi Kiếp & Tâm Ma Huyễn Cảnh",
+        "description": "Đan vỡ thành Anh, kiếp nạn cực kỳ nguy hiểm khiến 9 phần chết 1 phần sống."
+      },
+      "lore": "Chuẩn bị phá vỡ Kim Đan để dưỡng dục Nguyên Anh trường sinh."
+    },
+    {
+      "id": "nguyen_anh_so_ky",
+      "major_realm": "Nhân Giới (Hạ Cảnh Giới)",
+      "tier_name": "Nguyên Anh Kỳ",
+      "sub_stage": "Sơ Kỳ",
+      "display_title": "Nguyên Anh Sơ Kỳ",
+      "required_exp": 3000000,
+      "lifespan_years": 1200,
+      "font_name": "NguyenAnhFont",
+      "font_file": "./nhan-gioi/4-nguyen-anh/nguyen-anh.otf",
+      "bg_gif": "./nhan-gioi/4-nguyen-anh/nguyen-anh.gif",
+      "text_effect": {
+        "fallback_color": "#A855F7",
+        "glow_shadow": "drop-shadow(0 0 20px rgba(168, 85, 247, 0.8))",
+        "fallback_gradient": "linear-gradient(135deg, #9333EA, #C084FC)"
+      },
+      "tribulation": {
+        "has_tribulation": false,
+        "name": null,
+        "description": "Kim Đan đã vỡ sinh Nguyên Anh, có thuật Thuấn Di và Đoạt Xá hồi sinh."
+      },
+      "lore": "Thân thể hủy diệt Nguyên Anh vẫn sống sót trường tồn, thọ hơn ngàn năm."
+    },
+    {
+      "id": "nguyen_anh_trung_ky",
+      "major_realm": "Nhân Giới (Hạ Cảnh Giới)",
+      "tier_name": "Nguyên Anh Kỳ",
+      "sub_stage": "Trung Kỳ",
+      "display_title": "Nguyên Anh Trung Kỳ",
+      "required_exp": 5500000,
+      "lifespan_years": 1600,
+      "font_name": "NguyenAnhFont",
+      "font_file": "./nhan-gioi/4-nguyen-anh/nguyen-anh.otf",
+      "bg_gif": "./nhan-gioi/4-nguyen-anh/nguyen-anh.gif",
+      "text_effect": {
+        "fallback_color": "#C084FC",
+        "glow_shadow": "drop-shadow(0 0 22px rgba(192, 132, 252, 0.9))",
+        "fallback_gradient": "linear-gradient(135deg, #7E22CE, #A855F7, #F472B6)"
+      },
+      "tribulation": {
+        "has_tribulation": false,
+        "name": null,
+        "description": "Nguyên Anh ngưng tụ thực thể, nắm giữ thông thiên thần thông."
+      },
+      "lore": "Thống lĩnh đại phái chính ma, hô phong hoán vũ tại đại lục."
+    },
+    {
+      "id": "nguyen_anh_hau_ky",
+      "major_realm": "Nhân Giới (Hạ Cảnh Giới)",
+      "tier_name": "Nguyên Anh Kỳ",
+      "sub_stage": "Hậu Kỳ (Đại Tu Sĩ)",
+      "display_title": "Nguyên Anh Hậu Kỳ (Đại Tu Sĩ)",
+      "required_exp": 9500000,
+      "lifespan_years": 2000,
+      "font_name": "NguyenAnhFont",
+      "font_file": "./nhan-gioi/4-nguyen-anh/nguyen-anh.otf",
+      "bg_gif": "./nhan-gioi/4-nguyen-anh/nguyen-anh.gif",
+      "text_effect": {
+        "fallback_color": "#E879F9",
+        "glow_shadow": "drop-shadow(0 0 24px rgba(232, 121, 249, 0.9))",
+        "fallback_gradient": "linear-gradient(135deg, #C026D3, #E879F9, #FBCFE8)"
+      },
+      "tribulation": {
+        "has_tribulation": false,
+        "name": null,
+        "description": "Danh xưng Đại Tu Sĩ danh chấn tứ hải, thọ nguyên đạt ngưỡng 2000 năm."
+      },
+      "lore": "Đỉnh cao tuyệt đỉnh ở hầu hết các giới diện phàm trần."
+    },
+    {
+      "id": "nguyen_anh_dai_vien_man",
+      "major_realm": "Nhân Giới (Hạ Cảnh Giới)",
+      "tier_name": "Nguyên Anh Kỳ",
+      "sub_stage": "Đại Viên Mãn",
+      "display_title": "Nguyên Anh Đại Viên Mãn",
+      "required_exp": 15000000,
+      "lifespan_years": 2000,
+      "font_name": "NguyenAnhFont",
+      "font_file": "./nhan-gioi/4-nguyen-anh/nguyen-anh.otf",
+      "bg_gif": "./nhan-gioi/4-nguyen-anh/nguyen-anh.gif",
+      "text_effect": {
+        "fallback_color": "#F43F5E",
+        "glow_shadow": "drop-shadow(0 0 26px rgba(244, 63, 94, 0.95))",
+        "fallback_gradient": "linear-gradient(135deg, #BE185D, #F43F5E, #FB7185)"
+      },
+      "tribulation": {
+        "has_tribulation": true,
+        "name": "Hóa Thần Cửu Thiên Lôi Kiếp",
+        "description": "Đoạt thiên địa tạo hóa, chuyển hóa linh lực thành thần niệm thiên địa tương hợp."
+      },
+      "lore": "Chuẩn bị bước vào cảnh giới Hóa Thần trong truyền thuyết."
+    },
+    {
+      "id": "hoa_than_so_ky",
+      "major_realm": "Nhân Giới (Hạ Cảnh Giới)",
+      "tier_name": "Hóa Thần Kỳ",
+      "sub_stage": "Sơ Kỳ",
+      "display_title": "Hóa Thần Sơ Kỳ",
+      "required_exp": 25000000,
+      "lifespan_years": 2500,
+      "font_name": "HoaThanFont",
+      "font_file": "./nhan-gioi/5-hoa-than/hoa-than.ttf",
+      "bg_gif": "./nhan-gioi/5-hoa-than/hoa-than.gif",
+      "text_effect": {
+        "fallback_color": "#F59E0B",
+        "glow_shadow": "drop-shadow(0 0 25px rgba(245, 158, 11, 0.9))",
+        "fallback_gradient": "linear-gradient(135deg, #D97706, #FBBF24)"
+      },
+      "tribulation": {
+        "has_tribulation": false,
+        "name": null,
+        "description": "Thần thức cường đại áp đảo thiên địa, có thể điều động thiên địa nguyên khí."
+      },
+      "lore": "Toàn cõi Nhân Giới chỉ đếm trên đầu ngón tay (khoảng 18 vị được ghi chép)."
+    },
+    {
+      "id": "hoa_than_trung_ky",
+      "major_realm": "Nhân Giới (Hạ Cảnh Giới)",
+      "tier_name": "Hóa Thần Kỳ",
+      "sub_stage": "Trung Kỳ",
+      "display_title": "Hóa Thần Trung Kỳ",
+      "required_exp": 40000000,
+      "lifespan_years": 2800,
+      "font_name": "HoaThanFont",
+      "font_file": "./nhan-gioi/5-hoa-than/hoa-than.ttf",
+      "bg_gif": "./nhan-gioi/5-hoa-than/hoa-than.gif",
+      "text_effect": {
+        "fallback_color": "#FBBF24",
+        "glow_shadow": "drop-shadow(0 0 28px rgba(251, 191, 36, 0.95))",
+        "fallback_gradient": "linear-gradient(135deg, #F59E0B, #FDE68A)"
+      },
+      "tribulation": {
+        "has_tribulation": false,
+        "name": null,
+        "description": "Linh khí nhân giới cằn cỗi khó lòng dung nạp, bắt đầu tìm lối phi thăng."
+      },
+      "lore": "Tiến thêm một bước tại cõi nhân gian mạt pháp là kỳ tích vô tiền khoáng hậu."
+    },
+    {
+      "id": "hoa_than_hau_ky",
+      "major_realm": "Nhân Giới (Hạ Cảnh Giới)",
+      "tier_name": "Hóa Thần Kỳ",
+      "sub_stage": "Hậu Kỳ (Đỉnh Phong)",
+      "display_title": "Hóa Thần Hậu Kỳ",
+      "required_exp": 60000000,
+      "lifespan_years": 3000,
+      "font_name": "HoaThanFont",
+      "font_file": "./nhan-gioi/5-hoa-than/hoa-than.ttf",
+      "bg_gif": "./nhan-gioi/5-hoa-than/hoa-than.gif",
+      "text_effect": {
+        "fallback_color": "#FEF08A",
+        "glow_shadow": "drop-shadow(0 0 30px rgba(254, 240, 138, 1.0))",
+        "fallback_gradient": "linear-gradient(135deg, #F59E0B, #FEF08A, #FFFFFF)"
+      },
+      "tribulation": {
+        "has_tribulation": false,
+        "name": null,
+        "description": "Cực hạn chi cảnh của phàm trần giới diện."
+      },
+      "lore": "Đỉnh phong tuyệt đối ở Nhân Giới, chuẩn bị mở ra Không Gian Tiết Điểm để phi thăng."
+    },
+    {
+      "id": "hoa_than_phi_thang",
+      "major_realm": "Nhân Giới -> Linh Giới",
+      "tier_name": "Hóa Thần Kỳ",
+      "sub_stage": "Phi Thăng Cảnh",
+      "display_title": "Hóa Thần Đỉnh Phong (Không Gian Phi Thăng)",
+      "required_exp": 85000000,
+      "lifespan_years": 3000,
+      "font_name": "HoaThanFont",
+      "font_file": "./nhan-gioi/5-hoa-than/hoa-than.ttf",
+      "bg_gif": "./nhan-gioi/5-hoa-than/hoa-than.gif",
+      "text_effect": {
+        "fallback_color": "#E0E7FF",
+        "glow_shadow": "drop-shadow(0 0 32px rgba(224, 231, 255, 1.0))",
+        "fallback_gradient": "linear-gradient(135deg, #F59E0B, #6366F1, #E0E7FF)"
+      },
+      "tribulation": {
+        "has_tribulation": true,
+        "name": "Không Gian Phong Bạo & Giới Diện Kiếp",
+        "description": "Xuyên qua Không Gian Tiết Điểm hoặc phi thăng đài, chống lại phong bạo không gian để tới Linh Giới."
+      },
+      "lore": "Đột phá giới diện, chính thức phi thăng lên Trung Cảnh Giới (Linh Giới)."
+    },
+    {
+      "id": "luyen_hu_so_ky",
+      "major_realm": "Linh Giới (Trung Cảnh Giới)",
+      "tier_name": "Luyện Hư Kỳ",
+      "sub_stage": "Sơ Kỳ",
+      "display_title": "Luyện Hư Sơ Kỳ",
+      "required_exp": 115000000,
+      "lifespan_years": 5000,
+      "font_name": "LuyenHuFont",
+      "font_file": "./linh-gioi/7-luyen-hu/luyen-hu.ttf",
+      "bg_gif": "./linh-gioi/7-luyen-hu/luyen-hu.webp",
+      "text_effect": {
+        "fallback_color": "#E2E8F0",
+        "glow_shadow": "drop-shadow(0 0 25px rgba(226, 232, 240, 0.85))",
+        "fallback_gradient": "linear-gradient(135deg, #94A3B8, #E2E8F0, #F8FAFC)"
+      },
+      "tribulation": {
+        "has_tribulation": false,
+        "name": null,
+        "description": "Thân dung thiên địa, hòa vào hư không, bắt đầu củng cố pháp lực thần diệu."
+      },
+      "lore": "Giai đoạn đầu của Linh Giới, đã thoát khỏi trói buộc ngũ hành sơ cấp của hạ giới."
+    },
+    {
+      "id": "luyen_hu_trung_ky",
+      "major_realm": "Linh Giới (Trung Cảnh Giới)",
+      "tier_name": "Luyện Hư Kỳ",
+      "sub_stage": "Trung Kỳ",
+      "display_title": "Luyện Hư Trung Kỳ",
+      "required_exp": 150000000,
+      "lifespan_years": 6000,
+      "font_name": "LuyenHuFont",
+      "font_file": "./linh-gioi/7-luyen-hu/luyen-hu.ttf",
+      "bg_gif": "./linh-gioi/7-luyen-hu/luyen-hu.webp",
+      "text_effect": {
+        "fallback_color": "#CBD5E1",
+        "glow_shadow": "drop-shadow(0 0 28px rgba(203, 213, 225, 0.9))",
+        "fallback_gradient": "linear-gradient(135deg, #64748B, #CBD5E1, #FFFFFF)"
+      },
+      "tribulation": {
+        "has_tribulation": false,
+        "name": null,
+        "description": "Luyện hư nhập đạo, thần hồn kiên cố vô cùng."
+      },
+      "lore": "Pháp lực tinh thuần vượt xa nhân giới, điều khiển hư không chi lực."
+    },
+    {
+      "id": "luyen_hu_hau_ky",
+      "major_realm": "Linh Giới (Trung Cảnh Giới)",
+      "tier_name": "Luyện Hư Kỳ",
+      "sub_stage": "Hậu Kỳ (Đỉnh Phong)",
+      "display_title": "Luyện Hư Hậu Kỳ",
+      "required_exp": 195000000,
+      "lifespan_years": 8000,
+      "font_name": "LuyenHuFont",
+      "font_file": "./linh-gioi/7-luyen-hu/luyen-hu.ttf",
+      "bg_gif": "./linh-gioi/7-luyen-hu/luyen-hu.webp",
+      "text_effect": {
+        "fallback_color": "#F1F5F9",
+        "glow_shadow": "drop-shadow(0 0 30px rgba(186, 230, 253, 0.95))",
+        "fallback_gradient": "linear-gradient(135deg, #CBD5E1, #E2E8F0, #BAE6FD)"
+      },
+      "tribulation": {
+        "has_tribulation": true,
+        "name": "Ngũ Hành Hợp Nhất Kiếp Lôi",
+        "description": "Lôi kiếp dung hợp nhục thân, nguyên thần chuẩn bị cho bước tiến Hợp Thể."
+      },
+      "lore": "Đỉnh cao Luyện Hư, chuẩn bị hợp nhất thần thức và công lực."
+    },
+    {
+      "id": "hop_the_so_ky",
+      "major_realm": "Linh Giới (Trung Cảnh Giới)",
+      "tier_name": "Hợp Thể Kỳ",
+      "sub_stage": "Sơ Kỳ",
+      "display_title": "Hợp Thể Sơ Kỳ",
+      "required_exp": 250000000,
+      "lifespan_years": 15000,
+      "font_name": "HopTheFont",
+      "font_file": "./linh-gioi/8-hop-the/hop-the.ttf",
+      "bg_gif": "./linh-gioi/8-hop-the/hop-the.webp",
+      "text_effect": {
+        "fallback_color": "#EF4444",
+        "glow_shadow": "drop-shadow(0 0 28px rgba(239, 68, 68, 0.85))",
+        "fallback_gradient": "linear-gradient(135deg, #B91C1C, #EF4444)"
+      },
+      "tribulation": {
+        "has_tribulation": false,
+        "name": null,
+        "description": "Hợp nhất Nguyên Anh, thần thức và nhục thân, bắt đầu cô đọng Pháp Tướng."
+      },
+      "lore": "Cự đầu danh chấn các đại tộc tại Linh Giới, sức chiến đấu dời non lấp biển."
+    },
+    {
+      "id": "hop_the_trung_ky",
+      "major_realm": "Linh Giới (Trung Cảnh Giới)",
+      "tier_name": "Hợp Thể Kỳ",
+      "sub_stage": "Trung Kỳ",
+      "display_title": "Hợp Thể Trung Kỳ",
+      "required_exp": 315000000,
+      "lifespan_years": 20000,
+      "font_name": "HopTheFont",
+      "font_file": "./linh-gioi/8-hop-the/hop-the.ttf",
+      "bg_gif": "./linh-gioi/8-hop-the/hop-the.webp",
+      "text_effect": {
+        "fallback_color": "#DC2626",
+        "glow_shadow": "drop-shadow(0 0 30px rgba(220, 38, 38, 0.9))",
+        "fallback_gradient": "linear-gradient(135deg, #991B1B, #DC2626, #F87171)"
+      },
+      "tribulation": {
+        "has_tribulation": false,
+        "name": null,
+        "description": "Pháp tướng khổng lồ ngưng tụ chân thật, uy áp bao trùm một phương cương vực."
+      },
+      "lore": "Thần thông Pháp Tướng trở thành sát chiêu bài sơn đảo hải."
+    },
+    {
+      "id": "hop_the_hau_ky",
+      "major_realm": "Linh Giới (Trung Cảnh Giới)",
+      "tier_name": "Hợp Thể Kỳ",
+      "sub_stage": "Hậu Kỳ (Đỉnh Phong)",
+      "display_title": "Hợp Thể Hậu Kỳ (Huyết Ngọc Đỉnh Phong)",
+      "required_exp": 390000000,
+      "lifespan_years": 30000,
+      "font_name": "HopTheFont",
+      "font_file": "./linh-gioi/8-hop-the/hop-the.ttf",
+      "bg_gif": "./linh-gioi/8-hop-the/hop-the.webp",
+      "text_effect": {
+        "fallback_color": "#F87171",
+        "glow_shadow": "drop-shadow(0 0 32px rgba(248, 113, 113, 0.95))",
+        "fallback_gradient": "linear-gradient(135deg, #7F1D1D, #DC2626, #FCA5A5)"
+      },
+      "tribulation": {
+        "has_tribulation": true,
+        "name": "Hỗn Độn Diệt Tinh Kiếp",
+        "description": "Đại thiên kiếp khảo nghiệm nhục thân pháp tướng trước khi bước vào Đại Thừa."
+      },
+      "lore": "Đỉnh phong Hợp Thể, chuẩn bị lĩnh ngộ quy tắc thiên hạ để bước vào hàng ngũ Thái Thượng Trưởng Lão."
+    },
+    {
+      "id": "dai_thua_so_ky",
+      "major_realm": "Linh Giới (Trung Cảnh Giới)",
+      "tier_name": "Đại Thừa Kỳ",
+      "sub_stage": "Sơ Kỳ",
+      "display_title": "Đại Thừa Sơ Kỳ",
+      "required_exp": 475000000,
+      "lifespan_years": 50000,
+      "font_name": "DaiThuaFont",
+      "font_file": "./linh-gioi/9-dai-thua/dai-thua.ttf",
+      "bg_gif": "./linh-gioi/9-dai-thua/dai-thua.gif",
+      "text_effect": {
+        "fallback_color": "#FBBF24",
+        "glow_shadow": "drop-shadow(0 0 32px rgba(251, 191, 36, 0.95))",
+        "fallback_gradient": "linear-gradient(135deg, #D97706, #FBBF24, #FDE68A)"
+      },
+      "tribulation": {
+        "has_tribulation": false,
+        "name": null,
+        "description": "Cảnh giới tối cao của Trung Cảnh Giới, lĩnh ngộ một phần thiên địa quy tắc."
+      },
+      "lore": "Thần thông cái thế, trở thành chỗ dựa trấn tộc tối cao của Tam Cảnh Linh Giới."
+    },
+    {
+      "id": "dai_thua_trung_ky",
+      "major_realm": "Linh Giới (Trung Cảnh Giới)",
+      "tier_name": "Đại Thừa Kỳ",
+      "sub_stage": "Trung Kỳ",
+      "display_title": "Đại Thừa Trung Kỳ",
+      "required_exp": 565000000,
+      "lifespan_years": 70000,
+      "font_name": "DaiThuaFont",
+      "font_file": "./linh-gioi/9-dai-thua/dai-thua.ttf",
+      "bg_gif": "./linh-gioi/9-dai-thua/dai-thua.gif",
+      "text_effect": {
+        "fallback_color": "#FDE047",
+        "glow_shadow": "drop-shadow(0 0 35px rgba(253, 224, 71, 1.0))",
+        "fallback_gradient": "linear-gradient(135deg, #B45309, #FBBF24, #FEF9C3)"
+      },
+      "tribulation": {
+        "has_tribulation": false,
+        "name": null,
+        "description": "Quy tắc thiên hạ vận hành trong lòng bàn tay, dạo chơi khắp chư thiên vạn giới."
+      },
+      "lore": "Một cái nhấc tay đủ làm nứt vỡ không gian, không còn đối thủ dưới Tiên Giới."
+    },
+    {
+      "id": "dai_thua_hau_ky",
+      "major_realm": "Linh Giới (Trung Cảnh Giới)",
+      "tier_name": "Đại Thừa Kỳ",
+      "sub_stage": "Hậu Kỳ (Đỉnh Phong)",
+      "display_title": "Đại Thừa Hậu Kỳ (Dẫn Động Thiên Kiếp)",
+      "required_exp": 660000000,
+      "lifespan_years": 100000,
+      "font_name": "DaiThuaFont",
+      "font_file": "./linh-gioi/9-dai-thua/dai-thua.ttf",
+      "bg_gif": "./linh-gioi/9-dai-thua/dai-thua.gif",
+      "text_effect": {
+        "fallback_color": "#FFFFFF",
+        "glow_shadow": "drop-shadow(0 0 38px rgba(255, 255, 255, 1.0))",
+        "fallback_gradient": "linear-gradient(135deg, #F59E0B, #FEF08A, #FFFFFF)"
+      },
+      "tribulation": {
+        "has_tribulation": true,
+        "name": "Đại Thừa Phi Thăng Chi Kiếp",
+        "description": "Dẫn động Thiên Kiếp cửu tử nhất sinh để mở ra cánh cổng Tiên Giới."
+      },
+      "lore": "Viên mãn Linh Giới, dẫn động thiên lôi để chuẩn bị bước vào cửa quan Độ Kiếp Thượng Giới."
+    },
+    {
+      "id": "do_kiep_than_suy",
+      "major_realm": "Tiên Giới (Cửa Quan Độ Kiếp)",
+      "tier_name": "Độ Kiếp Chi Quan",
+      "sub_stage": "Thiên Nhân Đệ Nhất Suy: Thân Suy",
+      "display_title": "Độ Kiếp: Thân Suy Kiếp",
+      "required_exp": 710000000,
+      "lifespan_years": null,
+      "font_name": "DoKiepFont",
+      "font_file": "./linh-gioi/10-do-kiep/do-kiep.otf",
+      "bg_gif": "./linh-gioi/10-do-kiep/do-kiep.gif",
+      "text_effect": {
+        "fallback_color": "#A78BFA",
+        "glow_shadow": "drop-shadow(0 0 30px rgba(167, 139, 250, 0.9))",
+        "fallback_gradient": "linear-gradient(135deg, #581C87, #8B5CF6, #C4B5FD)"
+      },
+      "tribulation": {
+        "has_tribulation": true,
+        "name": "Thiên Nhân Ngũ Suy: Nhục Thân Hủ Bại Kiếp",
+        "description": "Nhục thân bị thiên địa đạo quy bào mòn, nếu thất bại hóa thành tro bụi."
+      },
+      "lore": "Đệ nhất suy trong Thiên Nhân Ngũ Suy Chi Kiếp để tẩy sạch phàm thể."
+    },
+    {
+      "id": "do_kiep_tien_suy",
+      "major_realm": "Tiên Giới (Cửa Quan Độ Kiếp)",
+      "tier_name": "Độ Kiếp Chi Quan",
+      "sub_stage": "Thiên Nhân Đệ Nhị Suy: Tiên Suy",
+      "display_title": "Độ Kiếp: Tiên Suy Kiếp",
+      "required_exp": 735000000,
+      "lifespan_years": null,
+      "font_name": "DoKiepFont",
+      "font_file": "./linh-gioi/10-do-kiep/do-kiep.otf",
+      "bg_gif": "./linh-gioi/10-do-kiep/do-kiep.gif",
+      "text_effect": {
+        "fallback_color": "#C084FC",
+        "glow_shadow": "drop-shadow(0 0 32px rgba(192, 132, 252, 0.95))",
+        "fallback_gradient": "linear-gradient(135deg, #6B21A8, #A855F7, #E9D5FF)"
+      },
+      "tribulation": {
+        "has_tribulation": true,
+        "name": "Thiên Nhân Ngũ Suy: Tiên Quang Ảm Đạm Kiếp",
+        "description": "Hào quang tiên khí tự thân khô cạn, khảo nghiệm đạo tâm kiên cố."
+      },
+      "lore": "Đệ nhị suy, bào mòn tiên quang bảo vệ, trực diện quy luật thiên địa."
+    },
+    {
+      "id": "do_kiep_khieu_suy",
+      "major_realm": "Tiên Giới (Cửa Quan Độ Kiếp)",
+      "tier_name": "Độ Kiếp Chi Quan",
+      "sub_stage": "Thiên Nhân Đệ Tam Suy: Khiếu Suy",
+      "display_title": "Độ Kiếp: Khiếu Suy Kiếp",
+      "required_exp": 760000000,
+      "lifespan_years": null,
+      "font_name": "DoKiepFont",
+      "font_file": "./linh-gioi/10-do-kiep/do-kiep.otf",
+      "bg_gif": "./linh-gioi/10-do-kiep/do-kiep.gif",
+      "text_effect": {
+        "fallback_color": "#F472B6",
+        "glow_shadow": "drop-shadow(0 0 34px rgba(244, 114, 182, 0.95))",
+        "fallback_gradient": "linear-gradient(135deg, #831843, #DB2777, #FBCFE8)"
+      },
+      "tribulation": {
+        "has_tribulation": true,
+        "name": "Thiên Nhân Ngũ Suy: Tiên Khiếu Bế Tắc Kiếp",
+        "description": "Toàn bộ kinh mạch và khiếu huyệt bị phong bế, chịu nỗi đau vỡ khiếu."
+      },
+      "lore": "Đệ tam suy, mở đường cho việc phá giải và khai thông Tiên Khiếu sau này."
+    },
+    {
+      "id": "do_kiep_hon_suy",
+      "major_realm": "Tiên Giới (Cửa Quan Độ Kiếp)",
+      "tier_name": "Độ Kiếp Chi Quan",
+      "sub_stage": "Thiên Nhân Đệ Tứ Suy: Hồn Suy",
+      "display_title": "Độ Kiếp: Hồn Suy Kiếp",
+      "required_exp": 785000000,
+      "lifespan_years": null,
+      "font_name": "DoKiepFont",
+      "font_file": "./linh-gioi/10-do-kiep/do-kiep.otf",
+      "bg_gif": "./linh-gioi/10-do-kiep/do-kiep.gif",
+      "text_effect": {
+        "fallback_color": "#FB7185",
+        "glow_shadow": "drop-shadow(0 0 36px rgba(251, 113, 133, 1.0))",
+        "fallback_gradient": "linear-gradient(135deg, #881337, #E11D48, #FECDD3)"
+      },
+      "tribulation": {
+        "has_tribulation": true,
+        "name": "Thiên Nhân Ngũ Suy: Thần Hồn Trầm Luân Kiếp",
+        "description": "Hồn phách rơi vào huyễn cảnh vô tận, một niệm không vững lập tức tan biến."
+      },
+      "lore": "Đệ tứ suy, rèn luyện thần hồn đạt đến ngưỡng bất diệt."
+    },
+    {
+      "id": "do_kiep_sat_suy",
+      "major_realm": "Tiên Giới (Cửa Quan Độ Kiếp)",
+      "tier_name": "Độ Kiếp Chi Quan",
+      "sub_stage": "Thiên Nhân Đệ Ngũ Suy: Sát Suy",
+      "display_title": "Độ Kiếp: Sát Suy Kiếp (Cực Cảnh)",
+      "required_exp": 810000000,
+      "lifespan_years": null,
+      "font_name": "DoKiepFont",
+      "font_file": "./linh-gioi/10-do-kiep/do-kiep.otf",
+      "bg_gif": "./linh-gioi/10-do-kiep/do-kiep.gif",
+      "text_effect": {
+        "fallback_color": "#E11D48",
+        "glow_shadow": "drop-shadow(0 0 40px rgba(225, 29, 72, 1.0))",
+        "fallback_gradient": "linear-gradient(135deg, #4C0519, #BE123C, #FDA4AF)"
+      },
+      "tribulation": {
+        "has_tribulation": true,
+        "name": "Thiên Nhân Ngũ Suy: Sát Khí Quấn Thân Đại Kiếp",
+        "description": "Sát khí tích lũy vạn năm bộc phát dữ dội nhất, vượt qua mới được xem là chân chính phi thăng."
+      },
+      "lore": "Đệ ngũ suy cực độ hung hiểm, thất bại thường biến thành Tán Tiên hoặc tan biến."
+    },
+    {
+      "id": "nguy_tien",
+      "major_realm": "Tiên Giới (Tiên Nhân)",
+      "tier_name": "Ngụy Tiên",
+      "sub_stage": "Chuyển Hóa Tiên Cốt",
+      "display_title": "Ngụy Tiên",
+      "required_exp": 830000000,
+      "lifespan_years": null,
+      "font_name": "DoKiepFont",
+      "font_file": "./linh-gioi/10-do-kiep/do-kiep.otf",
+      "bg_gif": "./linh-gioi/10-do-kiep/do-kiep.gif",
+      "text_effect": {
+        "fallback_color": "#94A3B8",
+        "glow_shadow": "drop-shadow(0 0 24px rgba(148, 163, 184, 0.8))",
+        "fallback_gradient": "linear-gradient(135deg, #475569, #94A3B8, #CBD5E1)"
+      },
+      "tribulation": {
+        "has_tribulation": false,
+        "name": null,
+        "description": "Mới phi thăng, chưa hoàn toàn chuyển hóa linh lực thành Tiên Linh Lực."
+      },
+      "lore": "Cần vào Tẩy Tủy Trì để hoán đổi triệt để tiên linh mạch cốt."
+    },
+    {
+      "id": "tan_tien",
+      "major_realm": "Tiên Giới (Tiên Nhân)",
+      "tier_name": "Tán Tiên",
+      "sub_stage": "Độ Kiếp Thất Bại Biến Dị",
+      "display_title": "Tán Tiên (Mười Tiên Chín Tán)",
+      "required_exp": 845000000,
+      "lifespan_years": null,
+      "font_name": "DoKiepFont",
+      "font_file": "./linh-gioi/10-do-kiep/do-kiep.otf",
+      "bg_gif": "./linh-gioi/10-do-kiep/do-kiep.gif",
+      "text_effect": {
+        "fallback_color": "#F87171",
+        "glow_shadow": "drop-shadow(0 0 26px rgba(248, 113, 113, 0.85))",
+        "fallback_gradient": "linear-gradient(135deg, #7F1D1D, #EF4444, #FCA5A5)"
+      },
+      "tribulation": {
+        "has_tribulation": true,
+        "name": "Tán Tiên Thiên Lôi Kiếp Định Kỳ",
+        "description": "Thiếu lực lượng Pháp Tắc bảo hộ, cứ mỗi ngàn năm chịu lôi kiếp đoạt mạng."
+      },
+      "lore": "Tu sĩ độ kiếp không trọn vẹn, được miêu tả là 'Mười tiên chín tán'."
+    },
+    {
+      "id": "chan_tien_so_ky",
+      "major_realm": "Tiên Giới (Tiên Nhân Chính Thống)",
+      "tier_name": "Chân Tiên",
+      "sub_stage": "Sơ Kỳ",
+      "display_title": "Chân Tiên Sơ Kỳ",
+      "required_exp": 860000000,
+      "lifespan_years": "Trường sinh (chỉ chết vì kiếp nạn)",
+      "font_name": "ChanTienFont",
+      "font_file": "./tien-gioi/11-chan-tien/chan-tien.ttf",
+      "bg_gif": "./tien-gioi/11-chan-tien/chan-tien.gif",
+      "text_effect": {
+        "fallback_color": "#22D3EE",
+        "glow_shadow": "drop-shadow(0 0 30px rgba(34, 211, 238, 0.9))",
+        "fallback_gradient": "linear-gradient(135deg, #0891B2, #22D3EE, #A5F3FC)"
+      },
+      "tribulation": {
+        "has_tribulation": false,
+        "name": null,
+        "description": "Đã chính thức nắm giữ lực lượng Pháp Tắc sơ khởi."
+      },
+      "lore": "Thân mang tiên khí phiêu dật, bước chân vào đại đạo trường sinh của Chân Tiên Giới."
+    },
+    {
+      "id": "chan_tien_trung_ky",
+      "major_realm": "Tiên Giới (Tiên Nhân Chính Thống)",
+      "tier_name": "Chân Tiên",
+      "sub_stage": "Trung Kỳ (12 Tiên Khiếu)",
+      "display_title": "Chân Tiên Trung Kỳ (12 Tiên Khiếu)",
+      "required_exp": 878000000,
+      "lifespan_years": "Trường sinh",
+      "font_name": "ChanTienFont",
+      "font_file": "./tien-gioi/11-chan-tien/chan-tien.ttf",
+      "bg_gif": "./tien-gioi/11-chan-tien/chan-tien.gif",
+      "text_effect": {
+        "fallback_color": "#06B6D4",
+        "glow_shadow": "drop-shadow(0 0 32px rgba(6, 182, 212, 0.95))",
+        "fallback_gradient": "linear-gradient(135deg, #0E7490, #06B6D4, #CFFAFE)"
+      },
+      "tribulation": {
+        "has_tribulation": false,
+        "name": null,
+        "description": "Đả thông 12 Tiên Khiếu, pháp tắc lưu chuyển thông suốt."
+      },
+      "lore": "Tiên lực hùng hậu, bắt đầu thể hiện uy năng pháp tắc chân chính."
+    },
+    {
+      "id": "chan_tien_hau_ky",
+      "major_realm": "Tiên Giới (Tiên Nhân Chính Thống)",
+      "tier_name": "Chân Tiên",
+      "sub_stage": "Hậu Kỳ (24 Tiên Khiếu)",
+      "display_title": "Chân Tiên Hậu Kỳ (24 Tiên Khiếu)",
+      "required_exp": 898000000,
+      "lifespan_years": "Trường sinh",
+      "font_name": "ChanTienFont",
+      "font_file": "./tien-gioi/11-chan-tien/chan-tien.ttf",
+      "bg_gif": "./tien-gioi/11-chan-tien/chan-tien.gif",
+      "text_effect": {
+        "fallback_color": "#38BDF8",
+        "glow_shadow": "drop-shadow(0 0 35px rgba(56, 189, 248, 1.0))",
+        "fallback_gradient": "linear-gradient(135deg, #0284C7, #38BDF8, #E0F2FE)"
+      },
+      "tribulation": {
+        "has_tribulation": true,
+        "name": "Kim Tiên Linh Vực Chi Kiếp",
+        "description": "Đột phá cảnh giới Kim Tiên, mở ra 36 Tiên Khiếu và cô đọng Linh Vực."
+      },
+      "lore": "Đả thông đủ 24 Tiên Khiếu, chuẩn bị ngưng tụ Linh Vực sơ cấp để thăng Kim Tiên."
+    },
+    {
+      "id": "kim_tien_so_ky",
+      "major_realm": "Tiên Giới (Tiên Nhân Chính Thống)",
+      "tier_name": "Kim Tiên",
+      "sub_stage": "Sơ Kỳ",
+      "display_title": "Kim Tiên Sơ Kỳ",
+      "required_exp": 918000000,
+      "lifespan_years": "Bất hủ vĩnh hằng",
+      "font_name": "KimTienFont",
+      "font_file": "./tien-gioi/12-kim-tien/kim-tien.ttf",
+      "bg_gif": "./tien-gioi/12-kim-tien/kim-tien.webp",
+      "text_effect": {
+        "fallback_color": "#F59E0B",
+        "glow_shadow": "drop-shadow(0 0 35px rgba(245, 158, 11, 0.95))",
+        "fallback_gradient": "linear-gradient(135deg, #B45309, #F59E0B, #FEF3C7)"
+      },
+      "tribulation": {
+        "has_tribulation": false,
+        "name": null,
+        "description": "Thân thể bất diệt, bắt đầu mở rộng Linh Vực chi lực."
+      },
+      "lore": "Vàng ròng bất biến, uy năng Linh Vực áp chế toàn bộ hạ vị tiên nhân."
+    },
+    {
+      "id": "kim_tien_trung_ky",
+      "major_realm": "Tiên Giới (Tiên Nhân Chính Thống)",
+      "tier_name": "Kim Tiên",
+      "sub_stage": "Trung Kỳ",
+      "display_title": "Kim Tiên Trung Kỳ",
+      "required_exp": 938000000,
+      "lifespan_years": "Bất hủ vĩnh hằng",
+      "font_name": "KimTienFont",
+      "font_file": "./tien-gioi/12-kim-tien/kim-tien.ttf",
+      "bg_gif": "./tien-gioi/12-kim-tien/kim-tien.webp",
+      "text_effect": {
+        "fallback_color": "#D97706",
+        "glow_shadow": "drop-shadow(0 0 38px rgba(217, 119, 6, 1.0))",
+        "fallback_gradient": "linear-gradient(135deg, #78350F, #D97706, #FDE68A)"
+      },
+      "tribulation": {
+        "has_tribulation": false,
+        "name": null,
+        "description": "Linh Vực mở rộng ngàn dặm, pháp tắc ngưng đọng thực thể."
+      },
+      "lore": "Có thể thi triển Linh Vực áp chế không gian, địch nhân bước vào như sa vào đầm lầy."
+    },
+    {
+      "id": "kim_tien_hau_ky",
+      "major_realm": "Tiên Giới (Tiên Nhân Chính Thống)",
+      "tier_name": "Kim Tiên",
+      "sub_stage": "Hậu Kỳ (36 Tiên Khiếu - Linh Vực Sơ Cấp)",
+      "display_title": "Kim Tiên Hậu Kỳ (36 Tiên Khiếu)",
+      "required_exp": 956000000,
+      "lifespan_years": "Bất hủ vĩnh hằng",
+      "font_name": "KimTienFont",
+      "font_file": "./tien-gioi/12-kim-tien/kim-tien.ttf",
+      "bg_gif": "./tien-gioi/12-kim-tien/kim-tien.webp",
+      "text_effect": {
+        "fallback_color": "#FBBF24",
+        "glow_shadow": "drop-shadow(0 0 40px rgba(251, 191, 36, 1.0))",
+        "fallback_gradient": "linear-gradient(135deg, #92400E, #FBBF24, #FFFBEB)"
+      },
+      "tribulation": {
+        "has_tribulation": true,
+        "name": "Thái Ất Hư Không Hỗn Nguyên Kiếp",
+        "description": "Khảo nghiệm đả thông 108 Tiên Khiếu, tiến hóa thần hồn thành Đại La Chân Hồn."
+      },
+      "lore": "Đả thông đủ 36 Tiên Khiếu, làm chủ Linh Vực, chuẩn bị tấn thăng Thái Ất Ngọc Tiên."
+    },
+    {
+      "id": "thai_at_so_ky",
+      "major_realm": "Tiên Giới (Tiên Nhân Chính Thống)",
+      "tier_name": "Thái Ất Ngọc Tiên",
+      "sub_stage": "Sơ Kỳ",
+      "display_title": "Thái Ất Ngọc Tiên Sơ Kỳ",
+      "required_exp": 968000000,
+      "lifespan_years": "Vĩnh cửu",
+      "font_name": "ThaiAtFont",
+      "font_file": "./tien-gioi/13-thai-at/thai-at.otf",
+      "bg_gif": "./tien-gioi/13-thai-at/thai-at.gif",
+      "text_effect": {
+        "fallback_color": "#818CF8",
+        "glow_shadow": "drop-shadow(0 0 40px rgba(129, 140, 248, 1.0))",
+        "fallback_gradient": "linear-gradient(135deg, #4338CA, #6366F1, #C7D2FE)"
+      },
+      "tribulation": {
+        "has_tribulation": false,
+        "name": null,
+        "description": "Vượt ngoài quy luật thông thường, nắm giữ pháp tắc bản nguyên thâm sâu."
+      },
+      "lore": "Bậc bá chủ thống lĩnh một phương Tiên Vực."
+    },
+    {
+      "id": "thai_at_trung_ky",
+      "major_realm": "Tiên Giới (Tiên Nhân Chính Thống)",
+      "tier_name": "Thái Ất Ngọc Tiên",
+      "sub_stage": "Trung Kỳ",
+      "display_title": "Thái Ất Ngọc Tiên Trung Kỳ",
+      "required_exp": 978000000,
+      "lifespan_years": "Vĩnh cửu",
+      "font_name": "ThaiAtFont",
+      "font_file": "./tien-gioi/13-thai-at/thai-at.otf",
+      "bg_gif": "./tien-gioi/13-thai-at/thai-at.gif",
+      "text_effect": {
+        "fallback_color": "#A78BFA",
+        "glow_shadow": "drop-shadow(0 0 42px rgba(167, 139, 250, 1.0))",
+        "fallback_gradient": "linear-gradient(135deg, #5B21B6, #8B5CF6, #DDD6FE)"
+      },
+      "tribulation": {
+        "has_tribulation": false,
+        "name": null,
+        "description": "Tiên khiếu liên tục khai mở, tiến dần tới con số 108 viên mãn."
+      },
+      "lore": "Linh vực biến ảo khôn lường, tạo thành thế giới quy tắc độc lập."
+    },
+    {
+      "id": "thai_at_hau_ky",
+      "major_realm": "Tiên Giới (Tiên Nhân Chính Thống)",
+      "tier_name": "Thái Ất Ngọc Tiên",
+      "sub_stage": "Hậu Kỳ (108 Tiên Khiếu - Đại La Chân Hồn)",
+      "display_title": "Thái Ất Ngọc Tiên Hậu Kỳ (108 Tiên Khiếu)",
+      "required_exp": 986000000,
+      "lifespan_years": "Vĩnh cửu",
+      "font_name": "ThaiAtFont",
+      "font_file": "./tien-gioi/13-thai-at/thai-at.otf",
+      "bg_gif": "./tien-gioi/13-thai-at/thai-at.gif",
+      "text_effect": {
+        "fallback_color": "#C084FC",
+        "glow_shadow": "drop-shadow(0 0 45px rgba(192, 132, 252, 1.0))",
+        "fallback_gradient": "linear-gradient(135deg, #6B21A8, #A855F7, #F3E8FF)"
+      },
+      "tribulation": {
+        "has_tribulation": true,
+        "name": "Trảm Tam Thi Đệ Nhất Kiếp (Thiện Thi Chi Ngộ)",
+        "description": "Đả thông trọn vẹn 108 Tiên Khiếu, chuẩn bị chém đứt Thiện Thi để bước vào Đại La Cảnh."
+      },
+      "lore": "Thần hồn đã lột xác thành Đại La Chân Hồn bất diệt."
+    },
+    {
+      "id": "dai_la_so_ky",
+      "major_realm": "Tiên Giới (Tiên Nhân Chính Thống)",
+      "tier_name": "Đại La",
+      "sub_stage": "Sơ Kỳ (Trảm Thiện Thi)",
+      "display_title": "Đại La Sơ Kỳ (Trảm Thiện Thi)",
+      "required_exp": 991000000,
+      "lifespan_years": "Bất hủ siêu thoát",
+      "font_name": "DaiLaFont",
+      "font_file": "./tien-gioi/14-dai-la/dai-la.ttf",
+      "bg_gif": "./tien-gioi/14-dai-la/dai-la.gif",
+      "text_effect": {
+        "fallback_color": "#F8FAFC",
+        "glow_shadow": "drop-shadow(0 0 45px rgba(255, 255, 255, 1.0))",
+        "fallback_gradient": "linear-gradient(135deg, #E2E8F0, #FFFFFF, #93C5FD)"
+      },
+      "tribulation": {
+        "has_tribulation": false,
+        "name": null,
+        "description": "Trảm khử Thiện Thi thành công, phân thân thiện niệm tách rời."
+      },
+      "lore": "Thoát ly khỏi vận mệnh chư thiên, đứng trên đỉnh phong Tiên Giới."
+    },
+    {
+      "id": "dai_la_trung_ky",
+      "major_realm": "Tiên Giới (Tiên Nhân Chính Thống)",
+      "tier_name": "Đại La",
+      "sub_stage": "Trung Kỳ (Trảm Ác Thi)",
+      "display_title": "Đại La Trung Kỳ (Trảm Ác Thi)",
+      "required_exp": 995000000,
+      "lifespan_years": "Bất hủ siêu thoát",
+      "font_name": "DaiLaFont",
+      "font_file": "./tien-gioi/14-dai-la/dai-la.ttf",
+      "bg_gif": "./tien-gioi/14-dai-la/dai-la.gif",
+      "text_effect": {
+        "fallback_color": "#FFFFFF",
+        "glow_shadow": "drop-shadow(0 0 48px rgba(255, 255, 255, 1.0))",
+        "fallback_gradient": "linear-gradient(135deg, #CBD5E1, #FFFFFF, #C4B5FD)"
+      },
+      "tribulation": {
+        "has_tribulation": false,
+        "name": null,
+        "description": "Trảm khử Ác Thi thành công, dứt bỏ mọi tham sân si ma chướng."
+      },
+      "lore": "Sức mạnh Pháp Tắc đạt tới cực hạn đăng phong tạo cực."
+    },
+    {
+      "id": "dai_la_hau_ky",
+      "major_realm": "Tiên Giới (Tiên Nhân Chính Thống)",
+      "tier_name": "Đại La",
+      "sub_stage": "Hậu Kỳ (Trảm Chấp Niệm / Tam Thi Hoàn Tất)",
+      "display_title": "Đại La Hậu Kỳ (Tam Thi Viên Mãn)",
+      "required_exp": 998000000,
+      "lifespan_years": "Bất hủ siêu thoát",
+      "font_name": "DaiLaFont",
+      "font_file": "./tien-gioi/14-dai-la/dai-la.ttf",
+      "bg_gif": "./tien-gioi/14-dai-la/dai-la.gif",
+      "text_effect": {
+        "fallback_color": "#FFFFFF",
+        "glow_shadow": "drop-shadow(0 0 50px rgba(255, 255, 255, 1.0))",
+        "fallback_gradient": "linear-gradient(135deg, #FFFFFF, #E0E7FF, #DDD6FE)"
+      },
+      "tribulation": {
+        "has_tribulation": true,
+        "name": "Đạo Thiên Đại Kiếp & Hợp Đạo Khảo Nghiệm",
+        "description": "Đại kiếp hủy diệt cấp độ vũ trụ để hợp nhất chân nguyên vào Đại Đạo Pháp Tắc."
+      },
+      "lore": "Trảm khử Tam Thi (Thiện - Ác - Chấp Niệm), đạt tới cảnh giới vô thượng trước khi Hợp Đạo."
+    },
+    {
+      "id": "dao_to",
+      "major_realm": "Tiên Giới (Đỉnh Phong Tối Cao)",
+      "tier_name": "Đạo Tổ",
+      "sub_stage": "Hợp Đạo - Vô Thượng Chí Tôn",
+      "display_title": "Đạo Tổ (Hợp Đạo Tối Cao)",
+      "required_exp": 1000000000,
+      "lifespan_years": "Vô hạn vĩnh hằng cùng thiên địa",
+      "font_name": "DaoToFont",
+      "font_file": "./tien-gioi/15-dao-to/dao-to.otf",
+      "bg_gif": "./tien-gioi/15-dao-to/dao-to.gif",
+      "text_effect": {
+        "fallback_color": "#000000",
+        "glow_shadow": "drop-shadow(0 0 60px rgba(255, 255, 255, 0.9)) drop-shadow(0 0 100px rgba(99, 102, 241, 0.8))",
+        "fallback_gradient": "linear-gradient(135deg, #0F172A, #1E1B4B, #000000)"
+      },
+      "tribulation": {
+        "has_tribulation": false,
+        "name": null,
+        "description": "Đã vượt qua Đạo Thiên Đại Kiếp và hoàn thành Hợp Đạo. Đứng trên đỉnh cao nhất của quy luật vũ trụ."
+      },
+      "lore": "Cấp bậc tu vi tối cao duy nhất trong một Pháp Tắc. Tu vi gần như vô hạn, một niệm khai thiên lập địa."
+    }
+  ]
+}
