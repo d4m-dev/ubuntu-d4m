@@ -777,8 +777,8 @@ export default function CustomizationPanel({ currentUser, onBack, onSaved, onSpi
           <button onClick={() => switchTab("xu")} className="x-chip hover:brightness-125 transition" title="Kiếm & nạp Xu">🪙 {xu.toLocaleString("vi-VN")} Xu</button>
         </div>
 
-        {/* Tabs — full ngang panel để desktop dễ chọn, mobile vuốt */}
-        <div className="flex gap-1 px-3 pt-2 pb-0 border-b border-[#f5c15c]/15 overflow-x-auto lg:flex-wrap">
+        {/* Tabs ngang — CHỈ mobile (desktop dùng menu dọc bên trái) */}
+        <div className="flex gap-1 px-3 pt-2 pb-0 border-b border-[#f5c15c]/15 overflow-x-auto md:hidden">
           {TABS.map((t) => (
             <button
               key={t.id}
@@ -792,8 +792,8 @@ export default function CustomizationPanel({ currentUser, onBack, onSaved, onSpi
         </div>
 
         <div className="flex-1 min-h-0 flex flex-col md:flex-row">
-        {/* 👤 CỘT TRÁI: đạo hồ preview (giống trang profile) */}
-        <div className="shrink-0 md:w-72 lg:w-80 border-b md:border-b-0 md:border-r border-[#f5c15c]/15 p-3 md:p-4 bg-white/[0.02] md:overflow-y-auto">
+        {/* 👤 CỘT TRÁI: preview + menu dọc (desktop) */}
+        <div className="shrink-0 md:w-80 lg:w-96 border-b md:border-b-0 md:border-r border-[#f5c15c]/15 p-3 md:p-4 bg-white/[0.02] md:overflow-y-auto">
           <div className="rounded-2xl border border-[#f5c15c]/20 bg-gradient-to-b from-white/[0.04] to-transparent py-5 px-6 md:px-8 text-center relative overflow-hidden">
             <div className="absolute inset-0 x-shimmer opacity-30 pointer-events-none" />
             <AvatarFrame
@@ -829,6 +829,20 @@ export default function CustomizationPanel({ currentUser, onBack, onSaved, onSpi
               Chạm pháp bảo để xem trước • mọi thay đổi hiện toàn hệ thống.
             </p>
           </div>
+
+          {/* 🧭 MENU DỌC (desktop) — luôn hiện dưới preview, bấm để mở mục bên phải */}
+          <nav className="hidden md:flex flex-col gap-1 mt-3" aria-label="Danh mục bảo khố">
+            {TABS.map((t) => (
+              <button
+                key={t.id}
+                onClick={() => switchTab(t.id)}
+                aria-pressed={tab === t.id}
+                className={`x-side-tab ${tab === t.id ? "x-side-tab-active" : ""}`}
+              >
+                {t.label}
+              </button>
+            ))}
+          </nav>
         </div>
 
         <div className="flex-1 min-h-0 min-w-0 flex flex-col">

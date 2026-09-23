@@ -217,7 +217,7 @@ def get_messages(conversation_id: int, current_user: dict = Depends(get_current_
                   {spirit_select_sql()}
            FROM messages m
            JOIN users u ON m.sender_id = u.id
-           WHERE m.conversation_id=%s ORDER BY m.created_at ASC LIMIT 500""", (conversation_id,))
+           WHERE m.conversation_id=%s ORDER BY m.created_at ASC, m.id ASC LIMIT 500""", (conversation_id,))
     data = []
     for m in rows:
         dt = m.get("created_at")
@@ -262,16 +262,19 @@ def send_message(conversation_id: int, body: MessageCreate,
         raise HTTPException(status_code=400, detail="Tin nhắn trống.")
     mid = db_inserter.insert(
         "INSERT INTO messages (conversation_id, sender_id, content, image_url) VALUES (%s,%s,%s,%s)",
-        (conversation_id, me, body.content.strip()))
+        (conversation_id, me, (body.content or "").strip() or None, body.image_url))
     db_updater.update(
         "UPDATE conversations SET last_message_at=current_timestamp() WHERE id=%s", (conversation_id,))
 
-    msg = db_executor.select_as_list_dict(
+    fetched = db_executor.select_as_list_dict(
         f"""SELECT m.id, m.sender_id, m.content, m.image_url, m.created_at, m.is_read,
                   u.username, COALESCE(u.fullname, u.full_name, u.username) as fullname, u.avatar_url,
                   u.avatar_frame, u.name_effect, u.chat_theme,
                   {spirit_select_sql()}
-           FROM messages m JOIN users u ON m.sender_id=u.id WHERE m.id=%s""", (mid,))[0]
+           FROM messages m JOIN users u ON m.sender_id=u.id WHERE m.id=%s""", (mid,))
+    if not fetched:  # 🛡️ chống "list index out of range" nếu INSERT hụt
+        raise HTTPException(status_code=500, detail="Không lưu được tin nhắn.")
+    msg = fetched[0]
     dt = msg.get("created_at")
     spirit = spirit_payload(msg)
     payload = {

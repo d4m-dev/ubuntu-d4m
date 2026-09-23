@@ -158,9 +158,18 @@ export const SOCIAL_GLOBAL_CSS = `
   .d4m-logo-mark { background: linear-gradient(135deg,#ffd77a,#f5c15c 55%,#34d399); box-shadow:0 2px 14px rgba(245,193,92,.5); }
   .d4m-mini-card { box-shadow: inset 0 1px 0 rgba(255,255,255,.04); }
   .d4m-nav-btn { display:flex; align-items:center; gap:12px; padding:10px 12px; border-radius:14px;
-    font-size:14.5px; font-weight:600; color:#c7ccd6; transition:.18s; text-align:left; }
-  .d4m-nav-btn:hover { background:rgba(255,255,255,.06); color:#fff; }
-  .d4m-nav-active { background:linear-gradient(90deg, rgba(245,193,92,.16), rgba(52,211,153,.07)); color:#fff; box-shadow:inset 0 0 0 1px rgba(245,193,92,.3); }
+    font-size:14.5px; font-weight:600; color:#c7ccd6; transition:background .25s ease, color .25s ease, transform .25s ease, box-shadow .25s ease; text-align:left; }
+  .d4m-nav-btn:hover { background:rgba(255,255,255,.06); color:#fff; transform:translateX(4px); }
+  .d4m-nav-btn:active { transform:translateX(4px) scale(.98); }
+  .d4m-nav-active { background:linear-gradient(90deg, rgba(245,193,92,.16), rgba(52,211,153,.07)); color:#ffd77a !important;
+    box-shadow:inset 0 0 0 1px rgba(245,193,92,.3); transform:none; }
+  /* 🧭 Menu dọc Bảo khố (desktop) */
+  .x-side-tab { display:flex; align-items:center; gap:10px; padding:9px 12px; border-radius:12px;
+    font-size:13px; font-weight:600; color:#c7ccd6; text-align:left; border:1px solid transparent;
+    transition:background .22s ease, color .22s ease, transform .22s ease, border-color .22s ease; }
+  .x-side-tab:hover { background:rgba(255,255,255,.06); color:#fff; transform:translateX(3px); }
+  .x-side-tab-active { background:linear-gradient(90deg, rgba(245,193,92,.16), rgba(52,211,153,.06));
+    color:#ffd77a; border-color:rgba(245,193,92,.35); transform:none; }
   .d4m-tab-underline { background:linear-gradient(90deg,#ffd77a,#f5c15c,#34d399); box-shadow:0 0 12px rgba(245,193,92,.6); }
   @media (min-width:1024px){
     .d4m-post-card { border-radius:16px; margin:4px 8px; border:1px solid transparent; }
