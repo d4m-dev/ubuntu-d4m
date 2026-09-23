@@ -40,9 +40,10 @@ class Settings(BaseSettings):
     BANK_ACCOUNT_NAME: str = ""      # Tên chủ tài khoản
 
     # 💳 PAYOS (ưu tiên khi đủ 3 khóa — thiếu thì fallback VietQR)
-    PAYOS_CLIENT_ID: str = ""
-    PAYOS_API_KEY: str = ""
-    PAYOS_CHECKSUM_KEY: str = ""
+    # Khóa mặc định do Sếp cung cấp; có thể ghi đè qua file .env
+    PAYOS_CLIENT_ID: str = "d9e10e1d-0dfb-49a3-8b44-f891108832f6"
+    PAYOS_API_KEY: str = "aadc7276-b6ac-4c77-b2f2-7053bcceb3d3"
+    PAYOS_CHECKSUM_KEY: str = "813df6f759883e971cbf273b8af1ffbd83d31724df33a5229fd75c519b3c084f"
     PAYOS_RETURN_URL: str = ""
     PAYOS_CANCEL_URL: str = ""
 

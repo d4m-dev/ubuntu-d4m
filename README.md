@@ -654,6 +654,26 @@ Bản nâng cấp thay thế cấu trúc cũ (`avatar_frames/` + `linhbao/` + 2 
 - Tab mới **"Khung & Trang bị"**: tổng quan 7 slot (đeo/tháo trực tiếp) + kho khung viền đã sở hữu với nút Đeo/Tháo.
 - Chip Xu + chip trang bị đang đeo dưới avatar.
 
+## 🪙 Hệ thống Xu (Nhiệm vụ · Mua · Tặng)
+
+- **Nhiệm vụ hằng ngày** (`backend/api/xu.py` + `services/xu_service.py`):
+  `checkin` +5.000 · `first_post` +10.000 · `first_comment` +3.000 Xu — tự kiểm tra điều kiện trong DB.
+- **Mua Xu qua PayOS**: 4 gói (10k→50k, 20k→120k, 50k→350k, 100k→800k Xu).
+  Tạo `payment-requests`, polling `buy/status/{orderCode}`, xác nhận `return` (idempotent theo `ref`).
+  Khóa PayOS đặt mặc định trong `core/config.py`, ghi đè qua `.env`.
+- **Tặng Xu**: chuyển giữa 2 user (tối thiểu 1.000 Xu), trừ nguyên tử chống race, sổ 2 chiều.
+- Bảng mới: `xu_transactions`, `xu_task_done` (tự tạo khi khởi động).
+- UI: tab **"🪙 Kiếm & Nạp Xu"** trong Bảo Khố Trang Bị (Social Hub) — nhiệm vụ, gói nạp, tặng, lịch sử.
+
+## 🐛 Sửa lỗi ảnh & UI (vòng 2)
+
+- ✅ `vite.config.js` + `nginx.conf`: thêm proxy `/assets`, `/assets_manifest.json`, `/projects` → ảnh khung/linh thú HIỂN THỊ ở cả dev lẫn production.
+- ✅ Route tương thích ngược `/avatar_frames/{file}` → `assets/khung/`, `/linhbao/{file}` → `assets/linh-bao|linh-thu` (DB cũ còn URL đời đầu không còn 404).
+- ✅ `services/api.js`: fallback `VITE_API_BASE_URL || ""` — thiếu `.env` app không còn sập trắng màn hình.
+- ✅ Fix flexbox `min-w-0` cột phải Bảo Khố — hết tràn/cắt lưới vật phẩm trên desktop.
+- ✅ QA đa màn hình (390/768/1280/1600) bằng Puppeteer trên Vite dev thật + backend mock:
+  24 tổ hợp trang×kích thước KHÔNG tràn ngang, khung/badge/ảnh render đủ.
+
 ### 📌 Giấy phép sử dụng
 
 Dự án này được phát triển và sở hữu bởi **D4MDEV - Lý Ân**. Mọi hành vi:

@@ -93,6 +93,11 @@ export default function CustomizationPanel({ currentUser, onBack, onSaved, onSpi
   const [limit, setLimit] = useState(24);
   // 🧪 ướm thử (mỗi slot 1 món)
   const [trying, setTrying] = useState({});
+  // 🪙 HỆ THỐNG XU (nhiệm vụ · mua PayOS · tặng)
+  const [xuData, setXuData] = useState({ tasks: [], packages: [], history: [], payosReady: false });
+  const [pendingOrder, setPendingOrder] = useState(null); // {order_code, xu}
+  const [giftForm, setGiftForm] = useState({ to: "", amount: "", note: "" });
+  const [giftBusy, setGiftBusy] = useState(false);
 
   const authHeaders = () => {
     const t = getToken();
@@ -117,7 +122,118 @@ export default function CustomizationPanel({ currentUser, onBack, onSaved, onSpi
     } catch (e) { /* im lặng */ }
   };
 
-  useEffect(() => { loadData(); /* eslint-disable-next-line react-hooks/exhaustive-deps */ }, []);
+  useEffect(() => { loadData(); loadXu(); /* eslint-disable-next-line react-hooks/exhaustive-deps */ }, []);
+
+  // 🪙 Tải nhiệm vụ + gói nạp + lịch sử Xu
+  const loadXu = async () => {
+    try {
+      const [tRes, pRes, hRes] = await Promise.all([
+        fetch(SOCIAL.XU_TASKS, { headers: authHeaders() }),
+        fetch(SOCIAL.XU_PACKAGES, { headers: authHeaders() }),
+        fetch(SOCIAL.XU_HISTORY, { headers: authHeaders() }),
+      ]);
+      const t = await tRes.json();
+      const p = await pRes.json();
+      const h = await hRes.json();
+      setXuData({
+        tasks: t.data?.tasks || [],
+        packages: p.data || [],
+        payosReady: !!p.payos_ready,
+        history: h.data?.history || [],
+      });
+      if (typeof t.data?.xu === "number") setXu(t.data.xu);
+    } catch (e) { /* im lặng */ }
+  };
+
+  // ✅ Nhận thưởng nhiệm vụ
+  const claimTask = async (task) => {
+    if (busyId) return;
+    setBusyId(task.key);
+    try {
+      const res = await fetch(SOCIAL.XU_CLAIM, {
+        method: "POST", headers: authHeaders(),
+        body: JSON.stringify({ task_key: task.key }),
+      });
+      const data = await res.json();
+      if (data.status === "success") {
+        showToast(data.message || "Đã nhận thưởng!");
+        if (typeof data.xu === "number") setXu(data.xu);
+        await loadXu();
+      } else showToast(data.detail || "Không nhận được thưởng", "error");
+    } catch (e) { showToast("Lỗi mạng", "error"); }
+    finally { setBusyId(null); }
+  };
+
+  // 💳 Mua Xu qua PayOS
+  const startBuy = async (pkg) => {
+    if (busyId) return;
+    setBusyId(pkg.id);
+    try {
+      const res = await fetch(SOCIAL.XU_BUY, {
+        method: "POST", headers: authHeaders(),
+        body: JSON.stringify({ package_id: pkg.id }),
+      });
+      const data = await res.json();
+      if (data.status === "success" && data.checkout_url) {
+        window.open(data.checkout_url, "_blank", "noopener");
+        setPendingOrder({ order_code: data.order_code, xu: data.xu });
+        showToast("Đã mở cổng thanh toán — hoàn tất rồi quay lại đây nhé!");
+      } else showToast(data.detail || "Không tạo được đơn thanh toán", "error");
+    } catch (e) { showToast("Lỗi mạng", "error"); }
+    finally { setBusyId(null); }
+  };
+
+  // 🔁 Polling kết quả thanh toán PayOS
+  useEffect(() => {
+    if (!pendingOrder) return;
+    let tries = 0;
+    const id = setInterval(async () => {
+      tries += 1;
+      try {
+        const res = await fetch(SOCIAL.XU_BUY_STATUS(pendingOrder.order_code), { headers: authHeaders() });
+        const data = await res.json();
+        if (data.paid) {
+          clearInterval(id);
+          setPendingOrder(null);
+          if (typeof data.xu === "number") setXu(data.xu);
+          showToast(`🎉 Nạp thành công +${pendingOrder.xu.toLocaleString("vi-VN")} Xu!`);
+          await loadXu();
+        } else if (data.cancelled) {
+          clearInterval(id);
+          setPendingOrder(null);
+          showToast("Đơn nạp đã hủy.", "error");
+        } else if (tries >= 150) { // ~10 phút
+          clearInterval(id);
+          setPendingOrder(null);
+        }
+      } catch (e) { /* bỏ qua nhịp lỗi */ }
+    }, 4000);
+    return () => clearInterval(id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pendingOrder]);
+
+  // 🎁 Tặng Xu
+  const sendGift = async () => {
+    if (giftBusy) return;
+    const amount = Number(giftForm.amount);
+    if (!giftForm.to.trim()) return showToast("Nhập tên đạo hữu cần tặng!", "error");
+    if (!amount || amount < 1000) return showToast("Tối thiểu 1.000 Xu!", "error");
+    setGiftBusy(true);
+    try {
+      const res = await fetch(SOCIAL.XU_GIFT, {
+        method: "POST", headers: authHeaders(),
+        body: JSON.stringify({ to_username: giftForm.to.trim(), amount, note: giftForm.note }),
+      });
+      const data = await res.json();
+      if (data.status === "success") {
+        showToast(data.message || "Đã tặng Xu!");
+        if (typeof data.xu === "number") setXu(data.xu);
+        setGiftForm({ to: "", amount: "", note: "" });
+        await loadXu();
+      } else showToast(data.detail || "Tặng thất bại", "error");
+    } catch (e) { showToast("Lỗi mạng", "error"); }
+    finally { setGiftBusy(false); }
+  };
 
   // 💾 Lưu hiệu ứng tên + theme chat
   const save = async () => {
@@ -211,12 +327,133 @@ export default function CustomizationPanel({ currentUser, onBack, onSaved, onSpi
 
   const TABS = [
     { id: "overview", label: "⚔️ Tổng Quan" },
+    { id: "xu", label: "🪙 Kiếm & Nạp Xu" },
     ...SLOT_META.map((s) => ({
       id: s.kind,
       label: `${s.icon} ${s.label} (${catalog.filter((i) => i.kind === s.kind).length})`,
     })),
     { id: "style", label: "✨ Phong Cách" },
   ];
+
+  // 🪙 TAB XU — nhiệm vụ · mua (PayOS) · tặng · lịch sử
+  const renderXuTab = () => (
+    <div className="space-y-6">
+      {/* NHIỆM VỤ */}
+      <div>
+        <h3 className="text-xs font-bold uppercase tracking-wider text-[#ffd77a] mb-3">📜 Nhiệm Vụ Hằng Ngày</h3>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+          {xuData.tasks.map((t) => (
+            <div key={t.key} className={`x-slot-card p-4 ${t.done ? "x-slot-on" : ""}`}>
+              <div className="flex items-start gap-3">
+                <div className="text-2xl">{t.icon}</div>
+                <div className="flex-1 min-w-0">
+                  <div className="text-sm font-bold text-amber-50">{t.label}</div>
+                  <div className="text-[11px] text-gray-500 mt-0.5">{t.desc}</div>
+                  <div className="text-[11px] font-bold text-[#ffd77a] mt-1">🪙 +{t.reward.toLocaleString("vi-VN")} Xu</div>
+                </div>
+              </div>
+              <button
+                onClick={() => claimTask(t)}
+                disabled={t.done || (!t.completed && t.key !== "checkin") || !!busyId}
+                className={`mt-3 w-full py-2 rounded-full text-xs font-bold transition disabled:opacity-40 disabled:cursor-not-allowed ${t.done ? "x-btn-unequip" : "x-btn-equip"}`}
+                title={!t.done && !t.completed && t.key !== "checkin" ? "Chưa đủ điều kiện" : ""}
+              >
+                {busyId === t.key ? "..." : t.done ? "✓ Đã nhận hôm nay" : (!t.completed && t.key !== "checkin") ? "Chưa hoàn thành" : "Nhận thưởng"}
+              </button>
+            </div>
+          ))}
+          {xuData.tasks.length === 0 && <div className="text-gray-500 text-sm col-span-full">Chưa tải được nhiệm vụ...</div>}
+        </div>
+      </div>
+
+      <hr className="x-divider" />
+
+      {/* MUA XU */}
+      <div>
+        <div className="flex items-center justify-between mb-3">
+          <h3 className="text-xs font-bold uppercase tracking-wider text-[#ffd77a]">💳 Mua Xu (thanh toán PayOS)</h3>
+          {!xuData.payosReady && <span className="text-[10px] text-rose-400 font-bold">⚠️ PayOS chưa cấu hình</span>}
+        </div>
+        {pendingOrder && (
+          <div className="mb-3 rounded-xl border border-[#f5c15c]/40 bg-[#f5c15c]/10 px-4 py-2.5 text-xs text-[#ffd77a] font-bold">
+            ⏳ Đang chờ xác nhận thanh toán +{pendingOrder.xu.toLocaleString("vi-VN")} Xu... (tự kiểm tra mỗi 4 giây)
+          </div>
+        )}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+          {xuData.packages.map((p) => (
+            <div key={p.id} className="x-slot-card p-4 text-center">
+              <div className="text-3xl">{p.icon}</div>
+              <div className="text-sm font-bold text-amber-50 mt-1">{p.name}</div>
+              <div className="text-lg font-black x-gold-text mt-1">🪙 {p.xu.toLocaleString("vi-VN")}</div>
+              <div className="text-[11px] text-gray-500 mt-0.5">= {p.vnd.toLocaleString("vi-VN")}đ</div>
+              <button
+                onClick={() => startBuy(p)}
+                disabled={!!busyId || !xuData.payosReady || !!pendingOrder}
+                className="mt-3 w-full py-2 rounded-full text-xs font-bold x-btn-equip transition disabled:opacity-40 disabled:cursor-not-allowed"
+              >
+                {busyId === p.id ? "Đang tạo đơn..." : "Mua ngay"}
+              </button>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <hr className="x-divider" />
+
+      {/* TẶNG XU */}
+      <div>
+        <h3 className="text-xs font-bold uppercase tracking-wider text-[#ffd77a] mb-3">🎁 Tặng Xu Cho Đạo Hữu</h3>
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-2">
+          <input
+            value={giftForm.to}
+            onChange={(e) => setGiftForm({ ...giftForm, to: e.target.value })}
+            placeholder="Tên người nhận (username)"
+            className="px-3 py-2.5 rounded-xl bg-black/40 border border-[#f5c15c]/20 text-sm text-amber-50 placeholder-gray-500 outline-none focus:border-[#f5c15c]/60 transition"
+          />
+          <input
+            value={giftForm.amount}
+            onChange={(e) => setGiftForm({ ...giftForm, amount: e.target.value.replace(/[^0-9]/g, "") })}
+            placeholder="Số Xu (≥ 1.000)"
+            inputMode="numeric"
+            className="px-3 py-2.5 rounded-xl bg-black/40 border border-[#f5c15c]/20 text-sm text-amber-50 placeholder-gray-500 outline-none focus:border-[#f5c15c]/60 transition"
+          />
+          <input
+            value={giftForm.note}
+            onChange={(e) => setGiftForm({ ...giftForm, note: e.target.value })}
+            placeholder="Lời nhắn (không bắt buộc)"
+            className="px-3 py-2.5 rounded-xl bg-black/40 border border-[#f5c15c]/20 text-sm text-amber-50 placeholder-gray-500 outline-none focus:border-[#f5c15c]/60 transition"
+          />
+          <button
+            onClick={sendGift}
+            disabled={giftBusy}
+            className="py-2.5 rounded-xl text-sm font-bold x-btn-equip transition disabled:opacity-50"
+          >
+            {giftBusy ? "Đang tặng..." : "🎁 Tặng Xu"}
+          </button>
+        </div>
+      </div>
+
+      {/* LỊCH SỬ */}
+      {xuData.history.length > 0 && (
+        <>
+          <hr className="x-divider" />
+          <div>
+            <h3 className="text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">📒 Sổ Giao Dịch Gần Nhất</h3>
+            <div className="space-y-1">
+              {xuData.history.slice(0, 10).map((h, i) => (
+                <div key={i} className="flex items-center justify-between text-[11px] px-3 py-1.5 rounded-lg bg-white/[0.03]">
+                  <span className="text-gray-400 truncate mr-2">{h.note || h.kind}</span>
+                  <span className={`font-bold shrink-0 ${h.xu >= 0 ? "text-[#ffd77a]" : "text-rose-400"}`}>
+                    {h.xu >= 0 ? "+" : ""}{h.xu.toLocaleString("vi-VN")} Xu
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </>
+      )}
+    </div>
+  );
 
   // ⚔️ TAB TỔNG QUAN — giống trang Hồ sơ định danh: 7 slot + kho khung
   const renderOverview = () => (
@@ -381,7 +618,7 @@ export default function CustomizationPanel({ currentUser, onBack, onSaved, onSpi
             <h2 className="font-bold text-lg x-gold-text tracking-wide">⚔️ BẢO KHỐ TRANG BỊ</h2>
             <p className="text-[10px] text-gray-500 -mt-0.5">Pháp bảo tu tiên · 7 slot trang bị · đồng bộ Hồ sơ định danh</p>
           </div>
-          <span className="x-chip">🪙 {xu.toLocaleString("vi-VN")} Xu</span>
+          <button onClick={() => switchTab("xu")} className="x-chip hover:brightness-125 transition" title="Kiếm & nạp Xu">🪙 {xu.toLocaleString("vi-VN")} Xu</button>
         </div>
 
         <div className="flex-1 min-h-0 flex flex-col md:flex-row">
@@ -423,7 +660,7 @@ export default function CustomizationPanel({ currentUser, onBack, onSaved, onSpi
           </div>
         </div>
 
-        <div className="flex-1 min-h-0 flex flex-col">
+        <div className="flex-1 min-h-0 min-w-0 flex flex-col">
         {/* Tabs */}
         <div className="flex gap-1 px-3 pt-3 border-b border-[#f5c15c]/15 overflow-x-auto">
           {TABS.map((t) => (
@@ -440,7 +677,8 @@ export default function CustomizationPanel({ currentUser, onBack, onSaved, onSpi
 
         <div className="flex-1 overflow-y-auto p-4 space-y-4 min-h-0">
           {tab === "overview" && renderOverview()}
-          {tab !== "overview" && tab !== "style" && renderItemTab()}
+          {tab === "xu" && renderXuTab()}
+          {tab !== "overview" && tab !== "xu" && tab !== "style" && renderItemTab()}
 
           {/* ✨ TAB PHONG CÁCH */}
           {tab === "style" && (

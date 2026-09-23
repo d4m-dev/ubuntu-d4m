@@ -30,7 +30,8 @@ from api import (
     projects, ai_admin, audio_engine, bio_premium, music, telegram_bot, astrology, ytdl,
     admin_scripts, admin_security, dldriver, autocode, omni_dl, d4m_music, system,
     donate, ws_donate, upload, notification, profile_public, songs_upload, social_dm,
-    spirit  # 🐉💎 Linh thú & Linh bảo (Social Hub)
+    spirit,  # 🐉💎 Linh thú & Linh bảo (Social Hub)
+    xu       # 🪙 Nhiệm vụ kiếm Xu · Mua Xu (PayOS) · Tặng Xu
 )
 
 # ==========================================
@@ -49,6 +50,12 @@ async def lifespan(app: FastAPI):
         sync_catalog_from_manifest()
     except Exception as e:
         logging.warning(f"⚠️ Spirit schema/catalog sync: {e}")
+    # 🪙 Bảng giao dịch Xu (nhiệm vụ / mua PayOS / tặng)
+    try:
+        from services.xu_service import ensure_xu_schema
+        ensure_xu_schema()
+    except Exception as e:
+        logging.warning(f"⚠️ Xu schema: {e}")
     task_janitor = asyncio.create_task(ai_janitor_task())
     task_telegram = asyncio.create_task(telegram_polling_task())
     
@@ -164,10 +171,44 @@ def setup_static_mounts(app: FastAPI):
     async def spirit_items_manifest():
         return {"status": "success", "data": []}
 
+    # 🔙 TƯƠNG THÍCH NGƯỢC URL ẢNH CŨ (DB/manifest đời đầu còn lưu
+    # /avatar_frames/<file> và /linhbao/<file>) — chuyển về thư mục v2
+    import mimetypes
+
+    def _safe_asset_name(name: str) -> str:
+        # chống path traversal: chỉ cho phép tên file thuần
+        if not name or "/" in name or "\\" in name or ".." in name:
+            return ""
+        return os.path.basename(name)
+
+    def _serve_asset(sub_dirs, name: str):
+        from fastapi.responses import FileResponse as _FR
+        from fastapi import HTTPException as _HE
+        safe = _safe_asset_name(name)
+        if not safe:
+            raise _HE(status_code=400, detail="Tên file không hợp lệ")
+        for d in sub_dirs:
+            p = os.path.join(ASSETS_DIR, d, safe)
+            if os.path.exists(p) and os.path.isfile(p):
+                mt = mimetypes.guess_type(p)[0] or "application/octet-stream"
+                return _FR(p, media_type=mt,
+                           headers={"Cache-Control": "public, max-age=604800"})
+        raise _HE(status_code=404, detail="Không tìm thấy ảnh")
+
+    @app.get("/avatar_frames/{name}", include_in_schema=False)
+    async def legacy_avatar_frame(name: str):
+        # khung cũ → danh mục khung v2
+        return _serve_asset(["khung"], name)
+
+    @app.get("/linhbao/{name}", include_in_schema=False)
+    async def legacy_linhbao(name: str):
+        # linh bảo/thú cũ → linh-bao trước, linh-thu sau
+        return _serve_asset(["linh-bao", "linh-thu"], name)
+
 def setup_routers(app: FastAPI):
     api_routers = [
         auth.router, dashboard.router, websockets.router, chatbox.router,
-        social.router, spirit.router,  # 🐉💎 Spirit = Linh thú & Linh bảo
+        social.router, spirit.router, xu.router,  # 🐉💎 Spirit + 🪙 Xu
         widgets.router, projects.router, ai_admin.router, audio_engine.router, bio_premium.router,
         music.router, telegram_bot.router, astrology.router, ytdl.router, player.router, admin_scripts.router,
         admin_security.router, dldriver.router, autocode.router, omni_dl.router,

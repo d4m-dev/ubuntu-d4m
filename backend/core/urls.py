@@ -151,6 +151,19 @@ SPIRIT = {
     "ADMIN_GRANT": "/admin/grant",  # POST — Admin tặng vật phẩm cho user
 }
 
+# 🪙 HỆ THỐNG XU — nhiệm vụ kiếm Xu, mua Xu (PayOS), tặng Xu
+XU = {
+    "PREFIX": "/api/xu",
+    "TASKS": "/tasks",              # GET  — danh sách nhiệm vụ + trạng thái
+    "CLAIM": "/tasks/claim",        # POST — nhận thưởng nhiệm vụ
+    "PACKAGES": "/packages",        # GET  — các gói nạp Xu
+    "BUY": "/buy",                  # POST — tạo link thanh toán PayOS
+    "BUY_STATUS": "/buy/status/{order_code}",  # GET — polling kết quả
+    "RETURN": "/return",            # GET  — PayOS returnUrl
+    "GIFT": "/gift",                # POST — tặng Xu cho user khác
+    "HISTORY": "/history",          # GET  — sổ giao dịch
+}
+
 # ============================================================
 # 📊 DASHBOARD, AI, WIDGETS, SCRIPTS, SECURITY, PLAYER, WS
 # ============================================================

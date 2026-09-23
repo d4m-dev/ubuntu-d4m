@@ -1,7 +1,7 @@
 // src/services/api.js
 import axios from "axios";
 
-const rawApiUrl = import.meta.env.VITE_API_BASE_URL;
+const rawApiUrl = import.meta.env.VITE_API_BASE_URL || "";
 
 export const API_BASE_URL = rawApiUrl.replace(/\/+$/, "");
 export const API = `${API_BASE_URL}/api`;

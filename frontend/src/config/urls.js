@@ -21,8 +21,9 @@ const rawWsUrl =
     ? `${window.location.protocol === "https:" ? "wss" : "ws"}://${window.location.host}`
     : "");
 
-export const API_BASE_URL = rawApiUrl.replace(/\/+$/, "");
-export const WS_BASE_URL = rawWsUrl.replace(/\/+$/, "");
+// WHY: thiếu .env thì import.meta.env.VITE_* = undefined → phải fallback "" để app không sập
+export const API_BASE_URL = (rawApiUrl || "").replace(/\/+$/, "");
+export const WS_BASE_URL = (rawWsUrl || "").replace(/\/+$/, "");
 
 // ============================================================
 // 🖼️ URL TÀI NGUYÊN TĨNH & NỘI BỘ
@@ -201,6 +202,14 @@ export const SOCIAL = {
   SPIRIT_EQUIP: `${API_BASE_URL}/api/social/spirits/equip`,             // trang bị
   SPIRIT_UNEQUIP: `${API_BASE_URL}/api/social/spirits/unequip`,         // tháo
   SPIRIT_FILE: (path) => `${API_BASE_URL}${path}`,                      // /assets/<danh-mục>/<file>
+  // 🪙 Hệ thống Xu — nhiệm vụ kiếm Xu · mua Xu (PayOS) · tặng Xu
+  XU_TASKS: `${API_BASE_URL}/api/xu/tasks`,                             // danh sách nhiệm vụ
+  XU_CLAIM: `${API_BASE_URL}/api/xu/tasks/claim`,                       // nhận thưởng
+  XU_PACKAGES: `${API_BASE_URL}/api/xu/packages`,                       // gói nạp
+  XU_BUY: `${API_BASE_URL}/api/xu/buy`,                                 // tạo link PayOS
+  XU_BUY_STATUS: (order) => `${API_BASE_URL}/api/xu/buy/status/${order}`, // polling
+  XU_GIFT: `${API_BASE_URL}/api/xu/gift`,                               // tặng Xu
+  XU_HISTORY: `${API_BASE_URL}/api/xu/history`,                         // sổ giao dịch
 };
 
 // ============================================================
