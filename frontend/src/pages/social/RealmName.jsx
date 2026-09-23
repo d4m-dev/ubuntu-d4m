@@ -3,6 +3,7 @@
 // realmIndex = 0 (Phàm Nhân) hoặc chưa tải xong → fallback hiệu ứng tên thường.
 import { useEffect, useState } from "react";
 import { API_BASE_URL } from "../../config/urls";
+import { NAME_EFFECTS } from "./socialStyles";
 import { nameEffectStyle } from "./AvatarFrame";
 
 let REALMS = null;
@@ -45,6 +46,24 @@ export default function RealmName({ realmIndex = 0, spiritRoot = null, effectId,
   const realm = realms && idx > 0 ? realms[Math.min(idx, realms.length - 1)] : null;
 
   if (!realm) {
+    // 🎨 Chưa có cảnh giới → hiệu ứng tên; ưu tiên GIF text-masking từ tu-vi assets
+    const eff = NAME_EFFECTS.find((e) => e.id === effectId);
+    if (eff?.gif) {
+      return (
+        <span
+          className={`dao-huu-name ${className}`}
+          style={{
+            ...style,
+            "--tier-gif": `url('${API_BASE_URL}${eff.gif}')`,
+            "--tier-gradient": extractGradient(eff.css),
+            "--tier-fallback-color": "#e5e7eb",
+            "--tier-glow": "drop-shadow(0 0 6px rgba(255,255,255,.25))",
+          }}
+        >
+          {name}
+        </span>
+      );
+    }
     return (
       <span className={`font-bold ${className}`} style={{ ...style, ...cssOf(nameEffectStyle(effectId)) }}>
         {name}
@@ -90,6 +109,12 @@ export function RealmBadge({ realmIndex = 0, className = "" }) {
       ☯ {realm.display_title}
     </span>
   );
+}
+
+// lấy giá trị background (gradient) từ chuỗi css để làm lớp fallback cho text-masking
+function extractGradient(css) {
+  const m = (css || "").match(/background\s*:\s*([^;]+);?/);
+  return m ? m[1].trim() : "linear-gradient(90deg,#e5e7eb,#9ca3af)";
 }
 
 function cssOf(str) {

@@ -10,7 +10,8 @@ import { showToast } from "../../lib/toast";
 import { IconMessage, IconBack } from "./icons";
 import { CHAT_THEMES, SOCIAL_GLOBAL_CSS } from "./socialStyles";
 import AvatarFrame from "./AvatarFrame";
-import RealmName from "./RealmName";
+import RealmName, { RealmBadge } from "./RealmName";
+import { API_BASE_URL } from "../../config/urls";
 
 const AVATAR = (seed) => `https://api.dicebear.com/7.x/avataaars/svg?seed=${encodeURIComponent(seed)}`;
 
@@ -187,7 +188,16 @@ export default function DmInbox({ currentUser, onBack, onUnreadChange, onNavigat
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [showNew, search]);
 
-  const fmtTime = (iso) => {
+  const fmtDay = (iso) => {
+  if (!iso) return "";
+  const d = new Date(String(iso).replace(" ", "T"));
+  const today = new Date(); const yest = new Date(Date.now() - 864e5);
+  const same = (a, b) => a.toDateString() === b.toDateString();
+  if (same(d, today)) return "Hôm nay";
+  if (same(d, yest)) return "Hôm qua";
+  return d.toLocaleDateString("vi-VN", { day: "2-digit", month: "2-digit", year: "numeric" });
+};
+const fmtTime = (iso) => {
     if (!iso) return "";
     const d = new Date(iso.replace(" ", "T"));
     return d.toLocaleTimeString("vi-VN", { hour: "2-digit", minute: "2-digit" });
@@ -306,42 +316,76 @@ export default function DmInbox({ currentUser, onBack, onUnreadChange, onNavigat
                   <IconBack />
                 </button>
                 <AvatarFrame src={activeConvo.user.avatar_url || AVATAR(activeConvo.user.username)} frame={activeConvo.user.avatar_frame} pet={activeConvo.user.pet} treasure={activeConvo.user.treasure} size={36} alt={`Ảnh đại diện ${activeConvo.user.fullname}`} />
-                <div>
-                  <div className="text-sm font-semibold text-white">{activeConvo.user.fullname || activeConvo.user.username}</div>
-                  <div className="text-xs text-gray-500">
+                <div className="min-w-0">
+                  <div className="text-sm truncate">
+                    <RealmName realmIndex={activeConvo.user.realm_index} spiritRoot={activeConvo.user.spirit_root}
+                      effectId={activeConvo.user.name_effect} name={activeConvo.user.fullname || activeConvo.user.username} className="font-bold" />
+                  </div>
+                  <div className="text-xs text-gray-500 flex items-center gap-1.5">
                     {typingMap[activeConvo.conversation_id] ? (
-                      <span className="text-[#1ed760] animate-pulse">Đang nhập...</span>
+                      <span className="text-emerald-400 animate-pulse">đang nhập...</span>
                     ) : (
-                      <>@{activeConvo.user.username}</>
+                      <>
+                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 inline-block" />
+                        <span className="truncate">@{activeConvo.user.username}</span>
+                        <RealmBadge realmIndex={activeConvo.user.realm_index} />
+                      </>
                     )}
                   </div>
                 </div>
               </div>
 
-              <div ref={scrollRef} className="flex-1 overflow-y-auto px-4 py-4 space-y-1.5" style={{ background: myTheme.themeBg }}>
+              <div ref={scrollRef} className="flex-1 overflow-y-auto px-3 md:px-6 py-4 space-y-1" style={{ background: myTheme.themeBg }}>
                 {messages.length === 0 && (
                   <div className="text-center text-gray-500 text-sm py-10">Hãy gửi lời chào đầu tiên 👋</div>
                 )}
-                {messages.map((m) => {
+                {messages.map((m, i) => {
                   const mine = m.sender_id === me;
-                  // người gửi dùng theme chat của họ (nếu có), còn tin của mình dùng theme của mình
                   const theme = mine ? myTheme : (CHAT_THEMES[m.chat_theme] || CHAT_THEMES.default);
+                  const prev = messages[i - 1];
+                  const next = messages[i + 1];
+                  // 📅 divider khi đổi ngày
+                  const newDay = !prev || String(prev.created_at || "").slice(0, 10) !== String(m.created_at || "").slice(0, 10);
+                  // 🧩 nhóm tin liên tiếp cùng người gửi (cách nhau < 3 phút)
+                  const grouped = prev && !newDay && prev.sender_id === m.sender_id &&
+                    (new Date(String(m.created_at).replace(" ", "T")) - new Date(String(prev.created_at).replace(" ", "T"))) < 180000;
+                  const lastOfGroup = !next || next.sender_id !== m.sender_id ||
+                    String(next.created_at || "").slice(0, 10) !== String(m.created_at || "").slice(0, 10);
                   return (
-                    <div key={m.id} className={`d4m-chat ${mine ? "mine" : "theirs"}`}>
-                      {!mine && (
-                        <AvatarFrame src={m.avatar_url || AVATAR(m.username)} frame={m.avatar_frame} pet={m.pet} treasure={m.treasure} size={28} alt="" />
+                    <div key={m.id}>
+                      {newDay && (
+                        <div className="flex items-center justify-center my-3">
+                          <span className="d4m-day-chip">{fmtDay(m.created_at)}</span>
+                        </div>
                       )}
-                      <div className="ml-1.5 mr-1.5" />
-                      <div
-                        className="d4m-bubble"
-                        style={{
-                          background: mine ? theme.mineBg : theme.theirsBg,
-                          color: mine ? theme.mineColor : theme.theirsColor,
-                          borderRadius: theme.bubbleRadius,
-                        }}
-                      >
-                        <p className="text-sm break-words whitespace-pre-wrap" style={{ margin: 0 }}>{m.content}</p>
-                        <div className="text-[10px] mt-0.5 opacity-70" style={{ textAlign: "right" }}>{fmtTime(m.created_at)}</div>
+                      <div className={`d4m-chat ${mine ? "mine" : "theirs"}`} style={{ marginTop: grouped ? 2 : 10 }}>
+                        {!mine && (grouped ? <div style={{ width: 28 }} /> :
+                          <AvatarFrame src={m.avatar_url || AVATAR(m.username)} frame={m.avatar_frame} pet={m.pet} treasure={m.treasure} size={28} alt="" />
+                        )}
+                        <div className="ml-1.5 mr-1.5" />
+                        <div
+                          className="d4m-bubble"
+                          style={{
+                            background: mine ? theme.mineBg : theme.theirsBg,
+                            color: mine ? theme.mineColor : theme.theirsColor,
+                            borderRadius: theme.bubbleRadius,
+                            boxShadow: "0 1px 2px rgba(0,0,0,.25)",
+                          }}
+                        >
+                          {m.image_url && (
+                            <img src={m.image_url.startsWith("http") ? m.image_url : API_BASE_URL + m.image_url}
+                              alt="ảnh" loading="lazy" className="rounded-xl mb-1 max-h-64 w-full object-cover" />
+                          )}
+                          {m.content && <p className="text-sm break-words whitespace-pre-wrap" style={{ margin: 0 }}>{m.content}</p>}
+                          <div className="text-[10px] mt-0.5 opacity-70 flex items-center justify-end gap-1">
+                            {lastOfGroup && <span>{fmtTime(m.created_at)}</span>}
+                            {mine && (
+                              <span className={m.is_read ? "text-sky-300 font-bold" : ""} title={m.is_read ? "Đã đọc" : "Đã gửi"}>
+                                {m.is_read ? "✓✓" : "✓"}
+                              </span>
+                            )}
+                          </div>
+                        </div>
                       </div>
                     </div>
                   );
@@ -358,9 +402,12 @@ export default function DmInbox({ currentUser, onBack, onUnreadChange, onNavigat
                 <button
                   type="submit"
                   disabled={!draft.trim() || sending}
-                  className="px-5 py-2.5 rounded-full bg-[#1ed760] text-black text-sm font-bold disabled:opacity-40 hover:bg-[#3af176]"
+                  aria-label="Gửi tin nhắn"
+                  className="w-11 h-11 shrink-0 rounded-full d4m-btn-grad flex items-center justify-center disabled:opacity-40 active:scale-95 transition"
                 >
-                  Gửi
+                  <svg viewBox="0 0 24 24" fill="currentColor" style={{ width: 20, height: 20 }} aria-hidden="true">
+                    <path d="M3.4 20.4l17.45-7.48a1 1 0 000-1.84L3.4 3.6a.993.993 0 00-1.39.91L2 9.12c0 .5.37.93.87.99L17 12 2.87 13.88c-.5.07-.87.5-.87 1l.01 4.61c0 .71.73 1.2 1.39.91z" />
+                  </svg>
                 </button>
               </form>
             </>

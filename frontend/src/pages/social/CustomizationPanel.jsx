@@ -487,10 +487,7 @@ export default function CustomizationPanel({ currentUser, onBack, onSaved, onSpi
     { id: "overview", label: "⚔️ Tổng Quan" },
     { id: "xu", label: "🪙 Kiếm & Nạp Xu" },
     { id: "cult", label: "🧘 Cảnh Giới" },
-    ...SLOT_META.map((s) => ({
-      id: s.kind,
-      label: `${s.icon} ${s.label} (${catalog.filter((i) => i.kind === s.kind).length})`,
-    })),
+    ...SLOT_META.map((s) => ({ id: s.kind, label: `${s.icon} ${s.label}` })),
     { id: "style", label: "✨ Phong Cách" },
   ];
 
@@ -538,7 +535,7 @@ export default function CustomizationPanel({ currentUser, onBack, onSaved, onSpi
             ⏳ Đang chờ xác nhận thanh toán +{pendingOrder.xu.toLocaleString("vi-VN")} Xu... (tự kiểm tra mỗi 4 giây)
           </div>
         )}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-3">
           {xuData.packages.map((p) => (
             <div key={p.id} className="x-slot-card p-4 text-center">
               <div className="text-3xl">{p.icon}</div>
@@ -618,7 +615,7 @@ export default function CustomizationPanel({ currentUser, onBack, onSaved, onSpi
   const renderOverview = () => (
     <div className="space-y-5">
       {/* 7 SLOT */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-3">
         {SLOT_META.map((s) => {
           const item = preview[s.kind];
           return (
@@ -628,7 +625,7 @@ export default function CustomizationPanel({ currentUser, onBack, onSaved, onSpi
               {item ? (
                 <>
                   <img src={full(item.image)} alt={item.name} loading="lazy" decoding="async"
-                    className="w-14 h-14 mx-auto mt-2 object-contain rounded-full bg-white/5 border border-[#f5c15c]/25" />
+                    className="w-10 h-10 md:w-14 md:h-14 mx-auto mt-1 md:mt-2 object-contain rounded-full bg-white/5 border border-[#f5c15c]/25" />
                   <div className="text-xs font-bold text-amber-50 mt-1.5 truncate" title={item.name}>{item.name}</div>
                   <div className="text-[9px] font-bold" style={{ color: rarityOf(item.rarity).color }}>
                     {rarityOf(item.rarity).label}
@@ -702,7 +699,7 @@ export default function CustomizationPanel({ currentUser, onBack, onSaved, onSpi
           rarity={rarity} onRarity={(r) => { setRarity(r); setLimit(24); }}
           counts={counts} placeholder={`Tầm bảo trong ${kindLabel}...`}
         />
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+        <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2 md:gap-3">
           {visible.map((item) => {
             const rar = rarityOf(item.rarity);
             const isEquipped = equipped[item.kind] === item.id;
@@ -726,13 +723,13 @@ export default function CustomizationPanel({ currentUser, onBack, onSaved, onSpi
                 <div className="relative inline-block">
                   <img
                     src={full(item.image)} alt={item.name} loading="lazy" decoding="async"
-                    className="w-20 h-20 mx-auto object-contain rounded-full"
+                    className="w-14 h-14 md:w-20 md:h-20 mx-auto object-contain rounded-full"
                     style={{ background: "radial-gradient(circle at 50% 38%, #1c2440, #0a0d18 72%)", border: "2px solid rgba(245,193,92,.25)" }}
                   />
                   {isEquipped && <span className="absolute -top-1 -right-1 text-[10px] bg-[#34d399] text-black font-bold rounded-full px-1.5">✓</span>}
                 </div>
-                <div className="mt-2 text-sm font-bold text-amber-50 truncate">{item.name}</div>
-                <div className="text-[10px] font-bold mt-0.5" style={{ color: rar.color }}>{rar.label}</div>
+                <div className="mt-1 md:mt-2 text-[11px] md:text-sm font-bold text-amber-50 truncate">{item.name}</div>
+                <div className="text-[9px] md:text-[10px] font-bold mt-0.5" style={{ color: rar.color }}>{rar.label}</div>
                 <div className="mt-2">
                   {item.owned ? (
                     <button
@@ -780,6 +777,20 @@ export default function CustomizationPanel({ currentUser, onBack, onSaved, onSpi
           <button onClick={() => switchTab("xu")} className="x-chip hover:brightness-125 transition" title="Kiếm & nạp Xu">🪙 {xu.toLocaleString("vi-VN")} Xu</button>
         </div>
 
+        {/* Tabs — full ngang panel để desktop dễ chọn, mobile vuốt */}
+        <div className="flex gap-1 px-3 pt-2 pb-0 border-b border-[#f5c15c]/15 overflow-x-auto lg:flex-wrap">
+          {TABS.map((t) => (
+            <button
+              key={t.id}
+              onClick={() => switchTab(t.id)}
+              aria-pressed={tab === t.id}
+              className={`x-tab ${tab === t.id ? "x-tab-active" : ""}`}
+            >
+              {t.label}
+            </button>
+          ))}
+        </div>
+
         <div className="flex-1 min-h-0 flex flex-col md:flex-row">
         {/* 👤 CỘT TRÁI: đạo hồ preview (giống trang profile) */}
         <div className="shrink-0 md:w-72 lg:w-80 border-b md:border-b-0 md:border-r border-[#f5c15c]/15 p-3 md:p-4 bg-white/[0.02] md:overflow-y-auto">
@@ -791,8 +802,9 @@ export default function CustomizationPanel({ currentUser, onBack, onSaved, onSpi
               dharma={preview.dharma} title={preview.title} ring={preview.ring} sect={preview.sect}
               size={96} alt=""
             />
-            <div className="mt-4 text-base md:text-lg font-bold" style={{ ...cssFrom(nameEffectStyle(effect)) }}>
-              {currentUser?.fullname || currentUser?.username}
+            <div className="mt-4 text-base md:text-lg">
+              <RealmName realmIndex={currentUser?.realm_index || 0} spiritRoot={currentUser?.spirit_root}
+                effectId={effect} name={currentUser?.fullname || currentUser?.username} className="font-black" />
             </div>
             <div className="text-xs text-gray-500">
               @{currentUser?.username}
@@ -820,20 +832,6 @@ export default function CustomizationPanel({ currentUser, onBack, onSaved, onSpi
         </div>
 
         <div className="flex-1 min-h-0 min-w-0 flex flex-col">
-        {/* Tabs */}
-        <div className="flex gap-1 px-3 pt-3 border-b border-[#f5c15c]/15 overflow-x-auto">
-          {TABS.map((t) => (
-            <button
-              key={t.id}
-              onClick={() => switchTab(t.id)}
-              aria-pressed={tab === t.id}
-              className={`x-tab ${tab === t.id ? "x-tab-active" : ""}`}
-            >
-              {t.label}
-            </button>
-          ))}
-        </div>
-
         <div className="flex-1 overflow-y-auto p-4 space-y-4 min-h-0">
           {tab === "overview" && renderOverview()}
           {tab === "xu" && renderXuTab()}
@@ -852,9 +850,8 @@ export default function CustomizationPanel({ currentUser, onBack, onSaved, onSpi
                       onClick={() => setEffect(e.id)}
                       aria-pressed={effect === e.id}
                       className={`px-3 py-2 rounded-xl border-2 text-sm font-bold transition ${effect === e.id ? "border-[#f5c15c] bg-[#f5c15c]/10" : "border-white/15 hover:border-[#f5c15c]/40"}`}
-                      style={cssFrom(e.css)}
                     >
-                      {e.label}
+                      <RealmName effectId={e.id} name={e.label} className="text-sm" />
                     </button>
                   ))}
                 </div>

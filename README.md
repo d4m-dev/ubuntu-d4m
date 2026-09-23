@@ -654,6 +654,17 @@ Bản nâng cấp thay thế cấu trúc cũ (`avatar_frames/` + `linhbao/` + 2 
 - Tab mới **"Khung & Trang bị"**: tổng quan 7 slot (đeo/tháo trực tiếp) + kho khung viền đã sở hữu với nút Đeo/Tháo.
 - Chip Xu + chip trang bị đang đeo dưới avatar.
 
+## 💬 Chat chuyên nghiệp + hoàn thiện UX (vòng 3)
+
+- **Chat kiểu app thật**: divider ngày (Hôm qua/Hôm nay), nhóm tin liên tiếp, tick ✓/✓✓ đã đọc,
+  bong bóng đổ bóng, header hiện **tên cảnh giới + huy hiệu**, nút gửi tròn gradient, ảnh trong tin nhắn.
+- **Upload avatar dứt điểm**: nginx `client_max_body_size 25M` (sửa lỗi 413 khi up ảnh điện thoại);
+  backend nhận GIF, convert JPG/PNG → **WebP 512px** (nhẹ ~10 lần), chặn file giả magic-bytes.
+- **Bảo khố responsive**: mobile lưới 3 cột compact; desktop thanh tab lên full-ngang panel (2 hàng,
+  không cần vuốt ngang).
+- **Danh hiệu** hết khổng lồ: kích thước inline theo cỡ avatar.
+- **Hiệu ứng tên dùng tài nguyên `backend/assets/tu-vi/more/*.gif`** (text-masking): Vũ Trụ, Hồn Thánh,
+  Thần Hỏa, Kim Tiên, Trăng Nga, Thiên Thần, Thái Ất — preview thật trong tab Phong Cách.
 ## 📱 Điều hướng kiểu app + Upload an toàn
 
 - **Social Hub**: 1 view mỗi lần. Mobile: màn hình con + **bottom nav cố định** (z-100, luôn bấm

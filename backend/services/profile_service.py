@@ -13,7 +13,7 @@ from schemas.auth_schemas import (
     ForgotPasswordRequest, ResetPasswordRequest
 )
 
-ALLOWED_AVATAR_EXTENSIONS = {"jpg", "jpeg", "png", "webp"}
+ALLOWED_AVATAR_EXTENSIONS = {"jpg", "jpeg", "png", "webp", "gif"}
 
 # ==========================================
 # 🔒 RATE LIMIT FORGOT-PASSWORD & OTP (chống spam email / brute-force)
@@ -120,17 +120,39 @@ def upload_user_avatar(user_id: int, username: str, file: UploadFile):
         real = "png"
     elif head[:4] == b"RIFF" and head[8:12] == b"WEBP":
         real = "webp"
+    elif head[:3] == b"GIF":
+        real = "gif"
     else:
-        raise HTTPException(status_code=400, detail="File không phải ảnh hợp lệ (JPG/PNG/WebP).")
-    file_ext = real
+        raise HTTPException(status_code=400, detail="File không phải ảnh hợp lệ (JPG/PNG/WebP/GIF).")
 
     base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     avatar_dir = os.path.join(base_dir, "images_workspace", "avatar", username)
     os.makedirs(avatar_dir, exist_ok=True)
-    filename = f"avatar_{username}_{random.randint(1000, 9999)}.{file_ext}"
-    
-    with open(os.path.join(avatar_dir, filename), "wb") as buffer: 
-        shutil.copyfileobj(file.file, buffer)
+
+    # 🗜️ TỐI ƯU: đọc giới hạn 8MB, resize 512px, lưu WebP nhẹ (trừ GIF giữ nguyên khung động)
+    raw = file.file.read(8 * 1024 * 1024 + 1)
+    if len(raw) > 8 * 1024 * 1024:
+        raise HTTPException(status_code=413, detail="Ảnh vượt quá 8MB — hãy chọn ảnh nhỏ hơn.")
+    if real == "gif":
+        filename = f"avatar_{username}_{random.randint(1000, 9999)}.gif"
+        with open(os.path.join(avatar_dir, filename), "wb") as buffer:
+            buffer.write(raw)
+    else:
+        try:
+            from PIL import Image
+            import io as _io
+            img = Image.open(_io.BytesIO(raw))
+            img = img.convert("RGBA")
+            img.thumbnail((512, 512), Image.LANCZOS)
+            filename = f"avatar_{username}_{random.randint(1000, 9999)}.webp"
+            img.save(os.path.join(avatar_dir, filename), "WEBP", quality=88)
+        except HTTPException:
+            raise
+        except Exception:
+            # Pillow lỗi → lưu thô như cũ (vẫn an toàn vì đã kiểm tra magic bytes)
+            filename = f"avatar_{username}_{random.randint(1000, 9999)}.{real}"
+            with open(os.path.join(avatar_dir, filename), "wb") as buffer:
+                buffer.write(raw)
         
     avatar_url = f"/images_workspace/avatar/{username}/{filename}"
     db_updater.update("UPDATE users SET avatar_url=%s WHERE id=%s", (avatar_url, user_id))

@@ -426,7 +426,7 @@ export default function ProfilePage() {
               
               <div className="mt-4 text-xl">
                 <RealmName realmIndex={profile.realm_index} spiritRoot={profile.spirit_root}
-                  effectId="default" name={profile.full_name || profile.username} className="font-black" />
+                  effectId={profile.name_effect || "default"} name={profile.full_name || profile.username} className="font-black" />
               </div>
               <p className="text-sm text-gray-400 font-mono mt-1">
                 @{profile.username}

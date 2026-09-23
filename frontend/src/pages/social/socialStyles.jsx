@@ -8,15 +8,16 @@
 // ============================================================
 // 1. HIỆU ỨNG TÊN — nhiều kiểu chọn
 // ============================================================
+// 🎨 HIỆU ỨNG TÊN — dùng tài nguyên GIF text-masking trong backend/assets/tu-vi/more
 export const NAME_EFFECTS = [
   { id: "default", label: "Mặc định", css: "color:#fff;font-weight:700;" },
-  { id: "gradient", label: "Cầu vồng", css: "background:linear-gradient(90deg,#f97316,#ec4899,#8b5cf6,#3b82f6,#22d3ee);-webkit-background-clip:text;background-clip:text;color:transparent;font-weight:800;" },
-  { id: "neon", label: "Neon xanh", css: "color:#67e8f9;text-shadow:0 0 6px #22d3ee,0 0 12px #0891b2;font-weight:800;" },
-  { id: "fire", label: "Lửa", css: "color:#fff;text-shadow:0 1px 0 #f97316,0 2px 0 #ea580c,0 3px 4px rgba(249,115,22,.6);font-weight:800;" },
-  { id: "gold", label: "Hoàng kim", css: "background:linear-gradient(180deg,#fef3c7,#f59e0b,#b45309);-webkit-background-clip:text;background-clip:text;color:transparent;font-weight:800;text-shadow:0 0 8px rgba(245,158,11,.3);" },
-  { id: "pink", label: "Kẹo ngọt", css: "background:linear-gradient(90deg,#f9a8d4,#f472b6,#db2777);-webkit-background-clip:text;background-clip:text;color:transparent;font-weight:800;" },
-  { id: "ice", label: "Băng giá", css: "color:#bae6fd;text-shadow:0 0 8px #38bdf8,0 0 20px #0ea5e9;font-weight:700;letter-spacing:.5px;" },
-  { id: "hologram", label: "Ảo ảnh", css: "background:linear-gradient(135deg,#c4b5fd,#67e8f9,#f0abfc,#a5f3fc);-webkit-background-clip:text;background-clip:text;color:transparent;font-weight:800;animation:d4m-shift 3s linear infinite;background-size:300% 300%;" },
+  { id: "gradient", label: "Vũ Trụ", gif: "/assets/tu-vi/more/vu_tru_chi_chu_2024.gif", css: "background:linear-gradient(90deg,#f97316,#ec4899,#8b5cf6,#3b82f6,#22d3ee);-webkit-background-clip:text;background-clip:text;color:transparent;font-weight:800;" },
+  { id: "neon", label: "Hồn Thánh", gif: "/assets/tu-vi/more/hon_thanh_v2.gif", css: "color:#67e8f9;text-shadow:0 0 6px #22d3ee,0 0 12px #0891b2;font-weight:800;" },
+  { id: "fire", label: "Thần Hỏa", gif: "/assets/tu-vi/more/than_hoa.gif", css: "color:#fff;text-shadow:0 1px 0 #f97316,0 2px 0 #ea580c,0 3px 4px rgba(249,115,22,.6);font-weight:800;" },
+  { id: "gold", label: "Kim Tiên", gif: "/assets/tu-vi/more/kim-tien-fix.webp", css: "background:linear-gradient(180deg,#fef3c7,#f59e0b,#b45309);-webkit-background-clip:text;background-clip:text;color:transparent;font-weight:800;text-shadow:0 0 8px rgba(245,158,11,.3);" },
+  { id: "pink", label: "Trăng Nga", gif: "/assets/tu-vi/more/tram-nga-final.webp", css: "background:linear-gradient(90deg,#f9a8d4,#f472b6,#db2777);-webkit-background-clip:text;background-clip:text;color:transparent;font-weight:800;" },
+  { id: "ice", label: "Thiên Thần", gif: "/assets/tu-vi/more/thien-than.gif", css: "color:#bae6fd;text-shadow:0 0 8px #38bdf8,0 0 20px #0ea5e9;font-weight:700;letter-spacing:.5px;" },
+  { id: "hologram", label: "Thái Ất", gif: "/assets/tu-vi/more/thai-at.webp", css: "background:linear-gradient(135deg,#c4b5fd,#67e8f9,#f0abfc,#a5f3fc);-webkit-background-clip:text;background-clip:text;color:transparent;font-weight:800;animation:d4m-shift 3s linear infinite;background-size:300% 300%;" },
 ];
 
 // ============================================================
@@ -218,6 +219,9 @@ export const SOCIAL_GLOBAL_CSS = `
     filter: var(--tier-glow, none);
     transition: filter .5s ease, background-image .5s ease;
   }
+  /* Chip divider ngày trong chat */
+  .d4m-day-chip { font-size:10px; font-weight:700; color:#9ca3af; background:rgba(255,255,255,.06);
+    border:1px solid rgba(255,255,255,.08); padding:3px 10px; border-radius:999px; }
   /* Nút đả tọa — hơi thở linh khí */
   @keyframes x-breathe { 0%,100%{box-shadow:0 0 8px rgba(52,211,153,.25)} 50%{box-shadow:0 0 22px rgba(52,211,153,.55)} }
   .x-meditate { animation:x-breathe 3s ease-in-out infinite; }
