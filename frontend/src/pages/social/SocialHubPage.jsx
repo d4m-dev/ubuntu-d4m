@@ -1,7 +1,7 @@
 // src/pages/social/SocialHubPage.jsx
 // Mạng xã hội D4M — giao diện theo phong cách Threads
 // 🛡️ BẢN HARDENED: fix memory-leak, re-render, spam-click, a11y, dead-buttons.
-import React, { useState, useEffect, useRef, useCallback, memo } from "react";
+import React, { useState, useEffect, useRef, useCallback, useMemo, memo } from "react";
 import { createPortal } from "react-dom";
 import { useNavigate } from "react-router-dom";
 import { ENDPOINTS, API_BASE_URL } from "../../config/api";
