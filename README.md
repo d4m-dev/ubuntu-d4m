@@ -635,6 +635,25 @@ Bản nâng cấp thay thế cấu trúc cũ (`avatar_frames/` + `linhbao/` + 2 
 - **Độ hiếm + giá Xu tự động**: common 20k / rare 60k / epic 180k / legendary 500k (phân bổ tất định theo hash tên file).
 - API: `GET /api/social/spirits/catalog` · `GET /me` · `POST /buy` · `/equip` · `/unequip` · `/admin/grant`.
 
+## 🔎 Audit & nâng cấp UI (Social Hub v3 + Profile khung viền)
+
+**Đã sửa qua audit toàn dự án (không bỏ file nào):**
+- 🔴 5 lỗi import sai gây crash runtime: `core.tasks` → `core.task` (audio engine + ytdl admin pipeline), `scripts.network_tunnel` → `core.tunnel` (telegram + tg_handlers) — Celery task & Cloudflare Tunnel hoạt động trở lại.
+- 🟠 `frontend/nginx.conf`: proxy route cũ `/avatar_frames/` `/linhbao/` → thay bằng `/assets/` + `/assets_manifest.json`.
+- 🟠 `tests/test_spirit_suite.py` viết lại cho Spirit v2 (manifest 1159 item, 7 slot, E2E catalog/me/equip/unequip/buy bằng fake DB).
+- 🟡 Đồng bộ schema v2: `core/db_schema.py`, `database/schema_full.sql`, `database/spirit_items.sql` — `kind VARCHAR(20)`, 7 cột `equipped_*` varchar(80), migration ENUM→VARCHAR.
+- 🟡 Fallback ảnh bìa `audio_engine` + avatar mặc định ProfilePage không còn trỏ đường dẫn favicon chết.
+
+**🌌 Social Hub v3 (thiết kế lại):**
+- Nền aurora gradient động + lưới mờ, logo mark D4M, tab underline gradient phát sáng.
+- Rail trái mới: thẻ user mini (avatar đủ 7 slot trang bị + ví Xu), nav active gradient, nút "Đăng bài ngay" CTA gradient.
+- Dải chào "hôm nay có gì mới?" + ô đăng nhanh đầu feed, skeleton card mới, hover post-card viền xanh.
+
+**🖼️ Trang Hồ sơ định danh (`/admin/profile`) có khung viền:**
+- Avatar lớn render đủ 7 slot (khung, linh thú, linh bảo, pháp tướng, danh hiệu, nhẫn, tông môn).
+- Tab mới **"Khung & Trang bị"**: tổng quan 7 slot (đeo/tháo trực tiếp) + kho khung viền đã sở hữu với nút Đeo/Tháo.
+- Chip Xu + chip trang bị đang đeo dưới avatar.
+
 ### 📌 Giấy phép sử dụng
 
 Dự án này được phát triển và sở hữu bởi **D4MDEV - Lý Ân**. Mọi hành vi:

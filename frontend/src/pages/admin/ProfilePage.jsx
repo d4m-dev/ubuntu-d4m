@@ -2,7 +2,20 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ENDPOINTS, API_BASE_URL } from "../../config/api";
+import { SOCIAL } from "../../config/urls";
 import { showToast } from "../../lib/toast";
+import AvatarFrame from "../social/AvatarFrame";
+
+// 🎨 7 slot trang bị Spirit v2
+const SLOT_META = [
+  { kind: "frame",    icon: "🖼️", label: "Khung viền" },
+  { kind: "pet",      icon: "🐉", label: "Linh thú" },
+  { kind: "treasure", icon: "💎", label: "Linh bảo" },
+  { kind: "dharma",   icon: "🔥", label: "Pháp tướng" },
+  { kind: "title",    icon: "🏷️", label: "Danh hiệu" },
+  { kind: "ring",     icon: "💍", label: "Nhẫn" },
+  { kind: "sect",     icon: "⛩️", label: "Tông môn" },
+];
 
 export default function ProfilePage() {
   const navigate = useNavigate();
@@ -30,6 +43,10 @@ export default function ProfilePage() {
   const [isLoadingProfile, setIsLoadingProfile] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [isUploadingAvatar, setIsUploadingAvatar] = useState(false);
+
+  // 🖼️ SPIRIT v2 — kho đồ + 7 slot trang bị
+  const [spirit, setSpirit] = useState({ xu: 0, equipped: {}, owned: [], frames: [] });
+  const [spiritBusy, setSpiritBusy] = useState(null);
 
   // =================================================================
   // 3. STATE XỬ LÝ ĐỔI EMAIL & OTP
@@ -106,7 +123,53 @@ export default function ProfilePage() {
     };
 
     fetchProfile();
+    loadSpirit();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [navigate]);
+
+  // =================================================================
+  // 4b. TẢI KHO ĐỒ SPIRIT v2 (catalog + trang bị + Xu)
+  // =================================================================
+  const loadSpirit = async () => {
+    try {
+      const [catRes, meRes] = await Promise.all([
+        fetch(SOCIAL.SPIRIT_CATALOG, { headers: getHeaders() }),
+        fetch(SOCIAL.SPIRIT_ME, { headers: getHeaders() }),
+      ]);
+      const cat = await catRes.json();
+      const me = await meRes.json();
+      const catalog = cat.data || [];
+      const byId = new Map(catalog.map((i) => [i.id, i]));
+      const equipped = me.data?.equipped || {};
+      const ownedIds = new Set((me.data?.items || []).map((i) => i.id));
+      setSpirit({
+        xu: me.data?.xu || 0,
+        equipped,
+        byId,
+        frames: catalog.filter((i) => i.kind === "frame"),
+        ownedFrames: catalog.filter((i) => i.kind === "frame" && ownedIds.has(i.id)),
+        slots: SLOT_META.map((s) => ({ ...s, item: byId.get(equipped[s.kind]) || null })),
+      });
+    } catch (e) { /* im lặng — spirit là phần bổ sung */ }
+  };
+
+  // ⚔️ Trang bị / tháo khung viền (và các slot khác)
+  const toggleEquipFrame = async (item) => {
+    if (spiritBusy) return;
+    const isEquipped = spirit.equipped[item.kind] === item.id;
+    setSpiritBusy(item.id);
+    try {
+      const url = isEquipped ? SOCIAL.SPIRIT_UNEQUIP : SOCIAL.SPIRIT_EQUIP;
+      const body = isEquipped ? { kind: item.kind } : { item_id: item.id };
+      const res = await fetch(url, { method: "POST", headers: getHeaders(), body: JSON.stringify(body) });
+      const data = await res.json();
+      if (data.status === "success") {
+        showToast(isEquipped ? "Đã tháo trang bị" : `✨ Đã trang bị ${item.name}!`);
+        await loadSpirit();
+      } else showToast(data.detail || "Thao tác thất bại", "error");
+    } catch (e) { showToast("Lỗi mạng", "error"); }
+    finally { setSpiritBusy(null); }
+  };
 
   // =================================================================
   // 5. CẬP NHẬT HỒ SƠ CƠ BẢN
@@ -265,7 +328,11 @@ export default function ProfilePage() {
   // FORMAT ĐƯỜNG DẪN ẢNH AVATAR
   // =================================================================
   const getAvatarUrl = () => {
-    if (!profile.avatar_url) return "/assets/favicon/d4m-dev/favicon-96x96.png";
+    // WHY: fallback ui-avatars đồng bộ với backend (tránh trỏ /assets/favicon không tồn tại)
+    if (!profile.avatar_url) {
+      const seed = encodeURIComponent(profile.full_name || profile.username || "D4M");
+      return `https://ui-avatars.com/api/?name=${seed}&background=random&color=fff&size=256`;
+    }
     return profile.avatar_url.startsWith("http")
       ? profile.avatar_url
       : API_BASE_URL + profile.avatar_url;
@@ -312,17 +379,26 @@ export default function ProfilePage() {
               <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/10 rounded-full blur-2xl pointer-events-none"></div>
 
               <div
-                className={`relative inline-block group cursor-pointer ${isUploadingAvatar ? 'opacity-50 pointer-events-none' : ''}`}
+                className={`relative inline-block group cursor-pointer py-3 ${isUploadingAvatar ? 'opacity-50 pointer-events-none' : ''}`}
                 onClick={() => document.getElementById("avatarUpload").click()}
+                title="Bấm để đổi ảnh đại diện"
               >
-                <img
+                {/* 🖼️ Avatar + khung viền + linh thú/bảo/pháp tướng... đang trang bị */}
+                <AvatarFrame
                   src={getAvatarUrl()}
+                  frame={spirit.byId?.get(spirit.equipped.frame) || spirit.equipped.frame || null}
+                  pet={spirit.byId?.get(spirit.equipped.pet) || null}
+                  treasure={spirit.byId?.get(spirit.equipped.treasure) || null}
+                  dharma={spirit.byId?.get(spirit.equipped.dharma) || null}
+                  title={spirit.byId?.get(spirit.equipped.title) || null}
+                  ring={spirit.byId?.get(spirit.equipped.ring) || null}
+                  sect={spirit.byId?.get(spirit.equipped.sect) || null}
+                  size={116}
                   alt="Profile Avatar"
-                  className="w-32 h-32 rounded-full mx-auto object-cover border-4 border-blue-500/30 shadow-[0_0_20px_rgba(59,130,246,0.3)] transition-all group-hover:brightness-50"
                 />
                 <div className="absolute inset-0 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                  <i className="fa-solid fa-camera text-2xl text-white mb-1"></i>
-                  <span className="text-[10px] font-bold">Đổi ảnh</span>
+                  <i className="fa-solid fa-camera text-2xl text-white mb-1 drop-shadow-lg"></i>
+                  <span className="text-[10px] font-bold drop-shadow-lg">Đổi ảnh</span>
                 </div>
                 <input
                   type="file"
@@ -340,9 +416,26 @@ export default function ProfilePage() {
                 @{profile.username}
               </p>
               
-              <div className="mt-4 inline-flex items-center bg-green-500/10 text-green-400 border border-green-500/20 px-4 py-1.5 rounded-full text-xs font-bold shadow-inner">
-                <i className="fa-solid fa-shield-check mr-1.5"></i> Đã định danh hệ thống
+              <div className="mt-4 flex items-center justify-center gap-2 flex-wrap">
+                <span className="inline-flex items-center bg-green-500/10 text-green-400 border border-green-500/20 px-4 py-1.5 rounded-full text-xs font-bold shadow-inner">
+                  <i className="fa-solid fa-shield-check mr-1.5"></i> Đã định danh hệ thống
+                </span>
+                <span className="inline-flex items-center bg-amber-500/10 text-amber-400 border border-amber-500/20 px-4 py-1.5 rounded-full text-xs font-bold shadow-inner">
+                  🪙 {Number(spirit.xu || 0).toLocaleString("vi-VN")} Xu
+                </span>
               </div>
+
+              {/* 🎖️ Các slot trang bị đang đeo */}
+              {spirit.slots?.some((s) => s.item) && (
+                <div className="mt-3 flex flex-wrap justify-center gap-1.5">
+                  {spirit.slots.filter((s) => s.item).map((s) => (
+                    <span key={s.kind} title={`${s.label}: ${s.item.name}`}
+                      className="inline-flex items-center gap-1 bg-white/5 border border-white/10 text-gray-300 px-2.5 py-1 rounded-full text-[10px] font-bold">
+                      {s.icon} {s.item.name}
+                    </span>
+                  ))}
+                </div>
+              )}
             </div>
 
             {/* TAB MENU */}
@@ -356,6 +449,16 @@ export default function ProfilePage() {
                 }`}
               >
                 <i className="fa-solid fa-user-pen w-6 text-center mr-1"></i> Hồ sơ cá nhân
+              </button>
+              <button
+                onClick={() => setActiveTab("spirit")}
+                className={`text-left px-5 py-3.5 rounded-2xl font-bold transition flex items-center ${
+                  activeTab === "spirit"
+                    ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/10"
+                    : "text-gray-400 hover:bg-white/5 hover:text-white"
+                }`}
+              >
+                <i className="fa-solid fa-wand-magic-sparkles w-6 text-center mr-1"></i> Khung & Trang bị
               </button>
               <button
                 onClick={() => { setActiveTab("email"); setEmailStep(1); }}
@@ -472,6 +575,73 @@ export default function ProfilePage() {
                     </button>
                   </div>
                 </form>
+              </div>
+            )}
+
+            {/* 🖼️ VÙNG KHUNG & TRANG BỊ (Spirit v2) */}
+            {activeTab === "spirit" && (
+              <div className="glass-panel p-8 rounded-3xl shadow-2xl animate-fade-in border-t-4 border-t-emerald-500">
+                <div className="flex items-center justify-between mb-6 border-b border-white/10 pb-4">
+                  <h2 className="text-2xl font-bold text-white">Khung & Trang Bị</h2>
+                  <Link to="/social/social-hub" className="text-xs font-bold text-emerald-400 hover:text-emerald-300 transition">
+                    Mở Social Hub để mua thêm <i className="fa-solid fa-arrow-right ml-1"></i>
+                  </Link>
+                </div>
+
+                {/* 7 SLOT — tổng quan trang bị đang đeo */}
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-8">
+                  {(spirit.slots || SLOT_META.map((s) => ({ ...s, item: null }))).map((s) => (
+                    <div key={s.kind} className={`rounded-2xl border p-3 text-center transition ${s.item ? "border-emerald-500/40 bg-emerald-500/5" : "border-white/10 bg-black/20"}`}>
+                      <div className="text-2xl mb-1">{s.icon}</div>
+                      <div className="text-[10px] font-bold uppercase tracking-wider text-gray-500">{s.label}</div>
+                      {s.item ? (
+                        <>
+                          <img src={s.item.image?.startsWith("http") ? s.item.image : API_BASE_URL + s.item.image}
+                            alt={s.item.name} loading="lazy" decoding="async"
+                            className="w-14 h-14 mx-auto mt-2 object-contain rounded-full bg-white/5 border border-white/10" />
+                          <div className="text-xs font-bold text-white mt-1.5 truncate" title={s.item.name}>{s.item.name}</div>
+                          <button onClick={() => toggleEquipFrame(s.item)} disabled={!!spiritBusy}
+                            className="mt-2 w-full py-1 rounded-full text-[10px] font-bold bg-white/10 text-gray-300 hover:bg-rose-500/20 hover:text-rose-300 transition disabled:opacity-50">
+                            Tháo ra
+                          </button>
+                        </>
+                      ) : (
+                        <div className="mt-2 py-4 text-[11px] text-gray-600">Chưa trang bị</div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+
+                {/* 🖼️ KHO KHUNG VIỀN */}
+                <h3 className="text-sm font-bold uppercase tracking-wider text-gray-400 mb-3">
+                  Kho khung viền của bạn ({(spirit.ownedFrames || []).length}/{(spirit.frames || []).length})
+                </h3>
+                {(spirit.ownedFrames || []).length === 0 ? (
+                  <div className="rounded-2xl border border-dashed border-white/15 bg-black/20 p-8 text-center">
+                    <div className="text-4xl mb-2">🖼️</div>
+                    <p className="text-sm text-gray-400">Bạn chưa sở hữu khung viền nào.</p>
+                    <p className="text-xs text-gray-600 mt-1">Vào Social Hub → Hồ sơ & Phong cách để mua bằng Xu ({(spirit.frames || []).length} mẫu đang có).</p>
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-3">
+                    {(spirit.ownedFrames || []).map((f) => {
+                      const isEq = spirit.equipped.frame === f.id;
+                      const busy = spiritBusy === f.id;
+                      return (
+                        <div key={f.id} className={`rounded-2xl border-2 p-2 text-center transition ${isEq ? "border-emerald-400 bg-emerald-500/10" : "border-white/10 bg-black/20 hover:border-white/30"}`}>
+                          <img src={f.image?.startsWith("http") ? f.image : API_BASE_URL + f.image}
+                            alt={f.name} loading="lazy" decoding="async"
+                            className="w-16 h-16 mx-auto object-contain rounded-full bg-white/5 border border-white/10" />
+                          <div className="text-[10px] font-bold text-gray-300 mt-1 truncate" title={f.name}>{f.name}</div>
+                          <button onClick={() => toggleEquipFrame(f)} disabled={busy}
+                            className={`mt-1.5 w-full py-1 rounded-full text-[10px] font-bold transition disabled:opacity-50 ${isEq ? "bg-white/10 text-gray-300 hover:bg-rose-500/20 hover:text-rose-300" : "bg-emerald-500 text-black hover:brightness-110"}`}>
+                            {busy ? "..." : isEq ? "Tháo" : "Đeo"}
+                          </button>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
               </div>
             )}
 

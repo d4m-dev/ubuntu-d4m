@@ -146,8 +146,23 @@ export const SOCIAL_GLOBAL_CSS = `
   .d4m-brand-gradient { background: linear-gradient(90deg,#1ed760 0%,#00d2d3 50%,#5352ed 100%); -webkit-background-clip:text; background-clip:text; color:transparent; }
   .d4m-btn-grad { background: linear-gradient(135deg,#1ed760,#00b894); color:#000 !important; box-shadow: 0 4px 16px rgba(30,215,96,.35); }
   .d4m-btn-grad:hover { filter:brightness(1.08); }
+  /* 🌌 Social Hub v3: nền aurora + lưới mờ */
+  .d4m-bg-aurora { position:fixed; inset:0; z-index:0; pointer-events:none;
+    background:
+      radial-gradient(560px 320px at 12% -4%, rgba(30,215,96,.13), transparent 62%),
+      radial-gradient(640px 360px at 96% 4%, rgba(83,82,237,.14), transparent 62%),
+      radial-gradient(520px 420px at 50% 108%, rgba(0,210,211,.09), transparent 64%);
+    animation:d4m-aurora 16s ease-in-out infinite alternate; }
+  @keyframes d4m-aurora { 0%{opacity:.8; transform:translateY(0)} 100%{opacity:1; transform:translateY(-14px)} }
+  .d4m-logo-mark { background: linear-gradient(135deg,#1ed760,#00d2d3 60%,#5352ed); box-shadow:0 2px 14px rgba(30,215,96,.45); }
+  .d4m-mini-card { box-shadow: inset 0 1px 0 rgba(255,255,255,.04); }
+  .d4m-nav-btn { display:flex; align-items:center; gap:12px; padding:10px 12px; border-radius:14px;
+    font-size:14.5px; font-weight:600; color:#c7ccd6; transition:.18s; text-align:left; }
+  .d4m-nav-btn:hover { background:rgba(255,255,255,.06); color:#fff; }
+  .d4m-nav-active { background:linear-gradient(90deg, rgba(30,215,96,.16), rgba(0,210,211,.07)); color:#fff; box-shadow:inset 0 0 0 1px rgba(30,215,96,.25); }
+  .d4m-tab-underline { background:linear-gradient(90deg,#1ed760,#00d2d3,#5352ed); box-shadow:0 0 12px rgba(30,215,96,.6); }
   @media (min-width:1024px){
     .d4m-post-card { border-radius:16px; margin:4px 8px; border:1px solid transparent; }
-    .d4m-post-card:hover { background:rgba(255,255,255,.04); border-color:rgba(255,255,255,.06); }
+    .d4m-post-card:hover { background:rgba(255,255,255,.04); border-color:rgba(30,215,96,.14); }
   }
 `;

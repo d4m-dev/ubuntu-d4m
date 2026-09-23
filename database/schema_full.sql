@@ -23,8 +23,13 @@ CREATE TABLE IF NOT EXISTS `users` (
             `avatar_frame` varchar(255) DEFAULT NULL,
             `name_effect` varchar(50) DEFAULT 'default',
             `chat_theme` varchar(50) DEFAULT 'default',
-            `equipped_pet` varchar(50) DEFAULT NULL,
-            `equipped_treasure` varchar(50) DEFAULT NULL,
+            `equipped_frame` varchar(80) DEFAULT NULL,
+            `equipped_pet` varchar(80) DEFAULT NULL,
+            `equipped_treasure` varchar(80) DEFAULT NULL,
+            `equipped_title` varchar(80) DEFAULT NULL,
+            `equipped_ring` varchar(80) DEFAULT NULL,
+            `equipped_dharma` varchar(80) DEFAULT NULL,
+            `equipped_sect` varchar(80) DEFAULT NULL,
             PRIMARY KEY (`id`)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -662,11 +667,12 @@ CREATE TABLE IF NOT EXISTS `post_comments` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ============================================================
--- 🐉💎 LINH THÚ & LINH BẢO (Social Hub)
+-- 🐉💎 SPIRIT v2 — 7 SLOT TRANG BỊ (Social Hub)
+-- kind: frame | pet | treasure | title | ring | dharma | sect
 -- ============================================================
 CREATE TABLE IF NOT EXISTS `spirit_items` (
-    `id`          VARCHAR(50)  NOT NULL,
-    `kind`        ENUM('pet','treasure') NOT NULL,
+    `id`          VARCHAR(80)  NOT NULL,
+    `kind`        VARCHAR(20)  NOT NULL DEFAULT 'treasure',
     `name`        VARCHAR(150) NOT NULL,
     `description` VARCHAR(255) DEFAULT NULL,
     `image`       VARCHAR(255) NOT NULL,
@@ -679,10 +685,10 @@ CREATE TABLE IF NOT EXISTS `spirit_items` (
 
 CREATE TABLE IF NOT EXISTS `user_spirit_items` (
     `user_id`     INT         NOT NULL,
-    `item_id`     VARCHAR(50) NOT NULL,
+    `item_id`     VARCHAR(80) NOT NULL,
     `acquired_at` TIMESTAMP   NULL DEFAULT current_timestamp(),
     PRIMARY KEY (`user_id`, `item_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Danh mục 165 Linh thú/Linh bảo được backend tự đồng bộ từ
--- backend/assets/spirit_items.json khi khởi động (không cần seed tay).
+-- Danh mục 996 vật phẩm (7 loại) được backend tự đồng bộ từ
+-- backend/assets_manifest.json khi khởi động (không cần seed tay).

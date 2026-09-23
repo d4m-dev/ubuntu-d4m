@@ -95,7 +95,7 @@ async def trigger_ytdl_download(chat_id: str, task_info: dict, quality: str):
             from urllib.parse import quote
             tunnel_url = ""
             try:
-                from scripts.network_tunnel import get_tunnel_url
+                from core.tunnel import get_tunnel_url
                 tunnel_url = get_tunnel_url()
             except: pass
             
@@ -138,7 +138,7 @@ async def trigger_jarvis_ai(chat_id: str, text: str):
         from datetime import datetime
         from core.database import db_inserter, db_executor
         from api.dashboard import api_status_db
-        from scripts.network_tunnel import start_tunnel, stop_tunnel
+        from core.tunnel import start_tunnel, stop_tunnel
         
         client_ai = genai.Client(api_key=settings.GEMINI_API_KEY)
         try:

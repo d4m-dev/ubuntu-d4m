@@ -466,52 +466,85 @@ export default function SocialHubPage() {
   // GIAO DIỆN CHÍNH
   // ==========================================
   return (
-    <div className="min-h-screen bg-black text-white font-sans selection:bg-gray-700">
+    <div className="min-h-screen bg-[#06080d] text-white font-sans selection:bg-[#1ed760]/30 relative">
       <SEO title="Social Hub" description="Mạng xã hội D4M — cập nhật trạng thái, chia sẻ âm nhạc và kết nối cộng đồng." />
-      <div className="max-w-[640px] md:max-w-[780px] lg:max-w-[1120px] mx-auto min-h-screen relative lg:px-6">
+      {/* 🌌 Nền aurora + lưới mờ */}
+      <div className="d4m-bg-aurora" aria-hidden="true" />
+      <div className="max-w-[640px] md:max-w-[780px] lg:max-w-[1120px] mx-auto min-h-screen relative z-10 lg:px-6">
         <div className="lg:flex lg:gap-8 min-h-screen">
 
         {/* 🖥️ RAIL TRÁI (desktop) — điều hướng kiểu Threads */}
-        <aside className="hidden lg:flex flex-col w-60 shrink-0 sticky top-0 h-screen py-6 pr-2">
-          <button onClick={() => navigate("/hub")} className="text-2xl font-extrabold tracking-tighter text-left px-3 mb-6 hover:opacity-80 transition" aria-label="Về trung tâm D4M">
-            <span className="d4m-brand-gradient">Threads</span> <span className="text-gray-500 font-light">D4M</span>
+        <aside className="hidden lg:flex flex-col w-64 shrink-0 sticky top-0 h-screen py-6 pr-2 overflow-y-auto">
+          <button onClick={() => navigate("/hub")} className="flex items-center gap-2.5 px-3 mb-5 hover:opacity-85 transition" aria-label="Về trung tâm D4M">
+            <span className="d4m-logo-mark w-9 h-9 rounded-xl flex items-center justify-center text-black font-black text-lg">D4</span>
+            <span className="text-left leading-tight">
+              <span className="block text-lg font-extrabold tracking-tight d4m-brand-gradient">Social Hub</span>
+              <span className="block text-[10px] text-gray-500 font-semibold tracking-widest uppercase">D4M Network</span>
+            </span>
           </button>
-          <button onClick={() => handleNav("home")} className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-[15px] font-semibold text-gray-300 hover:bg-white/5 hover:text-white transition"><span style={{width:22,height:22}} className="block"><IconHome /></span> Trang chủ</button>
-          <button onClick={() => handleNav("dm")} className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-[15px] font-semibold text-gray-300 hover:bg-white/5 hover:text-white transition"><span style={{width:22,height:22}} className="block"><IconMessage /></span> Tin nhắn {dmUnread > 0 && <span className="ml-auto text-[10px] bg-[#1ed760] text-black rounded-full px-1.5 py-0.5 font-bold">{dmUnread}</span>}</button>
-          <button onClick={() => handleNav("create")} className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-[15px] font-semibold text-gray-300 hover:bg-white/5 hover:text-white transition"><span style={{width:22,height:22}} className="block"><IconPlus /></span> Đăng bài</button>
-          <button onClick={() => handleNav("activity")} className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-[15px] font-semibold text-gray-300 hover:bg-white/5 hover:text-white transition"><span style={{width:22,height:22}} className="block"><IconHeart /></span> Hoạt động</button>
-          <button onClick={() => setShowCustomization(true)} className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-[15px] font-semibold text-gray-300 hover:bg-white/5 hover:text-white transition"><span className="text-base leading-none">🎨</span> Hồ sơ & Phong cách</button>
+
+          {/* 👤 THẺ USER — avatar đủ 7 slot trang bị */}
+          <button onClick={() => setShowCustomization(true)} className="d4m-mini-card text-left w-full rounded-2xl border border-white/10 bg-white/[0.04] hover:bg-white/[0.07] hover:border-[#1ed760]/40 transition p-3 mb-4 group">
+            <div className="flex items-center gap-3">
+              <AvatarFrame
+                src={currentUser?.avatar_url}
+                frame={currentUser?.frame || currentUser?.avatar_frame}
+                pet={currentUser?.pet} treasure={currentUser?.treasure}
+                dharma={currentUser?.dharma} title={currentUser?.title}
+                ring={currentUser?.ring} sect={currentUser?.sect}
+                size={44} alt=""
+              />
+              <div className="min-w-0 flex-1">
+                <div className="text-sm font-bold truncate group-hover:text-[#1ed760] transition">{currentUser?.fullname || currentUser?.username}</div>
+                <div className="text-[11px] text-gray-500 truncate">@{currentUser?.username}</div>
+                <div className="mt-0.5 text-[10px] font-bold text-[#1ed760]">🪙 {Number(currentUser?.xu || 0).toLocaleString("vi-VN")} Xu</div>
+              </div>
+            </div>
+          </button>
+
+          <button onClick={() => handleNav("home")} className={`d4m-nav-btn ${activeTab === "for_you" ? "d4m-nav-active" : ""}`}><span style={{width:22,height:22}} className="block"><IconHome /></span> Trang chủ</button>
+          <button onClick={() => handleNav("dm")} className="d4m-nav-btn"><span style={{width:22,height:22}} className="block"><IconMessage /></span> Tin nhắn {dmUnread > 0 && <span className="ml-auto text-[10px] bg-[#1ed760] text-black rounded-full px-1.5 py-0.5 font-bold">{dmUnread}</span>}</button>
+          <button onClick={() => handleNav("activity")} className="d4m-nav-btn"><span style={{width:22,height:22}} className="block"><IconHeart /></span> Hoạt động</button>
+          <button onClick={() => setShowCustomization(true)} className="d4m-nav-btn"><span className="text-base leading-none">🎨</span> Hồ sơ & Phong cách</button>
+
+          <button onClick={() => handleNav("create")} className="d4m-btn-grad w-full mt-5 py-3 rounded-full font-bold text-sm hover:brightness-110 active:scale-95 transition flex items-center justify-center gap-2">
+            <span style={{width:18,height:18}} className="block"><IconPlus /></span> Đăng bài ngay
+          </button>
+
           <div className="flex-1" />
-          <button onClick={handleLogout} className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-[15px] font-semibold text-gray-500 hover:bg-rose-500/10 hover:text-rose-400 transition"><span style={{width:22,height:22}} className="block"><IconLogout /></span> Đăng xuất</button>
+          <button onClick={handleLogout} className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-[14px] font-semibold text-gray-500 hover:bg-rose-500/10 hover:text-rose-400 transition"><span style={{width:20,height:20}} className="block"><IconLogout /></span> Đăng xuất</button>
         </aside>
 
         {/* CỘT GIỮA: feed */}
         <div className="flex-1 min-w-0 flex flex-col relative">
 
         {/* HEADER */}
-        <header className="sticky top-0 z-40 bg-black/90 backdrop-blur-xl border-b border-white/10">
-          <div className="flex items-center justify-between px-4 h-12">
-            <button onClick={() => navigate("/hub")} className="text-2xl font-extrabold tracking-tighter hover:opacity-70 transition" aria-label="Về trung tâm D4M">
-              <span className="d4m-brand-gradient">Threads</span>
-              <span className="text-gray-500 font-light"> D4M</span>
+        <header className="sticky top-0 z-40 bg-[#06080d]/85 backdrop-blur-xl border-b border-white/10">
+          <div className="flex items-center justify-between px-4 py-2.5">
+            <button onClick={() => navigate("/hub")} className="flex items-center gap-2 hover:opacity-75 transition lg:hidden" aria-label="Về trung tâm D4M">
+              <span className="d4m-logo-mark w-7 h-7 rounded-lg flex items-center justify-center text-black font-black text-xs">D4</span>
+              <span className="text-lg font-extrabold tracking-tight d4m-brand-gradient">Social Hub</span>
             </button>
-            <div className="flex items-center gap-5 text-gray-400">
-              <button onClick={() => setShowCustomization(true)} className="hover:text-white transition" title="Cá nhân hóa" aria-label="Cá nhân hóa" style={{ width: 22, height: 22 }}><span className="text-base leading-none">🎨</span></button>
+            <div className="hidden lg:block text-[13px] text-gray-500 font-semibold">
+              ✨ {feed.length} bài viết trong cộng đồng
+            </div>
+            <div className="flex items-center gap-4 text-gray-400">
+              <button onClick={() => setShowCustomization(true)} className="hover:text-[#1ed760] transition" title="Cá nhân hóa" aria-label="Cá nhân hóa" style={{ width: 22, height: 22 }}><span className="text-base leading-none">🎨</span></button>
               <button onClick={() => fetchFeed()} className="hover:text-white transition" title="Làm mới" aria-label="Làm mới bảng tin" style={{ width: 22, height: 22 }}><IconRefresh /></button>
-              <button onClick={handleLogout} className="hover:text-white transition" title="Đăng xuất" aria-label="Đăng xuất" style={{ width: 22, height: 22 }}><IconLogout /></button>
+              <button onClick={handleLogout} className="hover:text-rose-400 transition" title="Đăng xuất" aria-label="Đăng xuất" style={{ width: 22, height: 22 }}><IconLogout /></button>
             </div>
           </div>
 
           <div className="flex">
-            {["for_you", "following"].map((tab) => (
+            {[["for_you", "✨ Cho bạn"], ["following", "👥 Đang theo dõi"]].map(([tab, label]) => (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
                 aria-pressed={activeTab === tab}
-                className={`flex-1 py-2.5 text-sm font-semibold transition ${activeTab === tab ? "text-white" : "text-gray-500 hover:text-gray-300"}`}
+                className={`flex-1 py-2.5 text-sm font-bold transition relative ${activeTab === tab ? "text-white" : "text-gray-500 hover:text-gray-300"}`}
               >
-                {tab === "for_you" ? "Cho bạn" : "Đang theo dõi"}
-                <div className={`mt-2 mx-auto h-0.5 w-8 rounded-full transition ${activeTab === tab ? "bg-gray-300" : "bg-transparent"}`} />
+                {label}
+                <div className={`mt-2 mx-auto h-1 w-10 rounded-full transition ${activeTab === tab ? "d4m-tab-underline" : "bg-transparent"}`} />
               </button>
             ))}
           </div>
@@ -519,15 +552,38 @@ export default function SocialHubPage() {
 
         {/* FEED */}
         <main className="flex-1 pb-20">
+          {/* ✨ Dải chào + đăng bài nhanh (ẩn khi đang tải) */}
+          {!loadingFeed && activeTab === "for_you" && (
+            <div className="mx-4 lg:mx-2 mt-4 mb-2 rounded-2xl border border-white/10 bg-gradient-to-r from-white/[0.05] to-transparent p-3.5 flex items-center gap-3">
+              <AvatarFrame
+                src={currentUser?.avatar_url}
+                frame={currentUser?.frame || currentUser?.avatar_frame}
+                pet={currentUser?.pet} treasure={currentUser?.treasure}
+                dharma={currentUser?.dharma} title={currentUser?.title}
+                ring={currentUser?.ring} sect={currentUser?.sect}
+                size={38} alt=""
+              />
+              <button
+                onClick={() => handleNav("create")}
+                className="flex-1 text-left px-4 py-2.5 rounded-full bg-white/[0.06] border border-white/10 text-sm text-gray-400 hover:bg-white/10 hover:border-[#1ed760]/40 hover:text-gray-200 transition"
+              >
+                {(currentUser?.fullname || currentUser?.username || "Bạn").split(" ")[0]} ơi, hôm nay có gì mới? 🎤
+              </button>
+              <button onClick={() => handleNav("create")} className="d4m-btn-grad hidden sm:flex w-10 h-10 rounded-full items-center justify-center active:scale-95 transition" aria-label="Đăng bài">
+                <span style={{width:18,height:18}} className="block"><IconPlus /></span>
+              </button>
+            </div>
+          )}
+
           {loadingFeed ? (
-            <div className="space-y-6 p-4">
+            <div className="space-y-5 p-4">
               {[0, 1, 2, 3].map(i => (
-                <div key={i} className="flex gap-3 animate-pulse">
-                  <div className="w-10 h-10 bg-gray-800 rounded-full flex-shrink-0"></div>
-                  <div className="flex-1 space-y-2">
-                    <div className="h-3 bg-gray-800 rounded w-1/3"></div>
-                    <div className="h-3 bg-gray-800 rounded w-full"></div>
-                    <div className="h-3 bg-gray-800 rounded w-2/3"></div>
+                <div key={i} className="flex gap-3 rounded-2xl border border-white/5 bg-white/[0.02] p-4 animate-pulse">
+                  <div className="w-10 h-10 bg-white/10 rounded-full flex-shrink-0"></div>
+                  <div className="flex-1 space-y-2.5">
+                    <div className="h-3 bg-white/10 rounded w-1/3"></div>
+                    <div className="h-3 bg-white/10 rounded w-full"></div>
+                    <div className="h-3 bg-white/10 rounded w-2/3"></div>
                   </div>
                 </div>
               ))}

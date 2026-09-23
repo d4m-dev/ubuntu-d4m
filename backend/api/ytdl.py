@@ -188,7 +188,7 @@ async def process_download(req: YTDLDownloadRequest, background_tasks: Backgroun
 
         if is_admin:
             # 🚀 TỐI ƯU: Ném thẳng lệnh xử lý Demucs vào Hàng đợi Celery để chống đứng máy
-            from core.tasks import task_admin_ytdl_pipeline
+            from core.task import task_admin_ytdl_pipeline
             task_admin_ytdl_pipeline.delay(full_file_path, safe_title, f".{req.format}", req.title, "YouTube Music")
             write_log("admin", safe_title, f"Sếp đã tải và đẩy bóc tách AI: {downloaded_file}")
         else:

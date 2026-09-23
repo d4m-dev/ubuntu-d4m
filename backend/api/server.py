@@ -42,7 +42,7 @@ async def lifespan(app: FastAPI):
     db_manager.connect()  
     db_manager.init_social_tables() 
     # 🐉 Đảm bảo schema Linh thú/Linh bảo (tương thích MySQL lẫn MariaDB)
-    # rồi đồng bộ danh mục từ backend/assets/spirit_items.json
+    # rồi đồng bộ danh mục từ backend/assets_manifest.json (Spirit v2 — 7 slot)
     try:
         from services.spirit_service import ensure_spirit_schema, sync_catalog_from_manifest
         ensure_spirit_schema()

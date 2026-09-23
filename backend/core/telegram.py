@@ -366,7 +366,7 @@ async def telegram_polling_task():
                                 # 🚀 FIX 4 NÚT MENU THẦN THÁNH CỦA SẾP DƯỚI NÀY ĐÂY 🚀
                                 # -----------------------------------------------------
                                 from api.dashboard import api_status_db, save_status
-                                from scripts.network_tunnel import start_tunnel, stop_tunnel, get_tunnel_url
+                                from core.tunnel import start_tunnel, stop_tunnel, get_tunnel_url
                                 
                                 if data_cb == "toggle_tunnel":
                                     if not api_status_db["internet_tunnel"]["active"]:

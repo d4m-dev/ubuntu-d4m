@@ -171,6 +171,13 @@ async def get_cover_image(project_name: str, file_name: str):
     # Kiểm tra xem file thật có tồn tại không (chống path traversal)
     if not file_path or not os.path.exists(file_path) or not file_name.endswith((".jpg", ".jpeg", ".png")):
         fallback_path = os.path.join(BASE_DIR, "assets", "favicon", "favicon-96x96.png")
+        if not os.path.exists(fallback_path):
+            # v2: không còn thư mục favicon → tự chọn 1 ảnh bất kỳ trong assets làm placeholder
+            import glob
+            cands = glob.glob(os.path.join(BASE_DIR, "assets", "he-thong", "*.png")) or \
+                    glob.glob(os.path.join(BASE_DIR, "assets", "*", "*.png"))
+            if cands:
+                fallback_path = cands[0]
         # CHỐNG CRASH: Phải kiểm tra file fallback có tồn tại không
         if os.path.exists(fallback_path):
             return FileResponse(path=fallback_path, headers=cache_headers)
@@ -350,7 +357,7 @@ async def extract_audio_features(background_tasks: BackgroundTasks, file: Upload
         with open(saved_input_path, "wb") as buffer:
             shutil.copyfileobj(file.file, buffer)
 
-        from core.tasks import task_process_audio
+        from core.task import task_process_audio
         task_process_audio.delay(saved_input_path, clean_name, task_id, ext, separate_beat, extract_lyrics, final_name, "Unknown", song_input_dir, OUTPUT_DIR)
 
         expected_outputs = {}

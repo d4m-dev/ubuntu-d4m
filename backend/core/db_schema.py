@@ -26,8 +26,13 @@ def get_d4m_schema_queries():
             `avatar_frame` varchar(255) DEFAULT NULL,
             `name_effect` varchar(50) DEFAULT 'default',
             `chat_theme` varchar(50) DEFAULT 'default',
-            `equipped_pet` varchar(50) DEFAULT NULL,
-            `equipped_treasure` varchar(50) DEFAULT NULL,
+            `equipped_frame` varchar(80) DEFAULT NULL,
+            `equipped_pet` varchar(80) DEFAULT NULL,
+            `equipped_treasure` varchar(80) DEFAULT NULL,
+            `equipped_title` varchar(80) DEFAULT NULL,
+            `equipped_ring` varchar(80) DEFAULT NULL,
+            `equipped_dharma` varchar(80) DEFAULT NULL,
+            `equipped_sect` varchar(80) DEFAULT NULL,
             PRIMARY KEY (`id`)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;""",
         
@@ -394,12 +399,13 @@ def get_d4m_schema_queries():
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;""",
 
         # ============================================================
-        # 🐉💎 LINH THÚ & LINH BẢO (Social Hub)
+        # 🐉💎 SPIRIT v2 — 7 SLOT TRANG BỊ (Social Hub)
+        # kind: frame | pet | treasure | title | ring | dharma | sect
         # ============================================================
-        # 31. Danh mục Linh thú / Linh bảo (catalog)
+        # 31. Danh mục vật phẩm (catalog — 996 item equip từ assets_manifest.json)
         """CREATE TABLE IF NOT EXISTS `spirit_items` (
-            `id`          varchar(50)  NOT NULL,
-            `kind`        enum('pet','treasure') NOT NULL,
+            `id`          varchar(80)  NOT NULL,
+            `kind`        varchar(20)  NOT NULL DEFAULT 'treasure',
             `name`        varchar(150) NOT NULL,
             `description` varchar(255) DEFAULT NULL,
             `image`       varchar(255) NOT NULL,
@@ -413,16 +419,21 @@ def get_d4m_schema_queries():
         # 32. Kho đồ: vật phẩm người dùng đã sở hữu
         """CREATE TABLE IF NOT EXISTS `user_spirit_items` (
             `user_id`     int(11)     NOT NULL,
-            `item_id`     varchar(50) NOT NULL,
+            `item_id`     varchar(80) NOT NULL,
             `acquired_at` timestamp   NULL DEFAULT current_timestamp(),
             PRIMARY KEY (`user_id`, `item_id`)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;""",
 
-        # 33. Nâng cấp bảng users đã tồn tại (MariaDB: ADD COLUMN IF NOT EXISTS)
-        "ALTER TABLE `users` ADD COLUMN IF NOT EXISTS `equipped_pet` varchar(50) DEFAULT NULL;",
-        "ALTER TABLE `users` ADD COLUMN IF NOT EXISTS `equipped_treasure` varchar(50) DEFAULT NULL;",
+        # 33. Nâng cấp bảng users đã tồn tại — 7 slot trang bị
+        "ALTER TABLE `users` ADD COLUMN IF NOT EXISTS `equipped_frame` varchar(80) DEFAULT NULL;",
+        "ALTER TABLE `users` ADD COLUMN IF NOT EXISTS `equipped_pet` varchar(80) DEFAULT NULL;",
+        "ALTER TABLE `users` ADD COLUMN IF NOT EXISTS `equipped_treasure` varchar(80) DEFAULT NULL;",
+        "ALTER TABLE `users` ADD COLUMN IF NOT EXISTS `equipped_title` varchar(80) DEFAULT NULL;",
+        "ALTER TABLE `users` ADD COLUMN IF NOT EXISTS `equipped_ring` varchar(80) DEFAULT NULL;",
+        "ALTER TABLE `users` ADD COLUMN IF NOT EXISTS `equipped_dharma` varchar(80) DEFAULT NULL;",
+        "ALTER TABLE `users` ADD COLUMN IF NOT EXISTS `equipped_sect` varchar(80) DEFAULT NULL;",
 
         # 📄 Ghi chú: danh mục spirit_items được backend tự đồng bộ từ
-        # backend/assets/spirit_items.json khi khởi động (sync_catalog_from_manifest),
+        # backend/assets_manifest.json khi khởi động (sync_catalog_from_manifest),
         # nên KHÔNG cần seed cứng ở đây.
     ]
