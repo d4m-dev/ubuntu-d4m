@@ -4,7 +4,6 @@
 //   • Cột trái: đạo hồ preview (avatar 7 slot + tên + chip trang bị)
 //   • Cột phải: Tổng quan 7 slot + tabs danh mục + Phong cách
 import { useEffect, useMemo, useState } from "react";
-import { createPortal } from "react-dom";
 import { SOCIAL, API_BASE_URL } from "../../config/urls";
 import { getToken } from "../../services/api";
 import { showToast } from "../../lib/toast";
@@ -768,9 +767,9 @@ export default function CustomizationPanel({ currentUser, onBack, onSaved, onSpi
   };
 
   // 🌀 Portal ra body
-  return createPortal(
-    <div className="fixed inset-0 z-[70] bg-black/85 backdrop-blur-sm flex overflow-y-auto p-4" onClick={onBack} role="dialog" aria-modal="true" aria-label="Bảo khố trang bị">
-      <div className="x-panel w-full max-w-md md:max-w-5xl m-auto rounded-3xl overflow-hidden flex flex-col max-h-[92dvh]" onClick={(e) => e.stopPropagation()}>
+  return (
+    <div className="d4m-view" role="dialog" aria-label="Bảo khố trang bị">
+      <div className="d4m-view-card x-panel w-full rounded-none lg:rounded-3xl overflow-hidden flex flex-col">
         {/* HEADER */}
         <div className="flex items-center gap-3 px-4 py-3 border-b border-[#f5c15c]/20">
           <button onClick={onBack} aria-label="Quay lại" className="p-1.5 -ml-2 rounded-full hover:bg-white/10 text-gray-300"><IconBack /></button>
@@ -899,8 +898,7 @@ export default function CustomizationPanel({ currentUser, onBack, onSaved, onSpi
         </div>
         </div>
       </div>
-    </div>,
-    document.body
+    </div>
   );
 }
 

@@ -654,6 +654,15 @@ Bản nâng cấp thay thế cấu trúc cũ (`avatar_frames/` + `linhbao/` + 2 
 - Tab mới **"Khung & Trang bị"**: tổng quan 7 slot (đeo/tháo trực tiếp) + kho khung viền đã sở hữu với nút Đeo/Tháo.
 - Chip Xu + chip trang bị đang đeo dưới avatar.
 
+## 📱 Điều hướng kiểu app + Upload an toàn
+
+- **Social Hub**: 1 view mỗi lần. Mobile: màn hình con + **bottom nav cố định** (z-100, luôn bấm
+  được kể cả khi mở DM/Hoạt động/Bảo khố) + nút «Quay lại». Desktop: **rail trái chuyển tab INLINE**
+  trong cột nội dung (không còn full-screen), bottom nav ẩn ở `lg:`.
+- **Upload avatar hardened** (`profile_service.upload_user_avatar`): không crash khi `content_type`/
+  `filename` = None; kiểm tra **magic bytes** thật (JPG/PNG/WebP) chống đổi đuôi file.
+- **Mọi upload nằm ở backend** (`backend/images_workspace/{avatar,social}`) — phục vụ qua mount
+  `/images_workspace`; docker-compose thêm volume `uploads_data` để persist qua restart.
 ## 🧘 Hệ Thống Tu Tiên (Phàm Nhân Tu Tiên)
 
 Dữ liệu gốc: `backend/assets/tu-vi/tu-vi-sys.json` (50 cảnh giới, 3 cõi Nhân/Linh/Tiên)

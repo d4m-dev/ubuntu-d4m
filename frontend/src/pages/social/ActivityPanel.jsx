@@ -5,7 +5,6 @@ import { useEffect, useRef, useState } from "react";
 import { NOTIFICATION } from "../../config/urls";
 import { getToken } from "../../services/api";
 import { IconBack } from "./icons";
-import { createPortal } from "react-dom";
 
 const AVATAR = (seed) => `https://api.dicebear.com/7.x/avataaars/svg?seed=${encodeURIComponent(seed)}`;
 
@@ -63,8 +62,9 @@ export default function ActivityPanel({ currentUser, onBack, onNavigate }) {
     } catch (_) {}
   };
 
-  return createPortal(
-    <div className="fixed inset-0 z-50 bg-black flex flex-col">
+  return (
+    <div className="d4m-view">
+    <div className="d4m-view-card">
       <header className="flex items-center gap-3 px-4 h-12 border-b border-white/10 bg-black/90 backdrop-blur-xl">
         <button onClick={onBack} aria-label="Quay lại" className="p-1.5 -ml-2 rounded-full hover:bg-white/10 text-gray-300">
           <IconBack />
@@ -97,7 +97,7 @@ export default function ActivityPanel({ currentUser, onBack, onNavigate }) {
           ))
         )}
       </div>
-    </div>,
-    document.body
+    </div>
+    </div>
   );
 }

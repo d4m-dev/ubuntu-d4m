@@ -221,4 +221,17 @@ export const SOCIAL_GLOBAL_CSS = `
   /* Nút đả tọa — hơi thở linh khí */
   @keyframes x-breathe { 0%,100%{box-shadow:0 0 8px rgba(52,211,153,.25)} 50%{box-shadow:0 0 22px rgba(52,211,153,.55)} }
   .x-meditate { animation:x-breathe 3s ease-in-out infinite; }
+
+  /* ═══ 📱 ĐIỀU HƯỚNG KIỂU APP ═══
+     Mobile: màn hình con phủ kín (fixed) NHƯNG chừa chỗ navbar đáy cố định.
+     Desktop: render INLINE trong cột nội dung (chuyển tab, không full-screen). */
+  .d4m-view { position:fixed; inset:0; z-index:60; background:#06080d;
+    padding-bottom:72px; display:flex; flex-direction:column; }
+  .d4m-view-card { flex:1; min-height:0; display:flex; flex-direction:column; }
+  @media (min-width:1024px){
+    .d4m-view { position:sticky; top:0; inset:auto; z-index:auto; background:transparent;
+      padding-bottom:0; height:100vh; }
+    .d4m-view-card { border:1px solid rgba(245,193,92,.16); border-radius:20px;
+      background:rgba(10,14,23,.72); overflow:hidden; box-shadow:0 10px 40px rgba(0,0,0,.4); }
+  }
 `;

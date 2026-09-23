@@ -104,10 +104,26 @@ def update_user_profile(user_id: int, data: UpdateProfileRequest):
         pass
 
 def upload_user_avatar(user_id: int, username: str, file: UploadFile):
-    file_ext = file.filename.split(".")[-1].lower()
-    if file_ext not in ALLOWED_AVATAR_EXTENSIONS or not file.content_type.startswith("image/"):
+    # 🛡️ HARDENED: filename/content_type có thể None tuỳ client → không được crash 500
+    fname = (file.filename or "").replace("/", "_").replace("\\", "_")
+    file_ext = fname.rsplit(".", 1)[-1].lower() if "." in fname else ""
+    ctype = (file.content_type or "").lower()
+    if file_ext not in ALLOWED_AVATAR_EXTENSIONS or (ctype and not ctype.startswith("image/")):
         raise HTTPException(status_code=400, detail="Chỉ cho phép tải lên định dạng ảnh!")
-        
+
+    # 🔎 Kiểm tra magic bytes thật (chống đổi đuôi file)
+    head = file.file.read(16)
+    file.file.seek(0)
+    if head[:3] == b"\xff\xd8\xff":
+        real = "jpg"
+    elif head[:8] == b"\x89PNG\r\n\x1a\n":
+        real = "png"
+    elif head[:4] == b"RIFF" and head[8:12] == b"WEBP":
+        real = "webp"
+    else:
+        raise HTTPException(status_code=400, detail="File không phải ảnh hợp lệ (JPG/PNG/WebP).")
+    file_ext = real
+
     base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     avatar_dir = os.path.join(base_dir, "images_workspace", "avatar", username)
     os.makedirs(avatar_dir, exist_ok=True)

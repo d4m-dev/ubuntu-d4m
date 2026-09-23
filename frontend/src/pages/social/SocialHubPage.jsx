@@ -209,6 +209,8 @@ export default function SocialHubPage() {
   const [commentPost, setCommentPost] = useState(null);
   const [showActivity, setShowActivity] = useState(false);
   const [showCustomization, setShowCustomization] = useState(false);
+  // 📱️ Điều hướng kiểu app: 1 view tại một thời điểm
+  const subView = showDm ? "dm" : showActivity ? "activity" : showCustomization ? "profile" : null;
 
   // ==========================================\
   // KIỂM TRA BẢO MẬT & QUYỀN TRUY CẬP
@@ -518,9 +520,10 @@ export default function SocialHubPage() {
           <button onClick={handleLogout} className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-[14px] font-semibold text-gray-500 hover:bg-rose-500/10 hover:text-rose-400 transition"><span style={{width:20,height:20}} className="block"><IconLogout /></span> Đăng xuất</button>
         </aside>
 
-        {/* CỘT GIỮA: feed */}
+        {/* CỘT GIỮA: feed hoặc view con */}
         <div className="flex-1 min-w-0 flex flex-col relative">
 
+        {!subView && (<>
         {/* HEADER */}
         <header className="sticky top-0 z-40 bg-[#0a0e17]/85 backdrop-blur-xl border-b border-[#f5c15c]/15">
           <div className="flex items-center justify-between px-4 py-2.5">
@@ -626,6 +629,25 @@ export default function SocialHubPage() {
             </div>
           )}
         </main>
+        </>)}
+
+        {/* 📲 VIEW CON — inline trên desktop, sheet cố định trên mobile */}
+        {showDm && <DmInbox currentUser={currentUser} onBack={() => setShowDm(false)} onUnreadChange={setDmUnread} onNavigate={handleNav} />}
+        {showActivity && <ActivityPanel currentUser={currentUser} onBack={() => setShowActivity(false)} onNavigate={handleNav} />}
+        {showCustomization && (
+          <CustomizationPanel
+            currentUser={currentUser}
+            onBack={() => { setShowCustomization(false); fetchFeed(true); fetchMyProfile(); }}
+            onNavigate={handleNav}
+            onEditInfo={() => { setShowCustomization(false); navigate("/admin/profile"); }}
+            onSpiritChanged={() => { fetchFeed(true); fetchMyProfile(); }}
+            onSaved={(updates) => {
+              setCurrentUser((prev) => ({ ...prev, ...updates }));
+              setShowCustomization(false);
+              fetchFeed(true);
+            }}
+          />
+        )}
 
         {/* COMPOSER MODAL */}
         {showComposer && createPortal(
@@ -774,24 +796,8 @@ export default function SocialHubPage() {
         </div>
       </div>
 
-      {showDm && <DmInbox currentUser={currentUser} onBack={() => setShowDm(false)} onUnreadChange={setDmUnread} onNavigate={handleNav} />}
-      {showActivity && <ActivityPanel currentUser={currentUser} onBack={() => setShowActivity(false)} onNavigate={handleNav} />}
       {commentPost && (
         <CommentsPanel post={commentPost} currentUser={currentUser} onClose={() => setCommentPost(null)} />
-      )}
-      {showCustomization && (
-        <CustomizationPanel
-          currentUser={currentUser}
-          onBack={() => { setShowCustomization(false); fetchFeed(true); fetchMyProfile(); }}
-          onNavigate={handleNav}
-          onEditInfo={() => { setShowCustomization(false); navigate("/admin/profile"); }}
-          onSpiritChanged={() => { fetchFeed(true); fetchMyProfile(); }}
-          onSaved={(updates) => {
-            setCurrentUser((prev) => ({ ...prev, ...updates }));
-            setShowCustomization(false);
-            fetchFeed(true);
-          }}
-        />
       )}
     </div>
   );
