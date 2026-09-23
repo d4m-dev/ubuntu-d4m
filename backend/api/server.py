@@ -127,47 +127,42 @@ def setup_static_mounts(app: FastAPI):
         route_url = "/static/telegram" if route_name == "telegram_audio" else f"/{route_name.replace('_files', '-files')}"
         app.mount(route_url, StaticFiles(directory=dir_path), name=route_name)
 
-    # 🖼️ ASSETS SOCIAL HUB: khung viền avatar + 🐉 Linh thú & Linh bảo (folder linhbao)
+    # 🖼️ ASSETS SOCIAL HUB v2: 13 danh mục (khung, linh-thu, linh-bao, phap-tuong, ...)
     ASSETS_DIR = os.path.join(BASE_DIR, "assets")
 
     class ImmutableStaticFiles(StaticFiles):
-        """StaticFiles + Cache-Control immutable (429 khung/165 linhbao tải 1 lần, cache mãi)."""
+        """StaticFiles + Cache-Control immutable (ảnh assets tải 1 lần, cache mãi)."""
         async def get_response(self, path, scope):
             resp = await super().get_response(path, scope)
             resp.headers["Cache-Control"] = "public, max-age=31536000, immutable"
             resp.headers["X-Content-Type-Options"] = "nosniff"
             return resp
 
-    SPIRIT_STATIC = {
-        "avatar_frames": os.path.join(ASSETS_DIR, "avatar_frames"),   # /avatar_frames/<file> (429 khung)
-        "linhbao": os.path.join(ASSETS_DIR, "linhbao"),               # /linhbao/<file> (165 art linh thú/linh bảo)
-    }
-    for route_name, dir_path in SPIRIT_STATIC.items():
-        os.makedirs(dir_path, exist_ok=True)
-        route_url = {
-            "avatar_frames": "/avatar_frames",
-            "linhbao": "/linhbao",
-        }[route_name]
-        app.mount(route_url, ImmutableStaticFiles(directory=dir_path), name=route_name)
+    # 🗂️ v2: mount TOÀN BỘ backend/assets tại /assets
+    # (khung, linh-thu, linh-bao, phap-tuong, tong-mon, danh-hieu, nhan,
+    #  tu-vi, luyen-dan, ngu-hanh, tai-nguyen, he-thong, background)
+    os.makedirs(ASSETS_DIR, exist_ok=True)
+    app.mount("/assets", ImmutableStaticFiles(directory=ASSETS_DIR), name="assets")
 
-    # 📄 Manifest JSON (danh sách khung viền + Linh thú/Linh bảo)
+    # 📄 Manifest v2 (1159 vật phẩm / 13 danh mục — sinh bởi scripts/gen_assets_manifest.py)
     from fastapi.responses import FileResponse
 
-    @app.get("/avatar_frames.json", include_in_schema=False)
-    async def avatar_frames_manifest():
-        path = os.path.join(ASSETS_DIR, "avatar_frames.json")
+    @app.get("/assets_manifest.json", include_in_schema=False)
+    async def assets_manifest():
+        path = os.path.join(BASE_DIR, "assets_manifest.json")
         if not os.path.exists(path):
-            return {"status": "success", "data": []}
+            return {"status": "success", "data": [], "categories": {}}
         return FileResponse(path, media_type="application/json",
                             headers={"Cache-Control": "public, max-age=300"})
+
+    # 🔙 Endpoint cũ (tương thích ngược — frontend đời đầu vẫn gọi)
+    @app.get("/avatar_frames.json", include_in_schema=False)
+    async def avatar_frames_manifest():
+        return {"status": "success", "data": []}
 
     @app.get("/spirit_items.json", include_in_schema=False)
     async def spirit_items_manifest():
-        path = os.path.join(ASSETS_DIR, "spirit_items.json")
-        if not os.path.exists(path):
-            return {"status": "success", "data": []}
-        return FileResponse(path, media_type="application/json",
-                            headers={"Cache-Control": "public, max-age=300"})
+        return {"status": "success", "data": []}
 
 def setup_routers(app: FastAPI):
     api_routers = [

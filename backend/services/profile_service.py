@@ -69,6 +69,11 @@ def get_user_profile(user_id: int, username: str = None):
     spirit = spirit_payload(user)
     user["pet"] = spirit["pet"]
     user["treasure"] = spirit["treasure"]
+    user["frame"] = spirit["frame"]
+    user["dharma"] = spirit["dharma"]
+    user["title"] = spirit["title"]
+    user["ring"] = spirit["ring"]
+    user["sect"] = spirit["sect"]
     try:
         xu_rows = db_executor.select_as_list_dict("SELECT xu FROM players WHERE user_id=%s", (user_id,))
         user["xu"] = int(xu_rows[0]["xu"]) if xu_rows else 0

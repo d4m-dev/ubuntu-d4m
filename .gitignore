@@ -33,7 +33,9 @@ backend/database/*.db
 # ===== OS =====
 .DS_Store
 
-# ===== Hosted projects (không commit) =====
+# ===== Hosted projects v2 (sống trong BACKEND, không commit nội dung) =====
+backend/hosted_projects/*
+!backend/hosted_projects/.gitkeep
 frontend/hosted_projects/*
 !frontend/hosted_projects/.gitkeep
 

@@ -480,6 +480,7 @@ Toàn bộ trang ngoài hệ Music dùng chung **design system** để đồng n
 
 - ✅ **`sso_service.py` lỗi `NameError: SECRET_KEY`** — dùng `SECRET_KEY` không import → mọi request `profile/me`, `verify_admin` bị 401 "Token hết hạn". Đã sửa thành `settings.SECRET_KEY` (+ import `settings`).
 - ✅ **`projects.py` HOSTING_DIR sai** — trỏ `../ubuntu-frontend/hosted_projects` (thư mục cũ) → đổi thành `../frontend/hosted_projects`. Hosted project giờ hiển thị đúng.
+- ✅ **Hosted projects v2: chuyển hẳn về BACKEND** — `HOSTING_DIR = backend/hosted_projects` trong cả `api/projects.py` lẫn `middlewares/dynamic_hosting.py` (trước đó middleware vẫn trỏ đường dẫn chết `../ubuntu-frontend/...`). Backend giờ tự chủ toàn bộ việc lưu + phục vụ `/projects/<tên>/`.
 - ✅ Sau khi sửa: đăng nhập Hub hiển thị đầy đủ **"TƯ LỆNH | Tên user | Donate"** và danh sách hosted project.
 
 ## 🎵 Upload Nhạc Toàn Diện (5-in-1)
@@ -620,6 +621,19 @@ location /api/ {
 - **Email liên hệ**: lythuaan5555@gmail.com
 
 ---
+
+## 🗂️ Tài sản & Trang bị v2 (13 danh mục — 7 slot equip)
+
+Bản nâng cấp thay thế cấu trúc cũ (`avatar_frames/` + `linhbao/` + 2 manifest json):
+
+- **13 danh mục ảnh** trong `backend/assets/`: `khung` (607), `linh-bao` (158), `phap-tuong` (93), `tong-mon` (64), `tu-vi` (60), `linh-thu` (36), `tai-nguyen` (31), `he-thong` (31), `luyen-dan` (27), `background` (23), `nhan` (19), `danh-hieu` (19), `ngu-hanh` (7) — tổng **1175 file**.
+- **Ảnh phục vụ tại `/assets/<danh-mục>/<file>`** (mount một lần trong `api/server.py`, cache immutable).
+- **Manifest `backend/assets_manifest.json`** (1159 vật phẩm) — sinh bởi `python3 scripts/gen_assets_manifest.py <danh-sách-file>`; backend tự sync vào bảng `spirit_items` khi khởi động, tự dọn item cũ + migrate dữ liệu legacy.
+- **7 slot trang bị** (mua bằng Xu, equip/unequip trong panel Hồ sơ & Phong cách):
+  🖼️ khung viền · 🐉 linh thú · 💎 linh bảo · 🔥 pháp tướng (badge nổi quanh avatar) · 🏷️ danh hiệu · 💍 nhẫn · ⛩️ tông môn.
+  Các danh mục còn lại (tử vi, luyện đan, ngũ hành, tài nguyên, hệ thống, background) là tài nguyên hiển thị.
+- **Độ hiếm + giá Xu tự động**: common 20k / rare 60k / epic 180k / legendary 500k (phân bổ tất định theo hash tên file).
+- API: `GET /api/social/spirits/catalog` · `GET /me` · `POST /buy` · `/equip` · `/unequip` · `/admin/grant`.
 
 ### 📌 Giấy phép sử dụng
 

@@ -187,8 +187,13 @@ def get_feed(current_user: dict = Depends(get_current_user)):
                 "avatar_frame": post.get("avatar_frame"),
                 "name_effect": post.get("name_effect") or "default",
                 "chat_theme": post.get("chat_theme") or "default",
+                "frame": spirit["frame"],       # 🖼️ Khung viền (item v2)
                 "pet": spirit["pet"],           # 🐉 Linh thú đang trang bị
                 "treasure": spirit["treasure"], # 💎 Linh bảo đang trang bị
+                "dharma": spirit["dharma"],     # 🔥 Pháp tướng
+                "title": spirit["title"],       # 🏷️ Danh hiệu
+                "ring": spirit["ring"],         # 💍 Nhẫn
+                "sect": spirit["sect"],         # ⛩️ Tông môn
                 "content": post["content"],
                 "created_at": dt_str,
                 "attached_media": post["attached_media"],

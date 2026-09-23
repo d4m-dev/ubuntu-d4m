@@ -98,7 +98,7 @@ const PostCard = memo(function PostCard({ post, liked, canDelete, onLike, onComm
     <article className="d4m-post-card px-4 py-4 transition-colors">
       <div className="flex gap-3">
         <div className="flex-shrink-0">
-          <AvatarFrame src={post.avatar_url} frame={post.avatar_frame} pet={post.pet} treasure={post.treasure} size={40} alt={`Avatar ${post.fullname || post.username}`} />
+          <AvatarFrame src={post.avatar_url} frame={post.frame || post.avatar_frame} pet={post.pet} treasure={post.treasure} dharma={post.dharma} title={post.title} ring={post.ring} sect={post.sect} size={40} alt={`Avatar ${post.fullname || post.username}`} />
         </div>
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-1.5 text-sm">
@@ -291,8 +291,13 @@ export default function SocialHubPage() {
           avatar_frame: r.data.avatar_frame || null,
           name_effect: r.data.name_effect || "default",
           chat_theme: r.data.chat_theme || "default",
+          frame: r.data.frame || null,
           pet: r.data.pet || null,
           treasure: r.data.treasure || null,
+          dharma: r.data.dharma || null,
+          title: r.data.title || null,
+          ring: r.data.ring || null,
+          sect: r.data.sect || null,
           xu: r.data.xu || 0,
         }));
       }
@@ -573,7 +578,7 @@ export default function SocialHubPage() {
               </div>
 
               <div className="flex gap-3">
-                <AvatarFrame src={currentUser?.avatar_url} frame={currentUser?.avatar_frame} pet={currentUser?.pet} treasure={currentUser?.treasure} size={36} alt="" />
+                <AvatarFrame src={currentUser?.avatar_url} frame={currentUser?.frame || currentUser?.avatar_frame} pet={currentUser?.pet} treasure={currentUser?.treasure} dharma={currentUser?.dharma} title={currentUser?.title} ring={currentUser?.ring} sect={currentUser?.sect} size={36} alt="" />
                 <div className="flex-1">
                   <div className="text-sm font-semibold mb-1">{currentUser?.fullname}</div>
                   <textarea
@@ -697,9 +702,13 @@ export default function SocialHubPage() {
           active={activeTab === "for_you"}
           dmUnread={dmUnread}
           avatarUrl={getAvatar(currentUser?.avatar_url)}
-          frame={currentUser?.avatar_frame}
+          frame={currentUser?.frame || currentUser?.avatar_frame}
           pet={currentUser?.pet}
           treasure={currentUser?.treasure}
+          dharma={currentUser?.dharma}
+          title={currentUser?.title}
+          ring={currentUser?.ring}
+          sect={currentUser?.sect}
           onNavigate={handleNav}
         />
         </div>

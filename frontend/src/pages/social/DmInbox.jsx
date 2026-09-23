@@ -245,7 +245,7 @@ export default function DmInbox({ currentUser, onBack, onUnreadChange, onNavigat
                     onClick={() => startNewConversation(u)}
                     className="w-full flex items-center gap-3 p-2 rounded-xl hover:bg-white/5 text-left"
                   >
-                    <AvatarFrame src={u.avatar_url || AVATAR(u.username)} frame={u.avatar_frame} pet={u.pet} treasure={u.treasure} size={40} alt={`Ảnh đại diện ${u.fullname}`} />
+                    <AvatarFrame src={u.avatar_url || AVATAR(u.username)} frame={u.frame || u.avatar_frame} pet={u.pet} treasure={u.treasure} dharma={u.dharma} title={u.title} ring={u.ring} sect={u.sect} size={40} alt={`Ảnh đại diện ${u.fullname}`} />
                     <div>
                       <div className="text-sm font-semibold text-white">{u.fullname || u.username}</div>
                       <div className="text-xs text-gray-500">@{u.username}</div>

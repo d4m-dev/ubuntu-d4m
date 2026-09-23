@@ -1,7 +1,9 @@
 // src/pages/social/CustomizationPanel.jsx
-// 🎨 HỒ SƠ & PHONG CÁCH: 🖼️ Khung viền (429) + 🐉 Linh thú + 💎 Linh bảo + ✨ Phong cách
+// 🎨 HỒ SƠ & PHONG CÁCH v2 — 7 slot trang bị + ✨ Phong cách
+//    🖼️ Khung (607) · 🐉 Linh thú (36) · 💎 Linh bảo (158) · 🔥 Pháp tướng (93)
+//    🏷️ Danh hiệu (19) · 💍 Nhẫn (19) · ⛩️ Tông môn (64)
 // 🛡️ HARDENED: preview CỐ ĐỊNH 1 chỗ, chạm để ƯỚM THỬ trước khi mua,
-//    search + lọc hiếm + phân trang, nút Lưu footer cố định, a11y đầy đủ.
+//    search + lọc hiếm + phân trang, a11y đầy đủ.
 import { useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 import { SOCIAL, API_BASE_URL } from "../../config/urls";
@@ -21,6 +23,18 @@ const RARITY = {
 };
 const rarityOf = (r) => RARITY[r] || RARITY.common;
 const RARITY_CHIPS = [["all", "Tất cả"], ["common", "Thường"], ["rare", "Hiếm"], ["epic", "Sử thi"], ["legendary", "Huyền thoại"]];
+
+// 7 tab vật phẩm (kind → nhãn)
+const KIND_TABS = [
+  { kind: "frame",    icon: "🖼️", label: "Khung" },
+  { kind: "pet",      icon: "🐉", label: "Linh thú" },
+  { kind: "treasure", icon: "💎", label: "Linh bảo" },
+  { kind: "dharma",   icon: "🔥", label: "Pháp tướng" },
+  { kind: "title",    icon: "🏷️", label: "Danh hiệu" },
+  { kind: "ring",     icon: "💍", label: "Nhẫn" },
+  { kind: "sect",     icon: "⛩️", label: "Tông môn" },
+];
+const KIND_LABEL = Object.fromEntries(KIND_TABS.map((t) => [t.kind, t.label]));
 
 const full = (u) => (u && u.startsWith("http") ? u : API_BASE_URL + u);
 
@@ -65,32 +79,28 @@ function LoadMore({ shown, total, onMore }) {
 }
 
 export default function CustomizationPanel({ currentUser, onBack, onSaved, onSpiritChanged, onEditInfo }) {
-  const [tab, setTab] = useState("frame"); // frame | pet | treasure | style
-  // 🖼️ Khung viền
-  const [frames, setFrames] = useState([]);
-  const [frame, setFrame] = useState(currentUser?.avatar_frame || null);
-  const [frameQuery, setFrameQuery] = useState("");
-  const [frameRarity, setFrameRarity] = useState("all");
-  const [frameLimit, setFrameLimit] = useState(60);
+  const [tab, setTab] = useState("frame"); // 7 kind + "style"
   // ✨ Phong cách
   const [effect, setEffect] = useState(currentUser?.name_effect || "default");
   const [theme, setTheme] = useState(currentUser?.chat_theme || "default");
   const [saving, setSaving] = useState(false);
-  // 🐉💎 Linh thú & Linh bảo
+  // 🗂️ Catalog v2 (7 loại)
   const [catalog, setCatalog] = useState([]);
   const [xu, setXu] = useState(0);
-  const [equipped, setEquipped] = useState({ pet: null, treasure: null });
+  const [equipped, setEquipped] = useState({}); // {kind: item_id}
   const [busyId, setBusyId] = useState(null);
-  const [spiritQuery, setSpiritQuery] = useState("");
-  const [spiritRarity, setSpiritRarity] = useState("all");
-  const [spiritLimit, setSpiritLimit] = useState(24);
+  const [query, setQuery] = useState("");
+  const [rarity, setRarity] = useState("all");
+  const [limit, setLimit] = useState(24);
+  // 🧪 ướm thử (mỗi slot 1 món)
+  const [trying, setTrying] = useState({});
 
   const authHeaders = () => {
     const t = getToken();
     return { "Content-Type": "application/json", Authorization: `Bearer ${t}` };
   };
 
-  const loadSpirits = async () => {
+  const loadData = async () => {
     try {
       const [catRes, meRes] = await Promise.all([
         fetch(SOCIAL.SPIRIT_CATALOG, { headers: authHeaders() }),
@@ -101,42 +111,34 @@ export default function CustomizationPanel({ currentUser, onBack, onSaved, onSpi
       setCatalog(cat.data || []);
       if (me.data) {
         setXu(me.data.xu || 0);
-        setEquipped({ pet: me.data.equipped_pet, treasure: me.data.equipped_treasure });
+        setEquipped(me.data.equipped || {
+          pet: me.data.equipped_pet, treasure: me.data.equipped_treasure,
+        });
       }
     } catch (e) { /* im lặng */ }
   };
 
-  useEffect(() => {
-    (async () => {
-      try {
-        const res = await fetch(SOCIAL.AVATAR_FRAMES);
-        const data = await res.json();
-        setFrames(data.data || []);
-      } catch (e) { setFrames([]); }
-    })();
-    loadSpirits();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  useEffect(() => { loadData(); /* eslint-disable-next-line react-hooks/exhaustive-deps */ }, []);
 
-  // 💾 Lưu khung viền + hiệu ứng tên + theme chat (có lock chống spam)
+  // 💾 Lưu hiệu ứng tên + theme chat (có lock chống spam)
   const save = async () => {
     if (saving) return;
     setSaving(true);
     try {
       const res = await fetch(`${API_BASE_URL}/api/auth/profile/update`, {
         method: "PUT", headers: authHeaders(),
-        body: JSON.stringify({ avatar_frame: frame, name_effect: effect, chat_theme: theme }),
+        body: JSON.stringify({ name_effect: effect, chat_theme: theme }),
       });
       const data = await res.json();
       if (data.status === "success") {
         showToast("Đã lưu phong cách!");
-        onSaved?.({ avatar_frame: frame, name_effect: effect, chat_theme: theme });
+        onSaved?.({ name_effect: effect, chat_theme: theme });
       } else showToast(data.detail || "Lỗi lưu", "error");
     } catch (e) { showToast("Lỗi mạng", "error"); }
     finally { setSaving(false); }
   };
 
-  // 🛒 Mua linh vật bằng Xu
+  // 🛒 Mua vật phẩm bằng Xu
   const buy = async (item) => {
     if (busyId) return;
     setBusyId(item.id);
@@ -148,7 +150,7 @@ export default function CustomizationPanel({ currentUser, onBack, onSaved, onSpi
       const data = await res.json();
       if (data.status === "success") {
         showToast(data.message || "Đã mua!");
-        await loadSpirits();
+        await loadData();
         onSpiritChanged?.();
       } else showToast(data.detail || "Mua thất bại", "error");
     } catch (e) { showToast("Lỗi mạng", "error"); }
@@ -167,82 +169,74 @@ export default function CustomizationPanel({ currentUser, onBack, onSaved, onSpi
       const data = await res.json();
       if (data.status === "success") {
         showToast(isEquipped ? "Đã tháo trang bị" : data.message || "Đã trang bị!");
-        await loadSpirits();
+        await loadData();
         onSpiritChanged?.();
       } else showToast(data.detail || "Thao tác thất bại", "error");
     } catch (e) { showToast("Lỗi mạng", "error"); }
     finally { setBusyId(null); }
   };
 
-  // ============ 🖼️ LỌC KHUNG (useMemo — không tính lại mỗi render) ============
-  const frameCounts = useMemo(() => {
-    const c = { common: 0, rare: 0, epic: 0, legendary: 0 };
-    frames.forEach((f) => { c[f.rarity] = (c[f.rarity] || 0) + 1; });
-    return c;
-  }, [frames]);
-  const filteredFrames = useMemo(() => {
-    const q = frameQuery.trim().toLowerCase();
-    return frames.filter((f) =>
-      (frameRarity === "all" || f.rarity === frameRarity) &&
-      (!q || (f.label || f.name).toLowerCase().includes(q)));
-  }, [frames, frameQuery, frameRarity]);
-  const visibleFrames = filteredFrames.slice(0, frameLimit);
-
-  // ============ 🐉💎 LỌC LINH VẬT ============
-  const spiritCounts = useMemo(() => {
-    const c = { common: 0, rare: 0, epic: 0, legendary: 0 };
-    catalog.forEach((i) => { c[i.rarity] = (c[i.rarity] || 0) + 1; });
-    return c;
-  }, [catalog]);
-  const filterSpirits = (kind) => {
-    const q = spiritQuery.trim().toLowerCase();
-    return catalog.filter((i) =>
-      i.kind === kind &&
-      (spiritRarity === "all" || i.rarity === spiritRarity) &&
-      (!q || i.name.toLowerCase().includes(q)));
-  };
-
-  // 🧪 THỬ TRƯỚC KHI MUA — chạm linh vật để ướm lên avatar preview
-  const [tryPet, setTryPet] = useState(null);
-  const [tryTreasure, setTryTreasure] = useState(null);
+  // 🧪 Ướm thử — chạm thẻ để xem trước lên avatar preview
   const tryOn = (item) => {
-    if (item.kind === "pet") setTryPet((p) => (p?.id === item.id ? null : item));
-    else setTryTreasure((t) => (t?.id === item.id ? null : item));
+    setTrying((t) => ({ ...t, [item.kind]: t[item.kind]?.id === item.id ? null : item }));
   };
 
-  // 🖼️ Preview: khung đang chọn + (đồ THỬ || đồ trang bị)
-  const petItem = tryPet || (catalog.find((i) => i.id === equipped.pet) || null);
-  const treasureItem = tryTreasure || (catalog.find((i) => i.id === equipped.treasure) || null);
-  const trying = Boolean(tryPet || tryTreasure);
+  // ============ LỌC THEO TAB ============
+  const kindItems = useMemo(() => catalog.filter((i) => i.kind === tab), [catalog, tab]);
+  const counts = useMemo(() => {
+    const c = { common: 0, rare: 0, epic: 0, legendary: 0 };
+    kindItems.forEach((i) => { c[i.rarity] = (c[i.rarity] || 0) + 1; });
+    return c;
+  }, [kindItems]);
+  const filtered = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    return kindItems.filter((i) =>
+      (rarity === "all" || i.rarity === rarity) &&
+      (!q || i.name.toLowerCase().includes(q)));
+  }, [kindItems, query, rarity]);
+  const visible = filtered.slice(0, limit);
+
+  const switchTab = (id) => {
+    setTab(id); setQuery(""); setRarity("all"); setLimit(24); setTrying({});
+  };
+
+  // 🖼️ Preview: đồ ĐANG EQUIP, đè bởi đồ ĐANG ƯỚM THỬ
+  const byId = useMemo(() => new Map(catalog.map((i) => [i.id, i])), [catalog]);
+  const previewItem = (kind) => trying[kind] || byId.get(equipped[kind]) || null;
+  const preview = {
+    frame: previewItem("frame"), pet: previewItem("pet"), treasure: previewItem("treasure"),
+    dharma: previewItem("dharma"), title: previewItem("title"), ring: previewItem("ring"),
+    sect: previewItem("sect"),
+  };
+  const isTrying = Object.values(trying).some(Boolean);
 
   const TABS = [
-    { id: "frame", label: `🖼️ Khung (${frames.length})` },
-    { id: "pet", label: "🐉 Linh thú" },
-    { id: "treasure", label: "💎 Linh bảo" },
+    ...KIND_TABS.map((t) => ({
+      id: t.kind,
+      label: `${t.icon} ${t.label} (${catalog.filter((i) => i.kind === t.kind).length})`,
+    })),
     { id: "style", label: "✨ Phong cách" },
   ];
 
-  const renderSpiritTab = (kind) => {
-    const items = filterSpirits(kind);
-    const visible = items.slice(0, spiritLimit);
-    const ownedCount = catalog.filter((i) => i.kind === kind && i.owned).length;
-    const totalCount = catalog.filter((i) => i.kind === kind).length;
+  const renderItemTab = () => {
+    const kindLabel = KIND_LABEL[tab] || tab;
+    const ownedCount = kindItems.filter((i) => i.owned).length;
     return (
       <div className="space-y-3">
         <div className="flex items-center justify-between text-xs">
-          <span className="text-gray-400">Kho của bạn: <b className="text-white">{ownedCount}/{totalCount}</b></span>
+          <span className="text-gray-400">Kho của bạn: <b className="text-white">{ownedCount}/{kindItems.length}</b></span>
           <span className="px-2.5 py-1 rounded-full bg-[#1ed760]/10 text-[#1ed760] font-bold">🪙 {xu.toLocaleString("vi-VN")} Xu</span>
         </div>
         <FilterBar
-          query={spiritQuery} onQuery={(v) => { setSpiritQuery(v); setSpiritLimit(24); }}
-          rarity={spiritRarity} onRarity={(r) => { setSpiritRarity(r); setSpiritLimit(24); }}
-          counts={spiritCounts} placeholder={`Tìm ${kind === "pet" ? "linh thú" : "linh bảo"}...`}
+          query={query} onQuery={(v) => { setQuery(v); setLimit(24); }}
+          rarity={rarity} onRarity={(r) => { setRarity(r); setLimit(24); }}
+          counts={counts} placeholder={`Tìm ${kindLabel.toLowerCase()}...`}
         />
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
           {visible.map((item) => {
             const rar = rarityOf(item.rarity);
-            const isEquipped = equipped[kind] === item.id;
-            const isTry = (tryPet?.id === item.id) || (tryTreasure?.id === item.id);
+            const isEquipped = equipped[item.kind] === item.id;
+            const isTry = trying[item.kind]?.id === item.id;
             const busy = busyId === item.id;
             return (
               <div
@@ -262,8 +256,8 @@ export default function CustomizationPanel({ currentUser, onBack, onSaved, onSpi
                 )}
                 <div className="relative inline-block">
                   <img
-                    src={full(item.image)} alt={item.name} loading="lazy"
-                    className="w-20 h-20 mx-auto object-cover rounded-full"
+                    src={full(item.image)} alt={item.name} loading="lazy" decoding="async"
+                    className="w-20 h-20 mx-auto object-contain rounded-full"
                     style={{ background: "radial-gradient(circle at 50% 38%, #1c2440, #0a0d18 72%)", border: "2px solid rgba(255,255,255,.25)" }}
                   />
                   {isEquipped && <span className="absolute -top-1 -right-1 text-[10px] bg-[#1ed760] text-black font-bold rounded-full px-1.5">✓</span>}
@@ -294,11 +288,11 @@ export default function CustomizationPanel({ currentUser, onBack, onSaved, onSpi
               </div>
             );
           })}
-          {items.length === 0 && (
-            <div className="col-span-2 text-center text-gray-500 text-sm py-8">Không tìm thấy linh vật phù hợp.</div>
+          {filtered.length === 0 && (
+            <div className="col-span-full text-center text-gray-500 text-sm py-8">Không tìm thấy vật phẩm phù hợp.</div>
           )}
         </div>
-        <LoadMore shown={visible.length} total={items.length} onMore={() => setSpiritLimit((n) => n + 24)} />
+        <LoadMore shown={visible.length} total={filtered.length} onMore={() => setLimit((n) => n + 24)} />
         <p className="text-[11px] text-gray-500">🧪 Chạm thẻ để ướm thử lên avatar trước khi mua • Trang bị có hiệu lực ngay toàn hệ thống.</p>
       </div>
     );
@@ -317,26 +311,28 @@ export default function CustomizationPanel({ currentUser, onBack, onSaved, onSpi
         <div className="flex-1 min-h-0 flex flex-col md:flex-row">
         {/* 👤 CỘT TRÁI: preview cố định */}
         <div className="shrink-0 md:w-72 lg:w-80 border-b md:border-b-0 md:border-r border-white/10 p-3 md:p-4 bg-white/[0.02] md:overflow-y-auto">
-          <div className="rounded-2xl border border-white/10 bg-white/[0.03] py-3 px-6 md:px-8 text-center">
-            <AvatarFrame src={currentUser?.avatar_url} frame={frame} pet={petItem} treasure={treasureItem} size={80} alt="" />
-            <div className="mt-2 text-base md:text-lg font-bold" style={{ ...cssFrom(nameEffectStyle(effect)) }}>
+          <div className="rounded-2xl border border-white/10 bg-white/[0.03] py-5 px-6 md:px-8 text-center">
+            <AvatarFrame
+              src={currentUser?.avatar_url}
+              frame={preview.frame} pet={preview.pet} treasure={preview.treasure}
+              dharma={preview.dharma} title={preview.title} ring={preview.ring} sect={preview.sect}
+              size={80} alt=""
+            />
+            <div className="mt-3 text-base md:text-lg font-bold" style={{ ...cssFrom(nameEffectStyle(effect)) }}>
               {currentUser?.fullname || currentUser?.username}
             </div>
             <div className="text-xs text-gray-500">
               @{currentUser?.username}
               {Number(currentUser?.role) === 1 && <span className="text-blue-400"> · Admin</span>}
             </div>
-            {(petItem || treasureItem) && (
-              <div className="flex justify-center gap-2 mt-2 flex-wrap">
-                {petItem && (
-                  <span className="px-2 py-0.5 rounded-full bg-sky-500/10 text-sky-300 text-[11px] font-bold">🐉 {petItem.name}</span>
-                )}
-                {treasureItem && (
-                  <span className="px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-300 text-[11px] font-bold">💎 {treasureItem.name}</span>
-                )}
+            {(preview.pet || preview.treasure || preview.dharma) && (
+              <div className="flex justify-center gap-1.5 mt-2 flex-wrap">
+                {preview.dharma && <span className="px-2 py-0.5 rounded-full bg-purple-500/10 text-purple-300 text-[11px] font-bold">🔥 {preview.dharma.name}</span>}
+                {preview.pet && <span className="px-2 py-0.5 rounded-full bg-sky-500/10 text-sky-300 text-[11px] font-bold">🐉 {preview.pet.name}</span>}
+                {preview.treasure && <span className="px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-300 text-[11px] font-bold">💎 {preview.treasure.name}</span>}
               </div>
             )}
-            {trying && (
+            {isTrying && (
               <p className="mt-1.5 text-[10px] text-[#1ed760] font-bold">🧪 Đang ướm thử — mua/trang bị bằng nút trong thẻ</p>
             )}
             {onEditInfo && (
@@ -345,7 +341,7 @@ export default function CustomizationPanel({ currentUser, onBack, onSaved, onSpi
               </button>
             )}
             <p className="mt-1.5 text-[10px] text-gray-600">
-              Chạm khung / linh vật để xem trước • mọi thay đổi hiện toàn hệ thống.
+              Chạm vật phẩm để xem trước • mọi thay đổi hiện toàn hệ thống.
             </p>
           </div>
         </div>
@@ -356,7 +352,7 @@ export default function CustomizationPanel({ currentUser, onBack, onSaved, onSpi
           {TABS.map((t) => (
             <button
               key={t.id}
-              onClick={() => setTab(t.id)}
+              onClick={() => switchTab(t.id)}
               aria-pressed={tab === t.id}
               className={`px-3 py-2 text-xs font-bold rounded-t-xl whitespace-nowrap transition ${tab === t.id ? "bg-white/10 text-white border-b-2 border-[#1ed760]" : "text-gray-500 hover:text-gray-300"}`}
             >
@@ -366,51 +362,8 @@ export default function CustomizationPanel({ currentUser, onBack, onSaved, onSpi
         </div>
 
         <div className="flex-1 overflow-y-auto p-4 space-y-4 min-h-0">
-          {/* 🖼️ TAB KHUNG VIỀN */}
-          {tab === "frame" && (
-            <div className="space-y-3">
-              <FilterBar
-                query={frameQuery} onQuery={(v) => { setFrameQuery(v); setFrameLimit(60); }}
-                rarity={frameRarity} onRarity={(r) => { setFrameRarity(r); setFrameLimit(60); }}
-                counts={frameCounts} placeholder={`Tìm trong ${frames.length} khung viền...`}
-              />
-              <div className="flex items-center gap-2 flex-wrap">
-                <button
-                  onClick={() => setFrame(null)}
-                  aria-pressed={!frame}
-                  aria-label="Không dùng khung"
-                  className={`w-12 h-12 md:w-14 md:h-14 rounded-full border-2 ${!frame ? "border-[#1ed760]" : "border-white/15"} bg-white/5 flex items-center justify-center text-gray-400 hover:bg-white/10`}
-                  title="Không khung"
-                >✕</button>
-                {visibleFrames.map((f) => {
-                  const rar = rarityOf(f.rarity);
-                  return (
-                    <button
-                      key={f.name}
-                      onClick={() => setFrame(f.name)}
-                      aria-pressed={frame === f.name}
-                      aria-label={`Khung ${f.label || f.name}`}
-                      className={`w-12 h-12 md:w-14 md:h-14 rounded-full border-2 overflow-hidden transition ${frame === f.name ? "border-[#1ed760]" : "hover:border-white/40"}`}
-                      style={frame === f.name ? {} : { borderColor: rar.border }}
-                      title={`${f.label || f.name} · ${rar.label}`}
-                    >
-                      <img src={SOCIAL.AVATAR_FRAME_FILE(f.name)} alt={f.label || f.name} loading="lazy" className="w-full h-full object-contain" />
-                    </button>
-                  );
-                })}
-                {filteredFrames.length === 0 && (
-                  <div className="w-full text-center text-gray-500 text-sm py-6">Không tìm thấy khung phù hợp.</div>
-                )}
-              </div>
-              <LoadMore shown={visibleFrames.length} total={filteredFrames.length} onMore={() => setFrameLimit((n) => n + 60)} />
-            </div>
-          )}
-
-          {/* 🐉 TAB LINH THÚ */}
-          {tab === "pet" && renderSpiritTab("pet")}
-
-          {/* 💎 TAB LINH BẢO */}
-          {tab === "treasure" && renderSpiritTab("treasure")}
+          {/* 7 TAB VẬT PHẨM */}
+          {tab !== "style" && renderItemTab()}
 
           {/* ✨ TAB PHONG CÁCH */}
           {tab === "style" && (
@@ -455,15 +408,15 @@ export default function CustomizationPanel({ currentUser, onBack, onSaved, onSpi
           )}
         </div>
 
-        {/* 📌 Nút LƯU cố định đáy — không bị đẩy trôi khi cuộn */}
-        {(tab === "frame" || tab === "style") && (
+        {/* 📌 Nút LƯU cố định đáy — chỉ tab phong cách */}
+        {tab === "style" && (
           <div className="p-3 border-t border-white/10 bg-[#111] shrink-0">
             <button
               onClick={save}
               disabled={saving}
               className="w-full py-2.5 bg-white text-black font-bold rounded-full hover:bg-gray-200 disabled:opacity-50 text-sm"
             >
-              {saving ? "Đang lưu..." : tab === "frame" ? "Lưu khung viền" : "Lưu phong cách"}
+              {saving ? "Đang lưu..." : "Lưu phong cách"}
             </button>
           </div>
         )}

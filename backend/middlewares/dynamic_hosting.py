@@ -17,9 +17,9 @@ except ImportError:
 
 _flask_app_cache = {}
 
-# 🚀 ĐÃ CHUYỂN TỌA ĐỘ VỀ NHÀ FRONTEND
+# 🚀 v2: HOSTED PROJECTS SỐNG TRONG BACKEND (khớp với api/projects.py)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) # Thư mục ubuntu-backend
-HOSTING_DIR = os.path.abspath(os.path.join(BASE_DIR, "../ubuntu-frontend/hosted_projects"))
+HOSTING_DIR = os.path.join(BASE_DIR, "hosted_projects")
 
 class DynamicHostingMiddleware:
     def __init__(self, app):

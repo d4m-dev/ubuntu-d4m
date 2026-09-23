@@ -186,17 +186,21 @@ export const SOCIAL = {
   // 🎨 Sticker GIF
   STICKERS: `${API_BASE_URL}/api/social/stickers`,
   STICKER_FILE: (name) => `${API_BASE_URL}/api/social/sticker/${name}`,
-  // 🖼️ Khung viền avatar (40 kiểu từ github d4m-dev/gif — lưu trong backend/assets/avatar_frames)
-  AVATAR_FRAMES: `${API_BASE_URL}/avatar_frames.json`,                 // manifest tĩnh (danh sách + độ hiếm)
-  AVATAR_FRAME_FILE: (name) => `${API_BASE_URL}/avatar_frames/${name}`, // file frame GIF/WebP/PNG
-  AVATAR_FRAME_DIR: `${API_BASE_URL}/avatar_frames`,                    // thư mục gốc
-  // 🐉💎 Linh thú & Linh bảo
+  // 🗂️ Assets v2 — 13 danh mục (khung, linh-thu, linh-bao, phap-tuong, tong-mon,
+  //    danh-hieu, nhan, tu-vi, luyen-dan, ngu-hanh, tai-nguyen, he-thong, background)
+  ASSETS_MANIFEST: `${API_BASE_URL}/assets_manifest.json`,              // manifest 1159 vật phẩm
+  ASSET_FILE: (path) => `${API_BASE_URL}${String(path).startsWith("/") ? path : `/${path}`}`, // /assets/<danh-mục>/<file>
+  // 🖼️ Khung viền avatar (legacy — giữ tương thích, ảnh giờ nằm trong /assets/khung)
+  AVATAR_FRAMES: `${API_BASE_URL}/avatar_frames.json`,
+  AVATAR_FRAME_FILE: (name) => `${API_BASE_URL}/assets/khung/${name}`,
+  AVATAR_FRAME_DIR: `${API_BASE_URL}/assets/khung`,
+  // 🐉💎 Spirit v2 — 7 slot trang bị
   SPIRIT_CATALOG: `${API_BASE_URL}/api/social/spirits/catalog`,         // danh mục toàn bộ
   SPIRIT_ME: `${API_BASE_URL}/api/social/spirits/me`,                   // kho đồ + trang bị + Xu
   SPIRIT_BUY: `${API_BASE_URL}/api/social/spirits/buy`,                 // mua bằng Xu
   SPIRIT_EQUIP: `${API_BASE_URL}/api/social/spirits/equip`,             // trang bị
   SPIRIT_UNEQUIP: `${API_BASE_URL}/api/social/spirits/unequip`,         // tháo
-  SPIRIT_FILE: (path) => `${API_BASE_URL}${path}`,                      // /linhbao/<file>
+  SPIRIT_FILE: (path) => `${API_BASE_URL}${path}`,                      // /assets/<danh-mục>/<file>
 };
 
 // ============================================================

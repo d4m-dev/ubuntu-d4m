@@ -78,30 +78,63 @@ export const SOCIAL_GLOBAL_CSS = `
   @keyframes d4m-pop { 0%{transform:scale(.8);opacity:0} 100%{transform:scale(1);opacity:1} }
   .d4m-avatar-frame-wrap { position:relative; display:inline-block; }
   .d4m-avatar-frame-wrap > img.d4m-avatar { border-radius:50%; object-fit:cover; }
+  /* 🖼️ Khung viền v2 — bao TRỌN avatar bên ngoài, không blend */
   .d4m-avatar-frame-wrap > img.d4m-frame {
-    position:absolute; inset:0; width:100%; height:100%; border-radius:50%;
-    object-fit:contain; pointer-events:none; mix-blend-mode:screen;
+    position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);
+    width:146%; height:146%; object-fit:contain;
+    pointer-events:none; z-index:2;
   }
-  /* 🐉 Linh thú — art nền đen kiểu game: blend-screen xóa nền đen,
-     nổi như hào quang quanh avatar (góc phải dưới) */
+  /* 🔥 Pháp tướng — nổi phía TRÊN avatar (badge lớn, nền đặc) */
+  .d4m-avatar-frame-wrap > img.d4m-spirit-dharma {
+    position:absolute; left:50%; top:-34%; transform:translateX(-50%);
+    object-fit:contain; border-radius:50%;
+    background:radial-gradient(circle at 50% 35%, #2b1e4f, #120b22 75%);
+    border:2px solid #a855f7; box-shadow:0 0 10px rgba(168,85,247,.55);
+    pointer-events:none; z-index:4;
+    animation:d4m-pet-bob 3.8s ease-in-out infinite;
+  }
+  /* 🐉 Linh thú — badge đặc góc phải (không trong suốt) */
   .d4m-avatar-frame-wrap > img.d4m-spirit-pet {
-    position:absolute; right:-32%; bottom:-14%;
-    width:88% !important; height:88% !important;
-    object-fit:contain; mix-blend-mode:screen;
-    filter:drop-shadow(0 0 6px rgba(120,200,255,.45));
+    position:absolute; right:-26%; bottom:-12%;
+    object-fit:contain; border-radius:50%;
+    background:radial-gradient(circle at 50% 35%, #14243d, #0a1220 75%);
+    border:2px solid #38bdf8; box-shadow:0 0 8px rgba(56,189,248,.5);
     pointer-events:none; z-index:3;
     animation:d4m-pet-bob 2.6s ease-in-out infinite;
   }
-  /* 💎 Linh bảo — góc trái dưới */
+  /* 💎 Linh bảo — badge đặc góc trái */
   .d4m-avatar-frame-wrap > img.d4m-spirit-treasure {
-    position:absolute; left:-28%; bottom:-10%;
-    width:74% !important; height:74% !important;
-    object-fit:contain; mix-blend-mode:screen;
-    filter:drop-shadow(0 0 5px rgba(255,200,80,.5));
+    position:absolute; left:-20%; bottom:-8%;
+    object-fit:contain; border-radius:50%;
+    background:radial-gradient(circle at 50% 35%, #3a2c10, #171003 75%);
+    border:2px solid #fbbf24; box-shadow:0 0 8px rgba(251,191,36,.5);
     pointer-events:none; z-index:3;
     animation:d4m-pet-bob 3.4s ease-in-out infinite reverse;
   }
+  /* 💍 Nhẫn — nhỏ, góc phải dưới khung */
+  .d4m-avatar-frame-wrap > img.d4m-spirit-ring {
+    position:absolute; right:-10%; bottom:-22%;
+    object-fit:contain; border-radius:50%;
+    background:#0e1626; border:1.5px solid #34d399;
+    pointer-events:none; z-index:4;
+  }
+  /* ⛩️ Tông môn — nhỏ, góc phải trên */
+  .d4m-avatar-frame-wrap > img.d4m-spirit-sect {
+    position:absolute; right:-14%; top:-16%;
+    object-fit:cover; border-radius:50%;
+    background:#1c1026; border:1.5px solid #f472b6;
+    pointer-events:none; z-index:4;
+  }
+  /* 🏷️ Danh hiệu — chip ảnh dưới avatar */
+  .d4m-avatar-frame-wrap > img.d4m-title-chip {
+    position:absolute; left:50%; top:104%; transform:translateX(-50%);
+    height:14px; width:auto; object-fit:contain;
+    pointer-events:none; z-index:4; filter:drop-shadow(0 1px 3px rgba(0,0,0,.6));
+  }
   @keyframes d4m-pet-bob { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-3px)} }
+  /* dharma/ring/sect giữ nguyên transform khi bob → dùng animation riêng nhẹ hơn */
+  .d4m-avatar-frame-wrap > img.d4m-spirit-dharma { animation-name:d4m-dharma-bob; }
+  @keyframes d4m-dharma-bob { 0%,100%{transform:translate(-50%,0)} 50%{transform:translate(-50%,-3px)} }
   /* Chat bubbles giống Messenger */
   .d4m-chat { display:flex; width:100%; }
   .d4m-chat.mine { justify-content:flex-end; }

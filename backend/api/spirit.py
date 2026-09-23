@@ -1,18 +1,21 @@
 # -*- coding: utf-8 -*-
 """
 ============================================================
-🐉💎 D4M SPIRIT — LINH THÚ & LINH BẢO (Social Hub)
+🐉💎 D4M SPIRIT v2 — 7 SLOT TRANG BỊ (Social Hub)
 ============================================================
-- GET  /api/social/spirits/catalog      : Danh mục toàn bộ Linh thú + Linh bảo
+- GET  /api/social/spirits/catalog      : Danh mục toàn bộ vật phẩm (7 loại)
 - GET  /api/social/spirits/me           : Kho đồ đã sở hữu + trang bị + số Xu
 - POST /api/social/spirits/buy          : Mua vật phẩm bằng Xu (players.xu)
 - POST /api/social/spirits/equip        : Trang bị vật phẩm đã sở hữu
-- POST /api/social/spirits/unequip      : Tháo trang bị (kind: pet | treasure)
+- POST /api/social/spirits/unequip      : Tháo trang bị (kind: frame|pet|treasure|title|ring|dharma|sect)
 - POST /api/social/spirits/admin/grant  : Admin tặng vật phẩm cho user
 
-Thêm vật phẩm mới:
-  1. Thả ảnh vào  backend/assets/pets/  hoặc  backend/assets/treasures/
-  2. INSERT INTO spirit_items (...) — hoặc tặng qua admin/grant
+7 loại vật phẩm (kind):
+    frame (khung viền) · pet (linh thú) · treasure (linh bảo) ·
+    title (danh hiệu)  · ring (nhẫn)     · dharma (pháp tướng) · sect (tông môn)
+
+Nguồn dữ liệu: backend/assets_manifest.json (sinh bởi scripts/gen_assets_manifest.py)
+Ảnh phục vụ tại /assets/<danh-mục>/<file> (mount trong api/server.py)
 ============================================================
 """
 from fastapi import APIRouter, Depends, HTTPException
@@ -21,9 +24,10 @@ from pydantic import BaseModel
 from core import urls as U
 from core.database import db_executor, db_inserter, db_updater
 from services.sso_service import verify_admin
+from services.spirit_service import EQUIP_SLOTS
 from api.social import get_current_user  # 🔒 tái dùng bộ lọc token + kiểm tra active
 
-router = APIRouter(prefix=U.SPIRIT["PREFIX"], tags=["Spirit — Linh thú & Linh bảo"])
+router = APIRouter(prefix=U.SPIRIT["PREFIX"], tags=["Spirit — 7 slot trang bị"])
 
 RARITY_LABEL = {
     "common": "Thường",
@@ -31,6 +35,10 @@ RARITY_LABEL = {
     "epic": "Sử thi",
     "legendary": "Huyền thoại",
 }
+
+# Thứ tự hiển thị tab ngoài frontend
+KIND_ORDER = {"frame": 0, "pet": 1, "treasure": 2, "dharma": 3,
+              "title": 4, "ring": 5, "sect": 6}
 
 
 # ==========================================
@@ -45,7 +53,7 @@ class EquipRequest(BaseModel):
 
 
 class UnequipRequest(BaseModel):
-    kind: str  # "pet" | "treasure"
+    kind: str  # frame|pet|treasure|title|ring|dharma|sect
 
 
 class GrantRequest(BaseModel):
@@ -79,30 +87,39 @@ def _ensure_player(user_id: int):
     db_inserter.insert("INSERT IGNORE INTO players (user_id) VALUES (%s)", (user_id,))
 
 
+def _equipped_map(uid: int) -> dict:
+    """{kind: item_id} của 7 slot."""
+    cols = ", ".join(EQUIP_SLOTS.values())
+    rows = db_executor.select_as_list_dict(
+        f"SELECT {cols} FROM users WHERE id=%s", (uid,))
+    row = rows[0] if rows else {}
+    return {kind: row.get(col) for kind, col in EQUIP_SLOTS.items()}
+
+
 # ==========================================
 # 📚 DANH MỤC (CATALOG)
 # ==========================================
 @router.get(U.SPIRIT["CATALOG"])
 def get_catalog(current_user: dict = Depends(get_current_user)):
-    """Danh mục toàn bộ Linh thú + Linh bảo (kèm trạng thái sở hữu của người gọi)."""
+    """Danh mục toàn bộ vật phẩm 7 loại (kèm trạng thái sở hữu/trang bị)."""
     uid = current_user.get("user_id")
     items = db_executor.select_as_list_dict(
         "SELECT id, kind, name, description, image, rarity, price_xu, zorder "
-        "FROM spirit_items ORDER BY kind ASC, zorder DESC, id ASC")
+        "FROM spirit_items ORDER BY zorder DESC, id ASC")
     owned = {r["item_id"] for r in db_executor.select_as_list_dict(
         "SELECT item_id FROM user_spirit_items WHERE user_id=%s", (uid,))}
-    equipped = db_executor.select_as_list_dict(
-        "SELECT equipped_pet, equipped_treasure FROM users WHERE id=%s", (uid,))
-    eq = equipped[0] if equipped else {}
+    eq = _equipped_map(uid)
+    equipped_ids = {v for v in eq.values() if v}
 
     data = []
     for it in items:
         it = _with_rarity_label(dict(it))
         it["owned"] = it["id"] in owned
-        it["equipped"] = (it["id"] == eq.get("equipped_pet")
-                          or it["id"] == eq.get("equipped_treasure"))
+        it["equipped"] = it["id"] in equipped_ids
+        it["slot"] = it["kind"]  # alias dễ đọc cho frontend
         data.append(it)
-    return {"status": "success", "data": data}
+    data.sort(key=lambda x: (KIND_ORDER.get(x["kind"], 99), x["id"]))
+    return {"status": "success", "data": data, "equipped": eq}
 
 
 # ==========================================
@@ -110,28 +127,26 @@ def get_catalog(current_user: dict = Depends(get_current_user)):
 # ==========================================
 @router.get(U.SPIRIT["ME"])
 def get_my_spirits(current_user: dict = Depends(get_current_user)):
-    """Kho đồ đã sở hữu + trang bị hiện tại + số Xu."""
+    """Kho đồ đã sở hữu + 7 slot trang bị + số Xu."""
     uid = current_user.get("user_id")
-    eq_rows = db_executor.select_as_list_dict(
-        "SELECT equipped_pet, equipped_treasure FROM users WHERE id=%s", (uid,))
-    eq = eq_rows[0] if eq_rows else {"equipped_pet": None, "equipped_treasure": None}
+    eq = _equipped_map(uid)
 
     owned = db_executor.select_as_list_dict(
         "SELECT si.id, si.kind, si.name, si.description, si.image, si.rarity, "
         "       si.price_xu, usi.acquired_at "
         "FROM user_spirit_items usi "
         "JOIN spirit_items si ON si.id = usi.item_id "
-        "WHERE usi.user_id=%s ORDER BY si.kind ASC, si.zorder DESC", (uid,))
+        "WHERE usi.user_id=%s ORDER BY si.zorder DESC", (uid,))
 
-    return {
-        "status": "success",
-        "data": {
-            "xu": _get_xu(uid),
-            "equipped_pet": eq.get("equipped_pet"),
-            "equipped_treasure": eq.get("equipped_treasure"),
-            "items": [_with_rarity_label(dict(r)) for r in owned],
-        },
+    payload = {
+        "xu": _get_xu(uid),
+        "equipped": eq,
+        # tương thích ngược
+        "equipped_pet": eq.get("pet"),
+        "equipped_treasure": eq.get("treasure"),
+        "items": [_with_rarity_label(dict(r)) for r in owned],
     }
+    return {"status": "success", "data": payload}
 
 
 # ==========================================
@@ -142,13 +157,13 @@ def buy_item(body: BuyRequest, current_user: dict = Depends(get_current_user)):
     uid = current_user.get("user_id")
     item = _item_by_id(body.item_id)
     if not item:
-        raise HTTPException(status_code=404, detail="Linh vật không tồn tại trong bảo khố.")
+        raise HTTPException(status_code=404, detail="Vật phẩm không tồn tại trong bảo khố.")
 
     already = db_executor.select_as_list_dict(
         "SELECT item_id FROM user_spirit_items WHERE user_id=%s AND item_id=%s",
         (uid, body.item_id))
     if already:
-        raise HTTPException(status_code=400, detail="Bạn đã sở hữu linh vật này rồi!")
+        raise HTTPException(status_code=400, detail="Bạn đã sở hữu vật phẩm này rồi!")
 
     price = int(item.get("price_xu") or 0)
     _ensure_player(uid)
@@ -182,15 +197,17 @@ def equip_item(body: EquipRequest, current_user: dict = Depends(get_current_user
     uid = current_user.get("user_id")
     item = _item_by_id(body.item_id)
     if not item:
-        raise HTTPException(status_code=404, detail="Linh vật không tồn tại trong bảo khố.")
+        raise HTTPException(status_code=404, detail="Vật phẩm không tồn tại trong bảo khố.")
+    if item["kind"] not in EQUIP_SLOTS:
+        raise HTTPException(status_code=400, detail="Vật phẩm này không thể trang bị.")
 
     owned = db_executor.select_as_list_dict(
         "SELECT item_id FROM user_spirit_items WHERE user_id=%s AND item_id=%s",
         (uid, body.item_id))
     if not owned:
-        raise HTTPException(status_code=403, detail="Bạn chưa sở hữu linh vật này. Hãy mua hoặc xin Admin tặng!")
+        raise HTTPException(status_code=403, detail="Bạn chưa sở hữu vật phẩm này. Hãy mua hoặc xin Admin tặng!")
 
-    column = "equipped_pet" if item["kind"] == "pet" else "equipped_treasure"
+    column = EQUIP_SLOTS[item["kind"]]
     db_updater.update(f"UPDATE users SET {column}=%s WHERE id=%s", (body.item_id, uid))
 
     return {
@@ -204,9 +221,10 @@ def equip_item(body: EquipRequest, current_user: dict = Depends(get_current_user
 @router.post(U.SPIRIT["UNEQUIP"])
 def unequip_item(body: UnequipRequest, current_user: dict = Depends(get_current_user)):
     uid = current_user.get("user_id")
-    if body.kind not in ("pet", "treasure"):
-        raise HTTPException(status_code=400, detail="Loại trang bị không hợp lệ (pet|treasure).")
-    column = "equipped_pet" if body.kind == "pet" else "equipped_treasure"
+    if body.kind not in EQUIP_SLOTS:
+        valid = "|".join(EQUIP_SLOTS)
+        raise HTTPException(status_code=400, detail=f"Loại trang bị không hợp lệ ({valid}).")
+    column = EQUIP_SLOTS[body.kind]
     db_updater.update(f"UPDATE users SET {column}=NULL WHERE id=%s", (uid,))
     return {"status": "success", "message": "Đã tháo trang bị.", "kind": body.kind}
 
@@ -222,7 +240,7 @@ def admin_grant(body: GrantRequest, auth_data: tuple = Depends(verify_admin)):
         raise HTTPException(status_code=404, detail="Người dùng không tồn tại.")
     item = _item_by_id(body.item_id)
     if not item:
-        raise HTTPException(status_code=404, detail="Linh vật không tồn tại trong bảo khố.")
+        raise HTTPException(status_code=404, detail="Vật phẩm không tồn tại trong bảo khố.")
 
     db_inserter.insert(
         "INSERT IGNORE INTO user_spirit_items (user_id, item_id) VALUES (%s, %s)",

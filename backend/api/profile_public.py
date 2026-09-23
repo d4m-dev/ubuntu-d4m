@@ -81,8 +81,13 @@ def get_public_profile(username: str):
                 # 🖼️🐉💎 Cá nhân hóa
                 "avatar_frame": user.get("avatar_frame"),
                 "name_effect": user.get("name_effect") or "default",
+                "frame": spirit["frame"],
                 "pet": spirit["pet"],
                 "treasure": spirit["treasure"],
+                "dharma": spirit["dharma"],
+                "title": spirit["title"],
+                "ring": spirit["ring"],
+                "sect": spirit["sect"],
             },
             "playlists": pl_json,
         }

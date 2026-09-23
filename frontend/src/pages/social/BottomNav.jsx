@@ -5,7 +5,7 @@
 import { IconHome, IconMessage, IconPlus, IconHeart } from "./icons";
 import AvatarFrame from "./AvatarFrame";
 
-export default function BottomNav({ active, dmUnread = 0, avatarUrl, frame, pet, treasure, onNavigate }) {
+export default function BottomNav({ active, dmUnread = 0, avatarUrl, frame, pet, treasure, dharma, title, ring, sect, onNavigate }) {
   return (
     <nav
       className="fixed bottom-0 left-0 right-0 z-[100] bg-black/95 backdrop-blur-xl border-t border-white/10"
@@ -53,7 +53,7 @@ export default function BottomNav({ active, dmUnread = 0, avatarUrl, frame, pet,
 
         {/* Hồ sơ — mở bảng Hồ sơ & Phong cách */}
         <button onClick={() => onNavigate("profile")} className="p-1 hover:text-gray-200" title="Hồ sơ & Phong cách">
-          <AvatarFrame src={avatarUrl} frame={frame} pet={pet} treasure={treasure} size={26} alt="" />
+          <AvatarFrame src={avatarUrl} frame={frame} pet={pet} treasure={treasure} dharma={dharma} title={title} ring={ring} sect={sect} size={26} alt="" />
         </button>
       </div>
     </nav>

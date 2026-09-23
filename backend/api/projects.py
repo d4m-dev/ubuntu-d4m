@@ -13,9 +13,9 @@ router = APIRouter(
     tags=["Project Hub"]
 )
 
-# 🚀 ĐÃ CHUYỂN TỌA ĐỘ VỀ NHÀ FRONTEND
+# 🚀 v2: HOSTED PROJECTS SỐNG TRONG BACKEND (deploy độc lập, không phụ thuộc frontend)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) # Thư mục ubuntu-backend
-HOSTING_DIR = os.path.abspath(os.path.join(BASE_DIR, "../frontend/hosted_projects"))
+HOSTING_DIR = os.path.join(BASE_DIR, "hosted_projects")
 
 def get_dir_size(path):
     total = 0
