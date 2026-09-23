@@ -39,4 +39,5 @@ class ForgotPasswordRequest(BaseModel):
 
 class ResetPasswordRequest(BaseModel):
     email: EmailStr
-    otp: str = Field(..., min_length=6, description="Mật khẩu mới phải từ 6 ký tự")
+    otp: str = Field(..., min_length=6, description="Mã OTP gồm 6 số")
+    new_password: str = Field(..., min_length=6, description="Mật khẩu mới phải từ 6 ký tự")
