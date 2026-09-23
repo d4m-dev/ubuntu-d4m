@@ -466,7 +466,7 @@ export default function SocialHubPage() {
   // GIAO DIỆN CHÍNH
   // ==========================================
   return (
-    <div className="min-h-screen bg-[#06080d] text-white font-sans selection:bg-[#1ed760]/30 relative">
+    <div className="min-h-screen bg-[#0a0e17] text-white font-sans selection:bg-[#f5c15c]/30 relative">
       <SEO title="Social Hub" description="Mạng xã hội D4M — cập nhật trạng thái, chia sẻ âm nhạc và kết nối cộng đồng." />
       {/* 🌌 Nền aurora + lưới mờ */}
       <div className="d4m-bg-aurora" aria-hidden="true" />
@@ -479,12 +479,12 @@ export default function SocialHubPage() {
             <span className="d4m-logo-mark w-9 h-9 rounded-xl flex items-center justify-center text-black font-black text-lg">D4</span>
             <span className="text-left leading-tight">
               <span className="block text-lg font-extrabold tracking-tight d4m-brand-gradient">Social Hub</span>
-              <span className="block text-[10px] text-gray-500 font-semibold tracking-widest uppercase">D4M Network</span>
+              <span className="block text-[10px] text-gray-500 font-semibold tracking-widest uppercase">Giang Hồ D4M</span>
             </span>
           </button>
 
           {/* 👤 THẺ USER — avatar đủ 7 slot trang bị */}
-          <button onClick={() => setShowCustomization(true)} className="d4m-mini-card text-left w-full rounded-2xl border border-white/10 bg-white/[0.04] hover:bg-white/[0.07] hover:border-[#1ed760]/40 transition p-3 mb-4 group">
+          <button onClick={() => setShowCustomization(true)} className="d4m-mini-card text-left w-full rounded-2xl border border-[#f5c15c]/20 bg-white/[0.04] hover:bg-[#f5c15c]/5 hover:border-[#f5c15c]/50 transition p-3 mb-4 group">
             <div className="flex items-center gap-3">
               <AvatarFrame
                 src={currentUser?.avatar_url}
@@ -495,7 +495,7 @@ export default function SocialHubPage() {
                 size={44} alt=""
               />
               <div className="min-w-0 flex-1">
-                <div className="text-sm font-bold truncate group-hover:text-[#1ed760] transition">{currentUser?.fullname || currentUser?.username}</div>
+                <div className="text-sm font-bold truncate group-hover:text-[#ffd77a] transition">{currentUser?.fullname || currentUser?.username}</div>
                 <div className="text-[11px] text-gray-500 truncate">@{currentUser?.username}</div>
                 <div className="mt-0.5 text-[10px] font-bold text-[#1ed760]">🪙 {Number(currentUser?.xu || 0).toLocaleString("vi-VN")} Xu</div>
               </div>
@@ -519,14 +519,14 @@ export default function SocialHubPage() {
         <div className="flex-1 min-w-0 flex flex-col relative">
 
         {/* HEADER */}
-        <header className="sticky top-0 z-40 bg-[#06080d]/85 backdrop-blur-xl border-b border-white/10">
+        <header className="sticky top-0 z-40 bg-[#0a0e17]/85 backdrop-blur-xl border-b border-[#f5c15c]/15">
           <div className="flex items-center justify-between px-4 py-2.5">
             <button onClick={() => navigate("/hub")} className="flex items-center gap-2 hover:opacity-75 transition lg:hidden" aria-label="Về trung tâm D4M">
               <span className="d4m-logo-mark w-7 h-7 rounded-lg flex items-center justify-center text-black font-black text-xs">D4</span>
               <span className="text-lg font-extrabold tracking-tight d4m-brand-gradient">Social Hub</span>
             </button>
             <div className="hidden lg:block text-[13px] text-gray-500 font-semibold">
-              ✨ {feed.length} bài viết trong cộng đồng
+              ⚔️ Giang hồ có {feed.length} tin truyền
             </div>
             <div className="flex items-center gap-4 text-gray-400">
               <button onClick={() => setShowCustomization(true)} className="hover:text-[#1ed760] transition" title="Cá nhân hóa" aria-label="Cá nhân hóa" style={{ width: 22, height: 22 }}><span className="text-base leading-none">🎨</span></button>
@@ -565,7 +565,7 @@ export default function SocialHubPage() {
               />
               <button
                 onClick={() => handleNav("create")}
-                className="flex-1 text-left px-4 py-2.5 rounded-full bg-white/[0.06] border border-white/10 text-sm text-gray-400 hover:bg-white/10 hover:border-[#1ed760]/40 hover:text-gray-200 transition"
+                className="flex-1 text-left px-4 py-2.5 rounded-full bg-white/[0.06] border border-[#f5c15c]/15 text-sm text-gray-400 hover:bg-[#f5c15c]/10 hover:border-[#f5c15c]/50 hover:text-[#ffd77a] transition"
               >
                 {(currentUser?.fullname || currentUser?.username || "Bạn").split(" ")[0]} ơi, hôm nay có gì mới? 🎤
               </button>
@@ -592,7 +592,7 @@ export default function SocialHubPage() {
             // WHY: tab following chưa có dữ liệu follow -> thông báo trung thực, không dead-end
             <div className="text-center text-gray-500 py-20 px-6">
               <div className="text-4xl mb-3 text-gray-600">👥</div>
-              <p className="font-semibold text-white">Tính năng "Đang theo dõi" sắp ra mắt</p>
+              <p className="font-semibold text-white">Tuyệt học "Đang theo dõi" sắp xuất thế</p>
               <p className="text-sm mt-1">Hiện tại hãy khám phá bảng tin "Cho bạn" nhé!</p>
               <button onClick={() => setActiveTab("for_you")} className="mt-4 px-5 py-2 bg-white text-black rounded-full text-sm font-bold hover:bg-gray-200 transition">
                 Về bảng tin Cho bạn

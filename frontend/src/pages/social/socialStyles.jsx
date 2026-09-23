@@ -98,7 +98,7 @@ export const SOCIAL_GLOBAL_CSS = `
     position:absolute; right:-26%; bottom:-12%;
     object-fit:contain; border-radius:50%;
     background:radial-gradient(circle at 50% 35%, #14243d, #0a1220 75%);
-    border:2px solid #38bdf8; box-shadow:0 0 8px rgba(56,189,248,.5);
+    border:2px solid #34d399; box-shadow:0 0 8px rgba(52,211,153,.55);
     pointer-events:none; z-index:3;
     animation:d4m-pet-bob 2.6s ease-in-out infinite;
   }
@@ -115,14 +115,14 @@ export const SOCIAL_GLOBAL_CSS = `
   .d4m-avatar-frame-wrap > img.d4m-spirit-ring {
     position:absolute; right:-10%; bottom:-22%;
     object-fit:contain; border-radius:50%;
-    background:#0e1626; border:1.5px solid #34d399;
+    background:#161022; border:1.5px solid #ffd77a; box-shadow:0 0 6px rgba(255,215,122,.4);
     pointer-events:none; z-index:4;
   }
   /* ⛩️ Tông môn — nhỏ, góc phải trên */
   .d4m-avatar-frame-wrap > img.d4m-spirit-sect {
     position:absolute; right:-14%; top:-16%;
     object-fit:cover; border-radius:50%;
-    background:#1c1026; border:1.5px solid #f472b6;
+    background:#1c0e12; border:1.5px solid #f43f5e; box-shadow:0 0 6px rgba(244,63,94,.4);
     pointer-events:none; z-index:4;
   }
   /* 🏷️ Danh hiệu — chip ảnh dưới avatar */
@@ -142,27 +142,67 @@ export const SOCIAL_GLOBAL_CSS = `
   .d4m-bubble { max-width:75%; padding:8px 14px; word-wrap:break-word; white-space:pre-wrap; }
   .d4m-chat.mine .d4m-bubble { border-bottom-right-radius:4px; }
   .d4m-chat.theirs .d4m-bubble { border-bottom-left-radius:4px; }
-  /* 🎨 Thương hiệu D4M: chữ gradient + nút nhấn nổi bật */
-  .d4m-brand-gradient { background: linear-gradient(90deg,#1ed760 0%,#00d2d3 50%,#5352ed 100%); -webkit-background-clip:text; background-clip:text; color:transparent; }
-  .d4m-btn-grad { background: linear-gradient(135deg,#1ed760,#00b894); color:#000 !important; box-shadow: 0 4px 16px rgba(30,215,96,.35); }
+  /* 🎨 Thương hiệu D4M — phiên bản TU TIÊN: kim quang + ngọc bích */
+  .d4m-brand-gradient { background: linear-gradient(90deg,#ffd77a 0%,#f5c15c 35%,#34d399 75%,#0ea5e9 100%); -webkit-background-clip:text; background-clip:text; color:transparent; }
+  .d4m-btn-grad { background: linear-gradient(135deg,#f5c15c,#d99a2b 55%,#34d399); color:#1a1206 !important; box-shadow: 0 4px 18px rgba(245,193,92,.35); }
   .d4m-btn-grad:hover { filter:brightness(1.08); }
-  /* 🌌 Social Hub v3: nền aurora + lưới mờ */
+  /* 🌌 Social Hub v3: nền sương linh khí (aurora tu tiên) */
   .d4m-bg-aurora { position:fixed; inset:0; z-index:0; pointer-events:none;
     background:
-      radial-gradient(560px 320px at 12% -4%, rgba(30,215,96,.13), transparent 62%),
-      radial-gradient(640px 360px at 96% 4%, rgba(83,82,237,.14), transparent 62%),
-      radial-gradient(520px 420px at 50% 108%, rgba(0,210,211,.09), transparent 64%);
+      radial-gradient(560px 320px at 12% -4%, rgba(245,193,92,.14), transparent 62%),
+      radial-gradient(640px 360px at 96% 4%, rgba(52,211,153,.12), transparent 62%),
+      radial-gradient(520px 420px at 50% 108%, rgba(14,165,233,.08), transparent 64%);
     animation:d4m-aurora 16s ease-in-out infinite alternate; }
   @keyframes d4m-aurora { 0%{opacity:.8; transform:translateY(0)} 100%{opacity:1; transform:translateY(-14px)} }
-  .d4m-logo-mark { background: linear-gradient(135deg,#1ed760,#00d2d3 60%,#5352ed); box-shadow:0 2px 14px rgba(30,215,96,.45); }
+  .d4m-logo-mark { background: linear-gradient(135deg,#ffd77a,#f5c15c 55%,#34d399); box-shadow:0 2px 14px rgba(245,193,92,.5); }
   .d4m-mini-card { box-shadow: inset 0 1px 0 rgba(255,255,255,.04); }
   .d4m-nav-btn { display:flex; align-items:center; gap:12px; padding:10px 12px; border-radius:14px;
     font-size:14.5px; font-weight:600; color:#c7ccd6; transition:.18s; text-align:left; }
   .d4m-nav-btn:hover { background:rgba(255,255,255,.06); color:#fff; }
-  .d4m-nav-active { background:linear-gradient(90deg, rgba(30,215,96,.16), rgba(0,210,211,.07)); color:#fff; box-shadow:inset 0 0 0 1px rgba(30,215,96,.25); }
-  .d4m-tab-underline { background:linear-gradient(90deg,#1ed760,#00d2d3,#5352ed); box-shadow:0 0 12px rgba(30,215,96,.6); }
+  .d4m-nav-active { background:linear-gradient(90deg, rgba(245,193,92,.16), rgba(52,211,153,.07)); color:#fff; box-shadow:inset 0 0 0 1px rgba(245,193,92,.3); }
+  .d4m-tab-underline { background:linear-gradient(90deg,#ffd77a,#f5c15c,#34d399); box-shadow:0 0 12px rgba(245,193,92,.6); }
   @media (min-width:1024px){
     .d4m-post-card { border-radius:16px; margin:4px 8px; border:1px solid transparent; }
-    .d4m-post-card:hover { background:rgba(255,255,255,.04); border-color:rgba(30,215,96,.14); }
+    .d4m-post-card:hover { background:rgba(255,255,255,.04); border-color:rgba(245,193,92,.16); }
   }
+
+  /* ═══════════════════════════════════════════════════════════
+     ⚔️ TUYẾN THEME TU TIÊN — BẢO KHỐ TRANG BỊ (dùng chung
+     cho CustomizationPanel + Hồ sơ định danh)
+     ═══════════════════════════════════════════════════════════ */
+  .x-panel { position:relative; background:linear-gradient(160deg, rgba(17,24,39,.92), rgba(10,14,23,.96));
+    border:1px solid rgba(245,193,92,.22); box-shadow:0 10px 40px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.04); }
+  /* 4 góc hoa văn cổ */
+  .x-panel::before, .x-panel::after { content:""; position:absolute; width:18px; height:18px; pointer-events:none;
+    border-color:rgba(245,193,92,.75); border-style:solid; }
+  .x-panel::before { top:-1px; left:-1px; border-width:2px 0 0 2px; border-top-left-radius:10px; }
+  .x-panel::after  { bottom:-1px; right:-1px; border-width:0 2px 2px 0; border-bottom-right-radius:10px; }
+  .x-gold-text { background:linear-gradient(90deg,#ffe9a8,#f5c15c 45%,#d99a2b); -webkit-background-clip:text; background-clip:text; color:transparent; }
+  .x-divider { height:1px; background:linear-gradient(90deg, transparent, rgba(245,193,92,.5), transparent); border:none; }
+  .x-chip { display:inline-flex; align-items:center; gap:4px; padding:2px 10px; border-radius:999px;
+    font-size:11px; font-weight:700; border:1px solid rgba(245,193,92,.35); color:#ffd77a; background:rgba(245,193,92,.08); }
+  .x-slot-card { position:relative; border-radius:16px; border:1px solid rgba(255,255,255,.09);
+    background:radial-gradient(120% 100% at 50% 0%, rgba(255,255,255,.05), rgba(0,0,0,.25)); transition:.2s; }
+  .x-slot-card.x-slot-on { border-color:rgba(245,193,92,.55); box-shadow:0 0 18px rgba(245,193,92,.15), inset 0 0 24px rgba(245,193,92,.05); }
+  .x-item-card { position:relative; border-radius:16px; border:2px solid rgba(255,255,255,.1); cursor:pointer;
+    background:radial-gradient(120% 90% at 50% 0%, rgba(255,255,255,.045), rgba(8,11,18,.9)); transition:.18s; }
+  .x-item-card:hover { transform:translateY(-2px); background:radial-gradient(120% 90% at 50% 0%, rgba(255,255,255,.08), rgba(8,11,18,.9)); }
+  .x-item-card.x-equipped { border-color:#34d399 !important; box-shadow:0 0 16px rgba(52,211,153,.25); }
+  .x-item-card.x-try { border-color:#ffd77a !important; box-shadow:0 0 16px rgba(245,193,92,.3); }
+  .x-rarity-common    { border-color:#6b7280; }
+  .x-rarity-rare      { border-color:#38bdf8; box-shadow:0 0 10px rgba(56,189,248,.12); }
+  .x-rarity-epic      { border-color:#c084fc; box-shadow:0 0 10px rgba(192,132,252,.14); }
+  .x-rarity-legendary { border-color:#f5c15c; box-shadow:0 0 14px rgba(245,193,92,.22); }
+  .x-btn-equip { background:linear-gradient(135deg,#f5c15c,#d99a2b); color:#1a1206; font-weight:800; }
+  .x-btn-equip:hover { filter:brightness(1.1); }
+  .x-btn-unequip { background:rgba(255,255,255,.08); color:#d1d5db; }
+  .x-btn-unequip:hover { background:rgba(244,63,94,.18); color:#fda4af; }
+  .x-tab { position:relative; padding:10px 14px; font-size:12.5px; font-weight:700; white-space:nowrap;
+    color:#9ca3af; border-radius:12px 12px 0 0; transition:.15s; }
+  .x-tab:hover { color:#e5e7eb; }
+  .x-tab-active { color:#ffd77a; background:linear-gradient(180deg, rgba(245,193,92,.12), transparent);
+    box-shadow:inset 0 -2px 0 #f5c15c; }
+  @keyframes x-shimmer { 0%{background-position:-200% 0} 100%{background-position:200% 0} }
+  .x-shimmer { background:linear-gradient(110deg, transparent 30%, rgba(255,255,255,.14) 50%, transparent 70%);
+    background-size:200% 100%; animation:x-shimmer 2.6s linear infinite; }
 `;

@@ -102,12 +102,22 @@ export default defineConfig({
         changeOrigin: true,
         ws: true, // ⚡ Hỗ trợ WebSocket realtime (DM, notification) trong dev
       },
-      // 🖼️🐉💎 Assets Social Hub (khung viền + Linh thú/Linh bảo) — cùng backend
-      "/avatar_frames": {
+      // 🗂️ Assets Social Hub v2 — 13 danh mục (khung, linh-thu, linh-bao, phap-tuong...)
+      "/assets": {
         target: process.env.VITE_API_PROXY || "http://127.0.0.1:16868",
         changeOrigin: true,
       },
-      "/linhbao": {
+      "/assets_manifest.json": {
+        target: process.env.VITE_API_PROXY || "http://127.0.0.1:16868",
+        changeOrigin: true,
+      },
+      // 🚀 Hosted projects (backend phục vụ /projects/<tên>/)
+      "/projects": {
+        target: process.env.VITE_API_PROXY || "http://127.0.0.1:16868",
+        changeOrigin: true,
+      },
+      // 🔙 Endpoint cũ tương thích ngược
+      "/avatar_frames.json": {
         target: process.env.VITE_API_PROXY || "http://127.0.0.1:16868",
         changeOrigin: true,
       },

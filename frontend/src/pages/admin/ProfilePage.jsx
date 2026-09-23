@@ -5,6 +5,7 @@ import { ENDPOINTS, API_BASE_URL } from "../../config/api";
 import { SOCIAL } from "../../config/urls";
 import { showToast } from "../../lib/toast";
 import AvatarFrame from "../social/AvatarFrame";
+import { SOCIAL_GLOBAL_CSS } from "../social/socialStyles";
 
 // 🎨 7 slot trang bị Spirit v2
 const SLOT_META = [
@@ -73,6 +74,15 @@ export default function ProfilePage() {
       Authorization: `Bearer ${getToken()}`,
     };
   };
+
+  // 🎨 Inject CSS toàn cục Social Hub (khung viền + badge) — idempotent
+  useEffect(() => {
+    if (document.getElementById("d4m-social-css")) return;
+    const style = document.createElement("style");
+    style.id = "d4m-social-css";
+    style.textContent = SOCIAL_GLOBAL_CSS;
+    document.head.appendChild(style);
+  }, []);
 
   useEffect(() => {
     const token = getToken();
@@ -345,11 +355,12 @@ export default function ProfilePage() {
       <div className="orb orb-2" aria-hidden="true" />
       
 
-      {/* CSS GLASSMORPHISM */}
+      {/* CSS GLASSMORPHISM + KIM QUANG (tu tiên) */}
       <style>{`
         .glass-panel { background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); }
         .input-glass { background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(255, 255, 255, 0.05); color: white; transition: border-color 0.3s, background 0.3s; }
-        .input-glass:focus { background: rgba(15, 23, 42, 0.5); border-color: rgba(59, 130, 246, 0.5); outline: none; }
+        .input-glass:focus { background: rgba(15, 23, 42, 0.5); border-color: rgba(245, 193, 92, 0.5); outline: none; }
+        .x-gold-text { background: linear-gradient(90deg,#ffe9a8,#f5c15c 45%,#d99a2b); -webkit-background-clip:text; background-clip:text; color:transparent; }
       `}</style>
 
       {/* HEADER */}
@@ -357,8 +368,9 @@ export default function ProfilePage() {
         <Link to="/hub" className="text-gray-400 hover:text-white transition flex items-center group font-bold text-sm">
           <i className="fa-solid fa-arrow-left mr-2 group-hover:-translate-x-1 transition-transform"></i> Trở về Hub
         </Link>
-        <div className="font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500 tracking-wide text-xl font-heading">
-          HỒ SƠ ĐỊNH DANH
+        <div className="text-right">
+          <div className="font-bold x-gold-text tracking-wide text-xl font-heading">HỒ SƠ ĐỊNH DANH</div>
+          <div className="text-[10px] text-gray-500 tracking-widest uppercase">Đạo hồ tu tiên · Social Hub</div>
         </div>
       </header>
 
@@ -444,7 +456,7 @@ export default function ProfilePage() {
                 onClick={() => setActiveTab("basic")}
                 className={`text-left px-5 py-3.5 rounded-2xl font-bold transition flex items-center ${
                   activeTab === "basic"
-                    ? "bg-blue-500/20 text-blue-400 border border-blue-500/10"
+                    ? "bg-emerald-500/15 text-emerald-300 border border-emerald-500/20"
                     : "text-gray-400 hover:bg-white/5 hover:text-white"
                 }`}
               >
@@ -454,7 +466,7 @@ export default function ProfilePage() {
                 onClick={() => setActiveTab("spirit")}
                 className={`text-left px-5 py-3.5 rounded-2xl font-bold transition flex items-center ${
                   activeTab === "spirit"
-                    ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/10"
+                    ? "bg-amber-500/15 text-amber-300 border border-amber-500/20"
                     : "text-gray-400 hover:bg-white/5 hover:text-white"
                 }`}
               >
@@ -565,7 +577,7 @@ export default function ProfilePage() {
                     <button
                       type="submit"
                       disabled={isSaving}
-                      className="px-8 py-3.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 rounded-xl font-bold transition shadow-[0_0_20px_rgba(59,130,246,0.3)] active:scale-95 disabled:opacity-50"
+                      className="px-8 py-3.5 bg-gradient-to-r from-amber-500 to-emerald-500 hover:from-amber-400 hover:to-emerald-400 text-black rounded-xl font-bold transition shadow-[0_0_20px_rgba(245,193,92,0.35)] active:scale-95 disabled:opacity-50"
                     >
                       {isSaving ? (
                         <><i className="fa-solid fa-circle-notch fa-spin mr-2"></i>Đang Cập Nhật</>
