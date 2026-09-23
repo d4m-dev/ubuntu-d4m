@@ -89,15 +89,35 @@ export default function DmInbox({ currentUser, onBack, onUnreadChange, onNavigat
     }
   };
 
+  const [attachUrl, setAttachUrl] = useState(null);
+  const [attaching, setAttaching] = useState(false);
+
+  const uploadAttach = async (e) => {
+    const f = e.target.files?.[0];
+    e.target.value = "";
+    if (!f) return;
+    setAttaching(true);
+    try {
+      const fd = new FormData();
+      fd.append("file", f);
+      const res = await fetch(SOCIAL.UPLOAD_IMAGE, { headers: authHeaders(), method: "POST", body: fd });
+      const d = await res.json();
+      if (d.status === "success" && d.url) setAttachUrl(d.url);
+      else showToast(d.detail || "Upload ảnh thất bại", "error");
+    } catch (err) { showToast("Lỗi mạng", "error"); }
+    finally { setAttaching(false); }
+  };
+
   const sendMessage = async (e) => {
     e.preventDefault();
     const text = draft.trim();
-    if (!text || sending || !activeConvo) return;
+    if ((!text && !attachUrl) || sending || !activeConvo) return;
     setDraft("");
+    const img = attachUrl; setAttachUrl(null);
     setSending(true);
     try {
       const res = await fetch(SOCIAL.CONVERSATION_SEND(activeConvo.conversation_id), {
-        method: "POST", headers: authHeaders(), body: JSON.stringify({ content: text }),
+        method: "POST", headers: authHeaders(), body: JSON.stringify({ content: text || null, image_url: img }),
       });
       const data = await res.json();
       if (data.status === "success") {
@@ -392,7 +412,23 @@ const fmtTime = (iso) => {
                 })}
               </div>
 
+              {attachUrl && (
+                <div className="px-3 pt-2 border-t border-white/10">
+                  <div className="relative inline-block">
+                    <img src={attachUrl.startsWith("http") ? attachUrl : API_BASE_URL + attachUrl} alt="đính kèm"
+                      className="w-20 h-20 object-cover rounded-xl border border-[#f5c15c]/40" />
+                    <button type="button" onClick={() => setAttachUrl(null)} aria-label="Bỏ ảnh đính kèm"
+                      className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-rose-500 text-white text-[10px] font-bold">✕</button>
+                  </div>
+                </div>
+              )}
               <form onSubmit={sendMessage} className="flex items-center gap-2 p-3 border-t border-white/10">
+                <label className="w-10 h-10 shrink-0 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 hover:text-[#ffd77a] hover:border-[#f5c15c]/40 cursor-pointer transition" title="Đính kèm ảnh">
+                  <svg viewBox="0 0 24 24" fill="currentColor" style={{ width: 18, height: 18 }} aria-hidden="true">
+                    <path d="M21 19V5a2 2 0 00-2-2H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2zM8.5 8A1.5 1.5 0 1110 9.5 1.5 1.5 0 018.5 8zM5 19l4-7 3 4 2.5-3L19 19z" />
+                  </svg>
+                  <input type="file" accept="image/*" className="hidden" onChange={uploadAttach} disabled={attaching} />
+                </label>
                 <input
                   value={draft}
                   onChange={(e) => { setDraft(e.target.value); notifyTyping(); }}

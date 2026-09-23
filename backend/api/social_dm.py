@@ -103,7 +103,8 @@ class ConversationCreate(BaseModel):
 
 
 class MessageCreate(BaseModel):
-    content: str = Field(..., min_length=1, max_length=2000)
+    content: Optional[str] = Field(None, max_length=2000)
+    image_url: Optional[str] = None
 
 
 class CommentCreate(BaseModel):
@@ -210,7 +211,7 @@ def get_messages(conversation_id: int, current_user: dict = Depends(get_current_
     if c["user1_id"] not in (me,) and c["user2_id"] not in (me,):
         raise HTTPException(status_code=403, detail="Bạn không thuộc cuộc trò chuyện này.")
     rows = db_executor.select_as_list_dict(
-        f"""SELECT m.id, m.sender_id, m.content, m.created_at, m.is_read,
+        f"""SELECT m.id, m.sender_id, m.content, m.image_url, m.created_at, m.is_read,
                   u.username, COALESCE(u.fullname, u.full_name, u.username) as fullname, u.avatar_url,
                   u.avatar_frame, u.name_effect, u.chat_theme,
                   {spirit_select_sql()}
@@ -223,6 +224,7 @@ def get_messages(conversation_id: int, current_user: dict = Depends(get_current_
         spirit = spirit_payload(m)
         data.append({
             "id": m["id"], "sender_id": m["sender_id"], "content": m["content"],
+            "image_url": m.get("image_url"),
             "created_at": dt.isoformat() if hasattr(dt, "isoformat") else str(dt) if dt else None,
             "is_read": m["is_read"], "username": m["username"], "fullname": m["fullname"],
             "avatar_url": m["avatar_url"],
@@ -256,14 +258,16 @@ def send_message(conversation_id: int, body: MessageCreate,
     if c["user1_id"] != me and c["user2_id"] != me:
         raise HTTPException(status_code=403, detail="Bạn không thuộc cuộc trò chuyện này.")
 
+    if not (body.content or "").strip() and not body.image_url:
+        raise HTTPException(status_code=400, detail="Tin nhắn trống.")
     mid = db_inserter.insert(
-        "INSERT INTO messages (conversation_id, sender_id, content) VALUES (%s,%s,%s)",
+        "INSERT INTO messages (conversation_id, sender_id, content, image_url) VALUES (%s,%s,%s,%s)",
         (conversation_id, me, body.content.strip()))
     db_updater.update(
         "UPDATE conversations SET last_message_at=current_timestamp() WHERE id=%s", (conversation_id,))
 
     msg = db_executor.select_as_list_dict(
-        f"""SELECT m.id, m.sender_id, m.content, m.created_at, m.is_read,
+        f"""SELECT m.id, m.sender_id, m.content, m.image_url, m.created_at, m.is_read,
                   u.username, COALESCE(u.fullname, u.full_name, u.username) as fullname, u.avatar_url,
                   u.avatar_frame, u.name_effect, u.chat_theme,
                   {spirit_select_sql()}
@@ -275,6 +279,7 @@ def send_message(conversation_id: int, body: MessageCreate,
         "conversation_id": conversation_id,
         "data": {
             "id": msg["id"], "sender_id": msg["sender_id"], "content": msg["content"],
+            "image_url": msg.get("image_url"),
             "created_at": dt.isoformat() if hasattr(dt, "isoformat") else str(dt) if dt else None,
             "is_read": 0, "username": msg["username"], "fullname": msg["fullname"], "avatar_url": msg["avatar_url"],
             "avatar_frame": msg.get("avatar_frame"),

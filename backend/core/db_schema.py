@@ -378,6 +378,7 @@ def get_d4m_schema_queries():
             `conversation_id` int(11) NOT NULL,
             `sender_id` int(11) NOT NULL,
             `content` text DEFAULT NULL,
+            `image_url` varchar(500) DEFAULT NULL,
             `created_at` timestamp NULL DEFAULT current_timestamp(),
             `is_read` tinyint(1) NOT NULL DEFAULT 0,
             KEY `idx_msg_conversation` (`conversation_id`),
@@ -432,6 +433,9 @@ def get_d4m_schema_queries():
         "ALTER TABLE `users` ADD COLUMN IF NOT EXISTS `equipped_ring` varchar(80) DEFAULT NULL;",
         "ALTER TABLE `users` ADD COLUMN IF NOT EXISTS `equipped_dharma` varchar(80) DEFAULT NULL;",
         "ALTER TABLE `users` ADD COLUMN IF NOT EXISTS `equipped_sect` varchar(80) DEFAULT NULL;",
+
+        # 🖼️ DB cũ: bổ sung cột ảnh trong tin nhắn (MariaDB IF NOT EXISTS; MySQL warn êm)
+        "ALTER TABLE `messages` ADD COLUMN IF NOT EXISTS `image_url` varchar(500) DEFAULT NULL;",
 
         # 📄 Ghi chú: danh mục spirit_items được backend tự đồng bộ từ
         # backend/assets_manifest.json khi khởi động (sync_catalog_from_manifest),

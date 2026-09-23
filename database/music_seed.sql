@@ -10,7 +10,7 @@ DROP TABLE IF EXISTS `playlist_songs`;
 DROP TABLE IF EXISTS `playlists`;
 DROP TABLE IF EXISTS `songs`;
 
-CREATE TABLE `songs` (
+CREATE TABLE IF NOT EXISTS `songs` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `folder_name` varchar(150) NOT NULL COMMENT 'Tên thư mục gốc (vd: alanwalkerfaded)',
   `title` varchar(255) NOT NULL COMMENT 'Tên bài hát hiển thị',
@@ -31,7 +31,7 @@ CREATE TABLE `songs` (
   KEY `idx_title_artist` (`title`,`artist`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC COMMENT='Kho lưu trữ bài hát';
 
-CREATE TABLE `playlists` (
+CREATE TABLE IF NOT EXISTS `playlists` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL COMMENT 'Chủ nhân playlist',
   `name` varchar(255) NOT NULL,
@@ -44,7 +44,7 @@ CREATE TABLE `playlists` (
   CONSTRAINT `fk_playlist_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC COMMENT='Bộ sưu tập danh sách phát';
 
-CREATE TABLE `playlist_songs` (
+CREATE TABLE IF NOT EXISTS `playlist_songs` (
   `playlist_id` int(11) NOT NULL,
   `song_id` int(11) NOT NULL,
   `added_at` timestamp NOT NULL DEFAULT current_timestamp(),
@@ -55,7 +55,7 @@ CREATE TABLE `playlist_songs` (
   CONSTRAINT `fk_ps_song` FOREIGN KEY (`song_id`) REFERENCES `songs` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
-CREATE TABLE `song_likes` (
+CREATE TABLE IF NOT EXISTS `song_likes` (
   `user_id` int(11) NOT NULL,
   `song_id` int(11) NOT NULL,
   `liked_at` timestamp NOT NULL DEFAULT current_timestamp(),
@@ -65,7 +65,7 @@ CREATE TABLE `song_likes` (
   CONSTRAINT `fk_like_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
-CREATE TABLE `song_views` (
+CREATE TABLE IF NOT EXISTS `song_views` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `song_id` int(11) NOT NULL,
   `user_id` int(11) DEFAULT NULL COMMENT 'NULL nếu là khách chưa đăng nhập',
@@ -78,7 +78,7 @@ CREATE TABLE `song_views` (
   CONSTRAINT `fk_view_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
-CREATE TABLE `song_downloads` (
+CREATE TABLE IF NOT EXISTS `song_downloads` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `song_id` int(11) NOT NULL,
   `user_id` int(11) DEFAULT NULL,

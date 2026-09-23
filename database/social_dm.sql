@@ -21,6 +21,7 @@ CREATE TABLE IF NOT EXISTS `messages` (
   `conversation_id` int(11) NOT NULL,
   `sender_id` int(11) NOT NULL,
   `content` text DEFAULT NULL,
+  `image_url` varchar(500) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT current_timestamp(),
   `is_read` tinyint(1) NOT NULL DEFAULT 0,
   KEY `idx_msg_conversation` (`conversation_id`),

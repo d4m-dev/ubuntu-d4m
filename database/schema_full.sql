@@ -30,6 +30,10 @@ CREATE TABLE IF NOT EXISTS `users` (
             `equipped_ring` varchar(80) DEFAULT NULL,
             `equipped_dharma` varchar(80) DEFAULT NULL,
             `equipped_sect` varchar(80) DEFAULT NULL,
+            `realm_index` int(11) NOT NULL DEFAULT 0,
+            `cultivation` bigint(20) NOT NULL DEFAULT 0,
+            `spirit_root` varchar(20) DEFAULT NULL,
+            `last_meditate` datetime DEFAULT NULL,
             PRIMARY KEY (`id`)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -615,6 +619,7 @@ CREATE TABLE IF NOT EXISTS `messages` (
   `conversation_id` int(11) NOT NULL,
   `sender_id` int(11) NOT NULL,
   `content` text DEFAULT NULL,
+  `image_url` varchar(500) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT current_timestamp(),
   `is_read` tinyint(1) NOT NULL DEFAULT 0,
   KEY `idx_msg_conversation` (`conversation_id`),
@@ -646,6 +651,7 @@ CREATE TABLE IF NOT EXISTS `messages` (
   `conversation_id` int(11) NOT NULL,
   `sender_id` int(11) NOT NULL,
   `content` text DEFAULT NULL,
+  `image_url` varchar(500) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT current_timestamp(),
   `is_read` tinyint(1) NOT NULL DEFAULT 0,
   KEY `idx_msg_conversation` (`conversation_id`),
@@ -692,3 +698,27 @@ CREATE TABLE IF NOT EXISTS `user_spirit_items` (
 
 -- Danh mục 996 vật phẩm (7 loại) được backend tự đồng bộ từ
 -- backend/assets_manifest.json khi khởi động (không cần seed tay).
+
+-- ============================================================
+-- 🪙 HỆ THỐNG XU (nhiệm vụ · mua PayOS · tặng)
+-- ============================================================
+CREATE TABLE IF NOT EXISTS `xu_transactions` (
+    `id`         bigint(20)  NOT NULL AUTO_INCREMENT,
+    `user_id`    int(11)     NOT NULL,
+    `kind`       varchar(20) NOT NULL,
+    `xu`         int(11)     NOT NULL DEFAULT 0,
+    `vnd`        int(11)     NOT NULL DEFAULT 0,
+    `ref`        varchar(120) DEFAULT NULL,
+    `note`       varchar(255) DEFAULT NULL,
+    `created_at` timestamp   NULL DEFAULT current_timestamp(),
+    PRIMARY KEY (`id`),
+    KEY `idx_xu_user` (`user_id`),
+    KEY `idx_xu_ref` (`ref`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS `xu_task_done` (
+    `user_id`   int(11)     NOT NULL,
+    `task_key`  varchar(40) NOT NULL,
+    `done_date` date        NOT NULL,
+    PRIMARY KEY (`user_id`, `task_key`, `done_date`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
