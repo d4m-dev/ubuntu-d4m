@@ -497,9 +497,9 @@ export default function CustomizationPanel({ currentUser, onBack, onSaved, onSpi
       {/* NHIỆM VỤ */}
       <div>
         <h3 className="text-xs font-bold uppercase tracking-wider text-[#ffd77a] mb-3">📜 Nhiệm Vụ Hằng Ngày</h3>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+        <div className="flex gap-3 overflow-x-auto pb-2 -mx-1 px-1">
           {xuData.tasks.map((t) => (
-            <div key={t.key} className={`x-slot-card p-4 ${t.done ? "x-slot-on" : ""}`}>
+            <div key={t.key} className={`x-slot-card p-4 shrink-0 w-[240px] md:w-[260px] ${t.done ? "x-slot-on" : ""}`}>
               <div className="flex items-start gap-3">
                 <div className="text-2xl">{t.icon}</div>
                 <div className="flex-1 min-w-0">

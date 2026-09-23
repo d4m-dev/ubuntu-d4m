@@ -206,6 +206,7 @@ export default function SocialHubPage() {
   const [likedSet, setLikedSet] = useState(new Set());
   const [showDm, setShowDm] = useState(false);
   const [dmUnread, setDmUnread] = useState(0);
+  const [onlineMap, setOnlineMap] = useState({}); // user_id -> {online,label}
   const [commentPost, setCommentPost] = useState(null);
   const [showActivity, setShowActivity] = useState(false);
   const [showCustomization, setShowCustomization] = useState(false);
@@ -253,6 +254,33 @@ export default function SocialHubPage() {
     return () => clearInterval(id);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAuth]);
+
+  // 🟢 Nạp presence (online/offline) cho các tác giả trong feed → cột phải desktop
+  useEffect(() => {
+    if (!isAuth || !feed.length) return;
+    const ids = [...new Set(feed.map((p) => p.user_id).filter(Boolean))].slice(0, 20);
+    if (!ids.length) return;
+    let alive = true;
+    (async () => {
+      try {
+        const res = await fetch(`${API_BASE_URL}/api/social/presence`, {
+          method: "POST", headers: { "Content-Type": "application/json", Authorization: `Bearer ${getToken()}` },
+          body: JSON.stringify({ ids }),
+        });
+        const d = await res.json();
+        if (alive && d.status === "success") setOnlineMap(d.data || {});
+      } catch (e) { /* im lặng */ }
+    })();
+    return () => { alive = false; };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [feed, isAuth]);
+
+  // 👥 Danh sách tác giả duy nhất trong feed (cho cột phải)
+  const feedAuthors = useMemo(() => {
+    const map = new Map();
+    feed.forEach((p) => { if (p.user_id && !map.has(p.user_id)) map.set(p.user_id, p); });
+    return [...map.values()];
+  }, [feed]);
 
   // 🧹 Revoke mọi object URL khi unmount
   useEffect(() => () => { objectUrlsRef.current.forEach((u) => URL.revokeObjectURL(u)); }, []);
@@ -475,7 +503,7 @@ export default function SocialHubPage() {
       <SEO title="Social Hub" description="Mạng xã hội D4M — cập nhật trạng thái, chia sẻ âm nhạc và kết nối cộng đồng." />
       {/* 🌌 Nền aurora + lưới mờ */}
       <div className="d4m-bg-aurora" aria-hidden="true" />
-      <div className="max-w-[640px] md:max-w-[780px] lg:max-w-[1120px] mx-auto min-h-screen relative z-10 lg:px-6">
+      <div className="max-w-[640px] md:max-w-[780px] lg:max-w-none w-full mx-auto min-h-screen relative z-10 lg:px-8 xl:px-12">
         <div className="lg:flex lg:gap-8 min-h-screen">
 
         {/* 🖥️ RAIL TRÁI (desktop) — điều hướng kiểu Threads */}
@@ -793,6 +821,52 @@ export default function SocialHubPage() {
           onNavigate={handleNav}
         />
         </div>
+
+        {/* 🖥️ CỘT PHẢI (desktop) — lấp khoảng trống, giống mạng xã hội thật */}
+        <aside className="hidden xl:flex flex-col w-80 shrink-0 sticky top-0 h-screen py-6 pl-2 overflow-y-auto gap-4">
+          {/* Thẻ đạo hữu của tôi */}
+          <div className="rounded-2xl border border-[#f5c15c]/20 bg-white/[0.03] p-4">
+            <div className="flex items-center gap-3">
+              <AvatarFrame
+                src={currentUser?.avatar_url}
+                frame={currentUser?.frame || currentUser?.avatar_frame}
+                pet={currentUser?.pet} treasure={currentUser?.treasure}
+                dharma={currentUser?.dharma} title={currentUser?.title}
+                ring={currentUser?.ring} sect={currentUser?.sect}
+                size={48} alt=""
+              />
+              <div className="min-w-0 flex-1">
+                <RealmName realmIndex={currentUser?.realm_index || 0} spiritRoot={currentUser?.spirit_root}
+                  effectId={currentUser?.name_effect} name={currentUser?.fullname || currentUser?.username} className="text-sm" />
+                <div className="text-[11px] text-gray-500">@{currentUser?.username}</div>
+              </div>
+            </div>
+            <button onClick={() => setShowCustomization(true)}
+              className="mt-3 w-full py-2 rounded-full text-xs font-bold x-btn-equip hover:brightness-110 transition">
+              🎨 Hồ sơ & Phong cách
+            </button>
+          </div>
+
+          {/* Đạo hữu online */}
+          <div className="rounded-2xl border border-white/10 bg-white/[0.02] p-4">
+            <div className="text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-3">🟢 Đạo hữu đang hoạt động</div>
+            <div className="space-y-2">
+              {feedAuthors.slice(0, 8).map((a) => (
+                <div key={a.user_id} className="flex items-center gap-2.5">
+                  <div className="relative">
+                    <AvatarFrame src={a.avatar_url} frame={a.avatar_frame} pet={a.pet} treasure={a.treasure} size={32} alt="" />
+                    <span className={`absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full border-2 border-[#0a0e17] ${onlineMap[a.user_id]?.online ? "bg-emerald-400" : "bg-gray-600"}`} />
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <div className="text-xs font-semibold text-gray-200 truncate">{a.fullname || a.username}</div>
+                    <div className="text-[10px] text-gray-500 truncate">{onlineMap[a.user_id]?.label || `@${a.username}`}</div>
+                  </div>
+                </div>
+              ))}
+              {feedAuthors.length === 0 && <div className="text-xs text-gray-600">Chưa có hoạt động.</div>}
+            </div>
+          </div>
+        </aside>
         </div>
       </div>
 
