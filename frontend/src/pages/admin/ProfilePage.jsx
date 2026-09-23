@@ -57,6 +57,7 @@ export default function ProfilePage() {
   const [newEmail, setNewEmail] = useState("");
   const [emailOtp, setEmailOtp] = useState("");
   const [isEmailLoading, setIsEmailLoading] = useState(false);
+  const [reloadKey, setReloadKey] = useState(0);
 
   // =================================================================
   // 4. KẾT NỐI API & TẢI DỮ LIỆU
@@ -138,7 +139,7 @@ export default function ProfilePage() {
     fetchProfile();
     loadSpirit();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [navigate]);
+  }, [navigate, reloadKey]);
 
   // =================================================================
   // 4b. TẢI KHO ĐỒ SPIRIT v2 (catalog + trang bị + Xu)
@@ -270,6 +271,8 @@ export default function ProfilePage() {
           localStorage.setItem("d4m_user", JSON.stringify(cachedUser));
           window.dispatchEvent(new Event("d4m_auth_change"));
         }
+        // 🔁 Nạp lại hồ sơ TỪ DB để avatar hiển thị đúng giá trị đã lưu (chống ảnh ảo)
+        setReloadKey((k) => k + 1);
       } else {
         showToast(data.detail || "Lỗi cập nhật ảnh", "error");
       }

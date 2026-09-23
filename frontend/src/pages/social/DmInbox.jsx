@@ -29,7 +29,9 @@ export default function DmInbox({ currentUser, onBack, onUnreadChange, onNavigat
   const [userList, setUserList] = useState([]);
   const [search, setSearch] = useState("");
   const [typingMap, setTypingMap] = useState({}); // conversation_id -> {userId, at}
+  const [presenceMap, setPresenceMap] = useState({}); // user_id -> {online,label}
   const typingRef = useRef({});
+  const conversationsRef = useRef([]);
   const lastTypingSentRef = useRef(0);
   const wsRef = useRef(null);
   const scrollRef = useRef(null);
@@ -46,6 +48,8 @@ export default function DmInbox({ currentUser, onBack, onUnreadChange, onNavigat
       const data = await res.json();
       const convs = data.data || [];
       setConversations(convs);
+      conversationsRef.current = convs;
+      loadPresence(convs.map((c) => c.user?.id).filter(Boolean));
       // 👁️ Cập nhật tổng tin chưa đọc lên parent (badge bottom nav)
       if (onUnreadChange) {
         const total = convs.reduce((s, c) => s + (c.unread || 0), 0);
@@ -87,6 +91,15 @@ export default function DmInbox({ currentUser, onBack, onUnreadChange, onNavigat
     } catch (e) {
       showToast("Không mở được hộp thoại", "error");
     }
+  };
+
+  const loadPresence = async (ids) => {
+    if (!ids?.length) return;
+    try {
+      const res = await fetch(SOCIAL.PRESENCE_BATCH, { method: "POST", headers: authHeaders(), body: JSON.stringify({ ids }) });
+      const d = await res.json();
+      if (d.status === "success") setPresenceMap(d.data || {});
+    } catch (e) { /* im lặng */ }
   };
 
   const [attachUrl, setAttachUrl] = useState(null);
@@ -144,9 +157,18 @@ export default function DmInbox({ currentUser, onBack, onUnreadChange, onNavigat
     } catch (_) {}
   };
 
-  // ========== REALTIME ==========
+  // ========== PRESENCE POLL (60s) ==========
   useEffect(() => {
     loadConversations();
+    const t = setInterval(() => {
+      loadPresence((conversationsRef.current || []).map((c) => c.user?.id).filter(Boolean));
+    }, 60000);
+    return () => clearInterval(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // ========== REALTIME (WebSocket DM + typing) ==========
+  useEffect(() => {
     if (!me) return;
     const ws = new WebSocket(SOCIAL.WS_DM(me));
     wsRef.current = ws;
@@ -308,7 +330,10 @@ const fmtTime = (iso) => {
                     <AvatarFrame src={c.user.avatar_url || AVATAR(c.user.username)} frame={c.user.avatar_frame} pet={c.user.pet} treasure={c.user.treasure} size={44} alt={`Ảnh đại diện ${c.user.fullname}`} />
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center justify-between">
-                        <span className="text-sm font-semibold text-white truncate">{c.user.fullname || c.user.username}</span>
+                        <span className="text-sm font-semibold text-white truncate flex items-center gap-1.5">
+                          <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${presenceMap[c.user.id]?.online ? "bg-emerald-400" : "bg-gray-600"}`} />
+                          {c.user.fullname || c.user.username}
+                        </span>
                         <span className="text-[11px] text-gray-500">{fmtDate(c.last_message_at)}</span>
                       </div>
                       <div className="flex items-center justify-between gap-2">
@@ -346,8 +371,8 @@ const fmtTime = (iso) => {
                       <span className="text-emerald-400 animate-pulse">đang nhập...</span>
                     ) : (
                       <>
-                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 inline-block" />
-                        <span className="truncate">@{activeConvo.user.username}</span>
+                        <span className={`w-1.5 h-1.5 rounded-full inline-block ${presenceMap[activeConvo.user.id]?.online ? "bg-emerald-400" : "bg-gray-500"}`} />
+                        <span className="truncate">{presenceMap[activeConvo.user.id]?.label || `@${activeConvo.user.username}`}</span>
                         <RealmBadge realmIndex={activeConvo.user.realm_index} />
                       </>
                     )}

@@ -107,6 +107,10 @@ export default defineConfig({
         target: process.env.VITE_API_PROXY || "http://127.0.0.1:16868",
         changeOrigin: true,
       },
+      "/images_workspace": {
+        target: process.env.VITE_API_PROXY || "http://127.0.0.1:16868",
+        changeOrigin: true,
+      },
       "/assets_manifest.json": {
         target: process.env.VITE_API_PROXY || "http://127.0.0.1:16868",
         changeOrigin: true,

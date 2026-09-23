@@ -654,6 +654,28 @@ Bản nâng cấp thay thế cấu trúc cũ (`avatar_frames/` + `linhbao/` + 2 
 - Tab mới **"Khung & Trang bị"**: tổng quan 7 slot (đeo/tháo trực tiếp) + kho khung viền đã sở hữu với nút Đeo/Tháo.
 - Chip Xu + chip trang bị đang đeo dưới avatar.
 
+## 🟢 Presence Online/Offline (Redis Bitmap) + sửa Avatar
+
+- **`services/presence_service.py`**: mỗi user 1 bitmap/ngày `seen:{uid}:{YYYYMMDD}` (bit = phút trong ngày).
+  `ping()` throttle 1 phút; `describe()` trả `Đang online` / `Online X phút/giờ trước` / `Vắng mặt`.
+- Hook `ping()` vào `get_current_user` (mọi request social). API: `GET /api/social/presence/{id}`,
+  `POST /api/social/presence` (batch). UI: DmInbox hiển thị chấm xanh + nhãn "Online 2 giờ trước".
+- **Avatar**: `upload_user_avatar` kiểm tra `rowcount`, fallback theo username, **đọc lại giá trị đã lưu** trả về;
+  frontend nạp lại hồ sơ TỪ DB sau upload (chống ảnh ảo). Thêm proxy `/images_workspace` (vite + nginx).
+
+## 📥 Lệnh import toàn bộ SQL vào MariaDB
+
+```bash
+# 1) Tạo DB + user (1 lần)
+mysql -u root -p -e "CREATE DATABASE IF NOT EXISTS social_hub CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE USER IF NOT EXISTS 'd4m'@'localhost' IDENTIFIED BY 'admin123';
+CREATE USER IF NOT EXISTS 'd4m'@'%' IDENTIFIED BY 'admin123';
+GRANT ALL ON social_hub.* TO 'd4m'@'localhost'; GRANT ALL ON social_hub.* TO 'd4m'@'%'; FLUSH PRIVILEGES;"
+# 2) Import theo thứ tự
+for f in schema_full social_dm donate_table spirit_items ecosystem_seed music_seed; do
+  mysql -u d4m -padmin123 social_hub < database/$f.sql
+done
+```
 ## 💬 Chat chuyên nghiệp + hoàn thiện UX (vòng 3)
 
 - **Chat kiểu app thật**: divider ngày (Hôm qua/Hôm nay), nhóm tin liên tiếp, tick ✓/✓✓ đã đọc,

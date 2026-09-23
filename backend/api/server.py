@@ -32,7 +32,8 @@ from api import (
     donate, ws_donate, upload, notification, profile_public, songs_upload, social_dm,
     spirit,  # 🐉💎 Linh thú & Linh bảo (Social Hub)
     xu,      # 🪙 Nhiệm vụ kiếm Xu · Mua Xu (PayOS) · Tặng Xu
-    cultivation  # 🧘 Hệ thống Tu Tiên — cảnh giới/đả tọa/đột phá
+    cultivation,  # 🧘 Hệ thống Tu Tiên — cảnh giới/đả tọa/đột phá
+    presence  # 🟢 Online/offline Redis bitmap
 )
 
 # ==========================================
@@ -215,7 +216,7 @@ def setup_static_mounts(app: FastAPI):
 def setup_routers(app: FastAPI):
     api_routers = [
         auth.router, dashboard.router, websockets.router, chatbox.router,
-        social.router, spirit.router, xu.router,  # 🐉💎 Spirit + 🪙 Xu
+        social.router, spirit.router, xu.router, cultivation.router, presence.router,  # 🐉🪙🟢
         widgets.router, projects.router, ai_admin.router, audio_engine.router, bio_premium.router,
         music.router, telegram_bot.router, astrology.router, ytdl.router, player.router, admin_scripts.router,
         admin_security.router, dldriver.router, autocode.router, omni_dl.router,

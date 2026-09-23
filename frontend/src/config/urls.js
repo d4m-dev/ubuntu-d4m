@@ -179,6 +179,8 @@ export const SOCIAL = {
   USER_SEARCH: (q) => `${API_BASE_URL}/api/social/users/search?q=${encodeURIComponent(q || "")}`,
   USERS: `${API_BASE_URL}/api/social/users`,
   WS_DM: (userId) => `${WS_BASE_URL}/api/ws/dm/${userId}`,
+  PRESENCE: (id) => `${API_BASE_URL}/api/social/presence/${id}`,
+  PRESENCE_BATCH: `${API_BASE_URL}/api/social/presence`,
   // 💬 Bình luận & reply
   POST_COMMENTS: (postId) => `${API_BASE_URL}/api/social/posts/${postId}/comments`,
   // 🖼️ Upload ảnh (bài đăng / bình luận)

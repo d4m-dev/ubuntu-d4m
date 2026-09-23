@@ -55,6 +55,12 @@ def get_current_user(authorization: str = Header(None), request: Request = None)
 
         payload["user_id"] = db_user[0]["id"]
         payload["username"] = db_user[0]["username"]
+        # 🟢 Ghi nhận hoạt động cho hệ thống online (Redis bitmap, tự throttle)
+        try:
+            from services.presence_service import ping as _presence_ping
+            _presence_ping(db_user[0]["id"])
+        except Exception:
+            pass
         return payload
     except jwt.ExpiredSignatureError:
         raise HTTPException(status_code=401, detail="Thẻ định danh đã hết hạn")

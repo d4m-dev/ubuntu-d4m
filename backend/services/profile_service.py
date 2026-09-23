@@ -155,8 +155,14 @@ def upload_user_avatar(user_id: int, username: str, file: UploadFile):
                 buffer.write(raw)
         
     avatar_url = f"/images_workspace/avatar/{username}/{filename}"
-    db_updater.update("UPDATE users SET avatar_url=%s WHERE id=%s", (avatar_url, user_id))
-    return avatar_url
+    # 💾 Lưu vào DB — kiểm tra số dòng ảnh hưởng; nếu 0 (sai id) thử theo username
+    affected = db_updater.update("UPDATE users SET avatar_url=%s WHERE id=%s", (avatar_url, user_id))
+    if not affected or affected < 0:
+        affected = db_updater.update("UPDATE users SET avatar_url=%s WHERE username=%s", (avatar_url, username))
+    # 🔎 Đọc lại xác nhận đã lưu thật (trả về giá trị trong DB, không trả ảo)
+    rows = db_executor.select_as_list_dict("SELECT avatar_url FROM users WHERE id=%s", (user_id,))
+    persisted = rows[0]["avatar_url"] if rows else avatar_url
+    return persisted or avatar_url
 
 def request_email_change(user_id: int, username: str, data: ChangeEmailRequest):
     if db_executor.select_as_list_dict("SELECT id FROM users WHERE email=%s", (data.new_email,)):
