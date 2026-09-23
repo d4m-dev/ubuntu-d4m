@@ -497,28 +497,26 @@ export default function CustomizationPanel({ currentUser, onBack, onSaved, onSpi
       {/* NHIỆM VỤ */}
       <div>
         <h3 className="text-xs font-bold uppercase tracking-wider text-[#ffd77a] mb-3">📜 Nhiệm Vụ Hằng Ngày</h3>
-        <div className="flex gap-3 overflow-x-auto pb-2 -mx-1 px-1">
+        <div className="flex flex-col gap-2">
           {xuData.tasks.map((t) => (
-            <div key={t.key} className={`x-slot-card p-4 shrink-0 w-[240px] md:w-[260px] ${t.done ? "x-slot-on" : ""}`}>
-              <div className="flex items-start gap-3">
-                <div className="text-2xl">{t.icon}</div>
-                <div className="flex-1 min-w-0">
-                  <div className="text-sm font-bold text-amber-50">{t.label}</div>
-                  <div className="text-[11px] text-gray-500 mt-0.5">{t.desc}</div>
-                  <div className="text-[11px] font-bold text-[#ffd77a] mt-1">🪙 +{t.reward.toLocaleString("vi-VN")} Xu</div>
-                </div>
+            <div key={t.key} className={`x-slot-card flex items-center gap-3 p-3 ${t.done ? "x-slot-on" : ""}`}>
+              <div className="text-2xl shrink-0">{t.icon}</div>
+              <div className="flex-1 min-w-0">
+                <div className="text-sm font-bold text-amber-50 truncate">{t.label}</div>
+                <div className="text-[11px] text-gray-500 truncate">{t.desc}</div>
+                <div className="text-[11px] font-bold text-[#ffd77a] mt-0.5">🪙 +{t.reward.toLocaleString("vi-VN")} Xu</div>
               </div>
               <button
                 onClick={() => claimTask(t)}
                 disabled={t.done || (!t.completed && t.key !== "checkin") || !!busyId}
-                className={`mt-3 w-full py-2 rounded-full text-xs font-bold transition disabled:opacity-40 disabled:cursor-not-allowed ${t.done ? "x-btn-unequip" : "x-btn-equip"}`}
+                className={`shrink-0 px-4 py-2 rounded-full text-xs font-bold transition disabled:opacity-40 disabled:cursor-not-allowed ${t.done ? "x-btn-unequip" : "x-btn-equip"}`}
                 title={!t.done && !t.completed && t.key !== "checkin" ? "Chưa đủ điều kiện" : ""}
               >
-                {busyId === t.key ? "..." : t.done ? "✓ Đã nhận hôm nay" : (!t.completed && t.key !== "checkin") ? "Chưa hoàn thành" : "Nhận thưởng"}
+                {busyId === t.key ? "..." : t.done ? "✓ Đã nhận" : (!t.completed && t.key !== "checkin") ? "Chưa đạt" : "Nhận"}
               </button>
             </div>
           ))}
-          {xuData.tasks.length === 0 && <div className="text-gray-500 text-sm col-span-full">Chưa tải được nhiệm vụ...</div>}
+          {xuData.tasks.length === 0 && <div className="text-gray-500 text-sm">Chưa tải được nhiệm vụ...</div>}
         </div>
       </div>
 

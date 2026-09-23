@@ -331,7 +331,7 @@ const fmtTime = (iso) => {
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center justify-between">
                         <span className="text-sm font-semibold text-white truncate flex items-center gap-1.5">
-                          <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${presenceMap[c.user.id]?.online ? "bg-emerald-400" : "bg-gray-600"}`} />
+                          <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${presenceMap[String(c.user.id)]?.online ? "bg-emerald-400" : "bg-gray-600"}`} />
                           {c.user.fullname || c.user.username}
                         </span>
                         <span className="text-[11px] text-gray-500">{fmtDate(c.last_message_at)}</span>
@@ -371,8 +371,8 @@ const fmtTime = (iso) => {
                       <span className="text-emerald-400 animate-pulse">đang nhập...</span>
                     ) : (
                       <>
-                        <span className={`w-1.5 h-1.5 rounded-full inline-block ${presenceMap[activeConvo.user.id]?.online ? "bg-emerald-400" : "bg-gray-500"}`} />
-                        <span className="truncate">{presenceMap[activeConvo.user.id]?.label || `@${activeConvo.user.username}`}</span>
+                        <span className={`w-1.5 h-1.5 rounded-full inline-block ${presenceMap[String(activeConvo.user.id)]?.online ? "bg-emerald-400" : "bg-gray-500"}`} />
+                        <span className="truncate">{presenceMap[String(activeConvo.user.id)]?.label || `@${activeConvo.user.username}`}</span>
                         <RealmBadge realmIndex={activeConvo.user.realm_index} />
                       </>
                     )}

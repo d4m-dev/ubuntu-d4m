@@ -855,11 +855,11 @@ export default function SocialHubPage() {
                 <div key={a.user_id} className="flex items-center gap-2.5">
                   <div className="relative">
                     <AvatarFrame src={a.avatar_url} frame={a.avatar_frame} pet={a.pet} treasure={a.treasure} size={32} alt="" />
-                    <span className={`absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full border-2 border-[#0a0e17] ${onlineMap[a.user_id]?.online ? "bg-emerald-400" : "bg-gray-600"}`} />
+                    <span className={`absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full border-2 border-[#0a0e17] ${onlineMap[String(a.user_id)]?.online ? "bg-emerald-400" : "bg-gray-600"}`} />
                   </div>
                   <div className="min-w-0 flex-1">
                     <div className="text-xs font-semibold text-gray-200 truncate">{a.fullname || a.username}</div>
-                    <div className="text-[10px] text-gray-500 truncate">{onlineMap[a.user_id]?.label || `@${a.username}`}</div>
+                    <div className="text-[10px] text-gray-500 truncate">{onlineMap[String(a.user_id)]?.label || `@${a.username}`}</div>
                   </div>
                 </div>
               ))}

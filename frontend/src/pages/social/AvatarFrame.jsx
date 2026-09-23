@@ -92,8 +92,8 @@ export default function AvatarFrame({
           decoding="async"
           className="d4m-title-chip"
           style={{
-            height: Math.max(10, Math.round(size * 0.16)),
-            maxWidth: Math.max(48, Math.round(size * 1.15)),
+            height: Math.max(16, Math.round(size * 0.42)),
+            maxWidth: Math.max(72, Math.round(size * 2.2)),
             width: "auto",
           }}
         />
