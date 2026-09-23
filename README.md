@@ -654,6 +654,19 @@ Bản nâng cấp thay thế cấu trúc cũ (`avatar_frames/` + `linhbao/` + 2 
 - Tab mới **"Khung & Trang bị"**: tổng quan 7 slot (đeo/tháo trực tiếp) + kho khung viền đã sở hữu với nút Đeo/Tháo.
 - Chip Xu + chip trang bị đang đeo dưới avatar.
 
+## 🧘 Hệ Thống Tu Tiên (Phàm Nhân Tu Tiên)
+
+Dữ liệu gốc: `backend/assets/tu-vi/tu-vi-sys.json` (50 cảnh giới, 3 cõi Nhân/Linh/Tiên)
++ `phamtien_styles.css` (text-masking tên theo cảnh giới).
+
+- **Cột users mới**: `realm_index`, `cultivation` (tu vi), `spirit_root`, `last_meditate`.
+- **Kiếm tu vi**: nhiệm vụ Xu (+500/+1000/+300), 🧘 đả tọa (+200, cooldown 60 phút, +10% khi có linh căn), 💊 đan dược (mua bằng Xu ở danh mục `luyen-dan`, dùng để nhận tu vi theo phẩm).
+- **Đột phá**: khi tu vi ≥ `required_exp` cảnh kế tiếp (hiển thị tên thiên kiếp nếu có).
+- **Linh căn ngũ hành**: chọn 1 lần (kim/mộc/thủy/hỏa/thổ) — +10% tu vi vĩnh viễn.
+- **API**: `GET /api/tu-tien/` · `POST /meditate` · `/breakthrough` · `/root` · `/use-pill`.
+- **UI**: tab "🧘 Cảnh Giới" trong Bảo Khố (thẻ cảnh giới nền GIF + font riêng, thanh tiến độ,
+  đả tọa/đột phá, linh căn, đan phòng, lộ trình 50 cảnh); tên đạo hữu trong feed/bình luận/DM/
+  hồ sơ tự đổi font + hiệu ứng GIF theo cảnh giới (class `.dao-huu-name`).
 ## 🪙 Hệ thống Xu (Nhiệm vụ · Mua · Tặng)
 
 - **Nhiệm vụ hằng ngày** (`backend/api/xu.py` + `services/xu_service.py`):

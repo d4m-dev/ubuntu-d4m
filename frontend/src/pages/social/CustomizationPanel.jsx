@@ -12,6 +12,7 @@ import { IconBack } from "./icons";
 import { NAME_EFFECTS, CHAT_THEMES } from "./socialStyles";
 import { nameEffectStyle } from "./AvatarFrame";
 import AvatarFrame from "./AvatarFrame";
+import RealmName from "./RealmName";
 
 // 🏷️ Phẩm chất theo độ hiếm
 const RARITY = {
@@ -93,6 +94,9 @@ export default function CustomizationPanel({ currentUser, onBack, onSaved, onSpi
   const [limit, setLimit] = useState(24);
   // 🧪 ướm thử (mỗi slot 1 món)
   const [trying, setTrying] = useState({});
+  // 🧘 HỆ THỐNG TU TIÊN (cảnh giới · đả tọa · đột phá · linh căn · đan dược)
+  const [cult, setCult] = useState(null); // {realms, roots, user}
+  const [cultBusy, setCultBusy] = useState(false);
   // 🪙 HỆ THỐNG XU (nhiệm vụ · mua PayOS · tặng)
   const [xuData, setXuData] = useState({ tasks: [], packages: [], history: [], payosReady: false });
   const [pendingOrder, setPendingOrder] = useState(null); // {order_code, xu}
@@ -122,7 +126,31 @@ export default function CustomizationPanel({ currentUser, onBack, onSaved, onSpi
     } catch (e) { /* im lặng */ }
   };
 
-  useEffect(() => { loadData(); loadXu(); /* eslint-disable-next-line react-hooks/exhaustive-deps */ }, []);
+  // 🧘 Tải trạng thái tu tiên
+  const loadCult = async () => {
+    try {
+      const res = await fetch(SOCIAL.CULT_STATE, { headers: authHeaders() });
+      const d = await res.json();
+      if (d.status === "success") setCult(d.data);
+    } catch (e) { /* im lặng */ }
+  };
+
+  const cultAction = async (url, body, onSuccess) => {
+    if (cultBusy) return;
+    setCultBusy(true);
+    try {
+      const res = await fetch(url, { method: "POST", headers: authHeaders(), body: JSON.stringify(body || {}) });
+      const d = await res.json();
+      if (d.status === "success") {
+        showToast(d.message || "Thành công!");
+        await loadCult();
+        onSuccess?.(d);
+      } else showToast(d.detail || "Thất bại", "error");
+    } catch (e) { showToast("Lỗi mạng", "error"); }
+    finally { setCultBusy(false); }
+  };
+
+  useEffect(() => { loadData(); loadXu(); loadCult(); /* eslint-disable-next-line react-hooks/exhaustive-deps */ }, []);
 
   // 🪙 Tải nhiệm vụ + gói nạp + lịch sử Xu
   const loadXu = async () => {
@@ -325,9 +353,141 @@ export default function CustomizationPanel({ currentUser, onBack, onSaved, onSpi
   };
   const isTrying = Object.values(trying).some(Boolean);
 
+  // 🧘 TAB CẢNH GIỚI — hệ thống tu tiên đầy đủ
+  const renderCultTab = () => {
+    if (!cult) return <div className="text-gray-500 text-sm">Đang mở thiên cơ các...</div>;
+    const abs = (v) => !v ? "" : v.startsWith("./") ? API_BASE_URL + "/assets/tu-vi/" + v.slice(2)
+      : v.startsWith("/") ? API_BASE_URL + v : v;
+    const u = cult.user || {};
+    const cur = { ...u.realm }; cur.bg_gif = abs(cur.bg_gif); cur.font_file = abs(cur.font_file);
+    const nxt = u.next || null;
+    const pct = Math.round((u.progress || 0) * 100);
+    const pills = catalog.filter((i) => i.category === "luyen-dan" && i.owned);
+    return (
+      <div className="space-y-5">
+        {/* CẢNH GIỚI HIỆN TẠI */}
+        <div className="x-slot-card x-slot-on relative overflow-hidden p-5 text-center">
+          {cur.bg_gif && (
+            <img src={cur.bg_gif} alt="" className="absolute inset-0 w-full h-full object-cover opacity-25 pointer-events-none" />
+          )}
+          <div className="relative">
+            <div className="text-[10px] uppercase tracking-widest text-gray-400">{cur.major_realm}</div>
+            <RealmName realmIndex={u.realm_index} name={cur.display_title || "Phàm Nhân"}
+              className="text-2xl md:text-3xl mt-1" />
+            <div className="mt-1 text-[11px] text-gray-500">Thọ mệnh {cur.lifespan_years} năm · Tu vi {Number(u.cultivation || 0).toLocaleString("vi-VN")}</div>
+            {nxt ? (
+              <div className="mt-3">
+                <div className="flex justify-between text-[10px] text-gray-400 mb-1">
+                  <span>Tiến tới «{nxt.display_title}»</span>
+                  <span>{Number(u.cultivation || 0).toLocaleString("vi-VN")} / {nxt.required_exp.toLocaleString("vi-VN")}</span>
+                </div>
+                <div className="h-2 rounded-full bg-black/50 overflow-hidden border border-white/10">
+                  <div className="h-full rounded-full" style={{ width: `${pct}%`, background: "linear-gradient(90deg,#34d399,#f5c15c)" }} />
+                </div>
+                {nxt.tribulation?.has_tribulation && (
+                  <div className="mt-2 text-[10px] text-rose-300 font-bold">⚡ Thiên kiếp chờ đợi: {nxt.tribulation.name}</div>
+                )}
+              </div>
+            ) : (
+              <div className="mt-2 text-[11px] text-[#ffd77a] font-bold"> Đã đạt đỉnh phong Đạo Tổ!</div>
+            )}
+            <div className="mt-4 grid grid-cols-2 gap-2">
+              <button onClick={() => cultAction(SOCIAL.CULT_MEDITATE, {})} disabled={cultBusy}
+                className="x-meditate py-2.5 rounded-full text-sm font-bold x-btn-equip transition disabled:opacity-50">
+                🧘 Đả Tọa (+{u.meditate_exp || 200})
+              </button>
+              <button onClick={() => cultAction(SOCIAL.CULT_BREAK, {})} disabled={cultBusy || pct < 100}
+                className="py-2.5 rounded-full text-sm font-bold bg-purple-500/20 text-purple-300 border border-purple-500/40 hover:bg-purple-500/30 transition disabled:opacity-40 disabled:cursor-not-allowed">
+                ⚡ Đột Phá
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* LINH CĂN */}
+        <div>
+          <h3 className="text-xs font-bold uppercase tracking-wider text-[#ffd77a] mb-2">🌱 Linh Căn Ngũ Hành {u.spirit_root ? "(đã định hình)" : "(chọn 1 lần — +10% tu vi)"}</h3>
+          <div className="grid grid-cols-5 gap-2">
+            {(cult.roots || []).map((r) => (
+              <button key={r.id}
+                onClick={() => !u.spirit_root && cultAction(SOCIAL.CULT_ROOT, { root: r.id })}
+                disabled={!!u.spirit_root && u.spirit_root !== r.id}
+                className={`x-slot-card p-2.5 text-center transition ${u.spirit_root === r.id ? "x-slot-on" : ""} ${u.spirit_root && u.spirit_root !== r.id ? "opacity-35" : "hover:brightness-125"}`}
+                title={r.label}>
+                <img src={API_BASE_URL + r.image} alt={r.label} className="w-10 h-10 mx-auto object-contain" loading="lazy" />
+                <div className="text-[10px] font-bold text-gray-300 mt-1">{r.label}</div>
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* ĐAN DƯỢC */}
+        <div>
+          <h3 className="text-xs font-bold uppercase tracking-wider text-[#ffd77a] mb-2">💊 Đan Dược Trong Túi ({pills.length})</h3>
+          {pills.length === 0 ? (
+            <div className="rounded-xl border border-dashed border-[#f5c15c]/20 bg-black/20 p-4 text-center text-xs text-gray-500">
+              Chưa có đan dược — mua ở tab «Luyện đan» hoặc nhiệm vụ...
+              <button onClick={() => switchTab("overview")} className="block mx-auto mt-2 text-[#ffd77a] font-bold underline">Mở bảo khố</button>
+            </div>
+          ) : (
+            <div className="grid grid-cols-3 md:grid-cols-5 gap-2">
+              {pills.map((p) => (
+                <div key={p.id} className="x-item-card p-2 text-center">
+                  <img src={full(p.image)} alt={p.name} className="w-12 h-12 mx-auto object-contain" loading="lazy" />
+                  <div className="text-[9px] font-bold text-gray-300 mt-1 truncate" title={p.name}>{p.name}</div>
+                  <button onClick={() => cultAction(SOCIAL.CULT_PILL, { item_id: p.id })} disabled={cultBusy}
+                    className="mt-1 w-full py-1 rounded-full text-[10px] font-bold x-btn-equip disabled:opacity-50">
+                    Luyện hóa +{Number(p.pill_exp || 500).toLocaleString("vi-VN")}
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* ĐAN PHÒNG — mua thêm */}
+        <div>
+          <h3 className="text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">🏮 Đan Phòng (mua bằng Xu)</h3>
+          <div className="grid grid-cols-3 md:grid-cols-5 gap-2">
+            {catalog.filter((i) => i.category === "luyen-dan" && !i.owned).slice(0, 10).map((p) => (
+              <div key={p.id} className="x-item-card p-2 text-center">
+                <img src={full(p.image)} alt={p.name} className="w-12 h-12 mx-auto object-contain" loading="lazy" />
+                <div className="text-[9px] font-bold text-gray-300 mt-1 truncate" title={p.name}>{p.name}</div>
+                <button onClick={() => buy(p)} disabled={!!busyId || xu < p.price_xu}
+                  className="mt-1 w-full py-1 rounded-full text-[10px] font-bold bg-[#f5c15c]/15 text-[#ffd77a] border border-[#f5c15c]/30 hover:bg-[#f5c15c]/25 disabled:opacity-40 transition">
+                  🪙 {Number(p.price_xu || 0).toLocaleString("vi-VN")}
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* LỘ TRÌNH 50 CẢNH GIỚI */}
+        <div>
+          <h3 className="text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">🗺️ Lộ Trình Tu Tiên ({(cult.realms || []).length} cảnh giới)</h3>
+          <div className="flex gap-2 overflow-x-auto pb-2">
+            {(cult.realms || []).map((r) => {
+              const state = r.index === u.realm_index ? "cur" : r.index < u.realm_index ? "done" : "lock";
+              return (
+                <div key={r.id} className={`shrink-0 w-24 rounded-xl border p-2 text-center ${state === "cur" ? "border-[#f5c15c] bg-[#f5c15c]/10" : state === "done" ? "border-emerald-500/40 bg-emerald-500/5" : "border-white/10 bg-black/20 opacity-60"}`}>
+                  <div className="text-[9px] text-gray-500">{r.index}</div>
+                  <div className={`text-[10px] font-bold truncate ${state === "cur" ? "text-[#ffd77a]" : state === "done" ? "text-emerald-300" : "text-gray-400"}`} title={r.display_title}>
+                    {state === "lock" ? "🔒 " : state === "cur" ? "☯ " : "✓ "}{r.tier_name}
+                  </div>
+                  <div className="text-[8px] text-gray-600">{r.sub_stage}</div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   const TABS = [
     { id: "overview", label: "⚔️ Tổng Quan" },
     { id: "xu", label: "🪙 Kiếm & Nạp Xu" },
+    { id: "cult", label: "🧘 Cảnh Giới" },
     ...SLOT_META.map((s) => ({
       id: s.kind,
       label: `${s.icon} ${s.label} (${catalog.filter((i) => i.kind === s.kind).length})`,
@@ -678,6 +838,7 @@ export default function CustomizationPanel({ currentUser, onBack, onSaved, onSpi
         <div className="flex-1 overflow-y-auto p-4 space-y-4 min-h-0">
           {tab === "overview" && renderOverview()}
           {tab === "xu" && renderXuTab()}
+          {tab === "cult" && renderCultTab()}
           {tab !== "overview" && tab !== "xu" && tab !== "style" && renderItemTab()}
 
           {/* ✨ TAB PHONG CÁCH */}

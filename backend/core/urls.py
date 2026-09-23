@@ -151,6 +151,16 @@ SPIRIT = {
     "ADMIN_GRANT": "/admin/grant",  # POST — Admin tặng vật phẩm cho user
 }
 
+# 🧘 HỆ THỐNG TU TIÊN — cảnh giới · đả tọa · đột phá · linh căn · đan dược
+CULTIVATION = {
+    "PREFIX": "/api/tu-tien",
+    "STATE": "/",                 # GET  — 50 realms + trạng thái
+    "MEDITATE": "/meditate",      # POST — đả tọa
+    "BREAKTHROUGH": "/breakthrough",  # POST — đột phá
+    "ROOT": "/root",              # POST — chọn linh căn
+    "USE_PILL": "/use-pill",      # POST — dùng đan dược
+}
+
 # 🪙 HỆ THỐNG XU — nhiệm vụ kiếm Xu, mua Xu (PayOS), tặng Xu
 XU = {
     "PREFIX": "/api/xu",

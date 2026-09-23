@@ -10,6 +10,7 @@ import { showToast } from "../../lib/toast";
 import { IconMessage, IconBack } from "./icons";
 import { CHAT_THEMES, SOCIAL_GLOBAL_CSS } from "./socialStyles";
 import AvatarFrame from "./AvatarFrame";
+import RealmName from "./RealmName";
 import { createPortal } from "react-dom";
 
 const AVATAR = (seed) => `https://api.dicebear.com/7.x/avataaars/svg?seed=${encodeURIComponent(seed)}`;
@@ -247,7 +248,7 @@ export default function DmInbox({ currentUser, onBack, onUnreadChange, onNavigat
                   >
                     <AvatarFrame src={u.avatar_url || AVATAR(u.username)} frame={u.frame || u.avatar_frame} pet={u.pet} treasure={u.treasure} dharma={u.dharma} title={u.title} ring={u.ring} sect={u.sect} size={40} alt={`Ảnh đại diện ${u.fullname}`} />
                     <div>
-                      <div className="text-sm font-semibold text-white">{u.fullname || u.username}</div>
+                      <RealmName realmIndex={u.realm_index} spiritRoot={u.spirit_root} effectId={u.name_effect} name={u.fullname || u.username} className="text-sm" />
                       <div className="text-xs text-gray-500">@{u.username}</div>
                     </div>
                   </button>

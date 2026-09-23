@@ -40,7 +40,8 @@ SLOT_FIELDS = ("frame", "pet", "treasure", "title", "ring", "dharma", "sect")
 
 # Mảnh SELECT — yêu cầu bảng users có alias `u`
 SPIRIT_SELECT_SQL = ",\n".join(
-    [f"u.{EQUIP_SLOTS[s]}" for s in SLOT_FIELDS]
+    ["u.realm_index", "u.spirit_root"]
+    + [f"u.{EQUIP_SLOTS[s]}" for s in SLOT_FIELDS]
     + [
         f"(SELECT si.{f} FROM spirit_items si WHERE si.id = u.{EQUIP_SLOTS[s]}) AS {s}_{f}"
         for s in SLOT_FIELDS for f in ("image", "name", "rarity")
@@ -50,7 +51,8 @@ SPIRIT_SELECT_SQL = ",\n".join(
 # Mảnh SELECT "rỗng" — dùng khi DB CHƯA có đủ schema linh vật,
 # để feed / DM / profile KHÔNG BAO GIỜ gãy vì thiếu cột/bảng.
 _SPIRIT_NULL_SQL = ",\n".join(
-    [f"NULL AS {EQUIP_SLOTS[s]}" for s in SLOT_FIELDS]
+    ["NULL AS realm_index", "NULL AS spirit_root"]
+    + [f"NULL AS {EQUIP_SLOTS[s]}" for s in SLOT_FIELDS]
     + [f"NULL AS {s}_{f}" for s in SLOT_FIELDS for f in ("image", "name", "rarity")]
 )
 
@@ -69,12 +71,12 @@ def spirit_schema_ok(refresh: bool = False) -> bool:
             cols = db_executor.select_as_list_dict(
                 "SELECT COLUMN_NAME FROM information_schema.COLUMNS "
                 "WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME='users' "
-                f"AND COLUMN_NAME IN ({','.join(repr(c) for c in EQUIP_SLOTS.values())})")
+                f"AND COLUMN_NAME IN ({','.join(repr(c) for c in list(EQUIP_SLOTS.values()) + ['realm_index'])})")
             tables = db_executor.select_as_list_dict(
                 "SELECT TABLE_NAME FROM information_schema.TABLES "
                 "WHERE TABLE_SCHEMA = DATABASE() "
                 "AND TABLE_NAME IN ('spirit_items','user_spirit_items')")
-            _SPIRIT_OK = len(cols) == len(EQUIP_SLOTS) and len(tables) == 2
+            _SPIRIT_OK = len(cols) == len(EQUIP_SLOTS) + 1 and len(tables) == 2
         except Exception:
             _SPIRIT_OK = False
     return bool(_SPIRIT_OK)
@@ -119,10 +121,19 @@ def ensure_spirit_schema() -> bool:
         cols = {r["COLUMN_NAME"] for r in db_executor.select_as_list_dict(
             "SELECT COLUMN_NAME FROM information_schema.COLUMNS "
             "WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME='users' "
-            f"AND COLUMN_NAME IN ({','.join(repr(c) for c in EQUIP_SLOTS.values())})")}
+            f"AND COLUMN_NAME IN ({','.join(repr(c) for c in list(EQUIP_SLOTS.values()) + ['realm_index','cultivation','spirit_root','last_meditate'])})")}
         for col in EQUIP_SLOTS.values():
             if col not in cols:
                 db_updater.update(f"ALTER TABLE `users` ADD COLUMN `{col}` VARCHAR(80) DEFAULT NULL")
+        # 🧘 cột hệ thống tu tiên
+        if "realm_index" not in cols:
+            db_updater.update("ALTER TABLE `users` ADD COLUMN `realm_index` INT NOT NULL DEFAULT 0")
+        if "cultivation" not in cols:
+            db_updater.update("ALTER TABLE `users` ADD COLUMN `cultivation` BIGINT NOT NULL DEFAULT 0")
+        if "spirit_root" not in cols:
+            db_updater.update("ALTER TABLE `users` ADD COLUMN `spirit_root` VARCHAR(20) DEFAULT NULL")
+        if "last_meditate" not in cols:
+            db_updater.update("ALTER TABLE `users` ADD COLUMN `last_meditate` DATETIME DEFAULT NULL")
     except Exception as e:
         import logging
         logging.warning(f"🐉 ensure_spirit_schema: {e}")
@@ -137,7 +148,10 @@ def spirit_payload(row: dict) -> dict:
     Trả về: {"frame": {...}|None, "pet": ..., "treasure": ..., "title": ...,
              "ring": ..., "dharma": ..., "sect": ...}
     """
-    out = {}
+    out = {
+        "realm_index": int(row.get("realm_index") or 0) if row.get("realm_index") is not None else 0,
+        "spirit_root": row.get("spirit_root"),
+    }
     for s in SLOT_FIELDS:
         item_id = row.get(EQUIP_SLOTS[s])
         image = row.get(f"{s}_image")
@@ -179,8 +193,10 @@ def sync_catalog_from_manifest(base_dir: str = None) -> int:
     n = 0
     valid_ids = []
     for it in data:
-        if not it.get("id") or not it.get("image") or not it.get("equippable"):
-            continue  # chỉ đưa vào cửa hàng item equip được
+        if not it.get("id") or not it.get("image"):
+            continue
+        if not (it.get("equippable") or it.get("usable")):
+            continue  # chỉ đưa vào cửa hàng item equip được hoặc đan dược
         db_inserter.insert(
             """INSERT INTO spirit_items (id, kind, name, description, image, rarity, price_xu, zorder)
                VALUES (%s,%s,%s,%s,%s,%s,%s,%s)

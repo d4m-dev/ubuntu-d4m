@@ -16,6 +16,7 @@ import StickerPicker from "./StickerPicker";
 import BottomNav from "./BottomNav";
 import CustomizationPanel from "./CustomizationPanel";
 import AvatarFrame, { nameEffectStyle } from "./AvatarFrame";
+import RealmName from "./RealmName";
 import { SOCIAL_GLOBAL_CSS } from "./socialStyles";
 import { cssFrom } from "./cssUtils";
 import {
@@ -102,7 +103,7 @@ const PostCard = memo(function PostCard({ post, liked, canDelete, onLike, onComm
         </div>
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-1.5 text-sm">
-            <span className="font-bold" style={cssFrom(nameEffectStyle(post.name_effect))}>{post.fullname}</span>
+            <RealmName realmIndex={post.realm_index} spiritRoot={post.spirit_root} effectId={post.name_effect} name={post.fullname} />
             {Number(post.role) === 1 && <span className="text-blue-500" style={{ width: 14, height: 14 }}><IconCheck /></span>}
             <span className="text-gray-500">@{post.username} · {formatTimeAgo(post.created_at)}</span>
           </div>
@@ -294,6 +295,8 @@ export default function SocialHubPage() {
           frame: r.data.frame || null,
           pet: r.data.pet || null,
           treasure: r.data.treasure || null,
+          realm_index: r.data.realm_index || 0,
+          spirit_root: r.data.spirit_root || null,
           dharma: r.data.dharma || null,
           title: r.data.title || null,
           ring: r.data.ring || null,

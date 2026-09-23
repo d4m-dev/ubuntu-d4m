@@ -210,6 +210,12 @@ export const SOCIAL = {
   XU_BUY_STATUS: (order) => `${API_BASE_URL}/api/xu/buy/status/${order}`, // polling
   XU_GIFT: `${API_BASE_URL}/api/xu/gift`,                               // tặng Xu
   XU_HISTORY: `${API_BASE_URL}/api/xu/history`,                         // sổ giao dịch
+  // 🧘 Tu tiên — cảnh giới/đả tọa/đột phá/linh căn/đan dược
+  CULT_STATE: `${API_BASE_URL}/api/tu-tien/`,                           // 50 realms + trạng thái
+  CULT_MEDITATE: `${API_BASE_URL}/api/tu-tien/meditate`,                // đả tọa
+  CULT_BREAK: `${API_BASE_URL}/api/tu-tien/breakthrough`,               // đột phá
+  CULT_ROOT: `${API_BASE_URL}/api/tu-tien/root`,                        // chọn linh căn
+  CULT_PILL: `${API_BASE_URL}/api/tu-tien/use-pill`,                    // dùng đan dược
 };
 
 // ============================================================

@@ -8,6 +8,7 @@ import { showToast } from "../../lib/toast";
 import { IconImage } from "./icons";
 import StickerPicker from "./StickerPicker";
 import AvatarFrame, { nameEffectStyle } from "./AvatarFrame";
+import RealmName from "./RealmName";
 import { cssFrom } from "./cssUtils";
 
 const AVATAR = (seed) => `https://api.dicebear.com/7.x/avataaars/svg?seed=${encodeURIComponent(seed)}`;
@@ -142,7 +143,7 @@ export default function CommentsPanel({ post, currentUser, onClose }) {
           <div className="flex gap-3">
             <AvatarFrame src={post.avatar_url || AVATAR(post.username)} frame={post.frame || post.avatar_frame} pet={post.pet} treasure={post.treasure} dharma={post.dharma} title={post.title} ring={post.ring} sect={post.sect} size={36} alt="" />
             <div className="min-w-0">
-              <span className="text-sm font-semibold text-white" style={cssFrom(nameEffectStyle(post.name_effect))}>{post.fullname || post.username}</span>
+              <RealmName realmIndex={post.realm_index} spiritRoot={post.spirit_root} effectId={post.name_effect} name={post.fullname || post.username} className="text-sm" />
               <span className="text-xs text-gray-500 ml-1">@{post.username} · {fmtAgo(post.created_at)}</span>
               <p className="text-sm text-gray-200 mt-0.5 break-words">{post.content}</p>
               {post.images && post.images.length > 0 && (
@@ -258,7 +259,7 @@ function CommentRow({ c, me, onReply, small = false }) {
       <AvatarFrame src={c.avatar_url || AVATAR(c.username)} frame={c.frame || c.avatar_frame} pet={small ? null : c.pet} treasure={small ? null : c.treasure} dharma={small ? null : c.dharma} title={small ? null : c.title} ring={small ? null : c.ring} sect={small ? null : c.sect} size={small ? 24 : 32} alt="" />
       <div className="min-w-0 flex-1">
         <div className="flex items-baseline gap-1.5">
-          <span className="text-xs font-semibold text-white" style={cssFrom(nameEffectStyle(c.name_effect))}>{c.fullname || c.username}</span>
+          <RealmName realmIndex={c.realm_index} spiritRoot={c.spirit_root} effectId={c.name_effect} name={c.fullname || c.username} className="text-xs" />
           <span className="text-[10px] text-gray-500">@{c.username} · {fmtAgo(c.created_at)}</span>
         </div>
         <p className="text-sm text-gray-200 break-words">{c.content}</p>

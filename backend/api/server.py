@@ -31,7 +31,8 @@ from api import (
     admin_scripts, admin_security, dldriver, autocode, omni_dl, d4m_music, system,
     donate, ws_donate, upload, notification, profile_public, songs_upload, social_dm,
     spirit,  # 🐉💎 Linh thú & Linh bảo (Social Hub)
-    xu       # 🪙 Nhiệm vụ kiếm Xu · Mua Xu (PayOS) · Tặng Xu
+    xu,      # 🪙 Nhiệm vụ kiếm Xu · Mua Xu (PayOS) · Tặng Xu
+    cultivation  # 🧘 Hệ thống Tu Tiên — cảnh giới/đả tọa/đột phá
 )
 
 # ==========================================
@@ -56,6 +57,12 @@ async def lifespan(app: FastAPI):
         ensure_xu_schema()
     except Exception as e:
         logging.warning(f"⚠️ Xu schema: {e}")
+    # 🧘 Cột tu tiên (realm_index/cultivation/spirit_root/last_meditate)
+    try:
+        from services.cultivation_service import ensure_cultivation_schema
+        ensure_cultivation_schema()
+    except Exception as e:
+        logging.warning(f"⚠️ Cultivation schema: {e}")
     task_janitor = asyncio.create_task(ai_janitor_task())
     task_telegram = asyncio.create_task(telegram_polling_task())
     

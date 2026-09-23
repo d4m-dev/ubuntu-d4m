@@ -131,6 +131,13 @@ def claim_task(user_id: int, task_key: str):
         return False, "Hôm nay đạo hữu đã nhận nhiệm vụ này rồi!"
     if not credit_xu(user_id, task["reward"], "task", ref=task_key, note=task["label"]):
         return False, "Chưa có ví Xu — hãy vào Social Hub một lần."
+    # 🧘 nhiệm vụ cũng sinh tu vi
+    try:
+        from services.cultivation_service import gain_cultivation
+        TU_VI_OF = {"checkin": 500, "first_post": 1000, "first_comment": 300}
+        gain_cultivation(user_id, TU_VI_OF.get(task_key, 300))
+    except Exception:
+        pass
     return True, f"🎉 Hoàn thành «{task['label']}» +{task['reward']:,} Xu!"
 
 

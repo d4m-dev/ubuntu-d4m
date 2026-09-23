@@ -205,4 +205,20 @@ export const SOCIAL_GLOBAL_CSS = `
   @keyframes x-shimmer { 0%{background-position:-200% 0} 100%{background-position:200% 0} }
   .x-shimmer { background:linear-gradient(110deg, transparent 30%, rgba(255,255,255,.14) 50%, transparent 70%);
     background-size:200% 100%; animation:x-shimmer 2.6s linear infinite; }
+
+  /* ═══ 🧘 PHÀM NHÂN TU TIÊN — text masking tên đạo hữu theo cảnh giới ═══ */
+  .dao-huu-name {
+    color: transparent !important;
+    -webkit-text-fill-color: transparent !important;
+    background-clip: text !important; -webkit-background-clip: text !important;
+    display:inline-block; padding:0.1rem 0.35rem; font-weight:bold;
+    background-size:cover; background-position:center; background-repeat:no-repeat;
+    background-color: var(--tier-fallback-color, #D1D5DB);
+    background-image: var(--tier-gif), var(--tier-gradient);
+    filter: var(--tier-glow, none);
+    transition: filter .5s ease, background-image .5s ease;
+  }
+  /* Nút đả tọa — hơi thở linh khí */
+  @keyframes x-breathe { 0%,100%{box-shadow:0 0 8px rgba(52,211,153,.25)} 50%{box-shadow:0 0 22px rgba(52,211,153,.55)} }
+  .x-meditate { animation:x-breathe 3s ease-in-out infinite; }
 `;

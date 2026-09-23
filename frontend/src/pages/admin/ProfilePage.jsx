@@ -5,6 +5,7 @@ import { ENDPOINTS, API_BASE_URL } from "../../config/api";
 import { SOCIAL } from "../../config/urls";
 import { showToast } from "../../lib/toast";
 import AvatarFrame from "../social/AvatarFrame";
+import RealmName, { RealmBadge } from "../social/RealmName";
 import { SOCIAL_GLOBAL_CSS } from "../social/socialStyles";
 
 // 🎨 7 slot trang bị Spirit v2
@@ -115,6 +116,8 @@ export default function ProfilePage() {
           dob: data.dob || "",
           address: data.address || "",
           email: data.email || "",
+          realm_index: data.realm_index || 0,
+          spirit_root: data.spirit_root || null,
         });
         setIsLoadingProfile(false);
       } catch (err) {
@@ -421,12 +424,16 @@ export default function ProfilePage() {
                 />
               </div>
               
-              <h3 className="text-xl font-black mt-4 text-white">
-                {profile.full_name || profile.username}
-              </h3>
+              <div className="mt-4 text-xl">
+                <RealmName realmIndex={profile.realm_index} spiritRoot={profile.spirit_root}
+                  effectId="default" name={profile.full_name || profile.username} className="font-black" />
+              </div>
               <p className="text-sm text-gray-400 font-mono mt-1">
                 @{profile.username}
               </p>
+              <div className="mt-1.5">
+                <RealmBadge realmIndex={profile.realm_index} />
+              </div>
               
               <div className="mt-4 flex items-center justify-center gap-2 flex-wrap">
                 <span className="inline-flex items-center bg-green-500/10 text-green-400 border border-green-500/20 px-4 py-1.5 rounded-full text-xs font-bold shadow-inner">

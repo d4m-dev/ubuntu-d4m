@@ -26,6 +26,9 @@ CATEGORIES = {
 }
 
 RARITY_PRICE = {"common": 20000, "rare": 60000, "epic": 180000, "legendary": 500000}
+# 💊 Đan dược (luyện đan): mua bằng Xu rồi "dùng" để nhận tu vi
+PILL_EXP = {"common": 500, "rare": 2000, "epic": 8000, "legendary": 30000}
+PILL_PRICE = {"common": 5000, "rare": 15000, "epic": 45000, "legendary": 120000}
 ZORDER = {"frame": 3, "pet": 4, "treasure": 1, "dharma": 2, "title": 0, "ring": 0, "sect": 0, "resource": 0}
 
 
@@ -70,6 +73,7 @@ def main():
         if ext not in IMG_EXT:
             continue  # bỏ qua font/css/json
         kind, equippable, label = CATEGORIES[category]
+        usable = category == "luyen-dan"  # 💊 đan dược
         fname = os.path.basename(sub)
         slug = slugify(fname, category)
         item_id = f"{category}-{slug}"
@@ -80,7 +84,7 @@ def main():
             item_id = f"{item_id}-{n}"
         seen_ids.add(item_id)
 
-        rarity = rarity_of(item_id) if equippable else "common"
+        rarity = rarity_of(item_id) if (equippable or usable) else "common"
         data.append({
             "id": item_id,
             "kind": kind,
@@ -88,9 +92,11 @@ def main():
             "name": prettify(slug) if category != "tong-mon" else f"Tông Môn {slug}",
             "image": f"/assets/{category}/{sub}",
             "rarity": rarity,
-            "price_xu": RARITY_PRICE[rarity] if equippable else 0,
+            "price_xu": (PILL_PRICE if usable else RARITY_PRICE)[rarity] if (equippable or usable) else 0,
+            "pill_exp": PILL_EXP[rarity] if usable else 0,
             "zorder": ZORDER[kind],
             "equippable": equippable,
+            "usable": usable,
         })
         stats.setdefault(category, {"count": 0, "rarity": {}})
         stats[category]["count"] += 1
