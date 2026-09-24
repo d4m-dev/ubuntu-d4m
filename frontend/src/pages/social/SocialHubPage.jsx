@@ -15,7 +15,7 @@ import ActivityPanel from "./ActivityPanel";
 import StickerPicker from "./StickerPicker";
 import BottomNav from "./BottomNav";
 import CustomizationPanel from "./CustomizationPanel";
-import AvatarFrame, { nameEffectStyle } from "./AvatarFrame";
+import AvatarFrame, { nameEffectStyle, TitleBadge } from "./AvatarFrame";
 import RealmName from "./RealmName";
 import { SOCIAL_GLOBAL_CSS } from "./socialStyles";
 import { cssFrom } from "./cssUtils";
@@ -99,9 +99,10 @@ const PostCard = memo(function PostCard({ post, liked, canDelete, onLike, onComm
     <article className="d4m-post-card px-4 py-4 transition-colors">
       <div className="flex gap-3">
         <div className="flex-shrink-0">
-          <AvatarFrame src={post.avatar_url} frame={post.frame || post.avatar_frame} pet={post.pet} treasure={post.treasure} dharma={post.dharma} title={post.title} ring={post.ring} sect={post.sect} size={40} alt={`Avatar ${post.fullname || post.username}`} />
+          <AvatarFrame src={post.avatar_url} frame={post.frame || post.avatar_frame} pet={post.pet} treasure={post.treasure} dharma={post.dharma} title={null} ring={post.ring} sect={post.sect} size={40} alt={`Avatar ${post.fullname || post.username}`} />
         </div>
         <div className="flex-1 min-w-0">
+          <TitleBadge title={post.title} height={22} className="mb-0.5" />
           <div className="flex items-center gap-1.5 text-sm">
             <RealmName realmIndex={post.realm_index} spiritRoot={post.spirit_root} effectId={post.name_effect} name={post.fullname} />
             {Number(post.role) === 1 && <span className="text-blue-500" style={{ width: 14, height: 14 }}><IconCheck /></span>}
@@ -831,11 +832,12 @@ export default function SocialHubPage() {
                 src={currentUser?.avatar_url}
                 frame={currentUser?.frame || currentUser?.avatar_frame}
                 pet={currentUser?.pet} treasure={currentUser?.treasure}
-                dharma={currentUser?.dharma} title={currentUser?.title}
+                dharma={currentUser?.dharma} title={null}
                 ring={currentUser?.ring} sect={currentUser?.sect}
                 size={48} alt=""
               />
               <div className="min-w-0 flex-1">
+                <TitleBadge title={currentUser?.title} height={20} className="mb-0.5" />
                 <RealmName realmIndex={currentUser?.realm_index || 0} spiritRoot={currentUser?.spirit_root}
                   effectId={currentUser?.name_effect} name={currentUser?.fullname || currentUser?.username} className="text-sm" />
                 <div className="text-[11px] text-gray-500">@{currentUser?.username}</div>

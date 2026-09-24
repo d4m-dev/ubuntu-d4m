@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { ENDPOINTS, API_BASE_URL } from "../../config/api";
 import { SOCIAL } from "../../config/urls";
 import { showToast } from "../../lib/toast";
-import AvatarFrame from "../social/AvatarFrame";
+import AvatarFrame, { TitleBadge } from "../social/AvatarFrame";
 import RealmName, { RealmBadge } from "../social/RealmName";
 import { SOCIAL_GLOBAL_CSS } from "../social/socialStyles";
 
@@ -408,7 +408,7 @@ export default function ProfilePage() {
                   pet={spirit.byId?.get(spirit.equipped.pet) || null}
                   treasure={spirit.byId?.get(spirit.equipped.treasure) || null}
                   dharma={spirit.byId?.get(spirit.equipped.dharma) || null}
-                  title={spirit.byId?.get(spirit.equipped.title) || null}
+                  title={null}
                   ring={spirit.byId?.get(spirit.equipped.ring) || null}
                   sect={spirit.byId?.get(spirit.equipped.sect) || null}
                   size={116}
@@ -426,8 +426,9 @@ export default function ProfilePage() {
                   onChange={handleAvatarUpload}
                 />
               </div>
-              
-              <div className="mt-4 text-xl">
+
+              <TitleBadge title={spirit.byId?.get(spirit.equipped.title) || null} height={40} className="mt-4" />
+              <div className="mt-2 text-xl">
                 <RealmName realmIndex={profile.realm_index} spiritRoot={profile.spirit_root}
                   effectId={profile.name_effect || "default"} name={profile.full_name || profile.username} className="font-black" />
               </div>

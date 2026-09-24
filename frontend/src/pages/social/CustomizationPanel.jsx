@@ -10,7 +10,7 @@ import { showToast } from "../../lib/toast";
 import { IconBack } from "./icons";
 import { NAME_EFFECTS, CHAT_THEMES } from "./socialStyles";
 import { nameEffectStyle } from "./AvatarFrame";
-import AvatarFrame from "./AvatarFrame";
+import AvatarFrame, { TitleBadge } from "./AvatarFrame";
 import RealmName from "./RealmName";
 
 // 🏷️ Phẩm chất theo độ hiếm
@@ -201,10 +201,10 @@ export default function CustomizationPanel({ currentUser, onBack, onSaved, onSpi
         body: JSON.stringify({ package_id: pkg.id }),
       });
       const data = await res.json();
-      if (data.status === "success" && data.checkout_url) {
-        window.open(data.checkout_url, "_blank", "noopener");
-        setPendingOrder({ order_code: data.order_code, xu: data.xu });
-        showToast("Đã mở cổng thanh toán — hoàn tất rồi quay lại đây nhé!");
+      if (data.status === "success" && (data.qr_data_uri || data.checkout_url)) {
+        // 🖼️ Hiện QR NGAY TRÊN WEB — không mở tab mới
+        setPendingOrder({ order_code: data.order_code, xu: data.xu, vnd: data.vnd,
+          qr: data.qr_data_uri || "", checkout_url: data.checkout_url || "" });
       } else showToast(data.detail || "Không tạo được đơn thanh toán", "error");
     } catch (e) { showToast("Lỗi mạng", "error"); }
     finally { setBusyId(null); }
@@ -225,13 +225,14 @@ export default function CustomizationPanel({ currentUser, onBack, onSaved, onSpi
           if (typeof data.xu === "number") setXu(data.xu);
           showToast(`🎉 Nạp thành công +${pendingOrder.xu.toLocaleString("vi-VN")} Xu!`);
           await loadXu();
-        } else if (data.cancelled) {
+        } else if (data.failed || data.cancelled) {
           clearInterval(id);
           setPendingOrder(null);
-          showToast("Đơn nạp đã hủy.", "error");
-        } else if (tries >= 150) { // ~10 phút
+          showToast("❌ Giao dịch thất bại/hết hạn — không trừ tiền.", "error");
+        } else if (tries >= 240) { // ~16 phút (backend tự ngắt ở 15 phút)
           clearInterval(id);
           setPendingOrder(null);
+          showToast("❌ Quá thời gian thanh toán, giao dịch đã ngắt.", "error");
         }
       } catch (e) { /* bỏ qua nhịp lỗi */ }
     }, 4000);
@@ -529,8 +530,31 @@ export default function CustomizationPanel({ currentUser, onBack, onSaved, onSpi
           {!xuData.payosReady && <span className="text-[10px] text-rose-400 font-bold">⚠️ PayOS chưa cấu hình</span>}
         </div>
         {pendingOrder && (
-          <div className="mb-3 rounded-xl border border-[#f5c15c]/40 bg-[#f5c15c]/10 px-4 py-2.5 text-xs text-[#ffd77a] font-bold">
-            ⏳ Đang chờ xác nhận thanh toán +{pendingOrder.xu.toLocaleString("vi-VN")} Xu... (tự kiểm tra mỗi 4 giây)
+          <div className="mb-3 rounded-2xl border border-[#f5c15c]/40 bg-[#0d1117] p-4 flex flex-col md:flex-row items-center gap-4">
+            {pendingOrder.qr ? (
+              <img src={pendingOrder.qr} alt="QR thanh toán PayOS" className="w-40 h-40 rounded-xl bg-white p-2 shrink-0" />
+            ) : (
+              <div className="w-40 h-40 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-gray-500 text-xs text-center px-2 shrink-0">
+                QR không khả dụng — dùng nút dưới
+              </div>
+            )}
+            <div className="flex-1 text-center md:text-left">
+              <div className="text-sm font-bold text-[#ffd77a]"> Quét QR để nạp +{pendingOrder.xu.toLocaleString("vi-VN")} Xu</div>
+              <div className="text-xs text-gray-400 mt-1">Giá trị: <b className="text-white">{(pendingOrder.vnd || 0).toLocaleString("vi-VN")}đ</b> · Mã đơn: <code>{pendingOrder.order_code}</code></div>
+              <div className="text-[11px] text-emerald-400 mt-2 animate-pulse">⏳ Đang chờ thanh toán... tự kiểm tra mỗi 4 giây (tối đa 15 phút)</div>
+              <div className="flex gap-2 mt-3 justify-center md:justify-start">
+                {pendingOrder.checkout_url && (
+                  <a href={pendingOrder.checkout_url} target="_blank" rel="noopener noreferrer"
+                    className="px-3 py-1.5 rounded-full text-[11px] font-bold bg-white/10 text-gray-200 hover:bg-white/20 transition">
+                    Mở cổng PayOS (fallback)
+                  </a>
+                )}
+                <button onClick={() => setPendingOrder(null)}
+                  className="px-3 py-1.5 rounded-full text-[11px] font-bold bg-rose-500/15 text-rose-400 hover:bg-rose-500/25 transition">
+                  Huỷ đơn
+                </button>
+              </div>
+            </div>
           </div>
         )}
         <div className="flex flex-col gap-2">
@@ -808,10 +832,11 @@ export default function CustomizationPanel({ currentUser, onBack, onSaved, onSpi
             <AvatarFrame
               src={currentUser?.avatar_url}
               frame={preview.frame} pet={preview.pet} treasure={preview.treasure}
-              dharma={preview.dharma} title={preview.title} ring={preview.ring} sect={preview.sect}
+              dharma={preview.dharma} title={null} ring={preview.ring} sect={preview.sect}
               size={96} alt=""
             />
-            <div className="mt-4 text-base md:text-lg">
+            <TitleBadge title={preview.title} height={34} className="mt-3" />
+            <div className="mt-2 text-base md:text-lg">
               <RealmName realmIndex={currentUser?.realm_index || 0} spiritRoot={currentUser?.spirit_root}
                 effectId={effect} name={currentUser?.fullname || currentUser?.username} className="font-black" />
             </div>

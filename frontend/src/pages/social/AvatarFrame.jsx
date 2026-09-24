@@ -44,6 +44,22 @@ export function SpiritBadge({ item, className, size }) {
 
 const FALLBACK = "https://ui-avatars.com/api/?name=D&background=random&color=fff";
 
+// 🏷️ Banner danh hiệu dạng LUỒNG (không absolute) — đặt GIỮA avatar và tên, không đè tên
+export function TitleBadge({ title, className = "", height = 28 }) {
+  if (!title?.image) return null;
+  return (
+    <img
+      src={full(title.image)}
+      alt={title.name || ""}
+      title={title.name || ""}
+      loading="lazy"
+      decoding="async"
+      className={className}
+      style={{ height, width: "auto", maxWidth: height * 7, objectFit: "contain" }}
+    />
+  );
+}
+
 // Component Avatar + 7 slot trang bị
 // pet/treasure/dharma/ring/sect/frame: { id, image, name, rarity } | string | null
 export default function AvatarFrame({

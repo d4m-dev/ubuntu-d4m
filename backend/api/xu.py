@@ -116,9 +116,19 @@ async def buy_xu(body: BuyRequest, current_user: dict = Depends(get_current_user
         raise HTTPException(status_code=502, detail="Cổng thanh toán từ chối tạo đơn.")
 
     pdata = data.get("data", {}) or {}
-    checkout_url = pdata.get("checkoutUrl") or pdata.get("qrCode") or ""
-    if not checkout_url:
+    checkout_url = pdata.get("checkoutUrl") or ""
+    qr_content = pdata.get("qrCode") or ""
+    if not (checkout_url or qr_content):
         raise HTTPException(status_code=502, detail="PayOS không trả link thanh toán.")
+
+    # 🖼️ QR dạng data-URI để QUÉT NGAY TRÊN WEB (không mở tab mới)
+    qr_data_uri = ""
+    if qr_content:
+        try:
+            from api.donate import _qr_data_uri
+            qr_data_uri = _qr_data_uri(qr_content)
+        except Exception as e:
+            logger.warning(f"[XU] tạo QR data-uri lỗi: {e}")
 
     # Ghi sổ giao dịch PENDING (ref = orderCode, note='pending' để idempotent)
     from core.database import db_updater
@@ -128,20 +138,28 @@ async def buy_xu(body: BuyRequest, current_user: dict = Depends(get_current_user
         (uid, pkg["xu"], pkg["vnd"], str(order_code)))
     logger.info(f"[XU] Tạo đơn nạp {pkg['id']} user={uid} order={order_code}")
     return {"status": "success", "order_code": str(order_code),
-            "checkout_url": checkout_url, "vnd": pkg["vnd"], "xu": pkg["xu"]}
+            "checkout_url": checkout_url, "qr_data_uri": qr_data_uri,
+            "vnd": pkg["vnd"], "xu": pkg["xu"]}
 
 
 @router.get(U.XU["BUY_STATUS"])
 async def buy_status(order_code: str, current_user: dict = Depends(get_current_user)):
     """Frontend polling sau khi mở cổng thanh toán."""
     row = XS.find_pending_buy(order_code)
+    # ⏱️ Quá 15 phút → tự ngắt, báo THẤT BẠI (không treo "đang xử lý")
+    if row and XS.expire_if_timeout(row):
+        return {"status": "success", "paid": False, "failed": True}
     if not row:
-        # có thể đã hoàn tất ở /return — kiểm tra sổ giao dịch
+        # đã xử lý trước đó — đọc trạng thái cuối trong sổ
         rows = db_executor.select_as_list_dict(
             "SELECT note FROM xu_transactions WHERE ref=%s AND kind='buy' LIMIT 1",
             (str(order_code),))
-        if rows and str(rows[0]["note"]).startswith("paid"):
-            return {"status": "success", "paid": True, "xu": XS.get_xu(current_user.get("user_id"))}
+        if rows:
+            note = str(rows[0]["note"])
+            if note.startswith("success|") or note.startswith("paid"):
+                return {"status": "success", "paid": True, "xu": XS.get_xu(current_user.get("user_id"))}
+            if note.startswith(("failed", "cancelled")):
+                return {"status": "success", "paid": False, "failed": True}
         raise HTTPException(status_code=404, detail="Không tìm thấy đơn nạp.")
 
     if not payos_configured():
@@ -164,9 +182,9 @@ async def buy_status(order_code: str, current_user: dict = Depends(get_current_u
             if st in ("CANCELLED", "EXPIRED"):
                 from core.database import db_updater
                 db_updater.update(
-                    "UPDATE xu_transactions SET note='cancelled' WHERE ref=%s AND note='pending'",
+                    "UPDATE xu_transactions SET note='failed|Bị huỷ/hết hạn' WHERE ref=%s AND note='pending'",
                     (str(order_code),))
-                return {"status": "success", "paid": False, "cancelled": True}
+                return {"status": "success", "paid": False, "failed": True}
     except Exception as e:
         logger.warning(f"[XU] polling PayOS lỗi: {e}")
     return {"status": "success", "paid": False}

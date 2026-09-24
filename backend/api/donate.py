@@ -267,6 +267,18 @@ async def _finalize_payment(user_id: int, amount: int, trans_id: str, content: s
             return {"status": "ignored", "reason": "Giao dịch trùng lặp"}
         logger.error(f"[DONATE] Lỗi lưu logs: {e}")
 
+    # 🪙 ĐỒNG BỘ DONATE → MUA XU: nạp tiền thành công = cộng Xu (5 Xu / 1đ)
+    if not qr_expired:
+        try:
+            from services.xu_service import credit_xu
+            xu_gain = int(amount) * 5
+            await asyncio.to_thread(credit_xu, user_id, xu_gain, "topup",
+                                    ref=f"DONATE-{trans_id or ''}",
+                                    note=f"Nạp Xu từ donate ({amount:,}đ)", vnd=amount)
+            logger.info(f"[DONATE] 🪙 Đã cộng {xu_gain:,} Xu cho user {user_id}.")
+        except Exception as e:
+            logger.warning(f"[DONATE] credit Xu lỗi: {e}")
+
     try:
         await donate_manager.notify_payment_success(user_id, amount=amount,
                                                     trans_id=trans_id, qr_expired=qr_expired)

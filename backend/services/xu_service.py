@@ -148,12 +148,36 @@ def new_order_code() -> int:
     return int(time.time() * 1000) % 10_000_000_000
 
 
+BUY_TTL_MIN = 15  # quá 15 phút → tự ngắt, báo thất bại
+
+
 def find_pending_buy(order_code: str):
     from core.database import db_executor
     rows = db_executor.select_as_list_dict(
-        "SELECT id, user_id, xu, vnd, note FROM xu_transactions "
+        "SELECT id, user_id, xu, vnd, note, created_at FROM xu_transactions "
         "WHERE ref=%s AND kind='buy' AND note='pending' LIMIT 1", (str(order_code),))
     return rows[0] if rows else None
+
+
+def expire_if_timeout(row: dict) -> bool:
+    """Nếu đơn pending quá BUY_TTL_MIN → đánh dấu failed. Trả True nếu đã hết hạn."""
+    if not row or not row.get("created_at"):
+        return False
+    from datetime import datetime
+    from core.database import db_updater
+    try:
+        ct = row["created_at"]
+        if not hasattr(ct, "timestamp"):
+            ct = datetime.strptime(str(ct), "%Y-%m-%d %H:%M:%S")
+        age_min = (datetime.now() - ct).total_seconds() / 60.0
+    except Exception:
+        return False
+    if age_min <= BUY_TTL_MIN:
+        return False
+    db_updater.update(
+        "UPDATE xu_transactions SET note=%s WHERE id=%s AND note='pending'",
+        ("failed|Hết thời gian thanh toán (15 phút)", row["id"]))
+    return True
 
 
 def finalize_buy(order_code: str, trans_id: str = None):
