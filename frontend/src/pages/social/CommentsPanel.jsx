@@ -1,7 +1,6 @@
 // src/pages/social/CommentsPanel.jsx
 // 💬 Bảng bình luận + reply lồng nhau (Threads-style), hỗ trợ đăng ảnh
 import { useEffect, useRef, useState } from "react";
-import { createPortal } from "react-dom";
 import { SOCIAL, API_BASE_URL } from "../../config/urls";
 import { getToken } from "../../services/api";
 import { showToast } from "../../lib/toast";
@@ -124,7 +123,7 @@ export default function CommentsPanel({ post, currentUser, onClose }) {
     }
   };
 
-  return createPortal(
+  return (
     <div className="fixed inset-0 z-[110] bg-black/80 backdrop-blur-sm flex justify-center overflow-y-auto" onClick={onClose}>
       <div
         className="bg-[#0a0a0a] border border-white/10 rounded-t-3xl md:rounded-3xl w-full md:max-w-lg max-h-[85dvh] flex flex-col overflow-hidden mt-auto md:m-auto"
@@ -278,7 +277,6 @@ function CommentRow({ c, me, onReply, small = false }) {
           {c.user_id === me && <span className="text-[10px] text-gray-600">Bạn</span>}
         </div>
       </div>
-    </div>,
-    document.body
+    </div>
   );
 }

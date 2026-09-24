@@ -3,6 +3,7 @@ import React, { lazy, Suspense } from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { Toaster } from "sonner";
 import SEO from "./components/common/SEO";
+import ErrorBoundary from "./components/common/ErrorBoundary";
 
 // ---- Lazy Load: mỗi route chỉ tải JS khi người dùng truy cập ----
 // Giúp trang chủ nhẹ (không kéo theo toàn bộ bundle của các tool/player).
@@ -80,8 +81,8 @@ export default function App() {
           <Route path="/hub" element={<HubPage />} />
           <Route path="/auth" element={<AuthPage />} />
           <Route path="/music/*" element={<D4MusicPlayer />} />
-          <Route path="/admin/profile" element={<ProfilePage />} />
-          <Route path="/social/social-hub" element={<SocialHubPage />} />
+          <Route path="/admin/profile" element={<ErrorBoundary><ProfilePage /></ErrorBoundary>} />
+          <Route path="/social/social-hub" element={<ErrorBoundary><SocialHubPage /></ErrorBoundary>} />
           <Route path="/social/numerology" element={<NumerologyPage />} />
           <Route path="/social/venus" element={<VenusPage />} />
           <Route path="/tools/yt-downloader" element={<YtDownloaderPage />} />
