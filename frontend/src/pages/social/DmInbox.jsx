@@ -175,6 +175,28 @@ export default function DmInbox({ currentUser, onBack, onUnreadChange, onNavigat
     return () => clearInterval(id);
   }, []);
 
+  // 🔁 Polling fallback: tự làm mới tin nhắn mỗi 5s khi đang mở cuộc trò chuyện (không cần F5)
+  useEffect(() => {
+    if (!activeConvo) return;
+    const cid = activeConvo.conversation_id;
+    const id = setInterval(async () => {
+      try {
+        const res = await fetch(SOCIAL.CONVERSATION_MESSAGES(cid), { headers: authHeaders() });
+        const data = await res.json();
+        const list = data.data || [];
+        setMessages((prev) => {
+          const lastN = list.length ? list[list.length - 1].id : null;
+          const lastP = prev.length ? prev[prev.length - 1].id : null;
+          if (list.length === prev.length && lastN === lastP) return prev;
+          setTimeout(() => { if (scrollRef.current) scrollRef.current.scrollTop = scrollRef.current.scrollHeight; }, 60);
+          return list;
+        });
+      } catch (e) { /* im lặng */ }
+    }, 5000);
+    return () => clearInterval(id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeConvo?.conversation_id]);
+
   // ========== REALTIME (WebSocket DM + typing) ==========
   useEffect(() => {
     if (!me) return;
