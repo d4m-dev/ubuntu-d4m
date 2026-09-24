@@ -247,7 +247,7 @@ def get_messages(conversation_id: int, current_user: dict = Depends(get_current_
 # 🚀 DM — GỬI TIN NHẮN
 # ==========================================================
 @router.post(U.SOCIAL["CONVERSATION_SEND"])
-def send_message(conversation_id: int, body: MessageCreate,
+async def send_message(conversation_id: int, body: MessageCreate,
                        current_user: dict = Depends(get_current_user)):
     me = current_user["user_id"]
     convo = db_executor.select_as_list_dict(
@@ -294,7 +294,7 @@ def send_message(conversation_id: int, body: MessageCreate,
     # gửi realtime cho người nhận
     other_id = c["user1_id"] if c["user1_id"] != me else c["user2_id"]
     try:
-        asyncio.get_event_loop().create_task(dm_manager.send_to_user(other_id, payload))
+        asyncio.create_task(dm_manager.send_to_user(other_id, payload))
     except Exception:
         pass
     return {"status": "success", "data": payload["data"]}

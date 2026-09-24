@@ -19,6 +19,14 @@ class BatchIds(BaseModel):
     ids: List[int]
 
 
+@router.get("/ping")
+def presence_ping(current_user: dict = Depends(get_current_user)):
+    """Heartbeat: đánh dấu người gọi đang online + trả trạng thái của chính họ."""
+    me = current_user.get("user_id")
+    PS.ping(me)
+    return {"status": "success", "data": PS.describe(me)}
+
+
 @router.get("/{user_id}")
 def get_presence(user_id: int, current_user: dict = Depends(get_current_user)):
     return {"status": "success", "data": PS.describe(user_id)}

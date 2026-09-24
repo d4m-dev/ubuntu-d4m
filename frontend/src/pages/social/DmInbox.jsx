@@ -167,6 +167,14 @@ export default function DmInbox({ currentUser, onBack, onUnreadChange, onNavigat
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // 🟢 Heartbeat presence mỗi 60s
+  useEffect(() => {
+    const beat = () => { fetch(`${API_BASE_URL}/api/social/presence/ping`, { headers: { Authorization: `Bearer ${getToken()}` } }).catch(() => {}); };
+    beat();
+    const id = setInterval(beat, 60000);
+    return () => clearInterval(id);
+  }, []);
+
   // ========== REALTIME (WebSocket DM + typing) ==========
   useEffect(() => {
     if (!me) return;

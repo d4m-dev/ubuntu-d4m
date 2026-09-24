@@ -283,6 +283,16 @@ export default function SocialHubPage() {
     return [...map.values()];
   }, [feed]);
 
+  // 🟢 Heartbeat presence: đánh dấu đang online mỗi 60s
+  useEffect(() => {
+    if (!isAuth) return;
+    const beat = () => { fetch(`${API_BASE_URL}/api/social/presence/ping`, { headers: { Authorization: `Bearer ${getToken()}` } }).catch(() => {}); };
+    beat();
+    const id = setInterval(beat, 60000);
+    return () => clearInterval(id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isAuth]);
+
   // 🧹 Revoke mọi object URL khi unmount
   useEffect(() => () => { objectUrlsRef.current.forEach((u) => URL.revokeObjectURL(u)); }, []);
 
