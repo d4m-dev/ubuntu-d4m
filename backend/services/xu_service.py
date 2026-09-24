@@ -157,17 +157,17 @@ def find_pending_buy(order_code: str):
 
 
 def finalize_buy(order_code: str, trans_id: str = None):
-    """Xác nhận thanh toán PayOS → cộng Xu (idempotent theo ref)."""
+    """Xác nhận thanh toán PayOS → cộng Xu. 1 đơn = 1 dòng giao dịch (không ghi trùng)."""
     from core.database import db_updater
     row = find_pending_buy(order_code)
     if not row:
         return None  # đã xử lý hoặc không tồn tại
-    # Đánh dấu hoàn thành TRƯỚC rồi mới cộng Xu (chống đúp)
+    # Đánh dấu THÀNH CÔNG trên chính dòng 'buy' (chống đúp) rồi cộng Xu
     affected = db_updater.update(
         "UPDATE xu_transactions SET note=%s WHERE id=%s AND note='pending'",
-        (f"paid:{trans_id or order_code}", row["id"]))
+        (f"success|Nạp {row['xu']:,} Xu ({row['vnd']:,}đ)", row["id"]))
     if not affected:
         return None
-    credit_xu(row["user_id"], row["xu"], "topup", ref=f"PAYOS-{order_code}",
-              note=f"Nạp {row['xu']:,} Xu ({row['vnd']:,}đ)", vnd=row["vnd"])
+    db_updater.update("UPDATE players SET xu = xu + %s WHERE user_id=%s",
+                      (row["xu"], row["user_id"]))
     return row

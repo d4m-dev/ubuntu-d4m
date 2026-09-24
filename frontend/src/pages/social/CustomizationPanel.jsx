@@ -533,19 +533,21 @@ export default function CustomizationPanel({ currentUser, onBack, onSaved, onSpi
             ⏳ Đang chờ xác nhận thanh toán +{pendingOrder.xu.toLocaleString("vi-VN")} Xu... (tự kiểm tra mỗi 4 giây)
           </div>
         )}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-3">
+        <div className="flex flex-col gap-2">
           {xuData.packages.map((p) => (
-            <div key={p.id} className="x-slot-card p-4 text-center">
-              <div className="text-3xl">{p.icon}</div>
-              <div className="text-sm font-bold text-amber-50 mt-1">{p.name}</div>
-              <div className="text-lg font-black x-gold-text mt-1">🪙 {p.xu.toLocaleString("vi-VN")}</div>
-              <div className="text-[11px] text-gray-500 mt-0.5">= {p.vnd.toLocaleString("vi-VN")}đ</div>
+            <div key={p.id} className="x-slot-card flex items-center gap-3 p-3">
+              <div className="text-2xl shrink-0">{p.icon}</div>
+              <div className="flex-1 min-w-0">
+                <div className="text-sm font-bold text-amber-50 truncate">{p.name}</div>
+                <div className="text-[11px] text-gray-500 truncate">= {p.vnd.toLocaleString("vi-VN")}đ</div>
+              </div>
+              <div className="text-base font-black x-gold-text shrink-0">🪙 {p.xu.toLocaleString("vi-VN")}</div>
               <button
                 onClick={() => startBuy(p)}
                 disabled={!!busyId || !xuData.payosReady || !!pendingOrder}
-                className="mt-3 w-full py-2 rounded-full text-xs font-bold x-btn-equip transition disabled:opacity-40 disabled:cursor-not-allowed"
+                className="shrink-0 px-4 py-2 rounded-full text-xs font-bold x-btn-equip transition disabled:opacity-40 disabled:cursor-not-allowed"
               >
-                {busyId === p.id ? "Đang tạo đơn..." : "Mua ngay"}
+                {busyId === p.id ? "..." : "Mua"}
               </button>
             </div>
           ))}
@@ -595,9 +597,18 @@ export default function CustomizationPanel({ currentUser, onBack, onSaved, onSpi
             <h3 className="text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">📒 Sổ Giao Dịch Gần Nhất</h3>
             <div className="space-y-1">
               {xuData.history.slice(0, 10).map((h, i) => (
-                <div key={i} className="flex items-center justify-between text-[11px] px-3 py-1.5 rounded-lg bg-white/[0.03]">
-                  <span className="text-gray-400 truncate mr-2">{h.note || h.kind}</span>
-                  <span className={`font-bold shrink-0 ${h.xu >= 0 ? "text-[#ffd77a]" : "text-rose-400"}`}>
+                <div key={i} className="flex items-center gap-2 text-[11px] px-3 py-1.5 rounded-lg bg-white/[0.03]">
+                  <span
+                    className={`shrink-0 px-1.5 py-0.5 rounded text-[9px] font-bold uppercase ${
+                      h.status === "success" ? "bg-emerald-500/15 text-emerald-400"
+                      : h.status === "failed" ? "bg-rose-500/15 text-rose-400"
+                      : "bg-amber-500/15 text-amber-400"}`}
+                  >
+                    {h.status === "success" ? "✓" : h.status === "failed" ? "✕" : "…"}
+                  </span>
+                  <span className="text-gray-400 truncate mr-2">{h.label || h.note || h.kind}</span>
+                  <span className="text-gray-600 shrink-0">{String(h.created_at || "").slice(5, 16)}</span>
+                  <span className={`font-bold shrink-0 ml-auto ${h.xu >= 0 ? "text-[#ffd77a]" : "text-rose-400"}`}>
                     {h.xu >= 0 ? "+" : ""}{h.xu.toLocaleString("vi-VN")} Xu
                   </span>
                 </div>
@@ -697,7 +708,7 @@ export default function CustomizationPanel({ currentUser, onBack, onSaved, onSpi
           rarity={rarity} onRarity={(r) => { setRarity(r); setLimit(24); }}
           counts={counts} placeholder={`Tầm bảo trong ${kindLabel}...`}
         />
-        <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2 md:gap-3">
+        <div className="grid grid-cols-3 md:grid-cols-3 lg:grid-cols-2 gap-2 md:gap-4">
           {visible.map((item) => {
             const rar = rarityOf(item.rarity);
             const isEquipped = equipped[item.kind] === item.id;
@@ -721,7 +732,7 @@ export default function CustomizationPanel({ currentUser, onBack, onSaved, onSpi
                 <div className="relative inline-block">
                   <img
                     src={full(item.image)} alt={item.name} loading="lazy" decoding="async"
-                    className="w-14 h-14 md:w-20 md:h-20 mx-auto object-contain rounded-full"
+                    className="w-14 h-14 md:w-20 md:h-20 lg:w-28 lg:h-28 mx-auto object-contain rounded-full"
                     style={{ background: "radial-gradient(circle at 50% 38%, #1c2440, #0a0d18 72%)", border: "2px solid rgba(245,193,92,.25)" }}
                   />
                   {isEquipped && <span className="absolute -top-1 -right-1 text-[10px] bg-[#34d399] text-black font-bold rounded-full px-1.5">✓</span>}

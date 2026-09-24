@@ -517,7 +517,7 @@ export default function SocialHubPage() {
           </button>
 
           {/* 👤 THẺ USER — avatar đủ 7 slot trang bị */}
-          <button onClick={() => setShowCustomization(true)} className="d4m-mini-card text-left w-full rounded-2xl border border-[#f5c15c]/20 bg-white/[0.04] hover:bg-[#f5c15c]/5 hover:border-[#f5c15c]/50 transition p-3 mb-4 group">
+          <button onClick={() => handleNav("profile")} className="d4m-mini-card text-left w-full rounded-2xl border border-[#f5c15c]/20 bg-white/[0.04] hover:bg-[#f5c15c]/5 hover:border-[#f5c15c]/50 transition p-3 mb-4 group">
             <div className="flex items-center gap-3">
               <AvatarFrame
                 src={currentUser?.avatar_url}
@@ -538,7 +538,7 @@ export default function SocialHubPage() {
           <button onClick={() => handleNav("home")} className={`d4m-nav-btn ${activeTab === "for_you" ? "d4m-nav-active" : ""}`}><span style={{width:22,height:22}} className="block"><IconHome /></span> Trang chủ</button>
           <button onClick={() => handleNav("dm")} className="d4m-nav-btn"><span style={{width:22,height:22}} className="block"><IconMessage /></span> Tin nhắn {dmUnread > 0 && <span className="ml-auto text-[10px] bg-[#1ed760] text-black rounded-full px-1.5 py-0.5 font-bold">{dmUnread}</span>}</button>
           <button onClick={() => handleNav("activity")} className="d4m-nav-btn"><span style={{width:22,height:22}} className="block"><IconHeart /></span> Hoạt động</button>
-          <button onClick={() => setShowCustomization(true)} className="d4m-nav-btn"><span className="text-base leading-none">🎨</span> Hồ sơ & Phong cách</button>
+          <button onClick={() => handleNav("profile")} className="d4m-nav-btn"><span className="text-base leading-none">🎨</span> Hồ sơ & Phong cách</button>
 
           <button onClick={() => handleNav("create")} className="d4m-btn-grad w-full mt-5 py-3 rounded-full font-bold text-sm hover:brightness-110 active:scale-95 transition flex items-center justify-center gap-2">
             <span style={{width:18,height:18}} className="block"><IconPlus /></span> Đăng bài ngay
@@ -563,7 +563,7 @@ export default function SocialHubPage() {
               ⚔️ Giang hồ có {feed.length} tin truyền
             </div>
             <div className="flex items-center gap-4 text-gray-400">
-              <button onClick={() => setShowCustomization(true)} className="hover:text-[#1ed760] transition" title="Cá nhân hóa" aria-label="Cá nhân hóa" style={{ width: 22, height: 22 }}><span className="text-base leading-none">🎨</span></button>
+              <button onClick={() => handleNav("profile")} className="hover:text-[#1ed760] transition" title="Cá nhân hóa" aria-label="Cá nhân hóa" style={{ width: 22, height: 22 }}><span className="text-base leading-none">🎨</span></button>
               <button onClick={() => fetchFeed()} className="hover:text-white transition" title="Làm mới" aria-label="Làm mới bảng tin" style={{ width: 22, height: 22 }}><IconRefresh /></button>
               <button onClick={handleLogout} className="hover:text-rose-400 transition" title="Đăng xuất" aria-label="Đăng xuất" style={{ width: 22, height: 22 }}><IconLogout /></button>
             </div>
@@ -841,7 +841,7 @@ export default function SocialHubPage() {
                 <div className="text-[11px] text-gray-500">@{currentUser?.username}</div>
               </div>
             </div>
-            <button onClick={() => setShowCustomization(true)}
+            <button onClick={() => handleNav("profile")}
               className="mt-3 w-full py-2 rounded-full text-xs font-bold x-btn-equip hover:brightness-110 transition">
               🎨 Hồ sơ & Phong cách
             </button>

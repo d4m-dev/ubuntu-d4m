@@ -244,11 +244,25 @@ def xu_history(current_user: dict = Depends(get_current_user)):
     rows = db_executor.select_as_list_dict(
         "SELECT kind, xu, vnd, note, created_at FROM xu_transactions "
         "WHERE user_id=%s ORDER BY id DESC LIMIT 20", (uid,))
+    KIND_LABEL = {"buy": "Nạp Xu", "topup": "Nạp Xu", "task": "Nhiệm vụ",
+                  "gift_send": "Tặng Xu", "gift_recv": "Nhận Xu"}
     out = []
     for r in rows:
+        note = str(r.get("note") or "")
+        # 1 đơn mua = 1 dòng với trạng thái success/fail/pending rõ ràng
+        if note.startswith("success|"):
+            status, label = "success", note.split("|", 1)[1]
+        elif note.startswith("paid"):
+            status, label = "success", note
+        elif note in ("pending", ""):
+            status, label = "pending", "Đang xử lý"
+        elif note.startswith(("failed", "cancelled")):
+            status, label = "failed", "Thất bại"
+        else:
+            status, label = "success", note or KIND_LABEL.get(r["kind"], "Giao dịch")
         out.append({
             "kind": r["kind"], "xu": r["xu"], "vnd": r.get("vnd") or 0,
-            "note": r.get("note"),
+            "status": status, "label": label,
             "created_at": str(r["created_at"]) if r.get("created_at") else None,
         })
     return {"status": "success", "data": {"xu": XS.get_xu(uid), "history": out}}
