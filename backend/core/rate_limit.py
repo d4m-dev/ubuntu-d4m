@@ -25,12 +25,14 @@ logger = logging.getLogger("d4m_security")
 # ==========================================================
 _redis = None
 _redis_ok = None
+_redis_retry_at = 0.0
 
 
 def _get_redis():
     """Trả về redis client hoặc None nếu không kết nối được."""
-    global _redis, _redis_ok
-    if _redis_ok is False:
+    global _redis, _redis_ok, _redis_retry_at
+    import time
+    if _redis_ok is False and time.time() < _redis_retry_at:
         return None
     if _redis is None:
         try:
@@ -49,6 +51,7 @@ def _get_redis():
         except Exception as e:
             _redis_ok = False
             _redis = None
+            _redis_retry_at = time.time() + 10
             logger.warning(f"⚠️ Redis không khả dụng (fail-open): {e}")
     return _redis
 

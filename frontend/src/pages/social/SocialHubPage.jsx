@@ -259,7 +259,7 @@ export default function SocialHubPage() {
   // 🟢 Nạp presence (online/offline) cho các tác giả trong feed → cột phải desktop
   useEffect(() => {
     if (!isAuth || !feed.length) return;
-    const ids = [...new Set(feed.map((p) => p.user_id).filter(Boolean))].slice(0, 20);
+    const ids = [...new Set([currentUser?.id, ...feed.map((p) => p.user_id)].filter(Boolean))].slice(0, 20);
     if (!ids.length) return;
     let alive = true;
     (async () => {
@@ -851,6 +851,7 @@ export default function SocialHubPage() {
                 size={48} alt=""
               />
               <div className="min-w-0 flex-1">
+                <div className="text-[10px] font-bold text-emerald-400 mb-0.5">● {onlineMap[String(currentUser?.id)]?.online ? "Đang online" : "Đang hoạt động"}</div>
                 <TitleBadge title={currentUser?.title} height={20} className="mb-0.5" />
                 <RealmName realmIndex={currentUser?.realm_index || 0} spiritRoot={currentUser?.spirit_root}
                   effectId={currentUser?.name_effect} name={currentUser?.fullname || currentUser?.username} className="text-sm" />
