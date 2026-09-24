@@ -672,6 +672,16 @@ CREATE TABLE IF NOT EXISTS `post_comments` (
   KEY `idx_comment_parent` (`parent_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+-- 👍 Likes bài viết (1 user : 1 post)
+CREATE TABLE IF NOT EXISTS `post_likes` (
+  `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `user_id` int(11) NOT NULL,
+  `post_id` int(11) NOT NULL,
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  UNIQUE KEY `uq_like` (`user_id`, `post_id`),
+  KEY `idx_like_post` (`post_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 -- ============================================================
 -- 🐉💎 SPIRIT v2 — 7 SLOT TRANG BỊ (Social Hub)
 -- kind: frame | pet | treasure | title | ring | dharma | sect

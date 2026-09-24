@@ -170,6 +170,8 @@ export const SOCIAL = {
   FEED: `${API_BASE_URL}/api/social/feed`,
   POSTS: `${API_BASE_URL}/api/social/posts`,
   POST_DELETE: (id) => `${API_BASE_URL}/api/social/posts/${id}`,
+  POST_LIKE: (id) => `${API_BASE_URL}/api/social/posts/${id}/like`,
+  LIKES_MINE: `${API_BASE_URL}/api/social/likes/mine`,
   // 💬 DM (Tin nhắn)
   CONVERSATIONS: `${API_BASE_URL}/api/social/conversations`,
   CONVERSATION_OPEN: `${API_BASE_URL}/api/social/conversations`,

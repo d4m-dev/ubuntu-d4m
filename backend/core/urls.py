@@ -128,6 +128,9 @@ SOCIAL = {
     # 💬 Bình luận & reply
     "POST_COMMENTS": "/posts/{post_id}/comments",
     "COMMENT_REPLY": "/comments/{comment_id}/reply",
+    # 👍 Like bài viết
+    "POST_LIKE": "/posts/{post_id}/like",
+    "LIKES_MINE": "/likes/mine",
     # 👥 Danh sách người dùng (để tạo cuộc trò chuyện)
     "USERS": "/users",
     # 🖼️ Upload ảnh (bài đăng / bình luận)

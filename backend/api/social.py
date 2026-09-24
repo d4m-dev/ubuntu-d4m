@@ -157,6 +157,7 @@ async def get_social_image(year_month: str, filename: str):
 def get_feed(current_user: dict = Depends(get_current_user)):
     """Lấy danh sách bảng tin an toàn chống Crash 100%."""
     try:
+        me = current_user.get("user_id")
         sql = f"""
             SELECT
                 p.id as post_id, p.content, p.created_at, p.attached_media, p.media_type,
@@ -168,7 +169,9 @@ def get_feed(current_user: dict = Depends(get_current_user)):
                  WHERE m.post_id = p.id AND m.media_type = 'image') as images,
                 (SELECT m.file_url FROM media m
                  WHERE m.post_id = p.id AND m.media_type IN ('audio','video') LIMIT 1) as media_file,
-                (SELECT COUNT(*) FROM post_comments pc WHERE pc.post_id = p.id) as comment_count
+                (SELECT COUNT(*) FROM post_comments pc WHERE pc.post_id = p.id) as comment_count,
+                (SELECT COUNT(*) FROM post_likes pl WHERE pl.post_id = p.id) as like_count,
+                (SELECT COUNT(*) FROM post_likes pl WHERE pl.post_id = p.id AND pl.user_id = {int(me or 0)}) as liked_by_me
             FROM posts p
             JOIN users u ON p.user_id = u.id
             ORDER BY p.created_at DESC
@@ -205,6 +208,8 @@ def get_feed(current_user: dict = Depends(get_current_user)):
                 "attached_media": post["attached_media"],
                 "media_type": post["media_type"],
                 "comment_count": post.get("comment_count") or 0,
+                "like_count": post.get("like_count") or 0,
+                "liked": bool(post.get("liked_by_me")),
                 "images": images,
                 "stream_links": {"vocal_url": post["media_file"], "video_url": post["media_file"], "cover_url": ""}
                                  if post.get("media_file") else None,
@@ -267,3 +272,34 @@ def delete_post(post_id: int, current_user: dict = Depends(get_current_user)):
         return {"status": "success", "message": "Đã cho bay màu vĩnh viễn"}
     else:
         raise HTTPException(status_code=500, detail="Lỗi hệ thống khi xóa")
+
+
+# ==========================================================
+# 👍 LIKE BÀI VIẾT (toggle) + danh sách đã thích
+# ==========================================================
+@router.post(U.SOCIAL["POST_LIKE"])
+def toggle_like(post_id: int, current_user: dict = Depends(get_current_user)):
+    me = current_user.get("user_id")
+    exists = db_executor.select_as_list_dict(
+        "SELECT id FROM post_likes WHERE user_id=%s AND post_id=%s", (me, post_id))
+    if exists:
+        db_deleter.delete("DELETE FROM post_likes WHERE user_id=%s AND post_id=%s", (me, post_id))
+        liked = False
+    else:
+        # đảm bảo bài tồn tại
+        if not db_executor.select_as_list_dict("SELECT id FROM posts WHERE id=%s", (post_id,)):
+            raise HTTPException(status_code=404, detail="Bài viết không tồn tại")
+        db_inserter.insert(
+            "INSERT IGNORE INTO post_likes (user_id, post_id) VALUES (%s,%s)", (me, post_id))
+        liked = True
+    cnt = db_executor.select_as_list_dict(
+        "SELECT COUNT(*) as c FROM post_likes WHERE post_id=%s", (post_id,))
+    return {"status": "success", "liked": liked, "like_count": (cnt[0]["c"] if cnt else 0)}
+
+
+@router.get(U.SOCIAL["LIKES_MINE"])
+def my_likes(current_user: dict = Depends(get_current_user)):
+    me = current_user.get("user_id")
+    rows = db_executor.select_as_list_dict(
+        "SELECT post_id FROM post_likes WHERE user_id=%s", (me,))
+    return {"status": "success", "data": [r["post_id"] for r in rows]}

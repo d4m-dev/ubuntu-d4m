@@ -148,12 +148,12 @@ const PostCard = memo(function PostCard({ post, liked, canDelete, onLike, onComm
           <div className="flex items-center gap-6 mt-3 text-gray-400">
             <button
               onClick={onLike}
-              className={`transition hover:scale-110 active:scale-90 ${liked ? "text-rose-500" : "hover:text-rose-400"}`}
-              style={{ width: 22, height: 22 }}
+              className={`flex items-center gap-1 transition hover:scale-110 active:scale-90 ${liked ? "text-rose-500" : "hover:text-rose-400"}`}
               aria-label={liked ? "Bỏ thích" : "Thích"}
               aria-pressed={liked}
             >
-              <IconHeart filled={liked} />
+              <span style={{ width: 22, height: 22 }} className="block"><IconHeart filled={liked} /></span>
+              {(post.like_count || 0) > 0 && <span className="text-xs">{post.like_count}</span>}
             </button>
             <button onClick={onComment} className="flex items-center gap-1 hover:text-white transition hover:scale-110 active:scale-90" title="Bình luận" aria-label="Bình luận">
               <span style={{ width: 22, height: 22 }} className="block"><IconComment /></span>
@@ -304,7 +304,8 @@ export default function SocialHubPage() {
       const res = await fetch(ENDPOINTS.SOCIAL.FEED, { headers: { Authorization: `Bearer ${getToken()}` } });
       // 🛡️ WHY: 401 = token chết -> về lock screen thay vì feed trống câm lặng
       if (res.status === 401) { setIsAuth(false); setAuthError("invalid_token"); return; }
-      if (res.ok) { const r = await res.json(); setFeed(r.data || []); }
+      if (res.ok) { const r = await res.json(); setFeed(r.data || []);
+        setLikedSet(new Set((r.data || []).filter((x) => x.liked).map((x) => x.post_id))); }
     } catch (e) { /* giữ feed cũ khi mạng lỗi */ }
     finally { if (!silent) setLoadingFeed(false); }
   }, []);
@@ -423,23 +424,36 @@ export default function SocialHubPage() {
     } catch (e) { showToast("Lỗi mạng khi xóa!", "error"); }
   }, [fetchFeed]);
 
-  const toggleLike = useCallback((postId) => {
-    setLikedSet((prev) => {
-      const next = new Set(prev);
-      if (next.has(postId)) next.delete(postId); else next.add(postId);
-      return next;
-    });
-  }, []);
+  const toggleLike = useCallback(async (post) => {
+    const id = post.post_id;
+    const wasLiked = likedSet.has(id);
+    // optimistic
+    setLikedSet((prev) => { const n = new Set(prev); wasLiked ? n.delete(id) : n.add(id); return n; });
+    setFeed((prev) => prev.map((p) => p.post_id === id
+      ? { ...p, liked: !wasLiked, like_count: Math.max(0, (p.like_count || 0) + (wasLiked ? -1 : 1)) } : p));
+    try {
+      const res = await fetch(ENDPOINTS.SOCIAL.POST_LIKE(id), { method: "POST", headers: authHeaders() });
+      const d = await res.json();
+      if (d.status === "success") {
+        setLikedSet((prev) => { const n = new Set(prev); d.liked ? n.add(id) : n.delete(id); return n; });
+        setFeed((prev) => prev.map((p) => p.post_id === id ? { ...p, liked: d.liked, like_count: d.like_count } : p));
+      }
+    } catch (e) { /* mạng lỗi — giữ optimistic */ }
+  }, [likedSet, authHeaders]);
 
   // 🔗 WHY: nút Chia sẻ trước đây CHẾT (không handler) -> giờ share thật,
   // fallback copy link nếu trình duyệt không có navigator.share
   const sharePost = useCallback(async (post) => {
-    const text = `${post.fullname || post.username} trên Threads D4M: ${(post.content || "🎵 một bài viết").slice(0, 120)}`;
+    const link = `${window.location.origin}/social/social-hub#post-${post.post_id}`;
+    const text = `${post.fullname || post.username} trên Threads D4M: ${(post.content || "🎵 một bài viết").slice(0, 120)}\n${link}`;
     try {
       if (navigator.share) { await navigator.share({ title: "Threads D4M", text }); return; }
       await navigator.clipboard.writeText(text);
-      showToast("Đã copy nội dung để chia sẻ!");
-    } catch (e) { /* user hủy share */ }
+      showToast("🔗 Đã copy liên kết bài viết để chia sẻ!");
+    } catch (e) {
+      try { await navigator.clipboard.writeText(link); showToast("🔗 Đã copy liên kết!"); }
+      catch (_) { showToast("Không thể chia sẻ trên trình duyệt này.", "error"); }
+    }
   }, []);
 
   const handleNav = useCallback((action) => {
@@ -647,7 +661,7 @@ export default function SocialHubPage() {
                   post={post}
                   liked={likedSet.has(post.post_id)}
                   canDelete={!!currentUser && (Number(currentUser.role) === 1 || post.user_id === currentUser.id)}
-                  onLike={() => toggleLike(post.post_id)}
+                  onLike={() => toggleLike(post)}
                   onComment={() => setCommentPost(post)}
                   onDelete={() => deletePost(post.post_id)}
                   onShare={() => sharePost(post)}
