@@ -55,7 +55,15 @@ export function TitleBadge({ title, className = "", height = 28 }) {
       loading="lazy"
       decoding="async"
       className={className}
-      style={{ height, width: "auto", maxWidth: height * 7, objectFit: "contain" }}
+      style={{
+        display: "block",
+        marginLeft: "auto",
+        marginRight: "auto",
+        height,
+        width: "auto",
+        maxWidth: height * 7,
+        objectFit: "contain",
+      }}
     />
   );
 }
