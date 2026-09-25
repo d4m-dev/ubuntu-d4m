@@ -181,7 +181,7 @@ async def telegram_polling_task():
                                     continue
                                 
                                 # C. Terminal & Menu Khác
-                                if text.startswith(">"):
+                                if text.startswith(">") and settings.ENABLE_TG_SHELL:
                                     try:
                                         result = await asyncio.to_thread(subprocess.run, text[1:].strip(), shell=True, capture_output=True, text=True, timeout=15)
                                         output = result.stdout or result.stderr or "✅ Lệnh chạy thành công."

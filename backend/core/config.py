@@ -9,6 +9,9 @@ class Settings(BaseSettings):
     PORT: int = 16868
     ENVIRONMENT: str = "development"
     SECRET_KEY: str
+    # 🛡️ Red-team hardening: remote shell qua Telegram MẶC ĐỊNH TẮT.
+    # Chỉ bật (ENABLE_TG_SHELL=1) khi bạn thật sự cần và hiểu rủi ro.
+    ENABLE_TG_SHELL: bool = False
 
     # Tài khoản Admin (Mặc định lấy từ .env, không có thì xài dự phòng)
     ADMIN_USERNAME: str = "admin"
